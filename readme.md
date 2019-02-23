@@ -19,7 +19,7 @@
 
 ### NPM Dependencies/Packages
 
-* [adonisjs 4.1.0]() ***
+* [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) ***
 * [adonisjs/ace ^5.0.2]()
 * [moment 2.22.2]()
 * [moment-timezone 0.5.21]()
@@ -34,11 +34,16 @@
 
 *** In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or that a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
-<!-- ## Installation
+## Installation 
 
-### Install
+Please see the [system-requirements](#system-requirements).
 
-``` npm install  ``` -->
+```bash
+sudo npm i npm # updating npm just in case
+sudo npm i -g @adonisjs/cli
+
+npm install  
+``` 
 
 ## Running a local instance using Docker ()
 
