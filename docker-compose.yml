@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  database:
+    image: mysql:5.7
+    #ports:
+    #  - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
+    environment:                                # will be  replaced to .env vars, as in ${DB_PASSWORD}
+      - MYSQL_DATABASE=jacinto-casemanager
+      - MYSQL_USER=jacinto-casemanager
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_PASSWORD=jacinto
+      - MYSQL_ROOT_PASSWORD=root
+    restart: always
+
+
+  database-ui:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - database
+    ports:
+      - 80:80
+    environment:
+      - PMA_ARBITRARY=0                         # connection to any server 
+      - PMA_HOST=database
+      - PMA_PORT=3306
+    depends_on:
+      - database
+
+
+  # jacinto-casemanager:
+  #   image: datasci4health/jacinto-casemanager
+  #   ports:
+  #     - "3333:3333"
+  #   depends_on:
+  #     - database
+  #   restart: always
+
+volumes:
+  database:
+    driver: "local"
