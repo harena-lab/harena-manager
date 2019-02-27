@@ -8,8 +8,8 @@
 **For running natively:**
 
 * [node.js >= 8.0.0]()
-* [npm     >= 3.0.0]()
-* [postgresql >= 7.0.0]()
+* [npm     >= 6.8.0]()
+* [mysql >= 5.7]() or [postgresql >= 7.0.0]()
 
 **For running as linux/windows Docker containers:**
 
@@ -21,9 +21,6 @@
 
 * [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) ***
 * [adonisjs/ace ^5.0.2]()
-* [moment 2.22.2]()
-* [moment-timezone 0.5.21]()
-* [pg 7.4.3]()
 * [adonisjs/bodyparser]()
 * [adonisjs/auth]()
 * [adonisjs/cors ^1.0.6]()
@@ -31,6 +28,11 @@
 * [adonisjs/framework ^5.0.7]()
 * [adonisjs/ignitor ^2.0.6]()
 * [adonisjs/lucid ^5.0.4]()
+* [moment 2.22.2]()
+* [moment-timezone 0.5.21]()
+* [pg 7.4.3]()
+* [mysql ^2.16.0]()
+
 
 *** In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or that a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
