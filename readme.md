@@ -1,3 +1,9 @@
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/datasci4health/jacinto-casemanager/blob/master/LICENSE)
+[![Docker Automated](https://img.shields.io/docker/cloud/automated/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Build](https://img.shields.io/docker/cloud/build/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Stars](https://img.shields.io/docker/stars/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+
 # jacinto-casemanager
 
 [Jacinto](https://github.com/datasci4health/jacinto)'s API for managing users and clinical cases.
