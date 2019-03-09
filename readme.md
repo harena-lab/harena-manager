@@ -30,7 +30,7 @@
 * [adonisjs/lucid ^5.0.4]()
 * [moment 2.22.2]()
 * [moment-timezone 0.5.21]()
-* [pg 7.4.3]()
+* [pg 7.4.3]() 
 * [mysql ^2.16.0]()
 
 
