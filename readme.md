@@ -47,7 +47,7 @@ sudo npm i -g @adonisjs/cli
 npm install  
 ``` 
 
-## Running a local instance using Docker ()
+## Running locally as Docker containers
 
 ```bash
 sudo docker-compose --url https://github.com/datasci4health/jacinto/blob/master/docker-compose.yml up
