@@ -28,9 +28,7 @@
          * [Project organization](#project-organization)
          * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
 
-
-
-
+W
 ## Getting Started
 
 ### Running as Docker containers - Linux
@@ -142,8 +140,6 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 * DB_PASSWORD= password
 * DB_DATABASE= target database
 * DB_SEARCH_PATH= database schema (if supported -- e.g., postgresql)
-
-
 
 
 ## Contributing
