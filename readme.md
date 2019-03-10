@@ -1,32 +1,69 @@
-# jacinto-casemanager
+# herena-manager
 
-[Jacinto](https://github.com/datasci4health/jacinto)'s API for managing users and clinical cases.
+[Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
+## Getting Started
 
-## Running locally as Docker containers
+### Running locally as Docker containers (linux)
 
 ```bash
-wget https://github.com/datasci4health/jacinto/blob/master/docker-compose.yml
+sudo apt-get install -y docker-compose wget
+wget https://github.com/datasci4health/harena-casemanager/blob/master/docker-compose.yml
 sudo docker-compose up
 ```
 
-## System Requirements
+### Running locally as Docker containers (windows)
 
-**For running natively:**
+//to do
 
-* [node.js >= 8.0.0]()
-* [npm     >= 6.8.0]()
-* [mysql >= 5.7]() or [postgresql >= 7.0.0]()
+### Running locally (linux)
 
-**For running as linux/windows Docker containers:**
+First, clone this repository and enter the folder:
+
+```bash
+git clone https://github.com/datasci4health/harena-manager 
+cd harena-manager
+```
+Then install the [adonis cli](https://adonisjs.com/docs/4.0/installation#_cli_tool) and other project dependencies <sup>1</sup>:
+
+```bash
+cd src/adonisjs                      # entering in the source folder
+sudo npm i npm                       # updating npm just in case
+sudo npm i -g @adonisjs/cli          # installing adonis cli
+npm install                          # installing dependencies based on the package.json file
+cp .env.example .env                 # creating the .env file that will be used by adonis
+``` 
+
+Edit the .env file with your own [configuration](#Configuration). Then, run adonis:
+
+```bash
+adonis  serve --dev --debug  # adjust flags according to you needs <sup>2</sup>
+```
+
+
+
+<sup>1</sup> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details).
+
+<sup>2</sup> run `adonis serve --help` for flag options.
+
+
+## Detailed System Requirements
+
+### For running as linux/windows Docker containers:
 
 * [docker]()
 * [docker-compose]()
 
+### For running locally:
 
-### NPM Dependencies/Packages
+* [node.js >= 8.0.0]()
+* [npm     >= 6.8.0]()
+* [mysql   >= 5.7]() or [postgresql >= 7.0.0]()
 
-* [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) ***
+
+#### NPM Dependencies/Packages
+
+* [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) <sup>3</sup>
 * [adonisjs/ace ^5.0.2]()
 * [adonisjs/bodyparser]()
 * [adonisjs/auth]()
@@ -41,18 +78,7 @@ sudo docker-compose up
 * [mysql ^2.16.0]()
 
 
-*** In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
-
-## Installation 
-
-Please see the [system-requirements](#system-requirements).
-
-```bash
-sudo npm i npm # updating npm just in case
-sudo npm i -g @adonisjs/cli
-
-npm install  
-``` 
+<sup>3</sup> In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
 ## Configuration
 
@@ -84,7 +110,6 @@ npm install
 
 
 ## Contributing
-
 
 ### Branch organization (future CI/CD)
 * **feature/< label >:**
