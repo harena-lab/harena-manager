@@ -3,6 +3,13 @@
 [Jacinto](https://github.com/datasci4health/jacinto)'s API for managing users and clinical cases.
 
 
+## Running locally as Docker containers
+
+```bash
+wget https://github.com/datasci4health/jacinto/blob/master/docker-compose.yml
+sudo docker-compose up
+```
+
 ## System Requirements
 
 **For running natively:**
@@ -34,7 +41,7 @@
 * [mysql ^2.16.0]()
 
 
-*** In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or that a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
+*** In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
 ## Installation 
 
@@ -46,13 +53,6 @@ sudo npm i -g @adonisjs/cli
 
 npm install  
 ``` 
-
-## Running locally as Docker containers
-
-```bash
-sudo docker-compose --url https://github.com/datasci4health/jacinto/blob/master/docker-compose.yml up
-```
-
 
 ## Configuration
 
