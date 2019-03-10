@@ -1,11 +1,22 @@
 
+<<<<<<< HEAD
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/datasci4health/harena-manager/blob/master/LICENSE)
 [![Docker Automated](https://img.shields.io/docker/cloud/automated/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Build](https://img.shields.io/docker/cloud/build/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
+=======
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/datasci4health/jacinto-casemanager/blob/master/LICENSE)
+[![Docker Automated](https://img.shields.io/docker/cloud/automated/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Build](https://img.shields.io/docker/cloud/build/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Stars](https://img.shields.io/docker/stars/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+
+>>>>>>> 1544298f9051a045b731e696c6dc8bcc9324fd2e
 
 # herena-manager
+
+## Table of Contents 
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
@@ -67,7 +78,11 @@ cp .env.example .env                 # creating the .env file that will be used 
 Edit the .env file with your own [configuration](#Configuration). Then, run adonis<sup>2</sup>:
 
 ```bash
+<<<<<<< HEAD
 adonis  serve --dev --debug  # adjust flags according to you needs
+=======
+adonis  serve --dev --debug  # adjust flags according to you needs<sup>2</sup>
+>>>>>>> 1544298f9051a045b731e696c6dc8bcc9324fd2e
 ```
 
 
@@ -76,7 +91,11 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 
 <b><sup>2</sup></b> Run `adonis serve --help` to see alternative flag options.
 
+<<<<<<< HEAD
 ### Running locally - Windows
+=======
+<sup>2</sup> Run `adonis serve --help` for flag options.
+>>>>>>> 1544298f9051a045b731e696c6dc8bcc9324fd2e
 
 //to do
 
