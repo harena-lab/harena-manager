@@ -1,4 +1,14 @@
+
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/datasci4health/jacinto-casemanager/blob/master/LICENSE)
+[![Docker Automated](https://img.shields.io/docker/cloud/automated/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Build](https://img.shields.io/docker/cloud/build/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+[![Docker Stars](https://img.shields.io/docker/stars/datasci4health/jacinto-casemanager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/jacinto-casemanager)
+
+
 # herena-manager
+
+## Table of Contents 
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
@@ -24,11 +34,11 @@ First, clone this repository and enter the folder:
 git clone https://github.com/datasci4health/harena-manager 
 cd harena-manager
 ```
-Then install the [adonis cli](https://adonisjs.com/docs/4.0/installation#_cli_tool) and other project dependencies <sup>1</sup>:
+Then install the [adonis cli](https://adonisjs.com/docs/4.0/installation#_cli_tool) and other project dependencies<sup>1</sup>:
 
 ```bash
-cd src/adonisjs                      # entering in the source folder
-sudo npm i npm                       # updating npm just in case
+cd src/adonisjs                      # entering the source folder
+sudo npm i npm                       # updating npm (just in case)
 sudo npm i -g @adonisjs/cli          # installing adonis cli
 npm install                          # installing dependencies based on the package.json file
 cp .env.example .env                 # creating the .env file that will be used by adonis
@@ -37,14 +47,14 @@ cp .env.example .env                 # creating the .env file that will be used 
 Edit the .env file with your own [configuration](#Configuration). Then, run adonis:
 
 ```bash
-adonis  serve --dev --debug  # adjust flags according to you needs <sup>2</sup>
+adonis  serve --dev --debug  # adjust flags according to you needs<sup>2</sup>
 ```
 
 
 
 <sup>1</sup> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details).
 
-<sup>2</sup> run `adonis serve --help` for flag options.
+<sup>2</sup> Run `adonis serve --help` for flag options.
 
 
 ## Detailed System Requirements
