@@ -66,19 +66,13 @@ Edit the .env file with your own [configuration](#Configuration). Then, run adon
 
 ```bash
 adonis  serve --dev --debug  # adjust flags according to you needs
-=======
-adonis  serve --dev --debug  # adjust flags according to you needs<sup>2</sup>
 ```
-
-
 
 <b><sup>1</sup></b> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details).
 
 <b><sup>2</sup></b> Run `adonis serve --help` to see alternative flag options.
 
 ### Running locally - Windows
-=======
-<sup>2</sup> Run `adonis serve --help` for flag options.
 
 //to do
 
