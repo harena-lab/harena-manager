@@ -4,7 +4,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
-## Table of Contents 
+# herena-manager
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
@@ -111,7 +111,7 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 
 <b><sup>3</sup></b> In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
-<b><sup>4</sup></b> Kept in the `src/adonisjs/package.json` file.
+<b><sup>4</sup></b> Stored in the `src/adonisjs/package.json` file.
 
 ## Configuration
 
