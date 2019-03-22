@@ -1,36 +1,30 @@
 'use strict'
 
-const Route = use('Route')
-const Env   = use('Env')
-
-Route.get('/', () => {  return 'Hello from the jacinto-casemanager'} )
-
-
 /*
-    v1 routes
+|--------------------------------------------------------------------------
+| Routes
+|--------------------------------------------------------------------------
+|
+| Http routes are entry points to your web application. You can create
+| routes for different URL's and bind Controller actions to them.
+|
+| A complete guide on routing is available here.
+| http://adonisjs.com/docs/4.1/routing
+|
 */
 
+/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
+const Route = use('Route')
+
+// Route.on('/').render('welcome')
+
+Route.get('/', () => { return 'Hello from the Harena\'s casemanager'} )
 
 Route.group(() => {
-
-					Route.post('login',        'v1/AuthController.login')
-					Route.post('token/create', 'v1/AuthController.tokenCreate')
-					Route.get( 'token/list'  , 'v1/AuthController.tokenCreate')
-
-	              }).prefix('api/v1/auth').middleware([])
-
-
-Route.group(() => {
+	Route.put('/:id', 'v1/CaseController.update')
+	Route.delete('/id', 'v1/CaseController.destroy')
+	Route.post('', 'v1/CaseController.store')
+	Route.get('', 'v1/CaseController.index') 
+}).prefix('/api/v1/cases/').middleware([])
 
 
-
-	              }).prefix('api/v1').middleware([])
-
-
-// Route.post('login', 'v1/UserController.login')
-
-
-
-
-
-Route.get('users/:id', 'UserController.show').middleware('auth')

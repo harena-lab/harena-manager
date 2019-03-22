@@ -1,12 +1,16 @@
 'use strict'
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use('Model')
-
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
 
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
+const Model = use('Model')
+
 class User extends Model {
+  cases () {
+    return this.hasMany('App/Models/v1/Case')
+  }
+    
   static boot () {
     super.boot()
 
