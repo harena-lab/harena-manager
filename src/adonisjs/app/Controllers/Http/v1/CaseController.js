@@ -25,18 +25,6 @@ class CaseController {
   }
 
   /**
-   * Render a form to be used for creating a new case.
-   * GET cases/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
-  }
-
-  /**
    * Create/save a new case.
    * POST cases
    *
@@ -44,11 +32,11 @@ class CaseController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, auth, response }) {
     const c = new Case()
     c.title = request.input('title')
     c.description = request.input('description')
-
+    c.user_id = auth.user.id
     await c.save()
     return response.json(c)
   }
@@ -63,18 +51,6 @@ class CaseController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-  }
-
-  /**
-   * Render a form to update an existing case.
-   * GET cases/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
   }
 
   /**

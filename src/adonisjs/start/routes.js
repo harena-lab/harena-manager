@@ -25,6 +25,9 @@ Route.group(() => {
 	Route.delete('/id', 'v1/CaseController.destroy')
 	Route.post('', 'v1/CaseController.store')
 	Route.get('', 'v1/CaseController.index') 
-}).prefix('/api/v1/cases/').middleware([])
+}).prefix('/api/v1/cases/').middleware('auth')
+
+Route.post('/auth/register', 'AuthController.register')
+Route.post('/auth/login', 'AuthController.login')
 
 
