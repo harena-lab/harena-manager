@@ -18,13 +18,15 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-// Route.on('/').render('welcome')
+
 
 Route.get('/', () => { return 'Hello from the Harena\'s casemanager'} )
+
 
 /* 
 	User CRUD
 */
+
 Route.group(() => { 
 
 					Route.post(  '',               'v1/UserController.store')
@@ -41,6 +43,7 @@ Route.group(() => {
 /* 
 	Case CRUD
 */
+
 Route.group(() => {
 
 					Route.post(  '',               'v1/CaseController.store')
@@ -84,9 +87,7 @@ Route.group(() => {
 
 Route.group(() => {
 
-					// Route.post('register',  'AuthController.register')
 					Route.post('login',     'AuthController.login') 
 					Route.get( 'logout',    'AuthController.logout') 
-					Route.put( 'users/:id', 'AuthController.update')
 
 }).prefix('/api/v1/auth/')
