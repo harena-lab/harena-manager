@@ -4,28 +4,28 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
-# herena-manager
+# harena-manager
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
 ## Table of Contents 
 
-   * [herena-manager](#herena-manager)
-      * [Table of Contents](#table-of-contents)
-      * [Getting Started](#getting-started)
-         * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-         * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
-         * [Running locally - Linux](#running-locally---linux)
-         * [Running locally - Windows](#running-locally---windows)
-      * [System Requirements](#system-requirements)
-         * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
-         * [For running locally](#for-running-locally)
-      * [Configuration](#configuration)
-         * [Virtualenvs: AdonisJS](#virtualenvs-adonisjs)
-         * [Virtualenvs: Database](#virtualenvs-database)
-      * [Contributing](#contributing)
-         * [Project organization](#project-organization)
-         * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+
+  * [Table of Contents](#table-of-contents)
+  * [Getting Started](#getting-started)
+     * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
+     * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
+     * [Running locally - Linux](#running-locally---linux)
+     * [Running locally - Windows](#running-locally---windows)
+  * [System Requirements](#system-requirements)
+     * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
+     * [For running locally](#for-running-locally)
+  * [Configuration](#configuration)
+     * [Virtualenvs: AdonisJS](#virtualenvs-adonisjs)
+     * [Virtualenvs: Database](#virtualenvs-database)
+  * [Contributing](#contributing)
+     * [Project organization](#project-organization)
+     * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
 
 ## Getting Started
 
