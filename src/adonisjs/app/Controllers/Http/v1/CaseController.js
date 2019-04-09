@@ -5,6 +5,17 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Case = use('App/Models/v1/Case');
+const Drive = use('Drive');
+
+const uuidv1 = require('uuid/v1');
+var dateFormat = require('dateformat');
+
+const DIR_CASES = "../../../cases/";
+
+
+const FILE_CASE_NAME = "case";
+const FILE_CASE_EXTENSION = ".md";
+const FILE_CASE = FILE_CASE_NAME + FILE_CASE_EXTENSION;
 
 /**
  * Resourceful controller for interacting with cases
@@ -55,15 +66,36 @@ class CaseController {
    */
   async store({ request, auth, response }) {
     try {
+      let caseText = request.input('caseText')
+      let caseName = request.input('caseName')
+
+      let caseDir = DIR_CASES + caseName + "/"
+      let caseFile = caseDir + FILE_CASE;
+      let versionsDir = caseDir + "version/"
+
+      // copy a version of the previous file
+      let versionFile = "new file"
+      if (await Drive.exists(caseFile)) {
+        let currentTime = dateFormat(new Date().getTime(), "_yyyy-mm-dd-h-MM-ss_");
+        versionFile = FILE_CASE_NAME + currentTime + uuidv1() + FILE_CASE_EXTENSION
+        await Drive.copy(caseFile, versionsDir + versionFile)
+      }
+
       const c = new Case()
-      c.title = request.input('title')
-      c.description = request.input('description')
+      c.caseName = caseName
+      c.caseText = JSON.stringify(caseText)
       c.user_id = auth.user.id
+
+      const file = DIR_CASES + caseName + '/case.md';
+
+      await Drive.put(file, Buffer.from(caseText))
+      
+      c.url = file
+
       await c.save()
       return response.json(c)
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
-
     }
   }
 
