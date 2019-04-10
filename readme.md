@@ -58,7 +58,7 @@ Then install the [adonis cli](https://adonisjs.com/docs/4.0/installation#_cli_to
 cd src/adonisjs                      # entering the source folder
 sudo npm i npm                       # updating npm (just in case)
 sudo npm i -g @adonisjs/cli          # installing adonis cli
-npm install                          # installing dependencies based on the package.json file
+sudo npm install                     # installing dependencies based on the package.json file
 cp .env.example .env                 # creating the .env file that will be used by adonis
 ``` 
 
