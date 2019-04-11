@@ -89,38 +89,28 @@ class CaseController {
 
       // copy a version of the previous file
       let versionFile = "new file"
-      // await Drive.put(caseFile, Buffer.from(caseText))
 
       fs.access(caseDir, fs.constants.F_OK, (err) => {
         if (err) fs.mkdirSync(caseDir, { recursive: true })
-        else console.log('exists');
+        
+        fs.writeFileSync(caseFile, caseText)
 
-        console.log('adsadsa')
-        fs.writeFile(caseFile, caseText, (err) => {
-          if (err) throw err;
-          console.log('here')
-          let currentTime = dateFormat(new Date().getTime(), "_yyyy-mm-dd-h-MM-ss_");
-          versionFile = FILE_CASE_NAME + currentTime + uuidv1() + FILE_CASE_EXTENSION
-          fs.mkdirSync(versionsDir, { recursive: true })
-          
-          fs.copyFile(caseFile, versionsDir + versionFile, function (err) {
-            if (err) throw err;
-            else console.log('foi')
-            //  else {
-            //   console.log("success!");
-            //   const c = new Case()
-            //   c.caseName = caseName
-            //   c.caseText = JSON.stringify(caseText)
-            //   c.user_id = auth.user.id
+        let currentTime = dateFormat(new Date().getTime(), "_yyyy-mm-dd-h-MM-ss_");
+        versionFile = FILE_CASE_NAME + currentTime + uuidv1() + FILE_CASE_EXTENSION
+        fs.mkdirSync(versionsDir, { recursive: true })
 
-            //   c.url = case_dir
+        fs.copyFileSync(caseFile, versionsDir + versionFile);
+      });
 
-            //   await c.save()
-            //   return response.json({ "versionFile": versionFile })
-            });
-          });
-        });
-      } catch (e) {
+      let c = new Case()
+      c.caseName = caseName
+      c.caseText = JSON.stringify(caseText)
+      c.user_id = auth.user.id
+      c.url = caseDir
+
+      await c.save()
+      return response.json({ "versionFile": versionFile })
+    } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
   }
@@ -176,34 +166,26 @@ class CaseController {
   }
 
   async renameCase({ params, request, response }) {
+    console.log('aqui')
     try {
-      console.log(process.cwd());
-
       let oldName = request.input('oldName')
       let newName = request.input('newName')
 
       let c = await Case.findBy('caseName', oldName)
 
+      console.log('hdauisd')
+
       let oldDir = c.url
       let newDir = DIR_CASES + newName
-      let caseDir = DIR_CASES + caseName + "/"
+      console.log('fff')
 
       c.caseName = newName
 
-      console.log(c.url)
-      if (await Drive.exists(oldDir)) {
-        c.url = newDir
-        if (await c.save()) {
-          fs.mkdirSync(newDir, { recursive: true })
-
-          // fs.renameSync(oldDir, newDir)
-
-
-          return response.json({ status: 'ok' })
-        }
-      } else {
-        console.log('nops')
-      }
+      fs.accessSync(oldDir, fs.constants.R_OK | fs.constants.W_OK);
+      fs.rename(oldDir, newDir)
+      
+      await c.save()
+      return response.json({ status: 'ok' })
     } catch (e) {
       if (e.code === 'ER_DUP_ENTRY') {
         return response.status(409).json({ status: 'duplicate' })
