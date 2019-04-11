@@ -37,18 +37,21 @@ Route.group(() => {
 	Case CRUD
 */
 Route.group(() => {
-					Route.get(   '',               'v1/CaseController.index') 	
-					Route.get(   ':id',            'v1/CaseController.show') 
-					Route.post(  '',               'v1/CaseController.store')
-					Route.put(   ':id',            'v1/CaseController.update')
-					Route.delete(':id',            'v1/CaseController.destroy')
+			Route.get(   '',               		'v1/CaseController.index') 	
+			Route.get(   ':id',            		'v1/CaseController.show') 
+			Route.post(  '',               		'v1/CaseController.store')
+			Route.put(   ':id',            		'v1/CaseController.update')
+			Route.delete(':id',            		'v1/CaseController.destroy')
 
-					Route.post(  'new',            'v1/CaseController.newCase')
-					Route.post(  'load-case',      'v1/CaseController.loadCase')
-					Route.post(  'rename-case',    'v1/CaseController.renameCase')
+			Route.post(  'new',            		'v1/CaseController.newCase')
+			Route.post(  'load-case',      		'v1/CaseController.loadCase')
+			Route.post(  'rename-case',    		'v1/CaseController.renameCase')
 
-					Route.post(  ':id/executions', 'v1/UserController.newExecution')   // input: user_id -> returns execution:{uuid}
-					Route.get(   ':id/executions', 'v1/UserController.listExecutions') // input: user_id -> returns execution:{uuid}
+			Route.post(  ':id/executions', 		'v1/UserController.newExecution')   // input: user_id -> returns execution:{uuid}
+			Route.get(   ':id/executions', 		'v1/UserController.listExecutions') // input: user_id -> returns execution:{uuid}
+
+			Route.post(  'rename-case',    		'v1/CaseController.prepare-case-html')
+			Route.post(  'prepare-case-html',	'v1/CaseController.prepareCaseHTML')
 }).prefix('/api/v1/cases/').middleware('auth')
 
 /* 
@@ -67,6 +70,21 @@ Route.group(() => {
 Route.group(() => {
 					Route.get(   '',       'v1/TemplateController.index') 
 }).prefix('/api/v1/template/').middleware('auth')
+
+/* 
+	Models CRUD
+*/
+Route.group(() => {
+					Route.get(   '',    'v1/ModelController.index') 
+}).prefix('/api/v1/models/').middleware('auth')
+
+/* 
+	KnotCapsule CRUD
+*/
+Route.group(() => {
+				Route.get(   '',		'v1/KnotCapsuleController.index') 
+				Route.post(  '',      	'v1/KnotCapsuleController.store')
+}).prefix('/api/v1/knot/').middleware('auth')
 
 /* 
 	Auth  

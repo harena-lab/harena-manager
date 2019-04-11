@@ -9,10 +9,11 @@ const Drive = use('Drive');
 
 const uuidv1 = require('uuid/v1');
 const fs = require('fs');
+const fse = require('fs-extra')
 
 var dateFormat = require('dateformat');
 
-const DIR_MODELS = "../../../models/"
+const DIR_MODELS = "../../models/"
 const DIR_CASES = "../../cases/";
 const FILE_CASE_NAME = "case";
 const FILE_CASE_EXTENSION = ".md";
@@ -21,6 +22,9 @@ const FILE_CASE = FILE_CASE_NAME + FILE_CASE_EXTENSION;
 let BLANK_MODEL = "blank"
 let TEMPORARY_CASE = "_temporary"
 
+const DIR_PLAYER = "../../../harena-space/player/"
+const FILE_PLAYER = "index.html"
+const DIR_INFRA = "../infra/"
 /**
  * Resourceful controller for interacting with cases
  */
@@ -158,7 +162,7 @@ class CaseController {
   async newCase({ response }) {
     try {
       let temporaryCase = DIR_CASES + TEMPORARY_CASE
-      await Drive.copy(DIR_MODELS + BLANK_MODEL, temporaryCase)
+      fse.copySync(DIR_MODELS + BLANK_MODEL, temporaryCase)
       return response.json({ caseName: TEMPORARY_CASE })
     } catch (e) {
       console.log(e)
@@ -166,23 +170,19 @@ class CaseController {
   }
 
   async renameCase({ params, request, response }) {
-    console.log('aqui')
     try {
       let oldName = request.input('oldName')
       let newName = request.input('newName')
 
       let c = await Case.findBy('caseName', oldName)
 
-      console.log('hdauisd')
-
       let oldDir = c.url
       let newDir = DIR_CASES + newName
-      console.log('fff')
 
       c.caseName = newName
 
       fs.accessSync(oldDir, fs.constants.R_OK | fs.constants.W_OK);
-      fs.rename(oldDir, newDir)
+      fs.renameSync(oldDir, newDir)
       
       await c.save()
       return response.json({ status: 'ok' })
@@ -190,10 +190,40 @@ class CaseController {
       if (e.code === 'ER_DUP_ENTRY') {
         return response.status(409).json({ status: 'duplicate' })
       }
-      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
+
+  async prepareCaseHTML({ params, request, response }) {
+    try {
+      let templateFamily = request.input('templateFamily')
+      let caseName = request.input('caseName')
+
+      fs.accessSync(DIR_CASES + "html", fs.constants.R_OK | fs.constants.W_OK);
+      fs.renameSync(oldDir, newDir)
+      
+      fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
+        if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
+      });
+     
+      
+      fse.copySync(DIR_PLAYER + FILE_PLAYER, caseDir + "html")
+      fse.copySync(DIR_PLAYER + "js", caseDir + "html")
+      
+      let busFiles = fs.readdirSync(DIR_INFRA+'js');
+      busFiles.array.forEach(element => {
+        fse.copySync(element, caseDir + "js")
+      });
+
+      return response.json({ status: 'ok' })
+    } catch (e) {
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({ status: 'duplicate' })
+      }
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+  
 }
 
 module.exports = CaseController
