@@ -26,6 +26,16 @@
   * [Contributing](#contributing)
      * [Project organization](#project-organization)
      * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+  * [Available REST Calls](#calls)
+     * [Authentication](#project-organization)
+     * [Cases](#project-organization)
+     * [Models](#project-organization)
+     * [Templates](#project-organization)
+
+### Cases 
+### Models 
+### Templates 
+   
 
 ## Getting Started
 
