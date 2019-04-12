@@ -154,3 +154,32 @@ adonis  serve --dev --debug  # adjust flags according to you needs
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
 * **tags:**
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
+
+## REST Calls
+
+### AUTHENTICATION
+
+* **URL:**    `/api/v1/auth/register`
+
+* **Method:**  `POST`
+
+*  **Required POST Params:**
+
+   * `username=[string]`
+   * `email=[string]`
+   * `password=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+  * **Content:** User json created <br />
+
+
+* **Error Responses:**
+
+   * **Code:** `409 Dup_entry` <br />
+    **Troubleshooting:** Username or email not available
+
+### Cases 
+### Models 
+### Templates 
