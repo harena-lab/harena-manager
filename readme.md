@@ -4,28 +4,38 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
-# herena-manager
+# harena-manager
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
 ## Table of Contents 
 
-   * [herena-manager](#herena-manager)
-      * [Table of Contents](#table-of-contents)
-      * [Getting Started](#getting-started)
-         * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-         * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
-         * [Running locally - Linux](#running-locally---linux)
-         * [Running locally - Windows](#running-locally---windows)
-      * [System Requirements](#system-requirements)
-         * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
-         * [For running locally](#for-running-locally)
-      * [Configuration](#configuration)
-         * [Virtualenvs: AdonisJS](#virtualenvs-adonisjs)
-         * [Virtualenvs: Database](#virtualenvs-database)
-      * [Contributing](#contributing)
-         * [Project organization](#project-organization)
-         * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+
+  * [Table of Contents](#table-of-contents)
+  * [Getting Started](#getting-started)
+     * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
+     * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
+     * [Running locally - Linux](#running-locally---linux)
+     * [Running locally - Windows](#running-locally---windows)
+  * [System Requirements](#system-requirements)
+     * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
+     * [For running locally](#for-running-locally)
+  * [Configuration](#configuration)
+     * [Virtualenvs: AdonisJS](#virtualenvs-adonisjs)
+     * [Virtualenvs: Database](#virtualenvs-database)
+  * [Contributing](#contributing)
+     * [Project organization](#project-organization)
+     * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+  * [Available REST Calls](#calls)
+     * [Authentication](#project-organization)
+     * [Cases](#project-organization)
+     * [Models](#project-organization)
+     * [Templates](#project-organization)
+
+### Cases 
+### Models 
+### Templates 
+   
 
 ## Getting Started
 
@@ -154,3 +164,32 @@ adonis  serve --dev --debug  # adjust flags according to you needs
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
 * **tags:**
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
+
+## REST Calls
+
+### AUTHENTICATION
+
+* **URL:**    `/api/v1/auth/register`
+
+* **Method:**  `POST`
+
+*  **Required POST Params:**
+
+   * `username=[string]`
+   * `email=[string]`
+   * `password=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+  * **Content:** User json created <br />
+
+
+* **Error Responses:**
+
+   * **Code:** `409 Dup_entry` <br />
+    **Troubleshooting:** Username or email not available
+
+### Cases 
+### Models 
+### Templates 

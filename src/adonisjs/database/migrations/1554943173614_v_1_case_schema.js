@@ -7,8 +7,9 @@ class CaseSchema extends Schema {
   up () {
     this.create('cases', (table) => {
       table.increments()
-      table.string('title')
-      table.string('description')
+      table.string('caseName').unique()
+      table.json('caseText')
+      table.string('url')
       table.integer('user_id').unsigned().references('id').inTable('users');
       table.timestamps()
     })

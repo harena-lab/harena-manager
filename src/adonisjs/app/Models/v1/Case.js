@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Case extends Model {
     user() {
-        return this.belongsTo('App/Models/User');
+        return this.belongsTo('App/Models/v1/User');
     }
 }
 
