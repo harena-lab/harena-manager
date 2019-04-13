@@ -26,15 +26,11 @@
   * [Contributing](#contributing)
      * [Project organization](#project-organization)
      * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
-  * [Available REST Calls](#calls)
+  * [Available REST Calls](#rest-calls) 
      * [Authentication](#project-organization)
      * [Cases](#project-organization)
      * [Models](#project-organization)
      * [Templates](#project-organization)
-
-### Cases 
-### Models 
-### Templates 
    
 
 ## Getting Started
@@ -167,29 +163,91 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 
 ## REST Calls
 
-### AUTHENTICATION
+### Authentication
+* **Register User**
+   * **URL:**    `/api/v1/auth/register`
+   * **Method:**  `POST`
+   *  **Required POST Params:**
+      * `username=[string]`
+      * `email=[string]`
+      * `password=[string]`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** User json created <br />
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+* **Login**
+   * **URL:**    `/api/v1/auth/login`
+   * **Method:**  `POST`
+   *  **Required body Params:**
+      * `email=[string]`
+      * `password=[string]`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** JSON user that has a _token_, which must be sent in the Authorization field of the header of every rest call that requires authentication, in the following format: Bearer [token jwt string] <br />  
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+### Users
+* **User List**
+   * **URL:**    `/api/v1/user/`
+   * **Method:**  `GET`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** User json created <br />
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+* **Get User**
+   * **URL:**    `/api/v1/user/:id`
+   * **Method:**  `GET`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** User json created <br />
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+* **Update User**
+   * **URL:**    `/api/v1/user1/:id`
+   * **Method:**  `PUT`
+   *  **Optional body Params:**
+      * `username=[string]`
+      * `email=[string]`
+      * `password=[string]`
+   * **Success Response:**
+   * **Error Responses:**
+* **Delete User**
+   * **URL:**    `/api/v1/user/:id`
+   * **Method:**  `DELETE`
+   * **Success Response:**
+   * **Error Responses:**
+* **Get cases created by a user**
+   * **URL:**    `/api/v1/user/:id/cases`
+   * **Method:**  `GET`
+   * **Success Response:**
+      * **Content:** List of cases{title, description, created_at} <br />
+   * **Error Responses:**
 
-* **URL:**    `/api/v1/auth/register`
-
-* **Method:**  `POST`
-
-*  **Required POST Params:**
-
-   * `username=[string]`
-   * `email=[string]`
-   * `password=[string]`
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-  * **Content:** User json created <br />
-
-
-* **Error Responses:**
-
-   * **Code:** `409 Dup_entry` <br />
-    **Troubleshooting:** Username or email not available
-
-### Cases 
+### Cases
+* **New Case**
+   * **URL:**    `/api/v1/cases/new`
+   * **Method:**  `POST`
+   * **Success Response:**
+   * **Error Responses:**
+* **Save Case**
+   * **URL:**    `/api/v1/cases/`
+   * **Method:**  `POST`
+   *  **Required body Params:**
+      * `caseName=[string]`
+      * `caseText=[string]`
+   * **Success Response:**
+   * **Error Responses:**
+* **New Case**
+   * **URL:**    `/api/v1/cases/new`
+   * **Method:**  `POST`
+   * **Success Response:**
+   * **Error Responses:**
+   
 ### Models 
 ### Templates 
