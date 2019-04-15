@@ -53,7 +53,8 @@ Route.group(() => {
 
 			Route.post(  'rename-case',    		'v1/CaseController.prepare-case-html')
 			Route.post(  'prepare-case-html',	'v1/CaseController.prepareCaseHTML')
-}).prefix('/api/v1/case/').middleware('auth')
+}).prefix('/api/v1/cases/').middleware('auth')
+//}).prefix('/api/v1/case/').middleware('auth')
 
 /* 
 	Execution CRUD
@@ -68,26 +69,26 @@ Route.group(() => {
 /* 
 	Template CRUD 
 */
-//Route.group(() => {
-	//				Route.get(   '',       'v1/TemplateController.index') 
-//}).prefix('/api/v1/template/').middleware('auth')
+Route.group(() => {
+					Route.get(   '',       'v1/TemplateController.index') 
+}).prefix('/api/v1/template/').middleware('auth')
 
 /* 
 	Template CRUD 
 */
-Route.group(() => {
-					Route.get(   '',       'v1/TemplateController.index') 
-}).prefix('/api/v1/style/').middleware('auth')
+//Route.group(() => {
+//					Route.get(   '',       'v1/TemplateController.index') 
+//}).prefix('/api/v1/style/').middleware('auth')
 
 /* 
 	Models CRUD
 */
-//Route.group(() => {
-//					Route.get(   '',    'v1/ModelController.index') 
-//}).prefix('/api/v1/models/').middleware('auth')
 Route.group(() => {
 					Route.get(   '',    'v1/ModelController.index') 
-}).prefix('/api/v1/template/').middleware('auth')
+}).prefix('/api/v1/models/').middleware('auth')
+// Route.group(() => {
+// 					Route.get(   '',    'v1/ModelController.index') 
+// }).prefix('/api/v1/template/').middleware('auth')
 
 
 /* 
