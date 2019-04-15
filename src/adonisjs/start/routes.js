@@ -29,8 +29,9 @@ Route.group(() => {
 					Route.put(   ':id',            'v1/UserController.update')
 					Route.delete(':id',            'v1/UserController.destroy')
 					Route.get(   ':id/cases',      'v1/UserController.listCases') 
+					
 					Route.get(   ':id/executions', 'v1/UserController.listExecutions') 
-					Route.post(  ':id/executions', 'v1/UserController.newExecution') // input: case_id -> returns execution:{uuid}
+					Route.post(  'executions', 'v1/UserController.newExecution') // input: case_id -> returns execution:{uuid}
 }).prefix('/api/v1/user').middleware('auth')
 
 /* 

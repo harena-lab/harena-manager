@@ -87,6 +87,10 @@ class CaseController {
       let caseText = request.input('caseText')
       let caseName = request.input('caseName')
 
+      fs.access(DIR_CASES, fs.constants.F_OK, (err) => {
+        if (err) fs.mkdirSync(DIR_CASES, { recursive: true })
+      })
+
       let caseDir = DIR_CASES + caseName + "/"
       let caseFile = caseDir + FILE_CASE;
       let versionsDir = caseDir + "version/"

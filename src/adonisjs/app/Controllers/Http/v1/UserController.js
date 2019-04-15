@@ -4,8 +4,10 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const User = use('App/Models/v1/User');
 const Database = use('Database')
+
+const User = use('App/Models/v1/User');
+const Case = use('App/Models/v1/Case');
 
 class UserController {
 
@@ -129,6 +131,38 @@ class UserController {
       return response.status(e.status).json({ message: e.message })
     }
   }
+
+  async newExecution({ request, auth, response }) {
+    try {
+      const {user_id, case_id} = request.post()
+      let user = await User.find(user_id)
+      let case1 = await Case.find(case_id)
+
+      await user.executions().attach(case1.id)
+      user.executions = user.executions().fetch()
+      
+      response.json(user)
+    } catch (e) {
+      console.log(e)
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({ message: e.message })
+      }
+
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+  async listExecutions({ params, response, view }) {
+    try{
+      let user = await User.find(params.id)
+      
+      return response.json(await user.executions().fetch())
+    } catch(e){
+      console.log(e)
+    }
+  }
+
+  
 }
 
 module.exports = UserController

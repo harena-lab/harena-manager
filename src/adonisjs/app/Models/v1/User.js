@@ -10,6 +10,12 @@ class User extends Model {
         return this.hasMany('App/Models/v1/Case')
     }
 
+    executions () {
+        return this
+                .belongsToMany('App/Models/v1/Case')
+                .pivotTable('executions')
+    }
+
     static boot() {
         super.boot()
 
