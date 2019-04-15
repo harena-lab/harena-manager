@@ -4,28 +4,34 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
-# herena-manager
+# harena-manager
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
 ## Table of Contents 
 
-   * [herena-manager](#herena-manager)
-      * [Table of Contents](#table-of-contents)
-      * [Getting Started](#getting-started)
-         * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-         * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
-         * [Running locally - Linux](#running-locally---linux)
-         * [Running locally - Windows](#running-locally---windows)
-      * [System Requirements](#system-requirements)
-         * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
-         * [For running locally](#for-running-locally)
-      * [Configuration](#configuration)
-         * [Virtualenvs: AdonisJS](#virtualenvs-adonisjs)
-         * [Virtualenvs: Database](#virtualenvs-database)
-      * [Contributing](#contributing)
-         * [Project organization](#project-organization)
-         * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+
+  * [Table of Contents](#table-of-contents)
+  * [Getting Started](#getting-started)
+     * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
+     * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
+     * [Running locally - Linux](#running-locally---linux)
+     * [Running locally - Windows](#running-locally---windows)
+  * [System Requirements](#system-requirements)
+     * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
+     * [For running locally](#for-running-locally)
+  * [Configuration](#configuration)
+     * [Virtualenvs: AdonisJS](#virtualenvs-adonisjs)
+     * [Virtualenvs: Database](#virtualenvs-database)
+  * [Contributing](#contributing)
+     * [Project organization](#project-organization)
+     * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+  * [Available REST Calls](#rest-calls) 
+     * [Authentication](#project-organization)
+     * [Cases](#project-organization)
+     * [Models](#project-organization)
+     * [Templates](#project-organization)
+   
 
 ## Getting Started
 
@@ -154,3 +160,94 @@ adonis  serve --dev --debug  # adjust flags according to you needs
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
 * **tags:**
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
+
+## REST Calls
+
+### Authentication
+* **Register User**
+   * **URL:**    `/api/v1/auth/register`
+   * **Method:**  `POST`
+   *  **Required POST Params:**
+      * `username=[string]`
+      * `email=[string]`
+      * `password=[string]`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** User json created <br />
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+* **Login**
+   * **URL:**    `/api/v1/auth/login`
+   * **Method:**  `POST`
+   *  **Required body Params:**
+      * `email=[string]`
+      * `password=[string]`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** JSON user that has a _token_, which must be sent in the Authorization field of the header of every rest call that requires authentication, in the following format: Bearer [token jwt string] <br />  
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+### Users
+* **User List**
+   * **URL:**    `/api/v1/user/`
+   * **Method:**  `GET`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** User json created <br />
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+* **Get User**
+   * **URL:**    `/api/v1/user/:id`
+   * **Method:**  `GET`
+   * **Success Response:**
+      * **Code:** 200 <br />
+        **Content:** User json created <br />
+   * **Error Responses:**
+     * **Code:** `409 Dup_entry` <br />
+       **Troubleshooting:** Username or email not available
+* **Update User**
+   * **URL:**    `/api/v1/user1/:id`
+   * **Method:**  `PUT`
+   *  **Optional body Params:**
+      * `username=[string]`
+      * `email=[string]`
+      * `password=[string]`
+   * **Success Response:**
+   * **Error Responses:**
+* **Delete User**
+   * **URL:**    `/api/v1/user/:id`
+   * **Method:**  `DELETE`
+   * **Success Response:**
+   * **Error Responses:**
+* **Get cases created by a user**
+   * **URL:**    `/api/v1/user/:id/cases`
+   * **Method:**  `GET`
+   * **Success Response:**
+      * **Content:** List of cases{title, description, created_at} <br />
+   * **Error Responses:**
+
+### Cases
+* **New Case**
+   * **URL:**    `/api/v1/cases/new`
+   * **Method:**  `POST`
+   * **Success Response:**
+   * **Error Responses:**
+* **Save Case**
+   * **URL:**    `/api/v1/cases/`
+   * **Method:**  `POST`
+   *  **Required body Params:**
+      * `caseName=[string]`
+      * `caseText=[string]`
+   * **Success Response:**
+   * **Error Responses:**
+* **New Case**
+   * **URL:**    `/api/v1/cases/new`
+   * **Method:**  `POST`
+   * **Success Response:**
+   * **Error Responses:**
+   
+### Models 
+### Templates 
