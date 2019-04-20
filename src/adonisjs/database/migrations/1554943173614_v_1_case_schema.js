@@ -8,8 +8,6 @@ class CaseSchema extends Schema {
     this.create('cases', (table) => {
       table.increments()
       table.string('caseName').unique()
-      table.json('caseText')
-      table.string('url')
       table.integer('user_id').unsigned().references('id').inTable('users');
       table.timestamps()
     })

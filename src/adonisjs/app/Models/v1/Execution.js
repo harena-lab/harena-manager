@@ -6,8 +6,8 @@ const Model = use('Model')
 class Execution extends Model {
     static boot () {
         super.boot()
-        this.addHook('beforeCreate', (execution) => {
-            execution.is_current_owner = true
+        this.addHook('beforeCreate', (executions) => {
+            executions.is_current_owner = true
         })
     }
 }

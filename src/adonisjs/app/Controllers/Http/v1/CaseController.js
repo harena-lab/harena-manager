@@ -5,9 +5,12 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Case = use('App/Models/v1/Case');
+const CaseVersion = use('App/Models/v1/CaseVersion')
 const Drive = use('Drive');
 
 const uuidv1 = require('uuid/v1');
+const uuidv4 = require('uuid/v4');
+
 const fs = require('fs');
 const fse = require('fs-extra')
 
@@ -29,19 +32,10 @@ const DIR_INFRA = "../infra/"
  * Resourceful controller for interacting with cases
  */
 class CaseController {
-  /**
-   * Show a list of all cases.
-   * GET cases
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+  /** Show a list of all cases */
   async index({ response }) {
     try {
-      console.log('index')
-      let cases = await Case.query().with('user').fetch()
+      let cases = await Case.query().with('versions').fetch()
       return response.json(cases)
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
@@ -66,59 +60,38 @@ class CaseController {
     }
   }
 
-  async loadCase({ request, response }) {
+  async loadCase({ params, response }) {
     try {
-      let c = await Case.findBy('caseName', request.input('caseName'))
-      return response.json({ 'caseMd': c.caseText })
+      let c = await Case.find( params.id )
+      console.log(c)
+      let versions = await c.versions().fetch()
+      console.log(versions.first())
+      return response.json({ 'caseMd': versions.first().caseText })
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
   }
-  /**
-   * Create/save a new case.
-   * POST cases
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+
+  /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
     try {
       let caseText = request.input('caseText')
       let caseName = request.input('caseName')
 
-      fs.access(DIR_CASES, fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(DIR_CASES, { recursive: true })
-      })
-
-      let caseDir = DIR_CASES + caseName + "/"
-      let caseFile = caseDir + FILE_CASE;
-      let versionsDir = caseDir + "version/"
-
-      // copy a version of the previous file
-      let versionFile = "new file"
-
-      fs.access(caseDir, fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(caseDir, { recursive: true })
-        
-        fs.writeFileSync(caseFile, caseText)
-
-        let currentTime = dateFormat(new Date().getTime(), "_yyyy-mm-dd-h-MM-ss_");
-        versionFile = FILE_CASE_NAME + currentTime + uuidv1() + FILE_CASE_EXTENSION
-        fs.mkdirSync(versionsDir, { recursive: true })
-
-        fs.copyFileSync(caseFile, versionsDir + versionFile);
-      });
-
       let c = new Case()
       c.caseName = caseName
-      c.caseText = JSON.stringify(caseText)
       c.user_id = auth.user.id
-      c.url = caseDir
+      
+      let cv = new CaseVersion()
+      cv.primaryKeyValue = await uuidv4()
+      cv.caseText = JSON.stringify(caseText)
+      
+      await c.versions().save(cv)
+      let versions = await c.versions().fetch()
 
-      await c.save()
-      return response.json({ "versionFile": versionFile })
+      return response.json({ "versionFile": versions.first().id })
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }

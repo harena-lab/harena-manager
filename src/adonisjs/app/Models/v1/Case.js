@@ -8,6 +8,10 @@ class Case extends Model {
         return this.belongsTo('App/Models/v1/User');
     }
 
+    versions(){
+        return this.hasMany('App/Models/v1/CaseVersion')
+    }
+
     executions(){
         return this.belongsToMany('App/Models/v1/User').pivotTable('executions')
     }

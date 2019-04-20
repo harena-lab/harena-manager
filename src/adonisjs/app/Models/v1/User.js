@@ -14,6 +14,7 @@ class User extends Model {
         return this
                 .belongsToMany('App/Models/v1/Case')
                 .pivotTable('executions')
+                .withTimestamps()
     }
 
     static boot() {
