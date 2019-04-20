@@ -12,8 +12,8 @@ class Case extends Model {
         return this.hasMany('App/Models/v1/CaseVersion')
     }
 
-    executions(){
-        return this.belongsToMany('App/Models/v1/User').pivotTable('executions')
+    javascripts(){
+        return this.hasMany('App/Models/v1/JavaScript')
     }
 } 
 

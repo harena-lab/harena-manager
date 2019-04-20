@@ -4,10 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const Database = use('Database')
-
 const User = use('App/Models/v1/User');
-const Case = use('App/Models/v1/Case');
+const CaseVersion = use('App/Models/v1/CaseVersion');
 
 class UserController {
   /**
@@ -111,9 +109,6 @@ class UserController {
     try{
       let user = await User.find(params.id)
       let cases = await user.cases().fetch()
-      // let result = await Database.select('title', 'description', 'cases.created_at').from('users').leftJoin('cases', 'users.id', 'cases.user_id')
-      
-      console.log(cases)
       return response.json(cases)
     } catch(e){
       console.log(e)
@@ -122,11 +117,11 @@ class UserController {
 
   async newExecution({ request, response }) {
     try {
-      const {user_id, case_id} = request.post()
+      const {user_id, case_version_id} = request.post()
       let user = await User.find(user_id)
-      let case1 = await Case.find(case_id)
+      let cv = await CaseVersion.find(case_version_id)
 
-      await user.executions().attach(case1.id)
+      await user.executions().attach(cv.id)
       user.executions = await user.executions().fetch()
       console.log(user.executions())
       return response.json(user)

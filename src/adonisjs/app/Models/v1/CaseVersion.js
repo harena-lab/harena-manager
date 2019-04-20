@@ -4,12 +4,12 @@
 const Model = use('Model')
 
 class CaseVersion extends Model {
-    static get primaryKey () {
-        return 'id'
-    }
-
     case() {
         return this.belongsTo('App/Models/v1/Case');
+    }
+
+    executions(){
+        return this.belongsToMany('App/Models/v1/User').pivotTable('executions').withTimestamps()
     }
 }
 

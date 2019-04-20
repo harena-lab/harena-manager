@@ -23,15 +23,15 @@ Route.get('/', () => { return 'Hello from the Harena\'s casemanager'} )
 /* User CRUD */
 Route.post('/api/v1/user/register', 'v1/UserController.store')
 Route.group(() => { 
-					Route.get(   '',			   'v1/UserController.index') 
-					Route.get(   ':id',			   'v1/UserController.show') 
-					Route.put(   ':id',            'v1/UserController.update')
-					Route.delete(':id',            'v1/UserController.destroy')
+					Route.get(   '',			   	'v1/UserController.index') 
+					Route.get(   ':id',			   	'v1/UserController.show') 
+					Route.put(   ':id',            	'v1/UserController.update')
+					Route.delete(':id',            	'v1/UserController.destroy')
 
-					Route.get(   ':id/case',      'v1/UserController.listCases')
+					Route.get(   ':id/case',      	'v1/UserController.listCases')
 
-					Route.get(   ':id/execution', 'v1/UserController.listExecutions') 
-					Route.post(  'execution', 'v1/UserController.newExecution') // input: case_id -> returns execution:{uuid}
+					Route.get(   ':id/execution', 	'v1/UserController.listExecutions') 
+					Route.post(  'execution', 		'v1/UserController.newExecution') // input: case_id -> returns execution:{uuid}
 }).prefix('/api/v1/user').middleware('auth')
 
 /* 
@@ -47,14 +47,12 @@ Route.group(() => {
 			Route.delete(':id',            		'v1/CaseController.destroy')
 
 			Route.post(  'new',            		'v1/CaseController.newCase')
-			Route.post(  'rename-case',    		'v1/CaseController.renameCase')
 
 			Route.post(  ':id/executions', 		'v1/UserController.newExecution')   // input: user_id -> returns execution:{uuid}
 			Route.get(   ':id/executions', 		'v1/UserController.listExecutions') // input: user_id -> returns execution:{uuid}
 
-			Route.post(  'rename-case',    		'v1/CaseController.prepare-case-html')
-			Route.post(  'prepare-case-html',	'v1/CaseController.prepareCaseHTML')
-}).prefix('/api/v1/case/').middleware('auth')
+			Route.post(  ':id/prepare-case-html',	'v1/CaseController.prepareCaseHTML')
+}).prefix('/api/v1/case').middleware('auth')
 
 /* 
 	Execution CRUD

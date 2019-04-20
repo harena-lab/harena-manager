@@ -6,9 +6,8 @@
 
 const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
-const Drive = use('Drive');
+const JavaScript = use('App/Models/v1/JavaScript')
 
-const uuidv1 = require('uuid/v1');
 const uuidv4 = require('uuid/v4');
 
 const fs = require('fs');
@@ -63,7 +62,6 @@ class CaseController {
   async loadCase({ params, response }) {
     try {
       let c = await Case.find( params.id )
-      console.log(c)
       let versions = await c.versions().fetch()
       console.log(versions.first())
       return response.json({ 'caseMd': versions.first().caseText })
@@ -83,34 +81,25 @@ class CaseController {
       c.user_id = auth.user.id
       
       let cv = new CaseVersion()
-      cv.primaryKeyValue = await uuidv4()
+      cv.uuid = await uuidv4()
       cv.caseText = JSON.stringify(caseText)
       
       await c.versions().save(cv)
       let versions = await c.versions().fetch()
 
-      return response.json({ "versionFile": versions.first().id })
+      return response.json({ "versionFile": versions.first().uuid })
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
 
-  /**
-   * Update case details.
-   * PUT or PATCH cases/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+  /** * Update case details. PUT or PATCH case/:id */
   async update({ params, request, response }) {
     try {
       let c = await Case.find(params.id)
 
       c.caseName = request.input('caseName')
-      console.log(c.caseName)
-      c.caseText = request.input('caseText')
 
       await c.save()
       return response.json(c)
@@ -146,54 +135,48 @@ class CaseController {
     }
   }
 
-  async renameCase({ params, request, response }) {
-    try {
-      let oldName = request.input('oldName')
-      let newName = request.input('newName')
-
-      let c = await Case.findBy('caseName', oldName)
-
-      let oldDir = c.url
-      let newDir = DIR_CASES + newName
-
-      c.caseName = newName
-
-      fs.accessSync(oldDir, fs.constants.R_OK | fs.constants.W_OK);
-      fs.renameSync(oldDir, newDir)
-      
-      await c.save()
-      return response.json({ status: 'ok' })
-    } catch (e) {
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ status: 'duplicate' })
-      }
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
   async prepareCaseHTML({ params, request, response }) {
     try {
-      let templateFamily = request.input('templateFamily')
-      let caseName = request.input('caseName')
+      // let templateFamily = request.input('templateFamily')
+      // let caseName = request.input('caseName')
 
-      fs.accessSync(DIR_CASES + "html", fs.constants.R_OK | fs.constants.W_OK);
-      fs.renameSync(oldDir, newDir)
+      // fs.accessSync(DIR_CASES + "html", fs.constants.R_OK | fs.constants.W_OK);
+      // fs.renameSync(oldDir, newDir)
       
-      fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
-      });
+      // fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
+      //   if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
+      // });
      
+      let fd =  fs.readFileSync(DIR_PLAYER + FILE_PLAYER, 'utf8');
+      let c = await Case.find(params.id)
+      c.html = fd
       
-      fse.copySync(DIR_PLAYER + FILE_PLAYER, caseDir + "html")
-      fse.copySync(DIR_PLAYER + "js", caseDir + "html")
+      let files = fs.readdirSync(DIR_PLAYER + 'js')
       
-      let busFiles = fs.readdirSync(DIR_INFRA+'js');
-      busFiles.array.forEach(element => {
-        fse.copySync(element, caseDir + "js")
+      files.forEach(file => {
+        let js = new JavaScript()
+      
+        js.name = file
+        js.content = fs.readFileSync(DIR_PLAYER + 'js/' + file, 'utf8');
+        
+        c.javascripts().save(js)
       });
+
+      // // await c.save()
+
+
+
+      // fse.copySync(DIR_PLAYER + FILE_PLAYER, caseDir + "html")
+      // fse.copySync(DIR_PLAYER + "js", caseDir + "html")
+      
+      // let busFiles = fs.readdirSync(DIR_INFRA+'js');
+      // busFiles.array.forEach(element => {
+      //   fse.copySync(element, caseDir + "js")
+      // });
 
       return response.json({ status: 'ok' })
     } catch (e) {
+      console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
         return response.status(409).json({ status: 'duplicate' })
       }
