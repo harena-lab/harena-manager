@@ -8,10 +8,9 @@ const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
 const JavaScript = use('App/Models/v1/JavaScript')
 
-const uuidv4 = require('uuid/v4');
-
 const fs = require('fs');
 const fse = require('fs-extra')
+const path = require('path');
 
 var dateFormat = require('dateformat');
 
@@ -26,7 +25,7 @@ let TEMPORARY_CASE = "_temporary"
 
 const DIR_PLAYER = "../../../harena-space/player/"
 const FILE_PLAYER = "index.html"
-const DIR_INFRA = "../infra/"
+const DIR_INFRA = "../../infra/"
 /**
  * Resourceful controller for interacting with cases
  */
@@ -64,7 +63,7 @@ class CaseController {
       let c = await Case.find( params.id )
       let versions = await c.versions().fetch()
       console.log(versions.first())
-      return response.json({ 'caseMd': versions.first().caseText })
+      return response.json({ 'caseMd': versions.first().md })
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
@@ -77,12 +76,11 @@ class CaseController {
       let caseName = request.input('caseName')
 
       let c = new Case()
-      c.caseName = caseName
+      c.name = caseName
       c.user_id = auth.user.id
       
       let cv = new CaseVersion()
-      cv.uuid = await uuidv4()
-      cv.caseText = JSON.stringify(caseText)
+      cv.md = caseText
       
       await c.versions().save(cv)
       let versions = await c.versions().fetch()
@@ -99,7 +97,7 @@ class CaseController {
     try {
       let c = await Case.find(params.id)
 
-      c.caseName = request.input('caseName')
+      c.name = request.input('caseName')
 
       await c.save()
       return response.json(c)
@@ -140,9 +138,6 @@ class CaseController {
       // let templateFamily = request.input('templateFamily')
       // let caseName = request.input('caseName')
 
-      // fs.accessSync(DIR_CASES + "html", fs.constants.R_OK | fs.constants.W_OK);
-      // fs.renameSync(oldDir, newDir)
-      
       // fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
       //   if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
       // });
@@ -158,6 +153,21 @@ class CaseController {
       
         js.name = file
         js.content = fs.readFileSync(DIR_PLAYER + 'js/' + file, 'utf8');
+        
+        c.javascripts().save(js)
+      });
+
+      files = fs.readdirSync(DIR_INFRA)
+
+      var targetFiles = files.filter(function(file) {
+        return path.extname(file).toLowerCase() === ".js";
+      });
+
+      targetFiles.forEach(file => {
+        let js = new JavaScript()
+      
+        js.name = file
+        js.content = fs.readFileSync(DIR_INFRA + file, 'utf8');
         
         c.javascripts().save(js)
       });

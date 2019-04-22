@@ -8,7 +8,7 @@ class CaseVersionSchema extends Schema {
     this.create('case_versions', (table) => {
       table.increments()
       table.uuid('uuid')
-      table.json('caseText')
+      table.text('md')
       table.integer('case_id').unsigned().references('id').inTable('cases')
       table.timestamps()
     })

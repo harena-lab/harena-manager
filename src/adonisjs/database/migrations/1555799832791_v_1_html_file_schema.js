@@ -1,0 +1,24 @@
+'use strict'
+
+/** @type {import('@adonisjs/lucid/src/Schema')} */
+const Schema = use('Schema')
+
+class HtmlFileSchema extends Schema {
+  up () {
+    this.create('html_files', (table) => {
+      table.increments()
+
+      table.string('name')
+      table.text('content')
+      table.integer('style_id').unsigned().references('id').inTable('styles')
+
+      table.timestamps()
+    })
+  }
+
+  down () {
+    this.drop('html_files')
+  }
+}
+
+module.exports = HtmlFileSchema
