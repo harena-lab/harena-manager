@@ -12,6 +12,8 @@ class ImageSchema extends Schema {
       table.string('url')
 
       table.integer('case_id').unsigned().references('id').inTable('cases');
+      table.integer('style_id').unsigned().references('id').inTable('styles');
+      table.integer('dcc_id').unsigned().references('id').inTable('dccs');
 
       table.timestamps()
     })

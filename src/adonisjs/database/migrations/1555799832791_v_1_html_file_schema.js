@@ -11,6 +11,7 @@ class HtmlFileSchema extends Schema {
       table.string('name')
       table.text('content')
       table.integer('style_id').unsigned().references('id').inTable('styles')
+      table.integer('dcc_id').unsigned().references('id').inTable('dccs');
 
       table.timestamps()
     })

@@ -23,6 +23,10 @@ class Case extends Model {
     images(){
         return this.hasMany('App/Models/v1/Image')
     }
+
+    dccs(){
+        return this.hasMany('App/Models/v1/Dcc')
+    }
 } 
 
 module.exports = Case

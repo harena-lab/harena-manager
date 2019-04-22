@@ -7,6 +7,14 @@ class CssFile extends Model {
     case(){
         return this.belongsTo('App/Models/v1/Case');
     }
+
+    style(){
+        return this.belongsTo('App/Models/v1/Style');
+    }
+
+    dcc(){
+        return this.belongsTo('App/Models/v1/Dcc');
+    }
 }
 
 module.exports = CssFile

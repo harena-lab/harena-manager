@@ -7,6 +7,10 @@ class HtmlFile extends Model {
     style() {
         return this.belongsTo('App/Models/v1/Style');
     }
+
+    dcc(){
+        return this.belongsTo('App/Models/v1/Dcc');
+    }
 }
 
 module.exports = HtmlFile
