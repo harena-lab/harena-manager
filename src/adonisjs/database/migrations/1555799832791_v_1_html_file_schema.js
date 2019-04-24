@@ -10,6 +10,8 @@ class HtmlFileSchema extends Schema {
 
       table.string('name')
       table.text('content')
+
+      table.integer('case_id').unsigned().references('id').inTable('cases')
       table.integer('style_id').unsigned().references('id').inTable('styles')
       table.integer('dcc_id').unsigned().references('id').inTable('dccs');
 

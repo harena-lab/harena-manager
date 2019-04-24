@@ -12,6 +12,10 @@ class Case extends Model {
         return this.hasMany('App/Models/v1/CaseVersion')
     }
 
+    htmlFiles(){
+        return this.hasMany('App/Models/v1/HtmlFile')
+    }
+
     javascripts(){
         return this.hasMany('App/Models/v1/JavaScript')
     }

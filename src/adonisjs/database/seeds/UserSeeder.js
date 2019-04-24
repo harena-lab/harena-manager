@@ -33,31 +33,36 @@ class UserSeeder {
     const c = await Factory.model('App/Models/v1/Case').make({ name: 'Case1' })
 
     const cv = await Factory.model('App/Models/v1/CaseVersion').make({ md: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8') })
+    
+    // copy the player and its scripts to the case
+      let indexFile = fs.readFileSync(PLAYER_DIR + 'index.html', "utf8")
+      let htmlFile = await Factory.model('App/Models/v1/HtmlFile').make({ name: 'index.html', content: indexFile })
+    
+      let jsPlayerFiles = fs.readdirSync(PLAYER_DIR + "js")
+    
+      for (let j = 0; j < jsPlayerFiles.length; j++) {
+        let js = await Factory.model('App/Models/v1/JavaScript').make({ name: jsPlayerFiles[j], content: fs.readFileSync(PLAYER_DIR + "js/" + jsPlayerFiles[j], 'utf8') })
+        await c.javascripts().save(js)
+      }
+    
+      await c.htmlFiles().save(htmlFile)
     await c.versions().save(cv)
     await user.cases().save(c)
+    
+    
+    // copy bus scripts to the case 
+      let jsInfraFiles = fs.readdirSync(INFRA_DIR)
+    
+      jsInfraFiles = jsInfraFiles.filter(function(file) {
+        return path.extname(file).toLowerCase() === ".js";
+      });
+    
+      for (let j = 0; j < jsInfraFiles.length; j++) {
+        let js = await Factory.model('App/Models/v1/JavaScript').make({ name: jsInfraFiles[j], content: fs.readFileSync(INFRA_DIR + jsInfraFiles[j], 'utf8') })
+        await c.javascripts().save(js)
+      }
 
     await Factory.model('App/Models/v1/User').createMany(5)
-
-
-    
-    let indexFile = fs.readFileSync(PLAYER_DIR + 'index.html', "utf8")
-    await Factory.model('App/Models/v1/HtmlFile').create({ name: 'index.html', content: indexFile })
-
-
-
-    let infraFiles = fs.readdirSync(INFRA_DIR)
-
-    var jsFiles = infraFiles.filter(function(file) {
-      return path.extname(file).toLowerCase() === ".js";
-    });
-
-    let jss = []
-
-    jsFiles.forEach(file => {
-      jss.push({name: file, content: fs.readFileSync(INFRA_DIR + file, 'utf8') })
-    });
-
-    await Factory.model('App/Models/v1/JavaScript').createMany(jss.length, jss)
   }
 }
 

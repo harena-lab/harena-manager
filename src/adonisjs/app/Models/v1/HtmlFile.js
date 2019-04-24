@@ -4,6 +4,10 @@
 const Model = use('Model')
 
 class HtmlFile extends Model {
+    case() {
+        return this.belongsTo('App/Models/v1/Case');
+    }
+    
     style() {
         return this.belongsTo('App/Models/v1/Style');
     }

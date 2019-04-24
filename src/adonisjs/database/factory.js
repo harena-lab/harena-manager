@@ -50,8 +50,8 @@ Factory.blueprint('App/Models/v1/HtmlFile', async (faker, i, data) => {
 
 Factory.blueprint('App/Models/v1/JavaScript', async (faker, i, data) => {
   return {
-    name: data[i].name,
-    content: data[i].content,
+    name: data.name,
+    content: data.content,
   }
 })
 
@@ -66,5 +66,11 @@ Factory.blueprint('App/Models/v1/Image', async (faker, i, data) => {
   return {
     name: data.name,
     url: data.url
+  }
+})
+
+Factory.blueprint('App/Models/v1/Dcc', async (faker, i, data) => {
+  return {
+    name: data.name,
   }
 })
