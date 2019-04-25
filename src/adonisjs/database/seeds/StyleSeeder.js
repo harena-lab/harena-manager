@@ -18,9 +18,6 @@ const fs = require('fs');
 const RESOURCE_DIR = "resources/"
 const TEMPLATE_DIR = RESOURCE_DIR + "templates/"
 
-const CASES_DIR = RESOURCE_DIR + "cases/"
-
-
 class StyleSeeder {
   async run () {
     let templateNameDirs = fs.readdirSync(TEMPLATE_DIR)
@@ -36,14 +33,10 @@ class StyleSeeder {
 
         let cssFileNames = fs.readdirSync(cssDir)
 
-        let cssFiles = []
-
         for (let j = 0; j < cssFileNames.length; j++) {
           let css = await Factory.model('App/Models/v1/CssFile').make({ name: cssFileNames[j], content: fs.readFileSync(cssDir + cssFileNames[j], 'utf8') })
           await style.cssFiles().save(css)
         }
-
-
       } catch (err) {
         console.log(err)
         return;
@@ -80,14 +73,10 @@ class StyleSeeder {
           let image = await Factory.model('App/Models/v1/Image').make({ name: imageFileNames[j], url: TEMPLATE_FAMILY_IMAGES_DIR + imageFileNames[j]})
           await style.images().save(image)
         }
-
-
       } catch (err) {
         console.log(err)
         return;
       }
-
-
     }
   }
 }

@@ -22,6 +22,8 @@ const RESOURCE_DIR = "resources/"
 const IMAGES_DIR = RESOURCE_DIR + "images/"
 const DCCS_IMAGES_DIR = IMAGES_DIR + "dccs/"
 
+const Dcc = use('App/Models/v1/Dcc');
+
 class DccSeeder {
   async run () {
     let dccsName = fs.readdirSync(DCCS_DIR)
@@ -40,14 +42,14 @@ class DccSeeder {
         } catch(err){
           fs.mkdirSync(DCC_FAMILY_IMAGES_DIR)
         }
-
-        let dcc = await Factory.model('App/Models/v1/Dcc').make({ name: dccsName[i] })
         
+        let dcc = await Factory.model('App/Models/v1/Dcc').create({ name: dccsName[i] })
+        // dcc await DCC.find(dcc.id)
         let DCC_BY_NAME_DIR = DCCS_DIR + dccsName[i] + "/"
         let files = fs.readdirSync(DCC_BY_NAME_DIR)
         
         for (let j = 0; j < files.length; j++) {
-          this.explore(DCC_BY_NAME_DIR+files[j])
+          await this.explore(DCC_BY_NAME_DIR+files[j], dcc)
         }
       }
     }
@@ -55,16 +57,17 @@ class DccSeeder {
 
   async explore(DIR, dcc){
     if (fs.lstatSync(DIR).isDirectory() ){
-      console.log('diretorio '+DIR)
+
       let files = fs.readdirSync(DIR)
-
+      
       for (let j = 0; j < files.length; j++) {
-        await this.explore(DIR+ '/' + files[j])
+        await this.explore(DIR+ '/' + files[j], dcc)
       }
+      return
     }
-
+    
     let file =  DIR.split(path.sep).pop()
-    console.log('file '+file)
+
     let xt = path.extname(DIR).toLowerCase()
     if (xt === ".html"){
       let html = await Factory.model('App/Models/v1/HtmlFile').make({ name: file, content: fs.readFileSync(DIR, 'utf8') })

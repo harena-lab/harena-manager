@@ -23,9 +23,9 @@ const FILE_CASE = FILE_CASE_NAME + FILE_CASE_EXTENSION;
 let BLANK_MODEL = "blank"
 let TEMPORARY_CASE = "_temporary"
 
-const DIR_PLAYER = "../../../harena-space/player/"
+const PLAYER_DIR = "../../player/"
 const FILE_PLAYER = "index.html"
-const DIR_INFRA = "../../infra/"
+const INFRA_DIR = "../../infra/"
 /**
  * Resourceful controller for interacting with cases
  */
@@ -135,55 +135,38 @@ class CaseController {
 
   async prepareCaseHTML({ params, request, response }) {
     try {
-      // let templateFamily = request.input('templateFamily')
-      // let caseName = request.input('caseName')
-
-      // fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
-      //   if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
-      // });
-     
-      let fd =  fs.readFileSync(DIR_PLAYER + FILE_PLAYER, 'utf8');
       let c = await Case.find(params.id)
-      c.html = fd
+
+      // copy the player and its scripts to the case
+      // let indexFile = fs.readFileSync(PLAYER_DIR + 'index.html', "utf8")
+      // let htmlFile = await Factory.model('App/Models/v1/HtmlFile').make({ name: 'index.html', content: indexFile })
+
+      let jsPlayerFiles = fs.readdirSync(PLAYER_DIR + "js")
+
+      let jss = []
       
-      let files = fs.readdirSync(DIR_PLAYER + 'js')
-      
-      files.forEach(file => {
-        let js = new JavaScript()
-      
-        js.name = file
-        js.content = fs.readFileSync(DIR_PLAYER + 'js/' + file, 'utf8');
-        
-        c.javascripts().save(js)
-      });
-
-      files = fs.readdirSync(DIR_INFRA)
-
-      var targetFiles = files.filter(function(file) {
-        return path.extname(file).toLowerCase() === ".js";
-      });
-
-      targetFiles.forEach(file => {
-        let js = new JavaScript()
-      
-        js.name = file
-        js.content = fs.readFileSync(DIR_INFRA + file, 'utf8');
-        
-        c.javascripts().save(js)
-      });
-
-      // // await c.save()
+      for (let j = 0; j < jsPlayerFiles.length; j++) {
+        let js = { name: jsPlayerFiles[j], content: fs.readFileSync(PLAYER_DIR + "js/" + jsPlayerFiles[j], 'utf8') }
+        jss.push(js)
+        // await c.javascripts().make(jsd)
+      } 
+      Object.assign(c, { player: jss })
+      return c
 
 
+      // await c.htmlFiles().save(htmlFile)
 
-      // fse.copySync(DIR_PLAYER + FILE_PLAYER, caseDir + "html")
-      // fse.copySync(DIR_PLAYER + "js", caseDir + "html")
-      
-      // let busFiles = fs.readdirSync(DIR_INFRA+'js');
-      // busFiles.array.forEach(element => {
-      //   fse.copySync(element, caseDir + "js")
+      // copy bus scripts to the case 
+      // let jsInfraFiles = fs.readdirSync(INFRA_DIR)
+    
+      // jsInfraFiles = jsInfraFiles.filter(function(file) {
+      //   return path.extname(file).toLowerCase() === ".js";
       // });
 
+      // for (let j = 0; j < jsInfraFiles.length; j++) {
+      //   let js = await Factory.model('App/Models/v1/JavaScript').make({ name: jsInfraFiles[j], content: fs.readFileSync(INFRA_DIR + jsInfraFiles[j], 'utf8') })
+      //   // await c.javascripts().save(js)
+      // }
       return response.json({ status: 'ok' })
     } catch (e) {
       console.log(e)
@@ -193,6 +176,7 @@ class CaseController {
       return response.status(e.status).json({ message: e.message })
     }
   }
+
   
 }
 
