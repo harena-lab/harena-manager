@@ -18,7 +18,17 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => { return 'Hello from the Harena\'s casemanager'} )
+// Route.get('/', () => { return 'Hello from the Harena\'s casemanager'} )
+
+const knot = { knot: ' asiudfhiuaqhsdf asiudf nasiudfa sdf' }
+
+Route.get('/classic', ({ view }) => {
+							  return view.render('themes/classic/dt', knot)
+})
+
+Route.get('/jacinto', ({ view }) => {
+							  return view.render('themes/jacinto/dt', knot)
+})
 
 /* 
 	User CRUD
