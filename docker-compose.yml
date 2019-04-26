@@ -12,7 +12,7 @@ services:
       - PORT=3333
       - NODE_ENV=production
       - APP_NAME=harena-manager
-      - APP_URL=http://${HOST}:${PORT}
+      - APP_URL=http://0.0.0.0:3333
       - CACHE_VIEWS=false
       - APP_KEY=Xw8Ctuhsasew77qDx4GSnUlyTY3a6x
       - DB_CONNECTION=mysql
