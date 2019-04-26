@@ -32,10 +32,10 @@ services:
 #    ports:
 #      - "3306:3306"
     volumes:
-      - database:/var/lib/mysql
+      - harena-manager-database:/var/lib/mysql
     environment:                                # will be  replaced to .env vars, as in ${DB_PASSWORD}
-      - MYSQL_DATABASE=jacinto-casemanager
-      - MYSQL_USER=jacinto-casemanager
+      - MYSQL_DATABASE=harena-manager
+      - MYSQL_USER=jacinto
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_PASSWORD=jacinto
       - MYSQL_ROOT_PASSWORD=root
