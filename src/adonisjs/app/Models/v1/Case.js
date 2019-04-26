@@ -8,8 +8,28 @@ class Case extends Model {
         return this.belongsTo('App/Models/v1/User');
     }
 
-    executions(){
-        return this.belongsToMany('App/Models/v1/User').pivotTable('executions')
+    versions(){
+        return this.hasMany('App/Models/v1/CaseVersion')
+    }
+
+    htmlFiles(){
+        return this.hasMany('App/Models/v1/HtmlFile')
+    }
+
+    javascripts(){
+        return this.hasMany('App/Models/v1/JavaScript')
+    }
+
+    cssFiles(){
+        return this.hasMany('App/Models/v1/CSSFile')
+    }
+
+    images(){
+        return this.hasMany('App/Models/v1/Image')
+    }
+
+    dccs(){
+        return this.hasMany('App/Models/v1/Dcc')
     }
 } 
 

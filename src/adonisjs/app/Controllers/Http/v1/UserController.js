@@ -4,33 +4,10 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const Database = use('Database')
-
 const User = use('App/Models/v1/User');
-const Case = use('App/Models/v1/Case');
+const CaseVersion = use('App/Models/v1/CaseVersion');
 
 class UserController {
-
-  /**
-   * List the cases authored by the user
-   * GET users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async listCases({ request, response, view }) {
-    try{
-      let result = await Database.select('title', 'description', 'cases.created_at').from('users').leftJoin('cases', 'users.id', 'cases.user_id')
-      
-      console.log(result)
-      return response.json(result)
-    } catch(e){
-      console.log(e)
-    }
-  }
-
   /**
    * Show a list of all users.
    * GET users
@@ -114,34 +91,40 @@ class UserController {
     }
   }
 
-  /**
-   * Delete a user with id.
-   * DELETE users/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ params, request, response, auth }) {
+  /** Delete a user with id.
+   * DELETE user/:id */
+  async destroy({ params, response, auth }) {
     try{
       let user = await User.find(params.id)
-  
       await user.delete()
+
+      return response.json(user)
     }catch(e){
       return response.status(e.status).json({ message: e.message })
     }
   }
 
-  async newExecution({ request, auth, response }) {
-    try {
-      const {user_id, case_id} = request.post()
-      let user = await User.find(user_id)
-      let case1 = await Case.find(case_id)
+  /** List the cases authored by the user */
+  async listCases({ params, response }) {
+    try{
+      let user = await User.find(params.id)
+      let cases = await user.cases().fetch()
+      return response.json(cases)
+    } catch(e){
+      console.log(e)
+    }
+  }
 
-      await user.executions().attach(case1.id)
-      user.executions = user.executions().fetch()
-      
-      response.json(user)
+  async newExecution({ request, response }) {
+    try {
+      const {user_id, case_version_id} = request.post()
+      let user = await User.find(user_id)
+      let cv = await CaseVersion.find(case_version_id)
+
+      await user.executions().attach(cv.id)
+      user.executions = await user.executions().fetch()
+      console.log(user.executions())
+      return response.json(user)
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {

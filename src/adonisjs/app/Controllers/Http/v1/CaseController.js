@@ -5,11 +5,12 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Case = use('App/Models/v1/Case');
-const Drive = use('Drive');
+const CaseVersion = use('App/Models/v1/CaseVersion')
+const JavaScript = use('App/Models/v1/JavaScript')
 
-const uuidv1 = require('uuid/v1');
 const fs = require('fs');
 const fse = require('fs-extra')
+const path = require('path');
 
 var dateFormat = require('dateformat');
 
@@ -22,26 +23,17 @@ const FILE_CASE = FILE_CASE_NAME + FILE_CASE_EXTENSION;
 let BLANK_MODEL = "blank"
 let TEMPORARY_CASE = "_temporary"
 
-const DIR_PLAYER = "../../../harena-space/player/"
+const PLAYER_DIR = "../../player/"
 const FILE_PLAYER = "index.html"
-const DIR_INFRA = "../infra/"
+const INFRA_DIR = "../../infra/"
 /**
  * Resourceful controller for interacting with cases
  */
 class CaseController {
-  /**
-   * Show a list of all cases.
-   * GET cases
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+  /** Show a list of all cases */
   async index({ response }) {
     try {
-      console.log('index')
-      let cases = await Case.query().with('user').fetch()
+      let cases = await Case.query().with('versions').fetch()
       return response.json(cases)
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
@@ -66,78 +58,46 @@ class CaseController {
     }
   }
 
-  async loadCase({ request, response }) {
+  async loadCase({ params, response }) {
     try {
-      let c = await Case.findBy('caseName', request.input('caseName'))
-      return response.json({ 'caseMd': c.caseText })
+      let c = await Case.find( params.id )
+      let versions = await c.versions().fetch()
+      console.log(versions.first())
+      return response.json({ 'caseMd': versions.first().md })
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
   }
-  /**
-   * Create/save a new case.
-   * POST cases
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+
+  /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
     try {
       let caseText = request.input('caseText')
       let caseName = request.input('caseName')
 
-      fs.access(DIR_CASES, fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(DIR_CASES, { recursive: true })
-      })
-
-      let caseDir = DIR_CASES + caseName + "/"
-      let caseFile = caseDir + FILE_CASE;
-      let versionsDir = caseDir + "version/"
-
-      // copy a version of the previous file
-      let versionFile = "new file"
-
-      fs.access(caseDir, fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(caseDir, { recursive: true })
-        
-        fs.writeFileSync(caseFile, caseText)
-
-        let currentTime = dateFormat(new Date().getTime(), "_yyyy-mm-dd-h-MM-ss_");
-        versionFile = FILE_CASE_NAME + currentTime + uuidv1() + FILE_CASE_EXTENSION
-        fs.mkdirSync(versionsDir, { recursive: true })
-
-        fs.copyFileSync(caseFile, versionsDir + versionFile);
-      });
-
       let c = new Case()
-      c.caseName = caseName
-      c.caseText = JSON.stringify(caseText)
+      c.name = caseName
       c.user_id = auth.user.id
-      c.url = caseDir
+      
+      let cv = new CaseVersion()
+      cv.md = caseText
+      
+      await c.versions().save(cv)
+      let versions = await c.versions().fetch()
 
-      await c.save()
-      return response.json({ "versionFile": versionFile })
+      return response.json({ "versionFile": versions.first().uuid })
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
 
-  /**
-   * Update case details.
-   * PUT or PATCH cases/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+  /** * Update case details. PUT or PATCH case/:id */
   async update({ params, request, response }) {
     try {
       let c = await Case.find(params.id)
 
-      c.caseName = request.input('caseName')
-      console.log(c.caseName)
-      c.caseText = request.input('caseText')
+      c.name = request.input('caseName')
 
       await c.save()
       return response.json(c)
@@ -173,60 +133,50 @@ class CaseController {
     }
   }
 
-  async renameCase({ params, request, response }) {
-    try {
-      let oldName = request.input('oldName')
-      let newName = request.input('newName')
-
-      let c = await Case.findBy('caseName', oldName)
-
-      let oldDir = c.url
-      let newDir = DIR_CASES + newName
-
-      c.caseName = newName
-
-      fs.accessSync(oldDir, fs.constants.R_OK | fs.constants.W_OK);
-      fs.renameSync(oldDir, newDir)
-      
-      await c.save()
-      return response.json({ status: 'ok' })
-    } catch (e) {
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ status: 'duplicate' })
-      }
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
   async prepareCaseHTML({ params, request, response }) {
     try {
-      let templateFamily = request.input('templateFamily')
-      let caseName = request.input('caseName')
+      let c = await Case.find(params.id)
 
-      fs.accessSync(DIR_CASES + "html", fs.constants.R_OK | fs.constants.W_OK);
-      fs.renameSync(oldDir, newDir)
-      
-      fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
-      });
-     
-      
-      fse.copySync(DIR_PLAYER + FILE_PLAYER, caseDir + "html")
-      fse.copySync(DIR_PLAYER + "js", caseDir + "html")
-      
-      let busFiles = fs.readdirSync(DIR_INFRA+'js');
-      busFiles.array.forEach(element => {
-        fse.copySync(element, caseDir + "js")
-      });
+      // copy the player and its scripts to the case
+      // let indexFile = fs.readFileSync(PLAYER_DIR + 'index.html', "utf8")
+      // let htmlFile = await Factory.model('App/Models/v1/HtmlFile').make({ name: 'index.html', content: indexFile })
 
+      let jsPlayerFiles = fs.readdirSync(PLAYER_DIR + "js")
+
+      let jss = []
+      
+      for (let j = 0; j < jsPlayerFiles.length; j++) {
+        let js = { name: jsPlayerFiles[j], content: fs.readFileSync(PLAYER_DIR + "js/" + jsPlayerFiles[j], 'utf8') }
+        jss.push(js)
+        // await c.javascripts().make(jsd)
+      } 
+      Object.assign(c, { player: jss })
+      return c
+
+
+      // await c.htmlFiles().save(htmlFile)
+
+      // copy bus scripts to the case 
+      // let jsInfraFiles = fs.readdirSync(INFRA_DIR)
+    
+      // jsInfraFiles = jsInfraFiles.filter(function(file) {
+      //   return path.extname(file).toLowerCase() === ".js";
+      // });
+
+      // for (let j = 0; j < jsInfraFiles.length; j++) {
+      //   let js = await Factory.model('App/Models/v1/JavaScript').make({ name: jsInfraFiles[j], content: fs.readFileSync(INFRA_DIR + jsInfraFiles[j], 'utf8') })
+      //   // await c.javascripts().save(js)
+      // }
       return response.json({ status: 'ok' })
     } catch (e) {
+      console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
         return response.status(409).json({ status: 'duplicate' })
       }
       return response.status(e.status).json({ message: e.message })
     }
   }
+
   
 }
 
