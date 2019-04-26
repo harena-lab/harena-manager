@@ -25,7 +25,9 @@ services:
     depends_on:
       - harena-manager-database
     restart: always  
-
+    networks:
+      - harena-manager
+      - harena
 
   harena-manager-database:
     image: mysql:5.7
@@ -40,7 +42,9 @@ services:
       - MYSQL_PASSWORD=jacinto
       - MYSQL_ROOT_PASSWORD=root
     restart: always
-
+    networks:
+      - harena-manager
+      
 
   harena-manager-database-ui:
     image: phpmyadmin/phpmyadmin:latest
@@ -54,8 +58,18 @@ services:
       - harena-manager-database      
     depends_on:
       - harena-manager-database
+    networks:
+      - harena-manager
 
 
 volumes:
   harena-manager-database:
     driver: "local"
+
+
+networks:
+  harena-manager:
+    driver: bridge
+  harena:
+    external:
+      name: harena   
