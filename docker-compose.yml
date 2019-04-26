@@ -27,7 +27,6 @@ services:
     restart: always  
     networks:
       - harena-manager
-      - harena
 
   harena-manager-database:
     image: mysql:5.7
@@ -48,14 +47,12 @@ services:
 
   harena-manager-database-ui:
     image: phpmyadmin/phpmyadmin:latest
-    ports:
-      - 4001:80
+#    ports:
+#      - 4001:80
     environment:
       - PMA_ARBITRARY=0                         # connection to any server 
       - PMA_HOST=harena-manager-database
-      - PMA_PORT=3306
-    links:
-      - harena-manager-database      
+      - PMA_PORT=3306  
     depends_on:
       - harena-manager-database
     networks:
@@ -70,6 +67,3 @@ volumes:
 networks:
   harena-manager:
     driver: bridge
-  harena:
-    external:
-      name: harena   
