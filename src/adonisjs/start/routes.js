@@ -47,7 +47,7 @@ Route.group(() => {
 	Case CRUD
 */
 Route.group(() => {
-			Route.post( '',               		'v1/CaseController.index') 	
+			Route.post( 'list',               		'v1/CaseController.index') 	
 			Route.get(  ':id',            		'v1/CaseController.show')
 			Route.get(	':id/markdown',   		'v1/CaseController.loadCase')
  
