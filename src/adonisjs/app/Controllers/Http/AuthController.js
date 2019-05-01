@@ -12,6 +12,7 @@ class AuthController {
                 let token = await auth.generate(user)
                 
                 let authenticatedUser = new User()
+                authenticatedUser.id = user.id
                 authenticatedUser.email = user.email
                 authenticatedUser.username = user.username
 
