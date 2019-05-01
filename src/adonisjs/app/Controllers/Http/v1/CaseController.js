@@ -40,11 +40,12 @@ class CaseController {
         return response.json(cases)
       }
       if (filterBy == 'user'){
-        let user = await User.findBy('id', request.input('filter'))
+        let user = await User.find(request.input('filter'))
         let cases = await user.cases().fetch()
         return response.json(cases)
       }
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
