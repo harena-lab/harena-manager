@@ -5,7 +5,15 @@ const Hash = use('Hash')
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
+const Database = use('Database')
+
 class User extends Model {
+
+    
+    static async getAuthenticatedUser(email){
+        return await Database.table('users').select('username', 'email').where('email', email)
+    }
+
     cases() {
         return this.hasMany('App/Models/v1/Case')
     }
