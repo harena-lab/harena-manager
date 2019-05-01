@@ -4,6 +4,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
 const JavaScript = use('App/Models/v1/JavaScript')
@@ -31,10 +32,18 @@ const INFRA_DIR = "../../infra/"
  */
 class CaseController {
   /** Show a list of all cases */
-  async index({ response }) {
+  async index({ request, response }) {
     try {
-      let cases = await Case.query().with('versions').fetch()
-      return response.json(cases)
+      let filterBy = request.input('filterBy')
+      if (filterBy == null){
+        let cases = await Case.query().with('versions').fetch()
+        return response.json(cases)
+      }
+      if (filterBy == 'user'){
+        let user = await User.findBy('email', request.input('filter'))
+        let cases = await user.cases().fetch()
+        return response.json(cases)
+      }
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }

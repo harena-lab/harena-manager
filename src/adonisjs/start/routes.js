@@ -39,8 +39,6 @@ Route.group(() => {
 					Route.put(   ':id',            	'v1/UserController.update')
 					Route.delete(':id',            	'v1/UserController.destroy')
 
-					Route.get(   ':id/case',      	'v1/UserController.listCases')
-
 					Route.get(   ':id/execution', 	'v1/UserController.listExecutions') 
 					Route.post(  'execution', 		'v1/UserController.newExecution') // input: case_id -> returns execution:{uuid}
 }).prefix('/api/v1/user').middleware('auth')
@@ -49,9 +47,9 @@ Route.group(() => {
 	Case CRUD
 */
 Route.group(() => {
-			Route.get(   '',               		'v1/CaseController.index') 	
-			Route.get(   ':id',            		'v1/CaseController.show')
-			Route.get(  ':id/markdown',   		'v1/CaseController.loadCase')
+			Route.post( '',               		'v1/CaseController.index') 	
+			Route.get(  ':id',            		'v1/CaseController.show')
+			Route.get(	':id/markdown',   		'v1/CaseController.loadCase')
  
 			Route.post(  '',               		'v1/CaseController.store')
 			Route.put(   ':id',            		'v1/CaseController.update')
