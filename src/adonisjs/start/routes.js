@@ -48,7 +48,7 @@ Route.group(() => {
 */
 Route.group(() => {
 			Route.post( 'list',            		'v1/CaseController.index') 	
-			Route.get(	':id/markdown',   		'v1/CaseController.show')
+			Route.get(	':id',   		'v1/CaseController.show')
  
 			Route.post(  '',               		'v1/CaseController.store')
 			Route.put(   ':id',            		'v1/CaseController.update')

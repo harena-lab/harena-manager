@@ -31,7 +31,7 @@ Factory.blueprint('App/Models/v1/Case', (faker, i, data) => {
 
 Factory.blueprint('App/Models/v1/CaseVersion', async (faker, i, data) => {
   return {
-    md: data.md
+    source: data.source
   }
 })
 

@@ -65,20 +65,9 @@ class CaseController {
       let c = await Case.find( params.id )
       let versions = await c.versions().fetch()
 
-      c.markdown = versions.first().md
+      c.source = versions.first().source
 
       return response.json(c)
-    } catch (e) {
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
-  async loadCase({ params, response }) {
-    try {
-      let c = await Case.find( params.id )
-      let versions = await c.versions().fetch()
-      console.log(versions.first())
-      return response.json({ 'caseMd': versions.first().md })
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }

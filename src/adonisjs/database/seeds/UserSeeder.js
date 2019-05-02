@@ -29,7 +29,7 @@ class UserSeeder {
 
     const c = await Factory.model('App/Models/v1/Case').make({ name: 'Case1' })
 
-    const cv = await Factory.model('App/Models/v1/CaseVersion').make({ md: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8') })
+    const cv = await Factory.model('App/Models/v1/CaseVersion').make({ source: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8') })
     
     await c.versions().save(cv)
     await user.cases().save(c)
