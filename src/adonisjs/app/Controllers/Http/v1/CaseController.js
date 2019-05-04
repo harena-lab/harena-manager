@@ -127,13 +127,16 @@ class CaseController {
     }
   }
 
-  async newCase({ response }) {
+  async newCase({ response, auth }) {
     try {
-      let temporaryCase = DIR_CASES + TEMPORARY_CASE
-      fse.copySync(DIR_MODELS + BLANK_MODEL, temporaryCase)
-      return response.json({ caseName: TEMPORARY_CASE })
+      let c = new Case()
+      c.user_id = auth.user.id
+      
+      await c.save()
+      return response.json(c)
     } catch (e) {
       console.log(e)
+      return response.status(e.status).json({ message: e.message })
     }
   }
 
