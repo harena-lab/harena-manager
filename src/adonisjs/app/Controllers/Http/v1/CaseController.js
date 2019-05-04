@@ -76,20 +76,17 @@ class CaseController {
   /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
     try {
-      let caseText = request.input('caseText')
-      let caseName = request.input('caseName')
-
       let c = new Case()
-      c.name = caseName
+      c.name = request.input('name')
       c.user_id = auth.user.id
       
       let cv = new CaseVersion()
-      cv.md = caseText
+      cv.source = request.input('source')
       
       await c.versions().save(cv)
-      let versions = await c.versions().fetch()
+      await c.versions().fetch()
 
-      return response.json({ "versionFile": versions.first().uuid })
+      return response.json(c)
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.message })
@@ -101,11 +98,16 @@ class CaseController {
     try {
       let c = await Case.find(params.id)
 
-      c.name = request.input('caseName')
+      c.name = request.input('name')
+      
+      let cv = new CaseVersion()
+      cv.source = request.input('source')
 
-      await c.save()
+      await c.versions().save(cv)
+      await c.save() 
       return response.json(c)
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
