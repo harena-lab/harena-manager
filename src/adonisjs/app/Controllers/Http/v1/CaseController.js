@@ -7,29 +7,12 @@
 const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
-const JavaScript = use('App/Models/v1/JavaScript')
 
 const fs = require('fs');
-const fse = require('fs-extra')
-const path = require('path');
-
-var dateFormat = require('dateformat');
-
-const DIR_MODELS = "../../models/"
-const DIR_CASES = "../../cases/";
-const FILE_CASE_NAME = "case";
-const FILE_CASE_EXTENSION = ".md";
-const FILE_CASE = FILE_CASE_NAME + FILE_CASE_EXTENSION;
-
-let BLANK_MODEL = "blank"
-let TEMPORARY_CASE = "_temporary"
 
 const PLAYER_DIR = "../../player/"
-const FILE_PLAYER = "index.html"
-const INFRA_DIR = "../../infra/"
-/**
- * Resourceful controller for interacting with cases
- */
+
+/** * Resourceful controller for interacting with cases */
 class CaseController {
   /** Show a list of all cases */
   async index({ request, response }) {
@@ -75,22 +58,23 @@ class CaseController {
 
   /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
-    try {
-      let c = new Case()
-      c.name = request.input('name')
-      c.user_id = auth.user.id
+    console.log('chegou')
+    // try {
+    //   let c = new Case()
+    //   c.name = request.input('name')
+    //   c.user_id = auth.user.id
       
-      let cv = new CaseVersion()
-      cv.source = request.input('source')
+    //   let cv = new CaseVersion()
+    //   cv.source = request.input('source')
       
-      await c.versions().save(cv)
-      await c.versions().fetch()
+    //   await c.versions().save(cv)
+    //   await c.versions().fetch()
 
-      return response.json(c)
-    } catch (e) {
-      console.log(e)
-      return response.status(e.status).json({ message: e.message })
-    }
+    //   return response.json(c)
+    // } catch (e) {
+    //   console.log(e)
+    //   return response.status(e.status).json({ message: e.message })
+    // }
   }
 
   /** * Update case details. PUT or PATCH case/:id */
@@ -141,52 +125,6 @@ class CaseController {
       return response.status(e.status).json({ message: e.message })
     }
   }
-
-  async prepareCaseHTML({ params, request, response }) {
-    try {
-      let c = await Case.find(params.id)
-
-      // copy the player and its scripts to the case
-      // let indexFile = fs.readFileSync(PLAYER_DIR + 'index.html', "utf8")
-      // let htmlFile = await Factory.model('App/Models/v1/HtmlFile').make({ name: 'index.html', content: indexFile })
-
-      let jsPlayerFiles = fs.readdirSync(PLAYER_DIR + "js")
-
-      let jss = []
-      
-      for (let j = 0; j < jsPlayerFiles.length; j++) {
-        let js = { name: jsPlayerFiles[j], content: fs.readFileSync(PLAYER_DIR + "js/" + jsPlayerFiles[j], 'utf8') }
-        jss.push(js)
-        // await c.javascripts().make(jsd)
-      } 
-      Object.assign(c, { player: jss })
-      return c
-
-
-      // await c.htmlFiles().save(htmlFile)
-
-      // copy bus scripts to the case 
-      // let jsInfraFiles = fs.readdirSync(INFRA_DIR)
-    
-      // jsInfraFiles = jsInfraFiles.filter(function(file) {
-      //   return path.extname(file).toLowerCase() === ".js";
-      // });
-
-      // for (let j = 0; j < jsInfraFiles.length; j++) {
-      //   let js = await Factory.model('App/Models/v1/JavaScript').make({ name: jsInfraFiles[j], content: fs.readFileSync(INFRA_DIR + jsInfraFiles[j], 'utf8') })
-      //   // await c.javascripts().save(js)
-      // }
-      return response.json({ status: 'ok' })
-    } catch (e) {
-      console.log(e)
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ status: 'duplicate' })
-      }
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
-  
 }
 
 module.exports = CaseController

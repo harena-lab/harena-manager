@@ -22,13 +22,17 @@ const Route = use('Route')
 
 const knot = { knot: ' asiudfhiuaqhsdf asiudf nasiudfa sdf' }
 
-Route.get('/classic', ({ view }) => {
-							  return view.render('themes/classic/dt', knot)
-})
+/* Matheus created these methods in order to show us how we would supossed to use views */
+// Route.get('/classic', ({ view }) => {
+// 							  return view.render('themes/classic/dt', knot)
+// })
 
-Route.get('/jacinto', ({ view }) => {
-							  return view.render('themes/jacinto/dt', knot)
-})
+// Route.get('/jacinto', ({ view }) => {
+// 							  return view.render('themes/jacinto/dt', knot)
+// })
+
+/* Test route */
+Route.post('/api/v1/imagetest', 	'TestController.test') 
 
 /* User CRUD */
 Route.post('/api/v1/user/register', 'v1/UserController.store')
@@ -58,8 +62,6 @@ Route.group(() => {
 
 			Route.post(  ':id/executions', 		'v1/UserController.newExecution')   // input: user_id -> returns execution:{uuid}
 			Route.get(   ':id/executions', 		'v1/UserController.listExecutions') // input: user_id -> returns execution:{uuid}
-
-			Route.post(  ':id/prepare-case-html',	'v1/CaseController.prepareCaseHTML')
 }).prefix('/api/v1/case').middleware('auth')
 
 /* 
