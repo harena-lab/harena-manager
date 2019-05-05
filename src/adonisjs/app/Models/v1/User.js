@@ -5,15 +5,24 @@ const Hash = use('Hash')
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
+const Database = use('Database')
+
 class User extends Model {
+
+    
+    static async getAuthenticatedUser(email){
+        return await Database.table('users').select('username', 'email').where('email', email)
+    }
+
     cases() {
         return this.hasMany('App/Models/v1/Case')
     }
 
     executions () {
         return this
-                .belongsToMany('App/Models/v1/Case')
+                .belongsToMany('App/Models/v1/CaseVersion')
                 .pivotTable('executions')
+                .withTimestamps()
     }
 
     static boot() {
@@ -43,6 +52,12 @@ class User extends Model {
     tokens() {
         return this.hasMany('App/Models/Token')
     }
+
+    artifacts() {
+        return this.hasMany('App/Models/v1/Artifact')
+    }
+
+
 }
 
 module.exports = User

@@ -4,46 +4,31 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
-const Drive = use('Drive');
+const CaseVersion = use('App/Models/v1/CaseVersion')
 
-const uuidv1 = require('uuid/v1');
 const fs = require('fs');
-const fse = require('fs-extra')
 
-var dateFormat = require('dateformat');
+const PLAYER_DIR = "../../player/"
 
-const DIR_MODELS = "../../models/"
-const DIR_CASES = "../../cases/";
-const FILE_CASE_NAME = "case";
-const FILE_CASE_EXTENSION = ".md";
-const FILE_CASE = FILE_CASE_NAME + FILE_CASE_EXTENSION;
-
-let BLANK_MODEL = "blank"
-let TEMPORARY_CASE = "_temporary"
-
-const DIR_PLAYER = "../../../harena-space/player/"
-const FILE_PLAYER = "index.html"
-const DIR_INFRA = "../infra/"
-/**
- * Resourceful controller for interacting with cases
- */
+/** * Resourceful controller for interacting with cases */
 class CaseController {
-  /**
-   * Show a list of all cases.
-   * GET cases
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index({ response }) {
+  /** Show a list of all cases */
+  async index({ request, response }) {
     try {
-      console.log('index')
-      let cases = await Case.query().with('user').fetch()
-      return response.json(cases)
+      let filterBy = request.input('filterBy')
+      if (filterBy == null){
+        let cases = await Case.query().with('versions').fetch()
+        return response.json(cases)
+      }
+      if (filterBy == 'user'){
+        let user = await User.find(request.input('filter'))
+        let cases = await user.cases().fetch()
+        return response.json(cases)
+      }
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
@@ -59,89 +44,54 @@ class CaseController {
    */
   async show({ params, response }) {
     try {
-      let c = await Case.find(params.id)
+
+      let c = await Case.find( params.id )
+      let versions = await c.versions().fetch()
+
+      c.source = versions.first().source
+
       return response.json(c)
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
   }
 
-  async loadCase({ request, response }) {
-    try {
-      let c = await Case.findBy('caseName', request.input('caseName'))
-      return response.json({ 'caseMd': c.caseText })
-    } catch (e) {
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-  /**
-   * Create/save a new case.
-   * POST cases
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+  /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
-    try {
-      let caseText = request.input('caseText')
-      let caseName = request.input('caseName')
+    console.log('chegou')
+    // try {
+    //   let c = new Case()
+    //   c.name = request.input('name')
+    //   c.user_id = auth.user.id
+      
+    //   let cv = new CaseVersion()
+    //   cv.source = request.input('source')
+      
+    //   await c.versions().save(cv)
+    //   await c.versions().fetch()
 
-      fs.access(DIR_CASES, fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(DIR_CASES, { recursive: true })
-      })
-
-      let caseDir = DIR_CASES + caseName + "/"
-      let caseFile = caseDir + FILE_CASE;
-      let versionsDir = caseDir + "version/"
-
-      // copy a version of the previous file
-      let versionFile = "new file"
-
-      fs.access(caseDir, fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(caseDir, { recursive: true })
-        
-        fs.writeFileSync(caseFile, caseText)
-
-        let currentTime = dateFormat(new Date().getTime(), "_yyyy-mm-dd-h-MM-ss_");
-        versionFile = FILE_CASE_NAME + currentTime + uuidv1() + FILE_CASE_EXTENSION
-        fs.mkdirSync(versionsDir, { recursive: true })
-
-        fs.copyFileSync(caseFile, versionsDir + versionFile);
-      });
-
-      let c = new Case()
-      c.caseName = caseName
-      c.caseText = JSON.stringify(caseText)
-      c.user_id = auth.user.id
-      c.url = caseDir
-
-      await c.save()
-      return response.json({ "versionFile": versionFile })
-    } catch (e) {
-      return response.status(e.status).json({ message: e.message })
-    }
+    //   return response.json(c)
+    // } catch (e) {
+    //   console.log(e)
+    //   return response.status(e.status).json({ message: e.message })
+    // }
   }
 
-  /**
-   * Update case details.
-   * PUT or PATCH cases/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+  /** * Update case details. PUT or PATCH case/:id */
   async update({ params, request, response }) {
     try {
       let c = await Case.find(params.id)
 
-      c.caseName = request.input('caseName')
-      console.log(c.caseName)
-      c.caseText = request.input('caseText')
+      c.name = request.input('name')
+      
+      let cv = new CaseVersion()
+      cv.source = request.input('source')
 
-      await c.save()
+      await c.versions().save(cv)
+      await c.save() 
       return response.json(c)
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
@@ -163,71 +113,18 @@ class CaseController {
     }
   }
 
-  async newCase({ response }) {
+  async newCase({ response, auth }) {
     try {
-      let temporaryCase = DIR_CASES + TEMPORARY_CASE
-      fse.copySync(DIR_MODELS + BLANK_MODEL, temporaryCase)
-      return response.json({ caseName: TEMPORARY_CASE })
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async renameCase({ params, request, response }) {
-    try {
-      let oldName = request.input('oldName')
-      let newName = request.input('newName')
-
-      let c = await Case.findBy('caseName', oldName)
-
-      let oldDir = c.url
-      let newDir = DIR_CASES + newName
-
-      c.caseName = newName
-
-      fs.accessSync(oldDir, fs.constants.R_OK | fs.constants.W_OK);
-      fs.renameSync(oldDir, newDir)
+      let c = new Case()
+      c.user_id = auth.user.id
       
       await c.save()
-      return response.json({ status: 'ok' })
+      return response.json(c)
     } catch (e) {
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ status: 'duplicate' })
-      }
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
-
-  async prepareCaseHTML({ params, request, response }) {
-    try {
-      let templateFamily = request.input('templateFamily')
-      let caseName = request.input('caseName')
-
-      fs.accessSync(DIR_CASES + "html", fs.constants.R_OK | fs.constants.W_OK);
-      fs.renameSync(oldDir, newDir)
-      
-      fs.access(DIR_CASES + "html/knots", fs.constants.F_OK, (err) => {
-        if (err) fs.mkdirSync(DIR_CASES + "html", { recursive: true })
-      });
-     
-      
-      fse.copySync(DIR_PLAYER + FILE_PLAYER, caseDir + "html")
-      fse.copySync(DIR_PLAYER + "js", caseDir + "html")
-      
-      let busFiles = fs.readdirSync(DIR_INFRA+'js');
-      busFiles.array.forEach(element => {
-        fse.copySync(element, caseDir + "js")
-      });
-
-      return response.json({ status: 'ok' })
-    } catch (e) {
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ status: 'duplicate' })
-      }
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-  
 }
 
 module.exports = CaseController
