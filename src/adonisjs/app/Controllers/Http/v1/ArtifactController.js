@@ -17,7 +17,7 @@ class ArtifactController {
 			  						extnames: ['png', 'jpg', 'jpge', 'gif','mp4','avi', '.wmv']
 								  }
 
-		this.relative_path     = '/artifacts/' 
+		this.relativePath     = '/artifacts/' 
 
 
 	}
@@ -25,32 +25,29 @@ class ArtifactController {
 	async store({ request, auth, response }) {
 
 
-		const file = request.file('file', this.validationOptions)
+		const file             = request.file('file', this.validationOptions)
+		const caseID           = request.input('case_id', null)
 
-		const filename = await uuid() + "." + file.extname
-		const fs_path  = Helpers.publicPath(this.relative_path)
-		const case_id   = request.input('case_id', null)
+		const artifactID       = await uuid() 
+		const artifactFileName = artifactID + "." + file.extname
+		const fsPath           = Helpers.publicPath(this.relativePath)
 
 
-		await file.move(fs_path, {name: filename, overwrite: false})
+		await file.move(fsPath, {name: artifactFileName, overwrite: false})
 
 	  	if (!file.moved()) 
 	    	return file.error()
 	    
 
-	    var linked_case = null
 
-	    try{	
-	    	linked_case = await Case.find(case_id)
-		}catch(e){
-			console.log(e)
-		}	
+    	var linkedCase = await Case.find(caseID)
+
 
 
 		const artifact = new Artifact()
-		artifact.fs_path       = fs_path + filename 
-		artifact.relative_path = this.relative_path + filename
-		artifact.case_id = linked_case
+		artifact.fs_path       = fsPath + artifactFileName 
+		artifact.relative_path = this.relativePath + artifactFileName
+		artifact.case_id       = linkedCase != null ? linkedCase.id : linkedCase;
 	    await auth.user.artifacts().save(artifact)
 
  		const base_url = Env.getOrFail('APP_URL')
@@ -58,15 +55,15 @@ class ArtifactController {
 
 
 		return response.status(200).json({ message:       "Artifact successfully stored",
-										   filename:      filename,
-										   case:          linked_case,										   
+										   filename:      artifactFileName,
+										   case:          linkedCase,										   
 										   size_in_bytes: file.size,
 										   type:          file.type,
 										   subtype:       file.subtype,
 										   extension:     file.extname,
 										   status:        file.status,
 										   relative_path: artifact.relative_path,
-										   url:           base_url+this.relative_path+filename
+										   url:           base_url+artifact.relative_path 
 
 		 })
 
