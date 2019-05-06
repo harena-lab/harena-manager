@@ -6,13 +6,13 @@ services:
   harena-manager:
     image: datasci4health/harena-manager
     ports:
-      - "4000:3333"
+      - "10020:10020"
     environment:
       - HOST=0.0.0.0
-      - PORT=3333
+      - PORT=10020
       - NODE_ENV=production
       - APP_NAME=harena-manager
-      - APP_URL=http://0.0.0.0:3333
+      - APP_URL=http://0.0.0.0:10020
       - CACHE_VIEWS=false
       - APP_KEY=Xw8Ctuhsasew77qDx4GSnUlyTY3a6x
       - DB_CONNECTION=mysql
@@ -30,8 +30,8 @@ services:
 
   harena-manager-database:
     image: mysql:5.7
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     volumes:
       - harena-manager-database:/var/lib/mysql
     environment:                                # will be  replaced to .env vars, as in ${DB_PASSWORD}
@@ -47,8 +47,8 @@ services:
 
   harena-manager-database-ui:
     image: phpmyadmin/phpmyadmin:latest
-    ports:
-      - 4001:80
+#    ports:
+#      - 4001:80
     environment:
       - PMA_ARBITRARY=0                         # connection to any server 
       - PMA_HOST=harena-manager-database
