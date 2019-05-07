@@ -90,3 +90,36 @@ p {
     transform: none;
   }
 }
+
+
+
+.wrapper {
+  padding: 50px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  background: #ffffff;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.card .title {
+  font-weight: bold;
+}
+
+.notifications {
+  padding-top: 30px;
+}
+
+.cases-wrapper {
+  padding-top: 20px;
+}
+
+.case-body {
+  padding-top: 10px;
+}
+
+.single-case-wrapper {
+  height: 350px;
+}

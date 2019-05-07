@@ -32,7 +32,8 @@ const knot = { knot: ' asiudfhiuaqhsdf asiudf nasiudfa sdf' }
 // })
 
 /* Test route */
-Route.post('/api/v1/imagetest', 	'TestController.test') 
+Route.get('/api/imagetest', 	'TestController.index') 
+Route.post('/', 				'TestController.create').as('profile');
 
 /* User CRUD */
 Route.post('/api/v1/user/register', 'v1/UserController.store')
@@ -73,31 +74,3 @@ Route.group(() => {
 					Route.put(   ':id',    'v1/ExecutionController.update')
 					Route.delete(':id',    'v1/ExecutionController.destroy')
 }).prefix('/api/v1/execution/').middleware('auth')
-
-/* 
-	Template CRUD 
-*/
-Route.group(() => {
-					Route.get(   '',       'v1/TemplateController.index') 
-}).prefix('/api/v1/template/').middleware('auth')
-
-/* 
-	Models CRUD
-*/
-Route.group(() => {
-					Route.get(   '',    'v1/ModelController.index') 
-}).prefix('/api/v1/models/').middleware('auth')
-
-/* 
-	KnotCapsule CRUD
-*/
-Route.group(() => {
-				Route.get(   '',		'v1/KnotCapsuleController.index') 
-				Route.post(  '',      	'v1/KnotCapsuleController.store')
-}).prefix('/api/v1/knot/').middleware('auth')
-
-/* 
-	Auth  
-*/
-Route.group(() => {
-}).prefix('/api/v1/auth')

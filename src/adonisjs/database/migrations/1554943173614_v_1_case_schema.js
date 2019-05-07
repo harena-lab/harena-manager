@@ -12,6 +12,7 @@ class CaseSchema extends Schema {
       table.integer('user_id').unsigned().references('id').inTable('users');
       table.timestamps()
     })
+
   }
 
   down () {
