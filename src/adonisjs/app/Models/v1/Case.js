@@ -11,26 +11,6 @@ class Case extends Model {
     versions(){
         return this.hasMany('App/Models/v1/CaseVersion')
     }
-
-    htmlFiles(){
-        return this.hasMany('App/Models/v1/HtmlFile')
-    }
-
-    javascripts(){
-        return this.hasMany('App/Models/v1/JavaScript')
-    }
-
-    cssFiles(){
-        return this.hasMany('App/Models/v1/CSSFile')
-    }
-
-    images(){
-        return this.hasMany('App/Models/v1/Image')
-    }
-
-    dccs(){
-        return this.hasMany('App/Models/v1/Dcc')
-    }
 } 
 
 module.exports = Case
