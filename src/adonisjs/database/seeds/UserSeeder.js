@@ -19,7 +19,6 @@ const JavaScript = use('App/Models/v1/JavaScript');
 const RESOURCE_DIR = "resources/"
 
 const fs = require('fs');
-const path = require('path');
 
 class UserSeeder {
   async run() {

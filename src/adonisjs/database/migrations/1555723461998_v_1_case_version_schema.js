@@ -9,7 +9,8 @@ class CaseVersionSchema extends Schema {
       table.increments()
       table.uuid('uuid')
       table.text('source')
-      table.integer('case_id').unsigned().references('id').inTable('cases')
+      table.integer('case_id').unsigned()
+      table.foreign('case_id', 'case_id').references('id').inTable('cases')
       table.timestamps()
     })
   }

@@ -22,7 +22,7 @@ Route.post('/', 				'TestController.create').as('profile');
 |----------------------------------------------------------------------------------------------
 */
 Route.post('/api/v1/user/register',                 'v1/UserController.store')
-Route.post('/api/v1/user/login',                    'AuthController.login') 
+Route.post('/api/v1/user/login',                    'v1/AuthController.login') 
 Route.group(() => { 
 
                     Route.get(   '',                'v1/UserController.index') 
