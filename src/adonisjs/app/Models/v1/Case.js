@@ -3,6 +3,8 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
+const uuidv4 = require('uuid/v4');
+
 class Case extends Model {
     static get primaryKey () {
         return 'uuid'
@@ -18,6 +20,14 @@ class Case extends Model {
 
     versions(){
         return this.hasMany('App/Models/v1/CaseVersion')
+    }
+
+    static boot() {
+        super.boot()
+
+        this.addHook('beforeSave', async (caseInstance) => {
+            caseInstance.uuid = await uuidv4()
+        })
     }
 } 
 

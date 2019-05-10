@@ -9,7 +9,8 @@ class CaseSchema extends Schema {
       table.increments()
       table.string('name').unique()
 
-      table.integer('user_id').unsigned().references('id').inTable('users');
+      table.integer('user_id').unsigned()
+      table.foreign('user_id', 'fk_case_user').references('id').inTable('users');
       table.timestamps()
     })
 

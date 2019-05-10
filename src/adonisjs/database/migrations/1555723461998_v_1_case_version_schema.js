@@ -7,7 +7,6 @@ class CaseVersionSchema extends Schema {
   up () {
     this.create('case_versions', (table) => {
       table.increments()
-      table.uuid('uuid')
       table.text('source')
       table.integer('case_id').unsigned()
       table.foreign('case_id', 'case_id').references('id').inTable('cases')
