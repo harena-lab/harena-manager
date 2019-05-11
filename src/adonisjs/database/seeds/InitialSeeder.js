@@ -14,7 +14,6 @@
 const Factory = use('Factory')
 
 const User = use('App/Models/v1/User');
-const JavaScript = use('App/Models/v1/JavaScript');
 
 const RESOURCE_DIR = "resources/"
 

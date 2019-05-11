@@ -4,6 +4,11 @@
 const Model = use('Model')
 
 class Artifact extends Model {
+
+    user() {
+        return this.belongsTo('App/Models/v1/User');
+    }
+
 }
 
 module.exports = Artifact
