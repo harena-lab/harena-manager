@@ -19,15 +19,6 @@ class CaseVersionSchema extends Schema {
     
       sql = "ALTER TABLE case_versions ADD CONSTRAINT case_id FOREIGN KEY (case_id) REFERENCES cases(uuid)"
       await trx.raw(sql)
-    
-      sql =  "ALTER TABLE artifacts DROP FOREIGN KEY fk_case_id"
-      await trx.raw(sql)
-    
-      sql = "ALTER TABLE artifacts MODIFY case_id CHAR(36)"
-      await trx.raw(sql)
-
-      sql = "ALTER TABLE artifacts ADD CONSTRAINT fk_case_id FOREIGN KEY (case_id) REFERENCES cases(uuid)"
-      await trx.raw(sql)
 
       sql =  "ALTER TABLE cases DROP PRIMARY KEY, CHANGE id id int(11);"
       await trx.raw(sql)
@@ -53,15 +44,6 @@ class CaseVersionSchema extends Schema {
     await trx.raw(sql)
 
     sql =  "ALTER TABLE cases ADD CONSTRAINT PRIMARY KEY (id)"
-    await trx.raw(sql)
-
-    sql =  "ALTER TABLE artifacts DROP FOREIGN KEY fk_case_id"
-    await trx.raw(sql)
-
-    sql = "ALTER TABLE artifacts MODIFY case_id INT(10)"
-    await trx.raw(sql)
-
-    sql = "ALTER TABLE artifacts ADD CONSTRAINT fk_case_id FOREIGN KEY (case_id) REFERENCES cases(id)"
     await trx.raw(sql)
 
     sql = "ALTER TABLE case_versions DROP FOREIGN KEY case_id"
