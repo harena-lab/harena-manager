@@ -58,23 +58,22 @@ class CaseController {
 
   /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
-    console.log('chegou')
-    // try {
-    //   let c = new Case()
-    //   c.name = request.input('name')
-    //   c.user_id = auth.user.id
+    try {
+      let c = new Case()
+      c.name = request.input('name')
+      c.user_id = auth.user.id
       
-    //   let cv = new CaseVersion()
-    //   cv.source = request.input('source')
+      let cv = new CaseVersion()
+      cv.source = request.input('source')
       
-    //   await c.versions().save(cv)
-    //   await c.versions().fetch()
+      await c.versions().save(cv)
+      await c.versions().fetch()
 
-    //   return response.json(c)
-    // } catch (e) {
-    //   console.log(e)
-    //   return response.status(e.status).json({ message: e.message })
-    // }
+      return response.json(c)
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.message })
+    }
   }
 
   /** * Update case details. PUT or PATCH case/:id */
