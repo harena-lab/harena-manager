@@ -52,7 +52,7 @@ services:
     environment:
       - PMA_ARBITRARY=0                         # connection to any server 
       - PMA_HOST=harena-manager-database
-      - PMA_PORT=10021  
+      - PMA_PORT=3306  
     depends_on:
       - harena-manager-database
     networks:
