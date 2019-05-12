@@ -1,5 +1,6 @@
 # Node modules
 node_modules
+artifacts
 
 # Adonis directory for storing tmp files
 tmp
