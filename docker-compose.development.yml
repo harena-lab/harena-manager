@@ -3,31 +3,6 @@ version: '3'
 services:
 
 
-  harena-manager:
-    image: datasci4health/harena-manager
-    ports:
-      - "10020:10020"
-    environment:
-      - HOST=0.0.0.0
-      - PORT=10020
-      - NODE_ENV=production
-      - APP_NAME=harena-manager
-      - APP_URL=http://0.0.0.0:10020
-      - CACHE_VIEWS=false
-      - APP_KEY=Xw8Ctuhsasew77qDx4GSnUlyTY3a6x
-      - DB_CONNECTION=mysql
-      - DB_HOST=127.0.0.1
-      - DB_PORT=3306
-      - DB_DATABASE=harena-manager-database
-      - DB_USER=jacinto
-      - DB_PASSWORD=jacinto
-      - HASH_DRIVER=bcrypt
-    depends_on:
-      - harena-manager-database
-    restart: always  
-    networks:
-      - harena-manager
-
   harena-manager-database:
     image: mysql:5.7
     ports:
@@ -52,7 +27,7 @@ services:
     environment:
       - PMA_ARBITRARY=0                         # connection to any server 
       - PMA_HOST=harena-manager-database
-      - PMA_PORT=3306  
+      - PMA_PORT=10021  
     depends_on:
       - harena-manager-database
     networks:

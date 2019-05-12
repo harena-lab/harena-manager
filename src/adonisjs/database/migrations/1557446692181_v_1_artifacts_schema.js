@@ -10,9 +10,9 @@ class ArtifactsSchema extends Schema {
     this.create('artifacts', (table) => {
       table.increments()
       table.integer('user_id').unsigned().references('id').inTable('users');
-      table.integer('case_id').unsigned().references('id').inTable('cases');
-      table.string('fs_path',         300).notNullable()
-      table.string('relative_path',   300).notNullable()
+      table.uuid(   'case_id').references('uuid').inTable('cases');
+      table.string( 'fs_path',         300).notNullable()
+      table.string( 'relative_path',   300).notNullable()
       table.timestamps()
     })
   }

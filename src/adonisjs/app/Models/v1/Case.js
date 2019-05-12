@@ -3,7 +3,17 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
+const uuidv4 = require('uuid/v4');
+
 class Case extends Model {
+    static get primaryKey () {
+        return 'uuid'
+    }
+
+    static get incrementing () {
+        return false
+    }
+    
     user() {
         return this.belongsTo('App/Models/v1/User');
     }
@@ -12,24 +22,12 @@ class Case extends Model {
         return this.hasMany('App/Models/v1/CaseVersion')
     }
 
-    htmlFiles(){
-        return this.hasMany('App/Models/v1/HtmlFile')
-    }
+    static boot() {
+        super.boot()
 
-    javascripts(){
-        return this.hasMany('App/Models/v1/JavaScript')
-    }
-
-    cssFiles(){
-        return this.hasMany('App/Models/v1/CSSFile')
-    }
-
-    images(){
-        return this.hasMany('App/Models/v1/Image')
-    }
-
-    dccs(){
-        return this.hasMany('App/Models/v1/Dcc')
+        this.addHook('beforeSave', async (caseInstance) => {
+            caseInstance.uuid = await uuidv4()
+        })
     }
 } 
 
