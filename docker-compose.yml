@@ -4,7 +4,8 @@ services:
 
 
   harena-manager:
-    image: datasci4health/harena-manager
+    # image: datasci4health/harena-manager
+    build: ./
     ports:
       - "10020:10020"
     environment:
@@ -16,9 +17,9 @@ services:
       - CACHE_VIEWS=false
       - APP_KEY=Xw8Ctuhsasew77qDx4GSnUlyTY3a6x
       - DB_CONNECTION=mysql
-      - DB_HOST=127.0.0.1
+      - DB_HOST=harena-manager-database
       - DB_PORT=3306
-      - DB_DATABASE=harena-manager-database
+      - DB_DATABASE=harena-manager
       - DB_USER=jacinto
       - DB_PASSWORD=jacinto
       - HASH_DRIVER=bcrypt
