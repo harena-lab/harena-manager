@@ -9,6 +9,7 @@ services:
     ports:
       - "10020:10020"
     environment:
+      - ENV_SILENT=true      
       - HOST=0.0.0.0
       - PORT=10020
       - NODE_ENV=production
