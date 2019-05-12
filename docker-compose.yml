@@ -4,8 +4,7 @@ services:
 
 
   harena-manager:
-    # image: datasci4health/harena-manager
-    build: ./
+    image: datasci4health/harena-manager:v1
     ports:
       - "10020:10020"
     environment:
@@ -16,7 +15,7 @@ services:
       - APP_NAME=harena-manager
       - APP_URL=http://0.0.0.0:10020
       - CACHE_VIEWS=false
-      - APP_KEY=Xw8Ctuhsasew77qDx4GSnUlyTY3a6x
+      - APP_KEY=sHuh8734nANKdmasdk31345Kasd
       - DB_CONNECTION=mysql
       - DB_HOST=harena-manager-database
       - DB_PORT=3306
@@ -30,6 +29,7 @@ services:
     networks:
       - harena-manager
 
+
   harena-manager-database:
     image: mysql:5.7
     ports:
@@ -39,8 +39,8 @@ services:
     environment:                                # will be  replaced to .env vars, as in ${DB_PASSWORD}
       - MYSQL_DATABASE=harena-manager
       - MYSQL_USER=jacinto
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_PASSWORD=jacinto
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_ROOT_PASSWORD=root
     restart: always
     networks:
