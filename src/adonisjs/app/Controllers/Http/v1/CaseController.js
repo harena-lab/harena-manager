@@ -9,6 +9,7 @@ const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
 
 const fs = require('fs');
+const uuidv4 = require('uuid/v4');
 
 const PLAYER_DIR = "../../player/"
 
@@ -60,6 +61,8 @@ class CaseController {
   async store({ request, auth, response }) {
     try {
       let c = new Case()
+
+      c.uuid = await uuidv4()
       c.name = request.input('name')
       c.user_id = auth.user.id
       
