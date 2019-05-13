@@ -44,14 +44,14 @@ class ArtifactController {
 			var linkedCase = await Case.find(caseID)
 
 			if (caseID != null && linkedCase == null){
-				return response.json({ message: "User id not found" })
+				return response.json({ message: "Case id not found" })
 			} 
 	
 	
 			const artifact = new Artifact()
 			artifact.fs_path       = fsPath + artifactFileName 
 			artifact.relative_path = this.relativePath + artifactFileName
-			artifact.case_id       = linkedCase != null ? linkedCase.id : linkedCase;
+			artifact.case_id       = linkedCase != null ? linkedCase.uuid : linkedCase;
 			await auth.user.artifacts().save(artifact)
 	
 			 const base_url = Env.getOrFail('APP_URL')
@@ -71,6 +71,7 @@ class ArtifactController {
 	
 			 })
 		} catch(e){
+			console.log('veio')
 			console.log(e)
       		return response.status(e.status).json({ message: e.message })
 		}
