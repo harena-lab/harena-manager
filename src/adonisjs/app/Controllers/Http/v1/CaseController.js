@@ -8,10 +8,7 @@ const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
 
-const fs = require('fs');
 const uuidv4 = require('uuid/v4');
-
-const PLAYER_DIR = "../../player/"
 
 /** * Resourceful controller for interacting with cases */
 class CaseController {
