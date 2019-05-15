@@ -46,7 +46,7 @@ class CaseController {
       let c = await Case.find( params.id )
       let versions = await c.versions().fetch()
 
-      c.source = versions.first().source
+      c.source = versions.last().source
 
       return response.json(c)
     } catch (e) {
