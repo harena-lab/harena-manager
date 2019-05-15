@@ -8,9 +8,7 @@ const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
 
-const fs = require('fs');
-
-const PLAYER_DIR = "../../player/"
+const uuidv4 = require('uuid/v4');
 
 /** * Resourceful controller for interacting with cases */
 class CaseController {
@@ -48,7 +46,7 @@ class CaseController {
       let c = await Case.find( params.id )
       let versions = await c.versions().fetch()
 
-      c.source = versions.first().source
+      c.source = versions.last().source
 
       return response.json(c)
     } catch (e) {
@@ -60,6 +58,8 @@ class CaseController {
   async store({ request, auth, response }) {
     try {
       let c = new Case()
+
+      c.uuid = await uuidv4()
       c.name = request.input('name')
       c.user_id = auth.user.id
       

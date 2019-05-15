@@ -21,14 +21,6 @@ class Case extends Model {
     versions(){
         return this.hasMany('App/Models/v1/CaseVersion')
     }
-
-    static boot() {
-        super.boot()
-
-        this.addHook('beforeSave', async (caseInstance) => {
-            caseInstance.uuid = await uuidv4()
-        })
-    }
 } 
 
 module.exports = Case
