@@ -4,7 +4,7 @@ const Helpers  = use('Helpers')
 const Artifact = use('App/Models/v1/Artifact');
 const Case     = use('App/Models/v1/Case');
 const Env      = use('Env')
-const uuid     = require('uuid/v4');
+const uuid4     = require('uuid/v4');
 
 class ArtifactController {
 
@@ -23,55 +23,51 @@ class ArtifactController {
 	}
 
 	async store({ request, auth, response }) {
-
 		try{
 
 			const file             = request.file('file', this.validationOptions)
-			const caseID           = request.input('case_id', null)
-	
-			const artifactID       = await uuid() 
-			const artifactFileName = artifactID + "." + file.extname
-			const fsPath           = Helpers.publicPath(this.relativePath)
-	
-	
-			await file.move(fsPath, {name: artifactFileName, overwrite: false})
-	
-			  if (!file.moved()) 
-				return file.error()
+			const caseID           = request.input('case_uuid', null)
 			
-	
-	
 			var linkedCase = await Case.find(caseID)
-
+	
 			if (caseID != null && linkedCase == null){
 				return response.json({ message: "Case id not found" })
 			} 
+			
+			let fsPath = Helpers.publicPath(this.relativePath)
+			let caseRelativePath = this.relativePath
+			if (caseID != null){
+				fsPath += 'cases/' + caseID + '/'
+				caseRelativePath += 'cases/' + caseID + '/'
+			}
+			
+			const artifactID       = await uuid4() 
+			const artifactFileName = artifactID + "." + file.extname
 	
+			await file.move(fsPath, {name: artifactFileName, overwrite: false})
 	
 			const artifact = new Artifact()
 			artifact.fs_path       = fsPath + artifactFileName 
-			artifact.relative_path = this.relativePath + artifactFileName
+			artifact.relative_path = caseRelativePath + artifactFileName
 			artifact.case_id       = linkedCase != null ? linkedCase.uuid : linkedCase;
 			await auth.user.artifacts().save(artifact)
-	
-			 const base_url = Env.getOrFail('APP_URL')
-	
-	
-	
-			return response.status(200).json({ message:       "Artifact successfully stored",
-											   filename:      artifactFileName,
-											   case:          linkedCase,										   
-											   size_in_bytes: file.size,
-											   type:          file.type,
-											   subtype:       file.subtype,
-											   extension:     file.extname,
-											   status:        file.status,
-											   relative_path: artifact.relative_path,
-											   url:           base_url+artifact.relative_path 
-	
-			 })
+		
+			const base_url = Env.getOrFail('APP_URL')
+		
+			let bodyMessage = { message:       "Artifact successfully stored",
+								filename:      artifactFileName,
+								case:          linkedCase,										   
+								size_in_bytes: file.size,
+								type:          file.type,
+								subtype:       file.subtype,
+								extension:     file.extname,
+								status:        file.status,
+								relative_path: artifact.relative_path,
+								url:           base_url+artifact.relative_path 
+			}
+
+			return response.status(200).json(bodyMessage)
 		} catch(e){
-			console.log('veio')
 			console.log(e)
       		return response.status(e.status).json({ message: e.message })
 		}
