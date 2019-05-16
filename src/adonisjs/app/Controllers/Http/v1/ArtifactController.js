@@ -26,7 +26,7 @@ class ArtifactController {
 		try{
 
 			const file             = request.file('file', this.validationOptions)
-			const caseID           = request.input('case_id', null)
+			const caseID           = request.input('case_uuid', null)
 			
 			var linkedCase = await Case.find(caseID)
 	
