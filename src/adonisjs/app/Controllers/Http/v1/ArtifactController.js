@@ -31,6 +31,8 @@ class ArtifactController {
 			const caseID           = request.body.case_uuid
 			// request.input('case_uuid', null)
 			console.log(fileLocation)
+			console.log(caseID)
+
 			fs.openSync(fileLocation)
 			var linkedCase = await Case.find(caseID)
 	
