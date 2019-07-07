@@ -105,9 +105,11 @@ class CaseController {
    */
   async destroy({ params, response }) {
     try {
-      await Case.find(params.id).delete()
+      let c = await Case.findBy('uuid', params.id)
+      c.delete()
       return response.json({ message: 'Case deleted!' })
     } catch (e) {
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
