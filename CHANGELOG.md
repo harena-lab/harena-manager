@@ -2,9 +2,6 @@
 ## [Unreleased]
 
 
-<a name="v1.0.6"></a>
-## [v1.0.6] - 2019-07-07
-
 <a name="v1.0.5"></a>
 ## [v1.0.5] - 2019-07-07
 ### Bug
@@ -42,8 +39,7 @@ Harena Manager keeps a changelog
 <a name="v0.0.1"></a>
 ## v0.0.1 - 2019-04-15
 
-[Unreleased]: https://github.com/datasci4health/harena-manager/compare/v1.0.6...HEAD
-[v1.0.6]: https://github.com/datasci4health/harena-manager/compare/v1.0.5...v1.0.6
+[Unreleased]: https://github.com/datasci4health/harena-manager/compare/v1.0.5...HEAD
 [v1.0.5]: https://github.com/datasci4health/harena-manager/compare/v1.0.4...v1.0.5
 [v1.0.4]: https://github.com/datasci4health/harena-manager/compare/v1.0.3...v1.0.4
 [v1.0.3]: https://github.com/datasci4health/harena-manager/compare/v1.0.2...v1.0.3
@@ -51,4 +47,3 @@ Harena Manager keeps a changelog
 [v1.0.1]: https://github.com/datasci4health/harena-manager/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/datasci4health/harena-manager/compare/v0.1.0...v1.0.0
 [v0.1.0]: https://github.com/datasci4health/harena-manager/compare/v0.0.1...v0.1.0
-
