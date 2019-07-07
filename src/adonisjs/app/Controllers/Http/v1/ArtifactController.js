@@ -5,6 +5,8 @@ const Artifact = use('App/Models/v1/Artifact');
 const Case     = use('App/Models/v1/Case');
 const Env      = use('Env')
 const uuid4     = require('uuid/v4');
+const fs     = require('fs');
+
 
 class ArtifactController {
 
@@ -25,9 +27,13 @@ class ArtifactController {
 	async store({ request, auth, response }) {
 		try{
 
-			const file             = request.file('file', this.validationOptions)
-			const caseID           = request.input('case_uuid', null)
-			
+			const fileLocation             = request.body.file
+			const caseID           = request.body.case_uuid
+			// request.input('case_uuid', null)
+			console.log(fileLocation)
+			console.log(caseID)
+
+			fs.openSync(fileLocation)
 			var linkedCase = await Case.find(caseID)
 	
 			if (caseID != null && linkedCase == null){
@@ -42,6 +48,7 @@ class ArtifactController {
 			}
 			
 			const artifactID       = await uuid4() 
+			// console.log("file " +file)
 			const artifactFileName = artifactID + "." + file.extname
 	
 			await file.move(fsPath, {name: artifactFileName, overwrite: false})
