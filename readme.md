@@ -42,7 +42,6 @@ docker-compose up
 ```
 
 After starting the container, go to http://localhost:10010/ to see the welcome page.
-```
 
 <small> Make sure you have **docker-compose** and **docker** already installed on your system (see [system requirements](#system-requirements) for more details). </small>
 
