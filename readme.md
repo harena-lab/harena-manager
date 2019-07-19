@@ -13,10 +13,8 @@
 
   * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-     * [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-     * [Running as Docker containers - Windows](#running-as-docker-containers---windows)
+     * [Running as a Docker container - Linux](#running-as-docker-containers---linux)
      * [Running locally - Linux](#running-locally---linux)
-     * [Running locally - Windows](#running-locally---windows)
   * [System Requirements](#system-requirements)
      * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
      * [For running locally](#for-running-locally)
@@ -35,20 +33,18 @@
 
 ## Getting Started
 
-### Running as Docker containers - Linux
+### Running as a Docker container - Linux
+
+At the root of the project folder ```harena-manager/```, run the command to start the docker container:
 
 ```bash
-sudo apt-get install -y wget
-wget https://github.com/datasci4health/harena-manager/blob/master/docker-compose.yml
-sudo docker-compose up
+docker-compose up
 ```
 
-<small> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details). </small>
+After starting the container, go to http://localhost:10010/ to see the welcome page.
+```
 
-
-### Running as Docker containers - Windows
-
-//to do
+<small> Make sure you have **docker-compose** and **docker** already installed on your system (see [system requirements](#system-requirements) for more details). </small>
 
 ### Running locally - Linux
 
@@ -77,10 +73,6 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 <b><sup>1</sup></b> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details).
 
 <b><sup>2</sup></b> Run `adonis serve --help` to see alternative flag options.
-
-### Running locally - Windows
-
-//to do
 
 ## System Requirements
 
