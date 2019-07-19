@@ -4,7 +4,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
-# harena-manager
+# Harena Manager
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
@@ -35,6 +35,8 @@
 
 ### Running as a Docker container - Linux
 
+This is the recomended way of run the harena-manager code, since it guarantees the default configuration of the development environment, dispensing a manual configuration.
+
 At the root of the project folder ```harena-manager/```, run the command to start the docker container:
 
 ```bash
@@ -42,6 +44,12 @@ docker-compose up
 ```
 
 After starting the container, go to http://localhost:10010/ to see the welcome page.
+
+If you want to get the command line of the container, then run the command:
+
+```bash
+docker exec -it adonisjs_harena-manager_1 bash
+```
 
 <small> Make sure you have **docker-compose** and **docker** already installed on your system (see [system requirements](#system-requirements) for more details). </small>
 
@@ -72,6 +80,20 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 <b><sup>1</sup></b> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details).
 
 <b><sup>2</sup></b> Run `adonis serve --help` to see alternative flag options.
+
+## Contributing
+
+### Branch organization (future CI/CD)
+* **feature/< github-issue >:**
+    * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
+* **development:**
+    * Protected. Must use _pull request_ to merge new features.
+* **master:**
+    * Version running at http://cloud.lis.ic.unicamp.br/harena/latest .
+    * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
+* **tags:**
+    * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
+
 
 ## System Requirements
 
@@ -133,24 +155,6 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 * DB_PASSWORD= password
 * DB_DATABASE= target database
 * DB_SEARCH_PATH= database schema (if supported -- e.g., postgresql)
-
-
-## Contributing
-
-### Project organization
-
-//to do
-
-### Branch organization (future CI/CD)
-* **feature/< label >:**
-    * new features.
-* **development:**
-    * Protected. Must use _pull request_ to merge new features.
-* **master:**
-    * Version running at http://cloud.lis.ic.unicamp.br/harena/latest .
-    * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
-* **tags:**
-    * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
 
 ## REST Calls
 
