@@ -8,7 +8,7 @@ const Route   = use('Route')
 |  index                                                   
 |----------------------------------------------------------------------------------------------
 */
-Route.get('/', () => { return 'Hello from the harena-sdsds uyuyuy'} )
+Route.get('/', () => { return 'Hello from the harena-manager'} )
 
 
 /* Test route */
