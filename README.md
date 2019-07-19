@@ -13,13 +13,10 @@
 
   * [Table of Contents](#table-of-contents)
   * [Getting Started](#getting-started)
-     * [Running as a Docker container - Linux](#running-as-docker-containers---linux)
+     * [Running as a Docker container - Linux](#running-as-a-docker-container---linux)
      * [Running locally - Linux](#running-locally---linux)
   * [Contributing](#contributing)
      * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
-  * [System Requirements](#system-requirements)
-     * [For running as Docker containers](#for-running-as-linuxwindows-docker-containers)
-     * [For running locally](#for-running-locally)
 
 ## Getting Started
 
@@ -152,9 +149,3 @@ adonis  serve --dev --debug  # adjust flags according to you needs
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
 * **tags:**
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
-
-
-## System Requirements
-
-### For running as Docker containers
-
