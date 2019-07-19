@@ -14,6 +14,8 @@
 
 Harena Manager started to keep a changelog
 
+Harena Manager keeps a changelog
+
 <a name="v1.0.4"></a>
 ## [v1.0.4] - 2019-05-15
 
@@ -25,6 +27,10 @@ Harena Manager started to keep a changelog
 
 <a name="v1.0.1"></a>
 ## [v1.0.1] - 2019-05-12
+
+
+<a name="v0.1.0"></a>
+## [v0.1.0](https://github.com/datasci4health/harena-manager/compare/v0.0.1...v0.1.0)
 
 <a name="v1.0.0"></a>
 ## [v1.0.0] - 2019-05-12
