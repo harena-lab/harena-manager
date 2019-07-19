@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5025eae9-7d53-4177-848d-41b36c66fbc0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/harena-manager.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/.env.example" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/ace" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Controllers/Http/TestController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Controllers/Http/v1/ArtifactController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Controllers/Http/v1/AuthController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Controllers/Http/v1/CaseController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Controllers/Http/v1/UserController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Middleware/ConvertEmptyStringsToNull.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Models/Traits/NoTimestamp.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Models/v1/Artifact.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Models/v1/Case.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Models/v1/CaseVersion.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Models/v1/User.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/app/Services/CloudinaryService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/bootstrap.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/bodyParser.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/cors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/database.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/drive.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/hash.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/session.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/config/shield.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/factory.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1554385461873_v_1_user_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1554943173614_v_1_case_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1555723461998_v_1_case_version_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1555726233031_v_1_execution_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1557446692180_v_2_case_version_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1557446692181_v_1_artifacts_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1557609096219_v_2_case_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1558205731912_v_2_execution_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1561425934159_v_3_case_version_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/migrations/1561537115761_v_3_artifact_schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/database/seeds/InitialSeeder.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/public/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/case.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/cases/Case1/images/entrance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/cases/Case1/images/hospital-background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/cases/Case1/images/tablet.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/bubble-landscape.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/bubble-landscape.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/bubble-portrait.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/bubble-portrait.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/doctor-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/doctor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/icon-hypothesis.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/nurse-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/nurse.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/patient-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/patient-in-bed.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/dccs/tests/patient.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/bubble-landscape.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/bubble-portrait.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/call-the-supervisor.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/doctor-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/doctor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/entrance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/generate-hypothesis.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/icon-back.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/jacinto-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/jacinto.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/mono-slide.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/more-information.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/nurse-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/nurse.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/shared/tablet.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/templates/classic/entrance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/templates/classic/tablet.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/templates/jacinto/entrance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/templates/jacinto/hospital-background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/images/templates/jacinto/tablet.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/css/player.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/css/presentation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/css/templates.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/dialog.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/entry.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/images/entrance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/images/tablet.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/imagezoom.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/knot.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/notice.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/presentation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/reset.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/selector.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/signin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/start.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/classic/tablet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/css/dcc-state-selector.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/css/player.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/css/presentation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/css/templates-classic.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/css/templates.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/decision_exam.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/detailed.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/details_eletro.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/dialog.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/dialog_left.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/dialog_right.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/entry.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/images/entrance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/images/hospital-background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/images/tablet.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/imagezoom.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/information.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/input.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/knot.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/magnify_exam.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/marker_exam.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/note.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/notice.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/presentation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/reset.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/selector.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/signin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/start.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/box.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/decision.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/decision_eletro.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/detailed.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/dialog_left.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/dialog_right.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/images/hospital-background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/images/nurse_agnes.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/images/patient_jakob.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/images/supervisor_harry.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/information.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/input.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/magnify_exam-wide.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/magnify_exam.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/note.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/svgs/zoom_exam.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/jacinto/tablet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/case.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/css/player.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/css/presentation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/css/templates-classic.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/css/templates.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/end.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/entry.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/knot.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/notice.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/notice_right.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/notice_wrong.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/presentation.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/templates/zombie/report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/dt.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/index.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/master.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/themes/classic/dt.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/themes/classic/home.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/themes/jacinto/dt.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/resources/views/welcome.edge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/start/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/start/kernel.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adonisjs/src/start/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/.env.development" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/.env.example" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/ace" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Controllers/Http/TestController.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Controllers/Http/v1/ArtifactController.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Controllers/Http/v1/AuthController.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Controllers/Http/v1/CaseController.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Controllers/Http/v1/UserController.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Middleware/ConvertEmptyStringsToNull.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Models/Traits/NoTimestamp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Models/v1/Artifact.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Models/v1/Case.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Models/v1/CaseVersion.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Models/v1/User.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/app/Services/CloudinaryService.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/auth.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/bodyParser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/cors.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/database.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/drive.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/hash.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/session.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/config/shield.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/factory.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1554385461873_v_1_user_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1554943173614_v_1_case_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1555723461998_v_1_case_version_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1555726233031_v_1_execution_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1557446692180_v_2_case_version_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1557446692181_v_1_artifacts_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1557609096219_v_2_case_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1558205731912_v_2_execution_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1561425934159_v_3_case_version_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/migrations/1561537115761_v_3_artifact_schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/database/seeds/InitialSeeder.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/public/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/case.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/cases/Case1/images/entrance.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/cases/Case1/images/hospital-background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/cases/Case1/images/tablet.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/bubble-landscape.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/bubble-landscape.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/bubble-portrait.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/bubble-portrait.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/doctor-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/doctor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/icon-hypothesis.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/nurse-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/nurse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/patient-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/patient-in-bed.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/dccs/tests/patient.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/bubble-landscape.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/bubble-portrait.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/call-the-supervisor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/doctor-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/doctor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/entrance.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/generate-hypothesis.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/icon-back.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/jacinto-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/jacinto.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/mono-slide.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/more-information.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/nurse-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/nurse.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/shared/tablet.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/templates/classic/entrance.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/templates/classic/tablet.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/templates/jacinto/entrance.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/templates/jacinto/hospital-background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/images/templates/jacinto/tablet.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/css/player.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/css/presentation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/css/templates.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/dialog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/entry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/images/entrance.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/images/tablet.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/imagezoom.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/knot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/notice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/presentation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/register.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/reset.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/selector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/signin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/start.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/classic/tablet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/css/dcc-state-selector.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/css/player.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/css/presentation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/css/templates-classic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/css/templates.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/decision_exam.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/detailed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/details_eletro.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/dialog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/dialog_left.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/dialog_right.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/entry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/images/entrance.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/images/hospital-background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/images/tablet.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/imagezoom.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/information.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/input.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/knot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/magnify_exam.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/marker_exam.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/note.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/notice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/presentation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/register.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/reset.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/selector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/signin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/start.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/box.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/decision.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/decision_eletro.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/detailed.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/dialog_left.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/dialog_right.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/images/hospital-background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/images/nurse_agnes.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/images/patient_jakob.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/images/supervisor_harry.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/information.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/input.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/magnify_exam-wide.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/magnify_exam.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/note.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/svgs/zoom_exam.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/jacinto/tablet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/case.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/css/player.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/css/presentation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/css/templates-classic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/css/templates.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/end.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/entry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/knot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/notice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/notice_right.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/notice_wrong.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/presentation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/templates/zombie/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/dt.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/index.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/master.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/themes/classic/dt.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/themes/classic/home.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/themes/jacinto/dt.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/resources/views/welcome.edge" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/server.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/start/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/start/kernel.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adonisjs/start/routes.js" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adonisjs/Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/adonisjs/src/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adonisjs/docker-compose.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="840">
+              <caret line="52" column="13" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adonisjs/src/bootstrap.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adonisjs/src/.env.example">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/adonisjs/src/database/seeds/InitialSeeder.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-315" />
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/Dockerfile" />
+        <option value="$PROJECT_DIR$/adonisjs/bootstrap.sh" />
+        <option value="$PROJECT_DIR$/adonisjs/src/resources/views/welcome.edge" />
+        <option value="$PROJECT_DIR$/adonisjs/Dockerfile" />
+        <option value="$PROJECT_DIR$/adonisjs/src/start/routes.js" />
+        <option value="$PROJECT_DIR$/adonisjs/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/adonisjs/src/bootstrap.sh" />
+        <option value="$PROJECT_DIR$/adonisjs/src/.env.example" />
+        <option value="$PROJECT_DIR$/adonisjs/src/.env" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="77" />
+    <option name="y" value="47" />
+    <option name="width" value="1279" />
+    <option name="height" value="701" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="harena-manager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="harena-manager" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="harena-manager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="harena-manager" type="462c0819:PsiDirectoryNode" />
+              <item name="adonisjs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="harena-manager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="harena-manager" type="462c0819:PsiDirectoryNode" />
+              <item name="adonisjs" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5025eae9-7d53-4177-848d-41b36c66fbc0" name="Default Changelist" comment="" />
+      <created>1563528490565</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1563528490565</updated>
+      <workItem from="1563528492771" duration="1593000" />
+      <workItem from="1563530113275" duration="8995000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="10588000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="67" y="25" width="1299" height="743" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.39263323" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" visible="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="49" column="10" selection-start-line="49" selection-start-column="10" selection-end-line="49" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/bootstrap.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/resources/views/master.edge">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/resources/views/welcome.edge">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="78" selection-start-line="12" selection-start-column="78" selection-end-line="12" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/resources/views/index.edge">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/start/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-42">
+          <caret line="10" column="58" selection-start-line="10" selection-start-column="58" selection-end-line="10" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/database/seeds/InitialSeeder.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-315" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/database/migrations/1557609096219_v_2_case_schema.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/database/migrations/1557446692180_v_2_case_version_schema.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/database/migrations/1555726233031_v_1_execution_schema.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/database/migrations/1555723461998_v_1_case_version_schema.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/database/migrations/1554385461873_v_1_user_schema.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-63" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/bootstrap.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="52" column="13" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/.env.example">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adonisjs/src/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
