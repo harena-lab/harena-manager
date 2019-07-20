@@ -5,4 +5,4 @@ cp .env.example .env
 
 adonis migration:run
 adonis seed --files InitialSeeder.js
-adonis serve --debug
+adonis serve --dev --debug
