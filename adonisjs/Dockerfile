@@ -5,7 +5,7 @@ WORKDIR /app
 RUN npm i npm
 RUN npm i -g @adonisjs/cli
 
+#COPY ./src/ .
 #CMD [ "ls"]
 
-#CMD [ "npm", "start"]
 ENTRYPOINT ["./bootstrap.sh"]
