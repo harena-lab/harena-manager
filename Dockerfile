@@ -1,6 +1,6 @@
 FROM node:10
 
-WORKDIR . /app
+WORKDIR /app
 
 RUN npm i npm
 RUN npm i -g @adonisjs/cli
