@@ -24,20 +24,20 @@ If you want to run the harena-manager code
 
 ### Running as a Docker container - Linux
 
-This is the recomended way of run the harena-manager code, since it guarantees the default configuration of the development environment, dispensing a manual configuration.
+This is the recomended way of run the harena-manager code, since it dispenses manual configurations.
 
-Clone the repository and get into it:
+Clone the repository and get it:
 
 ```bash
 git clone https://github.com/datasci4health/harena-manager.git
 cd harena-manager
 ```
 
-Then, checkout to development branch and get the latest code version:
+Then, checkout to ```bugfix/26``` branch and get the latest code version:
 
 ```bash
-git checkout -b development
-git pull origin development
+git checkout bugfix/26
+git pull
 ```
 
 Then, run the command to start the docker<sup>1</sup> container:

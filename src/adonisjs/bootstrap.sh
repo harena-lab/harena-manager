@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-RUN adonis migration:run
-RUN adonis seed --files InitialSeeder.js
+adonis migration:run
+adonis seed --files InitialSeeder.js
 
 adonis serve --dev --debug
