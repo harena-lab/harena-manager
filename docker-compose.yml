@@ -3,7 +3,7 @@ version: '3'
 services:
 
   harena-manager:
-    image: faguim/harena-manager:latest
+    image: harena-manager:latest
     ports:
       - "10020:10020"
     volumes:
