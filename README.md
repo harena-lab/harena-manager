@@ -52,7 +52,7 @@ After starting the container, go to http://localhost:10010/ to see the welcome p
 If you want to get the command line of the container, then run the command:
 
 ```bash
-docker exec -it adonisjs_harena-manager_1 bash
+docker exec -it harenamanager_harena-manager_1 bash
 ```
 
 
