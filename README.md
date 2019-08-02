@@ -33,10 +33,10 @@ git clone https://github.com/datasci4health/harena-manager.git
 cd harena-manager
 ```
 
-Then, checkout to ```bugfix/26``` branch and get the latest code version:
+Then, change the branch and get its latest code version:
 
 ```bash
-git checkout bugfix/26
+git checkout development
 git pull
 ```
 
