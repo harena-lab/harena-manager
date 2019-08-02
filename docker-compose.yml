@@ -3,11 +3,12 @@ version: '3'
 services:
 
   harena-manager:
-    image: harena-manager:latest
+    image: faguim/harena-manager:latest
     ports:
       - "10020:10020"
-    volumes:
-      - ./src/adonisjs:/app
+#    This not work yet
+#    volumes:
+#      - ./src/adonisjs:/app
     environment:
       - ENV_SILENT=false
       - HOST=0.0.0.0
