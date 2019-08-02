@@ -5,9 +5,12 @@ WORKDIR /app
 RUN npm i npm
 RUN npm i -g @adonisjs/cli
 
-COPY ./src/ .
+COPY ./src/adonisjs .
+
 RUN npm install
 
-#CMD [ "ls"]
+RUN cp .env.example .env
+RUN adonis key:generate
 
+#CMD [ "npm", "start"]
 ENTRYPOINT ["./bootstrap.sh"]
