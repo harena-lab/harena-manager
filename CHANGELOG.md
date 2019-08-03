@@ -1,6 +1,12 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Fix
+- **artifact:** Fix error at artifact upload
+
+
+<a name="v1.0.6"></a>
+## [v1.0.6] - 2019-07-23
 
 <a name="v1.0.5"></a>
 ## [v1.0.5] - 2019-07-07
