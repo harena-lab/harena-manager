@@ -9,12 +9,11 @@ const uuid4     = require('uuid/v4');
 class ArtifactController {
 
 	constructor(){
-
  		// See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
 		this.validationOptions = {
 			  						size:     '100mb',
 			  						types:    ['image','video'],
-			  						extnames: ['png', 'jpg', 'jpge', 'gif','mp4','avi', '.wmv']
+			  						extnames: ['png', 'jpg', 'jpeg', 'gif','mp4','avi', '.wmv']
 								  }
 
 		this.relativePath     = '/artifacts/' 

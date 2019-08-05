@@ -22,38 +22,16 @@
 
 If you want to run the harena-manager code
 
-### Running as a Docker container - Linux
-
-This is the recomended way of run the harena-manager code, since it guarantees the default configuration of the development environment, dispensing a manual configuration.
-
-Clone the repository and get into it:
+### Running as Docker containers - Linux
 
 ```bash
-git clone https://github.com/datasci4health/harena-manager.git
-cd harena-manager
+sudo apt-get install -y wget
+wget https://github.com/datasci4health/harena-manager/blob/master/docker-compose.yml
+sudo docker-compose up
 ```
 
-Then, checkout to development branch and get the latest code version:
+<small> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details). </small>
 
-```bash
-git checkout -b development
-git pull origin development
-```
-
-Then, run the command to start the docker<sup>1</sup> container:
-
-```bash
-docker-compose up
-```
-<sub><sup>1</sup>Make sure you have [docker](https://docs.docker.com/install/) and [docker-compose command](https://docs.docker.com/compose/install/) already installed on your system.</sub>
-
-After starting the container, go to http://localhost:10010/ to see the welcome page.
-
-If you want to get the command line of the container, then run the command:
-
-```bash
-docker exec -it adonisjs_harena-manager_1 bash
-```
 
 
 ### Running locally - Linux

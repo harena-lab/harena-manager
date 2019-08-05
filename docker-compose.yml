@@ -2,16 +2,18 @@ version: '3'
 
 services:
 
-
   harena-manager:
     image: datasci4health/harena-manager:v1
     ports:
       - "10020:10020"
+#    This not work yet
+#    volumes:
+#      - ./src/adonisjs:/app
     environment:
-      - ENV_SILENT=true      
+      - ENV_SILENT=false
       - HOST=0.0.0.0
       - PORT=10020
-      - NODE_ENV=production
+      - NODE_ENV=dev
       - APP_NAME=harena-manager
       - APP_URL=http://0.0.0.0:10020
       - CACHE_VIEWS=false
@@ -28,7 +30,6 @@ services:
     restart: always  
     networks:
       - harena-manager
-
 
   harena-manager-database:
     image: mysql:5.7
