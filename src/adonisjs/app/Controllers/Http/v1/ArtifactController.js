@@ -9,7 +9,6 @@ const uuid4     = require('uuid/v4');
 class ArtifactController {
 
 	constructor(){
-
  		// See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
 		this.validationOptions = {
 			  						size:     '100mb',
