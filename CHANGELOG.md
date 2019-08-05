@@ -5,8 +5,8 @@
 
 ### Bug Fixes
 
-* **artifact:** Enable upload of .jpeg files (close issue [#33](https://github.com/datasci4health/harena-manager/issues/33))
-* **artifact:** Fix error at artifact upload
+* **artifact:** Enable upload of .jpeg files - (close issue [#33](https://github.com/datasci4health/harena-manager/issues/33))
+* **artifact:** Fix error at artifact upload - (fix issue [#26](https://github.com/datasci4health/harena-manager/issues/26))
 
 ### Build
 
@@ -24,22 +24,13 @@
 
 > 2019-07-07
 
-### Bug
+### Bug Fixes
 
-* Error on delete case - [#23](https://github.com/datasci4health/harena-manager/issues/23)
+* Error on delete case - (close issue [#23](https://github.com/datasci4health/harena-manager/issues/23))
 
 ### Features
 
-* **documentation:** Added a CHANGELOG
 * **documentation:** Added a CHANGELOG in the project.
-
-### BREAKING CHANGE
-
-
-Harena Manager started to keep a changelog
-
-Harena Manager keeps a changelog
-
 
 <a name="v1.0.4"></a>
 ## [v1.0.4](https://github.com/datasci4health/harena-manager/compare/v1.0.3...v1.0.4)
