@@ -9,8 +9,4 @@ COPY ./src/adonisjs .
 
 RUN npm install
 
-RUN cp .env.example .env
-RUN adonis key:generate
-
-#CMD [ "npm", "start"]
-ENTRYPOINT ["./bootstrap.sh"]
+CMD [ "npm", "start"]
