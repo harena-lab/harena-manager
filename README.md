@@ -8,19 +8,80 @@
 
 [Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
 
-## Table of Contents 
+## Table of contents
 
+<!-- MarkdownTOC autolink=true -->
 
-  * [Table of Contents](#table-of-contents)
-  * [Getting Started](#getting-started)
-     * [Running as a Docker container - Linux](#running-as-a-docker-container---linux)
-     * [Running locally - Linux](#running-locally---linux)
-  * [Contributing](#contributing)
-     * [Branch organization (future CI/CD)](#branch-organization-future-cicd)
+- [Getting Started](#getting-started)
+  - [Running locally - Linux](#running-locally---linux)
+  - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
+- [Dependencies](#dependencies)
+  - [System-wide](#system-wide)
+  - [NPM packages](#npm-packages)
+- [Configuration](#configuration)
+  - [Virtual Envs - AdonisJS](#virtual-envs---adonisjs)
+  - [Virtual Envs - Database](#virtual-envs---database)
+- [Contributing](#contributing)
+  - [Development Mode](#development-mode)
+  - [Branch organization](#branch-organization)
+
+<!-- /MarkdownTOC -->
+
 
 ## Getting Started
 
-If you want to run the harena-manager code
+### Running locally - Linux
+
+1. Installing system dependencies.
+    
+    1.1 Install [nodejs/npm](https://nodejs.org/en/download/):
+
+    ```bash
+    # Using Ubuntu
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+
+    # Using Debian, as root
+    curl -sL https://deb.nodesource.com/setup_10.x | bash -
+    apt-get install -y nodejs    
+    ```
+    1.2 Update npm (just in case):
+
+    ```bash
+    sudo npm i npm  
+    ```
+    
+
+
+    1.3 Install [adonisjs](https://adonisjs.com/):
+
+    ```bash
+    sudo npm i -g @adonisjs/cli  
+    ```
+
+2. Clone this repository and enter the folder:
+
+    ```bash
+    git clone https://github.com/datasci4health/harena-manager 
+    cd harena-manager
+    ```
+
+3. Move to the source folder and install the project dependencies (see the `package.json` file for more details):
+
+    ```bash
+    cd src/adonisjs                      
+    npm install         
+    ```
+
+4. Create a .env file form the template and start the nodejs server:
+
+    ```bash
+    cp .env.local .env 
+    adonis  serve --dev --debug  # adjust flags according to you needs
+    ```
+
+
+    Edit the .env file with your own [configuration](#Configuration). Then, run adonis again. Run `adonis serve --help` to see alternative options.
 
 ### Running as Docker containers - Linux
 
@@ -30,48 +91,19 @@ wget https://github.com/datasci4health/harena-manager/blob/master/docker-compose
 sudo docker-compose up
 ```
 
-<small> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details). </small>
 
+## Dependencies
 
-
-### Running locally - Linux
-
-First, clone this repository and enter the folder:
-
-```bash
-git clone https://github.com/datasci4health/harena-manager 
-cd harena-manager
-```
-Then install the [adonis cli](https://adonisjs.com/docs/4.0/installation#_cli_tool) and other project dependencies<sup>2</sup>:
-
-```bash
-cd src/adonisjs                      # entering the source folder
-sudo npm i npm                       # updating npm (just in case)
-sudo npm i -g @adonisjs/cli          # installing adonis cli
-sudo npm install                     # installing dependencies based on the package.json file
-cp .env.example .env                 # creating the .env file that will be used by adonis
-``` 
-
-Edit the .env file with your own [configuration](#Configuration). Then, run adonis<sup>3</sup>:
-
-```bash
-adonis  serve --dev --debug  # adjust flags according to you needs
-```
-
-<b><sup>2</sup></b> Make sure you have **node.js** and **npm** already installed (see [system requirements](#system-requirements) for more details).
-
-<b><sup>3</sup></b> Run `adonis serve --help` to see alternative flag options.
-
-##### System dependencies
+### System-wide
 
 * [node.js >= 8.0.0]()
 * [npm     >= 6.8.0]()
 * [mysql   >= 5.7]() or [postgresql >= 7.0.0]()
 
 
-##### NPM packages<sup>4</sup> 
+### NPM packages
 
-* [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) <b><sup>5</sup></b>
+* [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) <b><sup>1</sup></b>
 * [adonisjs/ace ^5.0.2]()
 * [adonisjs/bodyparser]()
 * [adonisjs/auth]()
@@ -86,13 +118,12 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 * [mysql ^2.16.0]()
 
 
-<b><sup>4</sup></b> In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
+<b><sup>1</sup></b> In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
-<b><sup>5</sup></b> Stored in the `src/adonisjs/package.json` file.
 
-##### Configuration
+## Configuration
 
-###### Virtualenvs: AdonisJS 
+### Virtual Envs - AdonisJS 
 
 * HOST= host ip/name
 * PORT= host port
@@ -104,7 +135,7 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 * HASH_DRIVER=bcrypt
 * MOMENT_LOCALE=pt-br
 
-###### Virtualenvs: Database
+### Virtual Envs - Database
 
 * DB_CONNECTION= database (pg, maria, mysql, sqlite)
 * DB_HOST= host/ipname
@@ -114,16 +145,20 @@ adonis  serve --dev --debug  # adjust flags according to you needs
 * DB_DATABASE= target database
 * DB_SEARCH_PATH= database schema (if supported -- e.g., postgresql)
 
-
 ## Contributing
 
-### Branch organization (future CI/CD)
+### Development Mode
+
+
+
+### Branch organization
 * **feature/< github-issue >:**
     * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
 * **development:**
+    * Version running at http://harena.ds4h.org/development . 
     * Protected. Must use _pull request_ to merge new features.
 * **master:**
-    * Version running at http://cloud.lis.ic.unicamp.br/harena/latest .
+    * Version running at http://harena.ds4h.org/latest .
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
 * **tags:**
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
