@@ -13,17 +13,17 @@
 <!-- MarkdownTOC autolink=true -->
 
 - [Getting Started](#getting-started)
-  - [Running locally - Linux](#running-locally---linux)
-  - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
+    - [Running locally - Linux](#running-locally---linux)
+    - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
 - [Dependencies](#dependencies)
-  - [System-wide](#system-wide)
-  - [NPM packages](#npm-packages)
+    - [System-wide](#system-wide)
+    - [NPM packages](#npm-packages)
 - [Configuration](#configuration)
-  - [Virtual Envs - AdonisJS](#virtual-envs---adonisjs)
-  - [Virtual Envs - Database](#virtual-envs---database)
+    - [AdonisJS general environment variables](#adonisjs-general-environment-variables)
+    - [AdonisJS database environment variables](#adonisjs-database-environment-variables)
 - [Contributing](#contributing)
-  - [Development Mode](#development-mode)
-  - [Branch organization](#branch-organization)
+    - [Development Mode](#development-mode)
+    - [Branch organization](#branch-organization)
 
 <!-- /MarkdownTOC -->
 
@@ -73,21 +73,59 @@
     npm install         
     ```
 
-4. Create a .env file form the template and start the nodejs server:
+4. Create a .env file form the template and check database connection:
 
     ```bash
-    cp .env.local .env 
-    adonis  serve --dev --debug  # adjust flags according to you needs
+    cp .env.local .env
+    adonis key:generate         # generating unique APP_KEY
+    adonis migration:status     # checking database connection
     ```
+
+5. Migrate database and start server in debug mode:
+
+    ```bash
+    adonis migration:run        # running database migrations
+    adonis serve --debug  # adjust flags according to you needs
+    ```    
 
 
     Edit the .env file with your own [configuration](#Configuration). Then, run adonis again. Run `adonis serve --help` to see alternative options.
 
-### Running as Docker containers - Linux
+**TL;DR**
 
 ```bash
-sudo apt-get install -y wget
-wget https://github.com/datasci4health/harena-manager/blob/master/docker-compose.yml
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+#curl -sL https://deb.nodesource.com/setup_10.x | bash -
+#apt-get install -y nodejs   
+
+sudo npm i npm  
+sudo npm i -g @adonisjs/cli  
+
+git clone https://github.com/datasci4health/harena-manager 
+cd harena-manager/src/adonisjs                      
+npm install 
+
+cp .env.local .env          # using template .env setup
+adonis key:generate         # generating unique APP_KEY
+adonis migration:status     # checking database connection    
+
+adonis migration:run        # running database migrations
+adonis serve --debug        # starting server
+```    
+
+### Running as Docker containers - Linux
+
+You can run a containerized instance of this project with its required services (e.g., database) using Docker. 
+Please refer to this [link](https://docs.docker.com/install/) for installing Docker. Then, try:
+
+```bash
+sudo apt-get install docker-compose -y  # installing docker-compose
+git clone https://github.com/datasci4health/harena-manager 
+cd harena-manager
 sudo docker-compose up
 ```
 
@@ -104,7 +142,7 @@ sudo docker-compose up
 ### NPM packages
 
 * [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) <b><sup>1</sup></b>
-* [adonisjs/ace ^5.0.2]()
+* [adonisjs/ace ^5.0.8]()
 * [adonisjs/bodyparser]()
 * [adonisjs/auth]()
 * [adonisjs/cors ^1.0.6]()
@@ -123,7 +161,7 @@ sudo docker-compose up
 
 ## Configuration
 
-### Virtual Envs - AdonisJS 
+### AdonisJS general environment variables
 
 * HOST= host ip/name
 * PORT= host port
@@ -135,7 +173,7 @@ sudo docker-compose up
 * HASH_DRIVER=bcrypt
 * MOMENT_LOCALE=pt-br
 
-### Virtual Envs - Database
+### AdonisJS database environment variables
 
 * DB_CONNECTION= database (pg, maria, mysql, sqlite)
 * DB_HOST= host/ipname
