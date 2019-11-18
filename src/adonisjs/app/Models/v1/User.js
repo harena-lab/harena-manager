@@ -23,6 +23,13 @@ class User extends Model {
                 .withTimestamps()
     }
 
+    suggested_cases () {
+        return this
+            .belongsToMany('App/Models/v1/CaseVersion')
+            .pivotTable('suggestions')
+            .withTimestamps()
+    }
+
     static boot() {
         super.boot()
 

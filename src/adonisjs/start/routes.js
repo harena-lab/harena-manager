@@ -84,3 +84,14 @@ Route.group(() => {
 	Route.post(  '',                    'v1/ArtifactController.store')
 	
 }).prefix('/api/v1/artifact/').middleware('auth')
+
+/*
+|----------------------------------------------------------------------------------------------
+|  resource: /suggestion
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+
+	Route.post(  '',      'SuggestionController.store')
+
+}).prefix('/api/v1/suggestion').middleware('auth')
