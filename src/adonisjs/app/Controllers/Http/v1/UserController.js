@@ -145,6 +145,36 @@ class UserController {
     }
   }
 
+  async available_cases({ params, response, view }) {
+    try{
+      let user = await User.find(params.id)
+
+      return response.json(await user.available_cases().fetch())
+    } catch(e){
+      console.log(e)
+    }
+  }
+
+  async enable_case({ request, response }) {
+    try {
+      const {user_id, case_version_id, flow} = request.post()
+      let user = await User.find(user_id)
+      let cv = await CaseVersion.find(case_version_id)
+
+      user.flow = flow
+      await user.available_cases().attach(cv.id)
+      user.available_cases = await user.available_cases().fetch()
+      return response.json(user)
+    } catch (e) {
+      console.log(e)
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({message: e.message})
+      }
+
+      return response.status(e.status).json({message: e.message})
+    }
+  }
+
   
 }
 

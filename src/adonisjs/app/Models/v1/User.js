@@ -23,10 +23,10 @@ class User extends Model {
                 .withTimestamps()
     }
 
-    suggested_cases () {
+    available_cases () {
         return this
             .belongsToMany('App/Models/v1/CaseVersion')
-            .pivotTable('suggestions')
+            .pivotTable('available_cases')
             .withTimestamps()
     }
 

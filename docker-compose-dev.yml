@@ -10,7 +10,7 @@ services:
       - ENV_SILENT=true
       - HOST=0.0.0.0
       - PORT=10020
-      - NODE_ENV=production
+      - NODE_ENV=development
       - APP_NAME=harena-manager
       - APP_URL=http://0.0.0.0:10020
       - CACHE_VIEWS=false

@@ -126,6 +126,7 @@ class CaseController {
       return response.status(e.status).json({ message: e.message })
     }
   }
+
 }
 
 module.exports = CaseController

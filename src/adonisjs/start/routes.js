@@ -29,8 +29,13 @@ Route.group(() => {
                     Route.get(   ':id',             'v1/UserController.show') 
                     Route.put(   ':id',             'v1/UserController.update')
                     Route.delete(':id',             'v1/UserController.destroy')
-                    Route.get(   ':id/execution',   'v1/UserController.listExecutions') 
-                    Route.post(  'execution',       'v1/UserController.newExecution') 
+
+					Route.post(  'execution',       'v1/UserController.newExecution')
+					Route.get(   ':id/execution',   'v1/UserController.listExecutions')
+
+					Route.post(  'enable_case',				'v1/CaseController.enable_case')
+					Route.get(   ':id/available_cases',   	'v1/UserController.available_cases')
+
 }).prefix('/api/v1/user').middleware('auth')
 
 
@@ -87,11 +92,21 @@ Route.group(() => {
 
 /*
 |----------------------------------------------------------------------------------------------
-|  resource: /suggestion
+|       api: v1
+|  resource: /quest
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
+    Route.put(   ':id',             'v1/QuestController.update')
 
-	Route.post(  '',      'SuggestionController.store')
+    Route.get(   '',                'v1/UserController.index')
+    Route.get(   ':id',             'v1/UserController.show')
+    Route.delete(':id',             'v1/UserController.destroy')
 
-}).prefix('/api/v1/suggestion').middleware('auth')
+    Route.post(  'execution',       'v1/UserController.newExecution')
+    Route.get(   ':id/execution',   'v1/UserController.listExecutions')
+
+    Route.post(  'enable_case',				'v1/CaseController.enable_case')
+    Route.get(   ':id/available_cases',   	'v1/UserController.available_cases')
+
+}).prefix('/api/v1/user').middleware('auth')
