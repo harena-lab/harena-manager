@@ -12,16 +12,17 @@ class QuestController {
      * @param {Request} ctx.request
      * @param {Response} ctx.response
      */
-    async update({ params, request, response, auth }) {
+    async store({ params, response, auth }) {
         try {
             // let newUser = request.all()
-
-            let quest = await Quest.find(params.name)
-
-            await quest.merge(quest)
-            await quest.save()
-
-            return response.json(quest)
+            print('nooooo')
+            // let quest = await Quest.find(params.name)
+            //
+            // await quest.merge(quest)
+            // await quest.save()
+            //
+            // return response.json(quest)
+            return 'aqui'
         } catch (e) {
             return response.status(e.status).json({ message: e.message })
         }

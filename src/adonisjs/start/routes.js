@@ -97,16 +97,16 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-    Route.put(   ':id',             'v1/QuestController.update')
+    Route.post(   '',             'v1/QuestController.store')
 
-    Route.get(   '',                'v1/UserController.index')
-    Route.get(   ':id',             'v1/UserController.show')
-    Route.delete(':id',             'v1/UserController.destroy')
+    // Route.get(   '',                'v1/UserController.index')
+    // Route.get(   ':id',             'v1/UserController.show')
+    // Route.delete(':id',             'v1/UserController.destroy')
+	//
+    // Route.post(  'execution',       'v1/UserController.newExecution')
+    // Route.get(   ':id/execution',   'v1/UserController.listExecutions')
+	//
+    // Route.post(  'enable_case',				'v1/CaseController.enable_case')
+    // Route.get(   ':id/available_cases',   	'v1/UserController.available_cases')
 
-    Route.post(  'execution',       'v1/UserController.newExecution')
-    Route.get(   ':id/execution',   'v1/UserController.listExecutions')
-
-    Route.post(  'enable_case',				'v1/CaseController.enable_case')
-    Route.get(   ':id/available_cases',   	'v1/UserController.available_cases')
-
-}).prefix('/api/v1/user').middleware('auth')
+}).prefix('/api/v1/quest').middleware('auth')
