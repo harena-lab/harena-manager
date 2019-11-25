@@ -62,10 +62,13 @@ class QuestController {
             let c = await Case.find(case_id)
             let quest = await Quest.find(quest_id)
 
-            await quest.cases().attach(c.id)
+            await quest.cases().create(c, (row) => {
+                row.argument = argument
+            })
 
-            c.quests = await c.quests().fetch()
-            return response.json(c)
+            quest.cases = await quest.cases().fetch()
+
+            return response.json(quest)
         } catch (e) {
             console.log(e)
             if (e.code === 'ER_DUP_ENTRY') {

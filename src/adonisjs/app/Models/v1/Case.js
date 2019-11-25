@@ -22,7 +22,7 @@ class Case extends Model {
         return this
             .belongsToMany('App/Models/v1/Quest')
             .pivotTable('quests_cases')
-            // .pivotModel(use('App/Models/v1/QuestCase'))
+            .withPivot(['argument'])
             .withTimestamps()
     }
 } 
