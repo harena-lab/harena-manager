@@ -5,14 +5,15 @@ const Schema = use('Schema')
 
 class UsersQuestsSchema extends Schema {
   up () {
+    this.dropIfExists('user_quests')
     this.create('users_quests', (table) => {
 
-      table.integer('users_id').unsigned().index('users_id')
+      table.integer('user_id').unsigned().index('user_id')
 
-      table.uuid('quests_uuid').references('uuid').inTable('quests').index('quests_uuid');
-      table.foreign('users_id').references('users.id').onDelete('cascade')
+      table.uuid('quest_id').references('id').inTable('quests').index('quests_id');
+      table.foreign('user_id').references('users.id').onDelete('cascade')
 
-      table.primary(['users_id', 'quests_uuid'])
+      table.primary(['user_id', 'quest_id'])
 
       table.timestamps()
     })

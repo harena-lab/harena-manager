@@ -6,10 +6,6 @@ const Model = use('Model')
 const uuidv4 = require('uuid/v4');
 
 class Case extends Model {
-    static get primaryKey () {
-        return 'uuid'
-    }
-
     static get incrementing () {
         return false
     }
@@ -20,6 +16,14 @@ class Case extends Model {
 
     versions(){
         return this.hasMany('App/Models/v1/CaseVersion')
+    }
+
+    quests () {
+        return this
+            .belongsToMany('App/Models/v1/Quest')
+            .pivotTable('quests_cases')
+            // .pivotModel(use('App/Models/v1/QuestCase'))
+            .withTimestamps()
     }
 } 
 

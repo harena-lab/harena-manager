@@ -6,8 +6,17 @@ const Model = use('Model')
 const uuidv4 = require('uuid/v4');
 
 class Quest extends Model {
-    static get primaryKey () {
-        return 'uuid'
+    users(){
+        return this.belongsToMany('App/Models/v1/User')
+            .pivotTable('users_quests')
+            .withTimestamps()
+    }
+
+    cases(){
+        return this.belongsToMany('App/Models/v1/Case')
+            .pivotTable('quests_cases')
+            // .pivotModel(use('App/Models/v1/QuestCase'))
+            .withTimestamps()
     }
 
     static get incrementing () {

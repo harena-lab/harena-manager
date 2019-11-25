@@ -6,11 +6,10 @@ const Schema = use('Schema')
 class QuestSchema extends Schema {
   async up () {
     this.create('quests', (table) => {
-      table.uuid('uuid')
-      table.string('name', 255).notNullable()
+      table.uuid('id')
+      table.string('name', 255).notNullable().unique()
 
-      table.primary('uuid')
-
+      table.primary('id')
       table.timestamps()
     })
 

@@ -16,18 +16,15 @@ class User extends Model {
         return this.hasMany('App/Models/v1/Case')
     }
 
-    executions () {
+    quests () {
         return this
-                .belongsToMany('App/Models/v1/CaseVersion')
-                .pivotTable('executions')
-                .withTimestamps()
+            .belongsToMany('App/Models/v1/Quest')
+            .pivotTable('users_quests')
+            .withTimestamps()
     }
 
-    available_cases () {
-        return this
-            .belongsToMany('App/Models/v1/CaseVersion')
-            .pivotTable('available_cases')
-            .withTimestamps()
+    artifacts() {
+        return this.hasMany('App/Models/v1/Artifact')
     }
 
     static boot() {
@@ -57,12 +54,6 @@ class User extends Model {
     tokens() {
         return this.hasMany('App/Models/Token')
     }
-
-    artifacts() {
-        return this.hasMany('App/Models/v1/Artifact')
-    }
-
-
 }
 
 module.exports = User
