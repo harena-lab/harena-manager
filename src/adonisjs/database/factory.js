@@ -26,7 +26,7 @@ Factory.blueprint('App/Models/v1/User', async (faker, i, data) => {
 Factory.blueprint('App/Models/v1/Case', (faker, i, data) => {
   return {
     name: data.name,
-    uuid: data.uuid
+    id: data.id
   }
 })
 

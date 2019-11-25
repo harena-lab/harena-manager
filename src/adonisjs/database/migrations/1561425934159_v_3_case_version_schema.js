@@ -28,7 +28,7 @@ class CaseVersionSchema extends Schema {
     await trx.raw(sql)
 
     trx.commit()
-    trx.rollback() 
+    trx.rollback()
   }
 }
 

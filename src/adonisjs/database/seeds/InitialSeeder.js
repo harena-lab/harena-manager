@@ -31,7 +31,7 @@ class UserSeeder {
  
       await user.save(trx)
 
-      const c = await Factory.model('App/Models/v1/Case').make({ name: 'case001-development', uuid:  await uuidv4() })
+      const c = await Factory.model('App/Models/v1/Case').make({ name: 'case001-development', id:  await uuidv4() })
       await user.cases().save(c, trx)
   
       const cv = await Factory.model('App/Models/v1/CaseVersion').make({ source: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8') })
@@ -42,6 +42,7 @@ class UserSeeder {
       
       trx.commit()
     } catch(e){
+      console.log(e)
       console.log('Error on seed process. Transactions rolled back')
       trx.rollback()
     }

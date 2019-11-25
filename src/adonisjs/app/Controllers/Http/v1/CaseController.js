@@ -59,7 +59,7 @@ class CaseController {
     try {
       let c = new Case()
 
-      c.uuid = await uuidv4()
+      c.id = await uuidv4()
       c.name = request.input('name')
       c.user_id = auth.user.id
       
@@ -126,6 +126,7 @@ class CaseController {
       return response.status(e.status).json({ message: e.message })
     }
   }
+
 }
 
 module.exports = CaseController

@@ -11,6 +11,10 @@ class CaseVersion extends Model {
     executions(){
         return this.belongsToMany('App/Models/v1/User').pivotTable('executions').withTimestamps()
     }
+
+    suggested_to(){
+        return this.belongsToMany('App/Models/v1/User').pivotTable('suggestions').withTimestamps()
+    }
 }
 
 module.exports = CaseVersion
