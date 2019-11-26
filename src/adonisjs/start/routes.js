@@ -24,13 +24,11 @@ Route.post('/', 				'TestController.create').as('profile');
 Route.post('/api/v1/user/register',                 'v1/UserController.store')
 Route.post('/api/v1/user/login',                    'v1/AuthController.login') 
 Route.group(() => { 
-
-                    Route.get(   '',                'v1/UserController.index') 
+                    Route.get(   '',                'v1/UserController.index')
                     Route.get(   ':id',             'v1/UserController.show') 
                     Route.put(   ':id',             'v1/UserController.update')
                     Route.delete(':id',             'v1/UserController.destroy')
-
-}).prefix('/api/v1/user').middleware('auth')
+}).prefix('/api/v1/user').middleware(['auth', 'is:administrator'])
 
 
 
@@ -50,7 +48,7 @@ Route.group(() => {
 	Route.delete(':id',                 'v1/CaseController.destroy')
 	Route.post(  'new',                 'v1/CaseController.newCase')
 
-}).prefix('/api/v1/case').middleware('auth')
+}).prefix('/api/v1/case').middleware('auth:jwt')
 
 
 /*
@@ -79,4 +77,4 @@ Route.group(() => {
 	Route.get(   ':id/list/cases',      'v1/QuestController.list_cases')
 
 
-}).prefix('/api/v1/quest').middleware('auth')
+}).prefix('/api/v1/quest').middleware('auth', 'is:administrator')

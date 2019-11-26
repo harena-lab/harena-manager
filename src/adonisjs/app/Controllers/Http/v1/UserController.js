@@ -75,6 +75,7 @@ class UserController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
+
    */
   async update({ params, request, response, auth }) {
     try {
