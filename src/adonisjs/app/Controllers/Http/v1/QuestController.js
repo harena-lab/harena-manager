@@ -99,6 +99,15 @@ class QuestController {
             console.log(e)
         }
     }
+
+    async index({ response }) {
+        try{
+            let quests = await Quest.all()
+            return response.json(quests)
+        } catch(e){
+            return response.status(e.status).json({ message: e.message })
+        }
+    }
 }
 
 module.exports = QuestController

@@ -113,20 +113,6 @@ class CaseController {
       return response.status(e.status).json({ message: e.message })
     }
   }
-
-  async newCase({ response, auth }) {
-    try {
-      let c = new Case()
-      c.user_id = auth.user.id
-      
-      await c.save()
-      return response.json(c)
-    } catch (e) {
-      console.log(e)
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
 }
 
 module.exports = CaseController
