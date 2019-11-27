@@ -8,7 +8,7 @@ class CaseUpdateColumnNameIdSchema extends Schema {
     this.table('cases', (table) => {
       // alter table
 
-      table.dropIndex('uuid', 'uuid')
+      table.dropPrimary('uuid')
       table.renameColumn('uuid', 'id')
       table.primary('id')
 
@@ -21,7 +21,7 @@ class CaseUpdateColumnNameIdSchema extends Schema {
 
       table.dropPrimary('id')
       table.renameColumn('id', 'uuid')
-      table.index('uuid', 'uuid')
+      table.primary('uuid')
 
 
     })

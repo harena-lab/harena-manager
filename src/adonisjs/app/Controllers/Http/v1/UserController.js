@@ -75,6 +75,7 @@ class UserController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
+
    */
   async update({ params, request, response, auth }) {
     try {
@@ -104,7 +105,15 @@ class UserController {
     }
   }
 
+  async list_quests({ params, response }) {
+    try{
+      let user = await User.find(params.id)
 
+      return response.json(await user.quests().fetch())
+    } catch(e){
+      console.log(e)
+    }
+  }
 }
 
 module.exports = UserController
