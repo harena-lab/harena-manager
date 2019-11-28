@@ -75,6 +75,7 @@ class UserController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
+
    */
   async update({ params, request, response, auth }) {
     try {
@@ -104,48 +105,15 @@ class UserController {
     }
   }
 
-  /** List the cases authored by the user */
-  async listCases({ params, response }) {
+  async list_quests({ params, response }) {
     try{
       let user = await User.find(params.id)
-      let cases = await user.cases().fetch()
-      return response.json(cases)
+
+      return response.json(await user.quests().fetch())
     } catch(e){
       console.log(e)
     }
   }
-
-  async newExecution({ request, response }) {
-    try {
-      const {user_id, case_version_id} = request.post()
-      let user = await User.find(user_id)
-      let cv = await CaseVersion.find(case_version_id)
-
-      await user.executions().attach(cv.id)
-      user.executions = await user.executions().fetch()
-      console.log(user.executions())
-      return response.json(user)
-    } catch (e) {
-      console.log(e)
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ message: e.message })
-      }
-
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
-  async listExecutions({ params, response, view }) {
-    try{
-      let user = await User.find(params.id)
-      
-      return response.json(await user.executions().fetch())
-    } catch(e){
-      console.log(e)
-    }
-  }
-
-  
 }
 
 module.exports = UserController

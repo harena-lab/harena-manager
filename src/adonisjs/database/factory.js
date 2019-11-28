@@ -26,7 +26,7 @@ Factory.blueprint('App/Models/v1/User', async (faker, i, data) => {
 Factory.blueprint('App/Models/v1/Case', (faker, i, data) => {
   return {
     name: data.name,
-    uuid: data.uuid
+    id: data.id
   }
 })
 
@@ -34,4 +34,22 @@ Factory.blueprint('App/Models/v1/CaseVersion', async (faker, i, data) => {
   return {
     source: data.source
   }
+})
+
+Factory.blueprint('Adonis/Acl/Role', (faker, i, data = {}) => {
+  data = Object.assign({
+    name: 'Administrator' || data.name,
+    slug: 'administrator' || data.slug,
+    description: 'manage administration privileges' || data.description
+  }, data)
+  return data
+})
+
+Factory.blueprint('Adonis/Acl/Permission', (faker, i, data = {}) => {
+  data = Object.assign({
+    name: data.name,
+    slug: data.slug,
+    description: data.description
+  }, data)
+  return data
 })

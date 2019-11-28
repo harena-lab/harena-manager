@@ -16,11 +16,15 @@ class User extends Model {
         return this.hasMany('App/Models/v1/Case')
     }
 
-    executions () {
+    quests () {
         return this
-                .belongsToMany('App/Models/v1/CaseVersion')
-                .pivotTable('executions')
-                .withTimestamps()
+            .belongsToMany('App/Models/v1/Quest')
+            .pivotTable('users_quests')
+            .withTimestamps()
+    }
+
+    artifacts() {
+        return this.hasMany('App/Models/v1/Artifact')
     }
 
     static boot() {
@@ -51,11 +55,12 @@ class User extends Model {
         return this.hasMany('App/Models/Token')
     }
 
-    artifacts() {
-        return this.hasMany('App/Models/v1/Artifact')
+    static get traits () {
+        return [
+            '@provider:Adonis/Acl/HasRole',
+            '@provider:Adonis/Acl/HasPermission'
+        ]
     }
-
-
 }
 
 module.exports = User

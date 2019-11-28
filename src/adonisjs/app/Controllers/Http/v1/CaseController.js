@@ -59,7 +59,7 @@ class CaseController {
     try {
       let c = new Case()
 
-      c.uuid = await uuidv4()
+      c.id = await uuidv4()
       c.name = request.input('name')
       c.user_id = auth.user.id
       
@@ -108,19 +108,6 @@ class CaseController {
       let c = await Case.findBy('uuid', params.id)
       c.delete()
       return response.json({ message: 'Case deleted!' })
-    } catch (e) {
-      console.log(e)
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
-
-  async newCase({ response, auth }) {
-    try {
-      let c = new Case()
-      c.user_id = auth.user.id
-      
-      await c.save()
-      return response.json(c)
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.message })
