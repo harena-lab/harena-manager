@@ -4,17 +4,17 @@ WORKDIR /app
 
 COPY ./src/adonisjs .
 
-#RUN chown node:node /app
+RUN chown node:node /app
 
 RUN npm i npm
 
-RUN npm i @adonisjs/cli
-
-RUN npm install
+RUN npm i -g @adonisjs/cli
 
 
 
-#USER node
+
+
+USER node
 
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
 #CMD [ "npm", "start"]
