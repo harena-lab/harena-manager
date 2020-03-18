@@ -3,7 +3,7 @@ version: '3'
 services:
 
   harena-manager:
-    image: manager2
+    image: manager
     ports:
       - "10020:10020"
     environment:
@@ -22,8 +22,6 @@ services:
       - DB_USER=jacinto
       - DB_PASSWORD=jacinto
       - HASH_DRIVER=bcrypt
-    # env_file:      
-    #   - web-variables.env
     depends_on:
       - harena-manager-database
     restart: always  
@@ -31,6 +29,7 @@ services:
       - harena-manager
     volumes:
       - ./src/adonisjs:/app
+      - /app/node_modules
 
   harena-manager-database:
     image: mysql:5.7
