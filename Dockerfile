@@ -2,11 +2,21 @@ FROM node:12
 
 WORKDIR /app
 
-RUN npm i npm
-RUN npm i -g @adonisjs/cli
-
 COPY ./src/adonisjs .
 
-RUN npm install
+RUN chown node:node /app
 
-CMD [ "npm", "start"]
+RUN npm i npm
+
+RUN npm i -g @adonisjs/cli
+
+
+
+
+
+USER node
+
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+#CMD [ "npm", "start"]
+
+ENTRYPOINT ["./bootstrap.sh"]
