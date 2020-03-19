@@ -124,9 +124,16 @@ Please refer to this [link](https://docs.docker.com/install/) for installing Doc
 
 ```bash
 sudo apt-get install docker-compose -y  # installing docker-compose
+
 git clone https://github.com/datasci4health/harena-manager 
+
 cd harena-manager
-sudo docker-compose up
+
+git checkout development
+git pull origin development
+
+docker build . -t manager
+docker-compose -f docker-compose-dev.yml up
 ```
 
 
