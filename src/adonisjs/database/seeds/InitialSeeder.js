@@ -28,17 +28,17 @@ class UserSeeder {
       user.username = 'jacinto'
       user.email = 'jacinto@example.com'
       user.password = 'jacinto'
+      user.id =  await uuidv4()
 
       await user.save(trx)
 
       const c = await Factory.model('App/Models/v1/Case').make({ name: 'case001-development', id:  await uuidv4() })
       await user.cases().save(c, trx)
 
-      const cv = await Factory.model('App/Models/v1/CaseVersion').make({ source: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8') })
-
+      const cv = await Factory.model('App/Models/v1/CaseVersion').make({ source: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8'), id:  await uuidv4() })
       await c.versions().save(cv, trx)
 
-      await Factory.model('App/Models/v1/User').createMany(5)
+      //await Factory.model('App/Models/v1/User').createMany(5)
       trx.commit()
 
 

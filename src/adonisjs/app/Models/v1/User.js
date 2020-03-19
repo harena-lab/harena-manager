@@ -8,6 +8,10 @@ const Model = use('Model')
 const Database = use('Database')
 
 class User extends Model {
+    static get incrementing () {
+        return false
+    }
+
     static async getAuthenticatedUser(email){
         return await Database.table('users').select('username', 'email').where('email', email)
     }

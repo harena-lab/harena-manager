@@ -64,8 +64,9 @@ class CaseController {
       c.user_id = auth.user.id
       
       let cv = new CaseVersion()
+      cv.id = await uuidv4()
+
       cv.source = request.input('source')
-      
       await c.versions().save(cv)
       await c.versions().fetch()
 
