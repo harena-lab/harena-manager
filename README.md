@@ -129,8 +129,8 @@ git clone https://github.com/datasci4health/harena-manager
 
 cd harena-manager
 
-git checkout development
-git pull origin development
+git checkout bugfix/refactoring_migration
+git pull origin bugfix/refactoring_migration
 
 docker build . -t manager
 docker-compose -f docker-compose-dev.yml up
