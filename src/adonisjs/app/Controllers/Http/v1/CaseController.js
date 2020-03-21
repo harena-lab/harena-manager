@@ -87,7 +87,6 @@ class CaseController {
       let cv = new CaseVersion()
       cv.source = request.input('source')
         cv.id = await uuidv4()
-console.log()
       await c.versions().save(cv)
       await c.save() 
       return response.json(c)
