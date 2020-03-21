@@ -5,11 +5,16 @@ const Schema = use('Schema')
 
 class CaseVersionSchema extends Schema {
   up () {
+    this.dropIfExists('case_versions')
+
     this.create('case_versions', (table) => {
-      table.increments()
+      table.uuid('id')
+      table.primary('id')
+
       table.text('source')
-      table.integer('case_id').unsigned()
-      table.foreign('case_id', 'case_id').references('id').inTable('cases')
+
+      table.uuid('case_id').references('id').inTable('cases').index('case_id');
+
       table.timestamps()
     })
   }

@@ -4,6 +4,10 @@
 const Model = use('Model')
 
 class CaseVersion extends Model {
+    static get incrementing () {
+        return false
+    }
+
     case() {
         return this.belongsTo('App/Models/v1/Case');
     }

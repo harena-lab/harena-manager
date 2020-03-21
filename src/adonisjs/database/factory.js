@@ -19,7 +19,8 @@ Factory.blueprint('App/Models/v1/User', async (faker, i, data) => {
   return {
     username:  faker.username(),
     email: faker.email(),
-    password: await Hash.make(faker.password())
+    password: await Hash.make(faker.password()),
+    id: data.id
   }
 })
 
@@ -32,7 +33,8 @@ Factory.blueprint('App/Models/v1/Case', (faker, i, data) => {
 
 Factory.blueprint('App/Models/v1/CaseVersion', async (faker, i, data) => {
   return {
-    source: data.source
+    source: data.source,
+    id: data.id
   }
 })
 
