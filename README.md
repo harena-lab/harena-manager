@@ -120,7 +120,7 @@ adonis serve --debug        # starting server
 ### Running as Docker containers - Linux
 
 You can run a containerized instance of this project with its required services (e.g., database) using Docker. Please refer to this link for installing Docker. Then, try:
-
+```
 sudo apt-get install docker-compose -y  # installing docker-compose
 
 git clone https://github.com/datasci4health/harena-manager 
@@ -132,7 +132,7 @@ git pull origin bugfix/refactoring_migration
 
 docker build . -t manager
 docker-compose -f docker-compose-dev.yml up
-
+```
 
 ## Dependencies
 
