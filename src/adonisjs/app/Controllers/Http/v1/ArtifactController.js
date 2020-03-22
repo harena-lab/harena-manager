@@ -46,7 +46,8 @@ class ArtifactController {
 			await file.move(fsPath, {name: artifactFileName, overwrite: false})
 	
 			const artifact = new Artifact()
-			artifact.fs_path       = fsPath + artifactFileName 
+			artifact.id       = artifactID
+			artifact.fs_path       = fsPath + artifactFileName
 			artifact.relative_path = caseRelativePath + artifactFileName
 			artifact.case_id       = linkedCase != null ? linkedCase.uuid : linkedCase;
 			await auth.user.artifacts().save(artifact)

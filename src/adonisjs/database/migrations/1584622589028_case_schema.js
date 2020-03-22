@@ -5,15 +5,17 @@ const Schema = use('Schema')
 
 class CaseSchema extends Schema {
   up () {
+    this.dropIfExists('cases')
     this.create('cases', (table) => {
-      table.increments()
-      table.string('name').unique()
+      table.uuid('id')
+      table.primary('id')
 
-      table.integer('user_id').unsigned()
-      table.foreign('user_id', 'fk_case_user').references('id').inTable('users');
+      table.string('name')
+
+      table.uuid('user_id').references('id').inTable('users').index('user_id');
+
       table.timestamps()
     })
-
   }
 
   down () {

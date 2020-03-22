@@ -3,16 +3,13 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class UsersQuestsSchema extends Schema {
+class UserQuestSchema extends Schema {
   up () {
     this.dropIfExists('user_quests')
-    this.create('users_quests', (table) => {
 
-      table.integer('user_id').unsigned().index('user_id')
-
+    this.create('user_quests', (table) => {
+      table.uuid('user_id').references('id').inTable('users').index('users_id');
       table.uuid('quest_id').references('id').inTable('quests').index('quests_id');
-      table.foreign('user_id').references('users.id').onDelete('cascade')
-
       table.primary(['user_id', 'quest_id'])
 
       table.timestamps()
@@ -20,8 +17,8 @@ class UsersQuestsSchema extends Schema {
   }
 
   down () {
-    this.drop('users_quests')
+    this.drop('user_quests')
   }
 }
 
-module.exports = UsersQuestsSchema
+module.exports = UserQuestSchema
