@@ -50,7 +50,7 @@ class CaseController {
       let versions = await CaseVersion.query().where('case_id', '=', params.id ).orderBy('created_at', 'asc').fetch()
 
       c.source = versions.last().source
-
+      c.versions = versions
       return response.json(c)
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
