@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Database = use('Database')
+
 const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
 const CaseVersion = use('App/Models/v1/CaseVersion')
@@ -44,10 +46,11 @@ class CaseController {
     try {
 
       let c = await Case.find( params.id )
-      let versions = await c.versions().fetch()
+
+      let versions = await CaseVersion.query().where('case_id', '=', params.id ).orderBy('created_at', 'asc').fetch()
 
       c.source = versions.last().source
-
+      c.versions = versions
       return response.json(c)
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
@@ -105,13 +108,26 @@ class CaseController {
    * @param {Response} ctx.response
    */
   async destroy({ params, response }) {
+    const trx = await Database.beginTransaction()
+
     try {
-      let c = await Case.findBy('uuid', params.id)
+      let c = await Case.findBy('id', params.id)
+
+      let versions = await c.versions().fetch()
+      let cvs = versions.rows
+
+      for (let i = 0; i < cvs.length; i++) {
+        let cv = await CaseVersion.findBy('id', cvs[i].id)
+        cv.delete()
+      }
+
       c.delete()
-      return response.json({ message: 'Case deleted!' })
+
+      trx.commit()
+      return response.json(c)
     } catch (e) {
-      console.log(e)
-      return response.status(e.status).json({ message: e.message })
+      trx.rollback()
+      return response.status(500).json({ message: e.message })
     }
   }
 }
