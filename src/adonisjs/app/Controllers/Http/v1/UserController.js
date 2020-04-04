@@ -7,6 +7,8 @@
 const User = use('App/Models/v1/User');
 const CaseVersion = use('App/Models/v1/CaseVersion');
 
+const uuidv4 = require('uuid/v4');
+
 class UserController {
   /**
    * Show a list of all users.
@@ -54,12 +56,20 @@ class UserController {
    */
   async store({ request, auth, response }) {
     try {
-      let user = await User.create(request.all())
+      let user = new User()
+
+      user.id =  await uuidv4()
+      user.username = request.input('username')
+      user.email = request.input('email')
+      user.password = request.input('password')
+      await user.save()
 
       let token = await auth.generate(user)
+
       Object.assign(user, token)
       response.json(user)
     } catch (e) {
+      console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
         return response.status(409).json({ message: e.message })
       }
