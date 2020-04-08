@@ -1,5 +1,9 @@
 'use strict'
 
+/** @typedef {import('@adonisjs/framework/src/Request')} Request */
+/** @typedef {import('@adonisjs/framework/src/Response')} Response */
+/** @typedef {import('@adonisjs/framework/src/View')} View */
+
 const Role = use('Adonis/Acl/Role');
 const Permission = use('Adonis/Acl/Permission');
 const User = use('App/Models/v1/User');
@@ -21,7 +25,7 @@ class AdminController {
             if (e.code === 'ER_DUP_ENTRY') {
                 return response.status(409).json({ code: e.code, message: e.sqlMessage })
             }
-            return response.status(e.status).json({ message: e.message })
+            return response.status(500).json({ message: e.toString() })
         }
     }
 
@@ -41,7 +45,7 @@ class AdminController {
             if (e.code === 'ER_DUP_ENTRY') {
                 return response.status(409).json({ code: e.code, message: e.sqlMessage })
             }
-            return response.status(e.status).json({ message: e.message })
+            return response.status(500).json({ message: e.toString() })
         }
     }
 
@@ -62,7 +66,7 @@ class AdminController {
                 return response.status(409).json({ message: e.message })
             }
 
-            return response.json({ message: e.toString() })
+            return response.status(500).json({ message: e.toString() })
         }
     }
 
@@ -83,16 +87,17 @@ class AdminController {
                 return response.status(409).json({ message: e.message })
             }
 
-            return response.json({ message: e.toString() })
+            return response.status(500).json({ message: e.toString() })
         }
-    }link_role_permission
+    }
 
     async list_roles({ response }) {
         try{
+            console.log('chegou')
             let roles = await Role.all()
             return response.json(roles)
         } catch(e){
-            return response.status(e.status).json({ message: e.message })
+            return response.status(500).json({ message: e.toString() })
         }
     }
 
@@ -101,7 +106,7 @@ class AdminController {
             let permissions = await Permission.all()
             return response.json(permissions)
         } catch(e){
-            return response.status(e.status).json({ message: e.message })
+            return response.status(500).json({ message: e.toString() })
         }
     }
 
@@ -112,6 +117,7 @@ class AdminController {
             return response.json(await user.roles().fetch())
         } catch(e){
             console.log(e)
+            return response.status(500).json({ message: e.toString() })
         }
     }
 
@@ -122,6 +128,7 @@ class AdminController {
             return response.json(await role.permissions().fetch())
         } catch(e){
             console.log(e)
+            return response.status(500).json({ message: e.message })
         }
     }
 }
