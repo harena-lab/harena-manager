@@ -7,10 +7,6 @@ class Case extends Model {
     static get incrementing () {
         return false
     }
-    
-    // user() {
-    //     return this.belongsTo('App/Models/v1/User');
-    // }
 
     contributors(){
         return this.belongsToMany('App/Models/v1/User')

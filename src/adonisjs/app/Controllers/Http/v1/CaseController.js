@@ -130,6 +130,23 @@ class CaseController {
       return response.status(500).json({ message: e.message })
     }
   }
+
+  async share({ request, auth, response }) {
+    try {
+      let {user_id, case_id} = request.post()
+
+      let user = await User.find(user_id)
+
+      await user.cases().attach(case_id, (row) => {
+        row.author = false
+      })
+
+      return response.json(user)
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
+    }
+  }
 }
 
 module.exports = CaseController
