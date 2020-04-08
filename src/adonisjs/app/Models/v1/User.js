@@ -16,8 +16,15 @@ class User extends Model {
         return await Database.table('users').select('username', 'email').where('email', email)
     }
 
-    cases() {
-        return this.hasMany('App/Models/v1/Case')
+    // cases() {
+    //     return this.hasMany('App/Models/v1/Case')
+    // }
+
+    cases(){
+        return this.belongsToMany('App/Models/v1/Case')
+            .pivotTable('contributors')
+            .withPivot(['author'])
+            .withTimestamps()
     }
 
     quests () {
