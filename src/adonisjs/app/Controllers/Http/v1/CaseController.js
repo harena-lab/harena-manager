@@ -61,18 +61,20 @@ class CaseController {
   async store({ request, auth, response }) {
     try {
       let c = new Case()
-
       c.id = await uuidv4()
       c.name = request.input('name')
-      c.user_id = auth.user.id
-      
+
       let cv = new CaseVersion()
       cv.id = await uuidv4()
-
       cv.source = request.input('source')
-      await c.versions().save(cv)
-      await c.versions().fetch()
 
+      await c.versions().save(cv)
+      await c.contributors().attach(auth.user.id, (row) => {
+        row.author = true
+      })
+
+      c.versions = await c.versions().fetch()
+      c.contributors = await c.contributors().fetch()
       return response.json(c)
     } catch (e) {
       console.log(e)
@@ -133,7 +135,17 @@ class CaseController {
 
   async share({ request, auth, response }) {
     try {
+      let loggedUser = auth.user.id
       let {user_id, case_id} = request.post()
+
+      let sqlQuery = 'select c.user_id, c.case_id from users u ' +
+                        'left join contributors c on u.id = c.user_id ' +
+                        'where c.user_id = ? and c.case_id = ?'
+      let contributors = await Database.raw(sqlQuery, [loggedUser, case_id])
+
+      if (contributors[0] == undefined){
+        return response.json('You are not allowed to share this case.')
+      }
 
       let user = await User.find(user_id)
 
@@ -141,7 +153,7 @@ class CaseController {
         row.author = false
       })
 
-      return response.json(user)
+      return response.json(contributors[0])
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.toString() })
