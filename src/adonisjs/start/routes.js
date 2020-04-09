@@ -44,6 +44,7 @@ Route.group(() => {
 	Route.post(  '',                    'v1/CaseController.store')
 	Route.put(   ':id',                 'v1/CaseController.update')
 	Route.delete(':id',                 'v1/CaseController.destroy')
+	Route.post(  'share',               'v1/CaseController.share')
 
 }).prefix('/api/v1/case').middleware(['auth:jwt', 'is:author'])
 

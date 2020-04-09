@@ -93,7 +93,6 @@ class AdminController {
 
     async list_roles({ response }) {
         try{
-            console.log('chegou')
             let roles = await Role.all()
             return response.json(roles)
         } catch(e){
