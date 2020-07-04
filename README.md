@@ -6,7 +6,7 @@
 
 # Harena Manager
 
-[Harena](https://github.com/datasci4health/harena)'s API for managing users and clinical cases.
+Harena's Database Access API.
 
 ## Table of contents
 
@@ -30,108 +30,43 @@
 
 ## Getting Started
 
-### Running locally - Linux
+### Option 1: Access our instance running at cloud
 
-1. Installing system dependencies.
-    
-    1.1 Install [nodejs/npm](https://nodejs.org/en/download/):
+<URL_HARENA_MANAGER>
 
-    ```bash
-    # Using Ubuntu
-    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+### Option 2: Running locally within docker containers
 
-    # Using Debian, as root
-    curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    apt-get install -y nodejs    
-    ```
-    1.2 Update npm (just in case):
+#### For developers
 
-    ```bash
-    sudo npm i npm  
-    ```
-    
+If you want to contribute to harena-manager, we provide a Docker<sup>1</sup>     container to develop environments. 
+This is the recomended way of run harena-manager code, since it guarantees the default configuration of the development environment, dispensing a manual configuration.
 
+<sub><sup>1</sup>Make sure you have [docker](https://docs.docker.com/install/) and [docker-compose command](https://docs.docker.com/compose/install/) already installed on your system.</sub>
 
-    1.3 Install [adonisjs](https://adonisjs.com/):
-
-    ```bash
-    sudo npm i -g @adonisjs/cli  
-    ```
-
-2. Clone this repository and enter the folder:
-
-    ```bash
-    git clone https://github.com/datasci4health/harena-manager 
-    cd harena-manager
-    ```
-
-3. Move to the source folder and install the project dependencies (see the `package.json` file for more details):
-
-    ```bash
-    cd src/adonisjs                      
-    npm install         
-    ```
-
-4. Create a .env file form the template and check database connection:
-
-    ```bash
-    cp .env.local .env
-    adonis key:generate         # generating unique APP_KEY
-    adonis migration:status     # checking database connection
-    ```
-
-5. Migrate database and start server in debug mode:
-
-    ```bash
-    adonis migration:run        # running database migrations
-    adonis serve --debug  # adjust flags according to you needs
-    ```    
-
-
-    Edit the .env file with your own [configuration](#Configuration). Then, run adonis again. Run `adonis serve --help` to see alternative options.
-
-**TL;DR**
-
+Clone harena manager repository, get into it, checkout development branch, and build the manager docker image:
 ```bash
-# Using Ubuntu
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# Using Debian, as root
-#curl -sL https://deb.nodesource.com/setup_10.x | bash -
-#apt-get install -y nodejs   
-
-sudo npm i npm  
-sudo npm i -g @adonisjs/cli  
-
-git clone https://github.com/datasci4health/harena-manager 
-cd harena-manager/src/adonisjs                      
-npm install 
-
-cp .env.local .env          # using template .env setup
-adonis key:generate         # generating unique APP_KEY
-adonis migration:status     # checking database connection    
-
-adonis migration:run        # running database migrations
-adonis serve --debug        # starting server
-```    
-
-### Running as Docker containers - Linux
-
-You can run a containerized instance of this project with its required services (e.g., database) using Docker. Please refer to this link for installing Docker. Then, try:
-```
-sudo apt-get install docker-compose -y  # installing docker-compose
-
-git clone https://github.com/datasci4health/harena-manager 
-
+git clone https://github.com/datasci4health/harena-manager.git
 cd harena-manager
-
-git checkout development
+git checkout -b development
 git pull origin development
 
 docker build . -t manager
+cd ..
+```
+
+Then, up the docker container:
+
+```bash
 docker-compose -f docker-compose-dev.yml up
+```
+
+
+After starting the container, access http://localhost:10020/ to check if the system is up.
+
+If you want to get the command line of the container, then run the command:
+
+```bash
+docker exec -it harena-manager_harena-manager_1 bash
 ```
 
 ## Dependencies
@@ -165,42 +100,20 @@ docker-compose -f docker-compose-dev.yml up
 
 ## Configuration
 
-### AdonisJS general environment variables
-
-* HOST= host ip/name
-* PORT= host port
-* NODE_ENV= dynamic behavior (production, development)
-* APP_URL= allowed incomming URLS (e.g., http://${HOST}:${PORT} )
-* CACHE_VIEWS= enable/disable caching (true || false)
-* APP_KEY= app private key
-* ENV_SILENT= enable/disable looking for a .env file (true || false)
-* HASH_DRIVER=bcrypt
-* MOMENT_LOCALE=pt-br
-
-### AdonisJS database environment variables
-
-* DB_CONNECTION= database (pg, maria, mysql, sqlite)
-* DB_HOST= host/ipname
-* DB_PORT= host port
-* DB_USER= username
-* DB_PASSWORD= password
-* DB_DATABASE= target database
-* DB_SEARCH_PATH= database schema (if supported -- e.g., postgresql)
-
 ## Contributing
 
 ### Development Mode
 
-
-
 ### Branch organization
-* **feature/< github-issue >:**
-    * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
-* **development:**
-    * Version running at http://harena.ds4h.org/development . 
-    * Protected. Must use _pull request_ to merge new features.
 * **master:**
     * Version running at http://harena.ds4h.org/latest .
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
+* **development:**
+    * Version running at http://harena.ds4h.org/development . 
+    * Protected. Must use _pull request_ to merge new features.
+* **feature/< github-issue >:**
+    * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
+* **bug/< github-issue >:**
+    * new bugs registered on the issue list https://github.com/datasci4health/harena-manager/issues.
 * **tags:**
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
