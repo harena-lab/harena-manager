@@ -28,10 +28,9 @@ Harena's Database Access API.
 
 ### Running locally within docker containers
 
-If you want to run harena-manager code, we provide a Docker<sup>1</sup> container to develop environments. 
-We recomend to use the container, however you are free to run the code in the way you want. Containers guarantee the minimal configuration required to run the code. We suggest to read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install `docker` and learn further about containers.
+We provide a docker container to run `harena-manager` code. Containers usage guarantees the minimal configuration required to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install `docker` and learn further about containers.
 
-##### Intructions
+#### Intructions
 
 Clone harena manager repository, get into it, checkout development branch, and build the manager docker image:
 ```bash
