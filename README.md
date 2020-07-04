@@ -15,12 +15,6 @@ Harena's Database Access API.
 - [Getting Started](#getting-started)
     - [Access harena-manager service](#running-locally---linux)
     - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-- [Dependencies](#dependencies)
-    - [System-wide](#system-wide)
-    - [NPM packages](#npm-packages)
-- [Configuration](#configuration)
-    - [AdonisJS general environment variables](#adonisjs-general-environment-variables)
-    - [AdonisJS database environment variables](#adonisjs-database-environment-variables)
 - [Contributing](#contributing)
     - [Development Mode](#development-mode)
     - [Branch organization](#branch-organization)
@@ -100,11 +94,7 @@ docker exec -it harena-manager_harena-manager_1 bash
 ## Configuration
 -->
 
-## Contributing
-
-### Development Mode
-
-### Branch organization
+## Branch organization
 * `master`:
     * Version running at http://harena.ds4h.org/latest .
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
