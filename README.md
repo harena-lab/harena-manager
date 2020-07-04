@@ -26,14 +26,12 @@ Harena's Database Access API.
 
 `<URL_HARENA_MANAGER>`
 
-### Running the code locally within docker containers
+### Running locally within docker containers
 
-#### For developers
+If you want to run harena-manager code, we provide a Docker<sup>1</sup> container to develop environments. 
+We recomend to use the container, however you are free to run the code in the way you want. Containers guarantee the minimal configuration required to run the code. We suggest to read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install `docker` and learn further about containers.
 
-If you want to contribute to harena-manager, we provide a Docker<sup>1</sup>     container to develop environments. 
-This is the recomended way of run harena-manager code, since it guarantees the default configuration of the development environment, dispensing a manual configuration.
-
-<sub><sup>1</sup>Make sure you have [docker](https://docs.docker.com/install/) and [docker-compose command](https://docs.docker.com/compose/install/) already installed on your system.</sub>
+##### Intructions
 
 Clone harena manager repository, get into it, checkout development branch, and build the manager docker image:
 ```bash
@@ -51,7 +49,6 @@ Then, up the docker container:
 ```bash
 docker-compose -f docker-compose-dev.yml up
 ```
-
 
 After starting the container, access http://localhost:10020/ to check if the system is up.
 
