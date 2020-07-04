@@ -13,7 +13,7 @@ Harena's Database Access API.
 <!-- MarkdownTOC autolink=true -->
 
 - [Getting Started](#getting-started)
-    - [Running locally - Linux](#running-locally---linux)
+    - [Access harena-manager service](#running-locally---linux)
     - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
 - [Dependencies](#dependencies)
     - [System-wide](#system-wide)
@@ -30,11 +30,11 @@ Harena's Database Access API.
 
 ## Getting Started
 
-### Option 1: Access our instance running at cloud
+### Access `harena-manager` service
 
-<URL_HARENA_MANAGER>
+`<URL_HARENA_MANAGER>`
 
-### Option 2: Running locally within docker containers
+### Running the code locally within docker containers
 
 #### For developers
 
@@ -69,7 +69,7 @@ If you want to get the command line of the container, then run the command:
 docker exec -it harena-manager_harena-manager_1 bash
 ```
 
-## Dependencies
+<!-- ## Dependencies
 
 ### System-wide
 
@@ -97,23 +97,23 @@ docker exec -it harena-manager_harena-manager_1 bash
 
 <b><sup>1</sup></b> In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
 
-
 ## Configuration
+-->
 
 ## Contributing
 
 ### Development Mode
 
 ### Branch organization
-* **master:**
+* `master`:
     * Version running at http://harena.ds4h.org/latest .
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
-* **development:**
+* `development`:
     * Version running at http://harena.ds4h.org/development . 
     * Protected. Must use _pull request_ to merge new features.
-* **feature/< github-issue >:**
+* `feature/< github-issue >`:
     * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
-* **bug/< github-issue >:**
+* `bug/< github-issue >`:
     * new bugs registered on the issue list https://github.com/datasci4health/harena-manager/issues.
-* **tags:**
+* `tags`:
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
