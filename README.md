@@ -16,7 +16,6 @@ Harena's Database Access API.
     - [Access harena-manager service](#running-locally---linux)
     - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
 - [Contributing](#contributing)
-    - [Development Mode](#development-mode)
     - [Branch organization](#branch-organization)
 
 <!-- /MarkdownTOC -->
