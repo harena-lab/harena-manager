@@ -94,6 +94,11 @@ docker exec -it harena-manager_harena-manager_1 bash
 ## Configuration
 -->
 
+## Dependencies
+- adonis
+- node
+- npm
+
 ## Contributing
 
 ### Branch organization
