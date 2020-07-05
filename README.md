@@ -7,7 +7,7 @@
 
 # Harena Manager
 
-Harena's Database Access API.
+Relational Database Management Module of [Harena project](https://github.com/datasci4health/harena).
 
 ## Table of contents
 
@@ -17,8 +17,7 @@ Harena's Database Access API.
 - [Getting Started](#getting-started)
     - [Access harena-manager service](#running-locally---linux)
     - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-- [Contributing](#contributing)
-    - [Branch organization](#branch-organization)
+- [Branch organization](#branch-organization)
 
 <!-- /MarkdownTOC -->
 

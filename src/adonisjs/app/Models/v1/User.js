@@ -16,8 +16,15 @@ class User extends Model {
         return await Database.table('users').select('username', 'email').where('email', email)
     }
 
-    cases() {
-        return this.hasMany('App/Models/v1/Case')
+    // cases() {
+    //     return this.hasMany('App/Models/v1/Case')
+    // }
+
+    cases(){
+        return this.belongsToMany('App/Models/v1/Case')
+            .pivotTable('contributors')
+            .withPivot(['author'])
+            .withTimestamps()
     }
 
     quests () {
@@ -38,11 +45,7 @@ class User extends Model {
          * A hook to hash the user password before saving
          * it to the database.
          */
-        this.addHook('beforeSave', async (userInstance) => {
-            if (userInstance.dirty.password) {
-                userInstance.password = await Hash.make(userInstance.password)
-            }
-        })
+        this.addHook('beforeCreate', 'UserHook.hashPassword')
     }
 
     /**
