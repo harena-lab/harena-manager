@@ -4,6 +4,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
+
 # Harena Manager
 
 Harena's Database Access API.
@@ -12,13 +13,18 @@ Harena's Database Access API.
 
 <!-- MarkdownTOC autolink=true -->
 
+- [Change log](#change-log)
 - [Getting Started](#getting-started)
     - [Access harena-manager service](#running-locally---linux)
     - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-- [Branch organization](#branch-organization)
+- [Contributing](#contributing)
+    - [Branch organization](#branch-organization)
 
 <!-- /MarkdownTOC -->
 
+## Change log
+
+The change log can be found in the CHANGELOG.md file.
 
 ## Getting Started
 
@@ -30,7 +36,7 @@ Harena's Database Access API.
 
 We provide a docker container to run `harena-manager` code. Containers usage guarantees the minimal configuration required to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
 
-#### Intructions (for Linux users)
+#### Instructions (for Linux users)
 
 Clone `harena-manager` repository, get into it, checkout `development` branch, and build the manager docker image:
 ```bash
@@ -88,7 +94,9 @@ docker exec -it harena-manager_harena-manager_1 bash
 ## Configuration
 -->
 
-## Branch organization
+## Contributing
+
+### Branch organization
 * `master`:
     * Version running at http://harena.ds4h.org/latest .
     * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
