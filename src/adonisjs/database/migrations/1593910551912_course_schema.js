@@ -3,21 +3,22 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class CaseTypeSchema extends Schema {
+class CourseSchema extends Schema {
   up () {
-    this.create('case_types', (table) => {
+	this.dropIfExists('courses')
+
+    this.create('courses', (table) => {
       table.uuid('id')
       table.primary('id')
 
-      table.string('name', 100)
-
+      table.string('name',100)
       table.timestamps()
     })
   }
 
   down () {
-    this.drop('case_types')
+    this.drop('courses')
   }
 }
 
-module.exports = CaseTypeSchema
+module.exports = CourseSchema

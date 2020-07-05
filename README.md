@@ -6,7 +6,7 @@
 
 # Harena Manager
 
-Harena's Database Access API.
+Relational Database Management Module of [Harena project](https://github.com/datasci4health/harena).
 
 ## Table of contents
 
@@ -30,7 +30,7 @@ Harena's Database Access API.
 
 We provide a docker container to run `harena-manager` code. Containers usage guarantees the minimal configuration required to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
 
-#### Intructions (for Linux users)
+#### Instructions (for Linux users)
 
 Clone `harena-manager` repository, get into it, checkout `development` branch, and build the manager docker image:
 ```bash
