@@ -23,7 +23,7 @@ class User extends Model {
     cases(){
         return this.belongsToMany('App/Models/v1/Case')
             .pivotTable('contributors')
-            .withPivot(['author'])
+            .withPivot(['role'])
             .withTimestamps()
     }
 
@@ -62,6 +62,7 @@ class User extends Model {
         return this.hasMany('App/Models/Token')
     }
 
+    // Attach role and permissions of a user
     static get traits () {
         return [
             '@provider:Adonis/Acl/HasRole',

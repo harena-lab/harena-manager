@@ -37,6 +37,8 @@ Route.group(() => {
 |  resource: /case
 |----------------------------------------------------------------------------------------------
 */
+Route.get('/api/v1/cases',		'v1/CaseController.index').middleware(['auth:jwt', 'can:read'])
+
 Route.group(() => {
 	
 	Route.post( 'list',                 'v1/CaseController.index')  
@@ -95,7 +97,8 @@ Route.group(() => {
 	Route.post(  'role/link/permission',	'v1/AdminController.link_role_permission')
 
 	Route.get(   'user/:id/roles',		  	'v1/AdminController.list_roles_by_user')
-	Route.get(   'role/:id/permissions',	'v1/AdminController.list_permissions_by_user')
+	Route.get(   'role/:id/permissions',	'v1/AdminController.list_permissions_by_role')
+	Route.get(   'user/:id/permissions',	'v1/AdminController.list_permissions_by_user')
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:administrator'])
 
