@@ -6,17 +6,19 @@ const Schema = use('Schema')
 class AlterUserAddAttributesSchema extends Schema {
   up () {
     this.table('users', (table) => {
-      table.string('username', 100)
-      
-      table.date('birth')
-      table.string('gender', 100)
-      table.string('expertise', 50)
+
+      table.uuid('institution_id').references('id').inTable('institutions').index('institution_id');
+      table.uuid('course_id').references('id').inTable('courses').index('course_id');
+
     })
   }
 
   down () {
     this.table('users', (table) => {
-      // reverse alternations
+
+      table.dropColumn('institution_id')    
+      table.dropColumn('course_id')    
+    
     })
   }
 }
