@@ -15,6 +15,8 @@ class AlterUserAddAttributesSchema extends Schema {
 
   down () {
     this.table('users', (table) => {
+      table.dropForeign('institution_id')
+      table.dropForeign('course_id')
 
       table.dropColumn('institution_id')    
       table.dropColumn('course_id')    
