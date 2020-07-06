@@ -20,7 +20,7 @@ class ContributorsSchema extends Schema {
 
       // copy data
       this.schedule(async (trx) => {
-          console.log('aqui')
+          console.log('executing schedule of contributor script')
           const cases = await Database.table('cases').transacting(trx)
           for (let i = 0; i < cases.length; i++) {
               console.log(cases[i])

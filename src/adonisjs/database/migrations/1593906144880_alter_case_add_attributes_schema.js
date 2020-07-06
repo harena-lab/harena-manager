@@ -7,7 +7,6 @@ class AlterCaseAddAttributesSchema extends Schema {
   up () {
     this.table('cases', (table) => {
 
-      table.string('title', 255)
       table.string('description')
       table.string('language', 5)
       table.string('domain', 50)

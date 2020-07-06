@@ -10,7 +10,7 @@ class CaseSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      table.string('name')
+      table.string('title')
 
       table.uuid('user_id').references('id').inTable('users').index('user_id');
 
