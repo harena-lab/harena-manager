@@ -86,6 +86,13 @@ class UserSeeder {
       cv.id = await uuidv4()
       await c.versions().save(cv, trx)
 
+
+      // await user.contributes_with_cases().attach([c.id], trx)
+      await c.contributors().attach(user.id, (row) => {
+        const AUTHOR = 0
+        row.role = AUTHOR
+      }, trx)
+
       return c
     } catch (e){
       console.log(e)
@@ -149,7 +156,7 @@ class UserSeeder {
 
     const rolePlayer = await Role.findBy('slug', 'player')
     await rolePlayer.permissions().attach([player_permission.id], trx)
-    await user.roles().attach([rolePlayer.id], trx)
+    // await user.roles().attach([rolePlayer.id], trx)
   
     trx.commit()
   }

@@ -10,8 +10,8 @@ class Case extends Model {
 
     contributors(){
         return this.belongsToMany('App/Models/v1/User')
-            .pivotTable('contributors')
-            .withPivot(['author'])
+            .pivotTable('case_contributors')
+            .withPivot(['role'])
             .withTimestamps()
     }
 
