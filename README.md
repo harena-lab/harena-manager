@@ -4,6 +4,9 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
+[![NPM Version](https://img.shields.io/npm/v/adonis-acl.svg?style=flat-square)](https://npmjs.org/package/adonis-acl)
+
+
 
 # Harena Manager
 

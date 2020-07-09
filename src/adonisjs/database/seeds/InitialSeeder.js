@@ -28,7 +28,7 @@ const uuidv4 = require('uuid/v4');
 
 class UserSeeder {
   async run() {
-    const trx = await Database.beginTransaction()
+    let trx = await Database.beginTransaction()
     try{
       let jacinto = await User.findBy('username', 'jacinto')
 
@@ -37,19 +37,18 @@ class UserSeeder {
         let user = await this.seed_default_users(trx)
         await this.seed_default_case(user, trx)
 
-        trx.commit()
+        await this.seed_roles_and_permissions(user, trx)
+
       } else {
         console.log('Database is already populated')
+        trx.commit()
       }
 
-      jacinto = await User.findBy('username', 'jacinto')
-
-      this.seed_roles_and_permissions(jacinto)
-      trx.commit()
 
     } catch(e){
+      console.log('Error on seed process. Transactions rolled back. Log:')
       console.log(e)
-      console.log('Error on seed process. Transactions rolled back')
+
       trx.rollback()
     }
   }
@@ -72,83 +71,89 @@ class UserSeeder {
 
   async seed_default_case(user, trx){
     try{
-      console.log(1)
-    
+   
       let c = new Case()
-        c.title = 'default-case'
-        c.description = 'Case for tests'
-        c.language = 'pt-br'
-        c.domain = 'domain-test'
-        c.specialty = 'specialty-test'
-        c.keywords = 'keyword1; keyword2'
-        c.id = await uuidv4()
+      c.title = 'default-case'
+      c.description = 'Case for tests'
+      c.language = 'pt-br'
+      c.domain = 'domain-test'
+      c.specialty = 'specialty-test'
+      c.keywords = 'keyword1; keyword2'
+      c.id = await uuidv4()
 
       let cv = new CaseVersion()
-        cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
-        cv.id = await uuidv4()
-
+      cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
+      cv.id = await uuidv4()
       await c.versions().save(cv, trx)
 
+      return c
     } catch (e){
       console.log(e)
     }
   }
 
-  async seed_roles_and_permissions(user){
-    console.log(user)
-
+  async seed_roles_and_permissions(user, trx){
     let administrator = new Role()
     administrator.name = 'Administrator'
     administrator.slug = 'admin'
     administrator.description = 'system admin'
     administrator.id = await uuidv4()
-    await administrator.save()
+    administrator = await administrator.save(trx)
 
     let admin_permissions = new Permission()
     admin_permissions.name = 'admin permission'
     admin_permissions.slug = 'admin_permissions'
     admin_permissions.description = 'higher permissions'
     admin_permissions.id = await uuidv4()
-    await admin_permissions.save()
-
-    await administrator.permissions().attach([admin_permissions.id])
-    await user.roles().attach([administrator.id])
-
+    await admin_permissions.save(trx)
 
     let creator = new Role()
     creator.name = 'Case Author'
     creator.slug = 'author'
     creator.description = 'author of clinical cases'
     creator.id = await uuidv4()
-    await creator.save()
+    creator = await creator.save(trx)
 
     let author_permission = new Permission()
     author_permission.name = 'Handle Cases'
     author_permission.slug = 'author_permissions'
     author_permission.description = 'can create, update, delete, list cases'
     author_permission.id = await uuidv4()
-    await author_permission.save()
-
-    await creator.permissions().attach([author_permission.id])
-    // await user.roles().attach([creator.id])
+    await author_permission.save(trx)
 
     let player = new Role()
     player.name = 'Player'
     player.slug = 'player'
     player.description = 'player'
     player.id = await uuidv4()
-    await player.save()
+    player = await player.save(trx)
 
     let player_permission = new Permission()
     player_permission.name = 'Play Cases'
     player_permission.slug = 'player_permissions'
     player_permission.description = 'can play cases'
     player_permission.id = await uuidv4()
-    await player_permission.save()
+    await player_permission.save(trx)
 
-    await player.permissions().attach([player_permission.id])
-    // await user.roles().attach([player.id])
+    trx.commit()
+
+    trx = await Database.beginTransaction()
+
+    const roleAdmin = await Role.findBy('slug', 'admin')
+    await roleAdmin.permissions().attach([admin_permissions.id], trx)
+    await user.roles().attach([roleAdmin.id], trx)
+     
+    const roleAuthor = await Role.findBy('slug', 'author')
+    await roleAuthor.permissions().attach([author_permission.id], trx)
+    await user.roles().attach([roleAuthor.id], trx)
+
+    const rolePlayer = await Role.findBy('slug', 'player')
+    await rolePlayer.permissions().attach([player_permission.id], trx)
+    await user.roles().attach([rolePlayer.id], trx)
+  
+    trx.commit()
   }
+
 }
 
 module.exports = UserSeeder

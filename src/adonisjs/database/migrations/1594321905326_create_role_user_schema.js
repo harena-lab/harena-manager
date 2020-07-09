@@ -11,12 +11,6 @@ class RoleUserTableSchema extends Schema {
       table.uuid('user_id').references('id').inTable('users').index('user_id');
       table.primary(['user_id', 'role_id'])
 
-
-      // table.uuid('user_id').references('id').inTable('users').index('user_id');
-      // table.integer('role_id').unsigned().index()
-      // table.foreign('role_id').references('id').on('roles').onDelete('cascade')
-      // table.primary(['user_id', 'role_id'])
-
       table.timestamps()
     })
   }

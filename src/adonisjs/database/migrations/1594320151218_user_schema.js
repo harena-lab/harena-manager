@@ -16,6 +16,9 @@ class UserSchema extends Schema {
       table.string('email', 254).notNullable().unique()
       table.string('password', 60).notNullable()
 
+      table.uuid('institution_id').references('id').inTable('institutions').index('institution_id');
+      table.uuid('course_id').references('id').inTable('courses').index('course_id');
+
       table.timestamps()
     })
   }

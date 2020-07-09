@@ -6,7 +6,7 @@ const Schema = use('Schema')
 class CourseInstitutionSchema extends Schema {
   up () {
 
-	    this.dropIfExists('course_institutions')
+	  this.dropIfExists('course_institutions')
 
     this.create('course_institutions', (table) => {
       table.uuid('institution_id').references('id').inTable('institutions').index('institution_id');
