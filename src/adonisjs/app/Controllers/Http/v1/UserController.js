@@ -39,9 +39,13 @@ class UserController {
    */
   async show({ params, request, response, view }) {
     try{
-      let users = await User.find(params.id)
-      return response.json(users)
+      let user = await User.find(params.id)
+
+      if (user != null)
+        return response.json(user)
+      else return response.status(500).json('user nout found')
     } catch(e){
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
@@ -62,6 +66,7 @@ class UserController {
       user.username = request.input('username')
       user.email = request.input('email')
       user.password = request.input('password')
+      user.login = request.input('login')
       await user.save()
 
       let token = await auth.generate(user)
@@ -93,10 +98,12 @@ class UserController {
 
       let storeduser = await User.find(params.id)
 
-      await storeduser.merge(newUser)
-      await storeduser.save()
-     
-      return response.json(storeduser)
+      if (storeduser != null){
+        await storeduser.merge(newUser)
+        await storeduser.save()
+        return response.json(storeduser)
+      } else return response.status(500).json('user not found')
+
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
@@ -107,7 +114,10 @@ class UserController {
   async destroy({ params, response, auth }) {
     try{
       let user = await User.find(params.id)
-      await user.delete()
+
+      if (user != null) {
+        await user.delete()
+      } else return response.json('user nout found')
 
       return response.json(user)
     }catch(e){
@@ -119,9 +129,12 @@ class UserController {
     try{
       let user = await User.find(params.id)
 
-      return response.json(await user.quests().fetch())
+      if (user != null) {
+        return response.json(await user.contributes_with_quests().fetch())
+      } else return response.status(500).json('user not found')
     } catch(e){
       console.log(e)
+      return response.status(500).json({ message: e.message })
     }
   }
 }

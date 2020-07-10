@@ -27,10 +27,11 @@ class User extends Model {
             .withTimestamps()
     }
 
-    quests () {
+    contributes_with_quests() {
         return this
             .belongsToMany('App/Models/v1/Quest')
-            .pivotTable('users_quests')
+            .pivotTable('quest_contributors')
+            .withPivot(['role'])
             .withTimestamps()
     }
 
