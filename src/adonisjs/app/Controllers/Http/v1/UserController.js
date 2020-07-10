@@ -137,6 +137,32 @@ class UserController {
       return response.status(500).json({ message: e.message })
     }
   }
+
+  async list_cases({ params, response }) {
+    try{
+      let user = await User.find(params.id)
+      console.log(user)
+
+      if (user != null) {
+        return response.json(await user.contributes_with_cases().fetch())
+      } else return response.status(500).json('user not found')
+
+// console.log('filter')
+//         let user = await User.find(filter)
+//         let cases = await user.contributes_with_cases().fetch()
+
+//         for (var i = 0; i < cases.length; i++) {
+//           cases[i].contributors = cases[i].contributors().fetch()
+//         }
+
+//         // cases.contributors = cases.contributors().fetch()
+//         return response.json(cases)
+
+    } catch(e){
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
 }
 
 module.exports = UserController
