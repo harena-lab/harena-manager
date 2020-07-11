@@ -20,17 +20,18 @@ class User extends Model {
     //     return this.hasMany('App/Models/v1/Case')
     // }
 
-    cases(){
+    contributes_with_cases(){
         return this.belongsToMany('App/Models/v1/Case')
-            .pivotTable('contributors')
+            .pivotTable('case_contributors')
             .withPivot(['role'])
             .withTimestamps()
     }
 
-    quests () {
+    contributes_with_quests() {
         return this
             .belongsToMany('App/Models/v1/Quest')
-            .pivotTable('users_quests')
+            .pivotTable('quest_contributors')
+            .withPivot(['role'])
             .withTimestamps()
     }
 

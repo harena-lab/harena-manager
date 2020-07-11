@@ -12,7 +12,7 @@ class QuestCaseSchema extends Schema {
       table.uuid('case_id').references('id').inTable('cases').index('case_id');
       table.primary(['case_id', 'quest_id'])
 
-      table.string('argument')
+      table.integer('order_position')
 
       table.timestamps()
     })

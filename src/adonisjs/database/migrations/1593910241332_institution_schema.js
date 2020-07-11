@@ -12,7 +12,7 @@ class InstitutionSchema extends Schema {
       table.primary('id')
 
       table.string('acronym', 30)
-      table.string('name', 100)
+      table.string('title', 100)
       table.string('country', 2)
 
       table.timestamps()

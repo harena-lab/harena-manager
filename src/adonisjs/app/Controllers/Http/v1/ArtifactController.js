@@ -16,7 +16,7 @@ class ArtifactController {
 			  						extnames: ['png', 'jpg', 'jpeg', 'gif','mp4','avi', '.wmv']
 								  }
 
-		this.relativePath     = '/artifacts/' 
+		this.relativePath     = '/resources/artifacts/' 
 
 
 	}
@@ -25,38 +25,38 @@ class ArtifactController {
 		try{
 
 			const file             = request.file('file', this.validationOptions)
-			const caseID           = request.input('case_uuid', null)
+			const case_id           = request.input('case_id', null)
 			
-			var linkedCase = await Case.find(caseID)
+			var c = await Case.find(case_id)
 	
-			if (caseID != null && linkedCase == null){
+			console.log(c)
+			if (case_id != null && c == null){
 				return response.json({ message: "Case id not found" })
 			} 
 			
-			let fsPath = Helpers.publicPath(this.relativePath)
-			let caseRelativePath = this.relativePath
-			if (caseID != null){
-				fsPath += 'cases/' + caseID + '/'
-				caseRelativePath += 'cases/' + caseID + '/'
+			let fs_path = Helpers.publicPath(this.relativePath)
+			let case_relative_path = this.relativePath
+			if (case_id != null){
+				fs_path += 'cases/' + case_id + '/'
+				case_relative_path += 'cases/' + case_id + '/'
 			}
 			
-			const artifactID       = await uuid4() 
-			const artifactFileName = artifactID + "." + file.extname
+			const artifact_id       = await uuid4() 
+			const artifact_file_name = artifact_id + "." + file.extname
 	
-			await file.move(fsPath, {name: artifactFileName, overwrite: false})
+			await file.move(fs_path, {name: artifact_file_name, overwrite: false})
 	
 			const artifact = new Artifact()
-			artifact.id       = artifactID
-			artifact.fs_path       = fsPath + artifactFileName
-			artifact.relative_path = caseRelativePath + artifactFileName
-			artifact.case_id       = linkedCase != null ? linkedCase.uuid : linkedCase;
-			await auth.user.artifacts().save(artifact)
+			artifact.id       = artifact_id
+			artifact.fs_path       = fs_path + artifact_file_name
+			artifact.relative_path = case_relative_path + artifact_file_name
+			artifact.case_id       = c != null ? c.id : c;
 		
 			const base_url = Env.getOrFail('APP_URL')
 		
 			let bodyMessage = { message:       "Artifact successfully stored",
-								filename:      artifactFileName,
-								case:          linkedCase,										   
+								filename:      artifact_file_name,
+								case:          c,										   
 								size_in_bytes: file.size,
 								type:          file.type,
 								subtype:       file.subtype,
@@ -65,6 +65,8 @@ class ArtifactController {
 								relative_path: artifact.relative_path,
 								url:           base_url+artifact.relative_path 
 			}
+
+			await auth.user.artifacts().save(artifact)
 
 			return response.status(200).json(bodyMessage)
 		} catch(e){

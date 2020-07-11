@@ -10,9 +10,14 @@ class CaseSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      table.string('name')
+      table.string('title').notNullable().unique()
+      table.string('description')
+      table.string('language', 5)
+      table.string('domain', 50)
+      table.string('specialty', 50)
+      table.string('keywords', 512)
 
-      table.uuid('user_id').references('id').inTable('users').index('user_id');
+      // table.uuid('user_id').references('id').inTable('users').index('user_id');
 
       table.timestamps()
     })

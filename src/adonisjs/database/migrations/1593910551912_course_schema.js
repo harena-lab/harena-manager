@@ -1,4 +1,4 @@
-'use strict'
+  'use strict'
 
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
@@ -11,7 +11,7 @@ class CourseSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      table.string('name',100)
+      table.string('title',100)
       table.timestamps()
     })
   }

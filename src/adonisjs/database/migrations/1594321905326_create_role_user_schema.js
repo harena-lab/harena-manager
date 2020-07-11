@@ -7,9 +7,8 @@ class RoleUserTableSchema extends Schema {
     this.dropIfExists('role_user')
 
     this.create('role_user', table => {
+      table.uuid('role_id').references('id').inTable('roles').index('role_id');
       table.uuid('user_id').references('id').inTable('users').index('user_id');
-      table.integer('role_id').unsigned().index()
-      table.foreign('role_id').references('id').on('roles').onDelete('cascade')
       table.primary(['user_id', 'role_id'])
 
       table.timestamps()
