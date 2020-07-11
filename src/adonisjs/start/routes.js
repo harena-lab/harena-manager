@@ -25,9 +25,9 @@ Route.group(() => {
                     Route.put(   ':id',             'v1/UserController.update')
                     Route.delete(':id',             'v1/UserController.destroy')
 					Route.get(   ':id/quests',  	'v1/UserController.list_quests')
-					Route.get(   ':id/cases',  		'v1/UserController.list_cases')
+					Route.get( 	 ':id/case',        'v1/UserController.list_cases')  
 
-}).prefix('/api/v1/user').middleware(['auth', 'is:administrator'])
+}).prefix('/api/v1/user').middleware(['auth', 'is:admin'])
 
 
 
@@ -37,16 +37,14 @@ Route.group(() => {
 |  resource: /case
 |----------------------------------------------------------------------------------------------
 */
-Route.get('/api/v1/cases',		'v1/CaseController.index').middleware(['auth:jwt', 'can:read'])
-
 Route.group(() => {
 	
-	Route.post( 'list',                 'v1/CaseController.index')  
-	Route.get(  ':id',                  'v1/CaseController.show') 
-	Route.post(  '',                    'v1/CaseController.store')
-	Route.put(   ':id',                 'v1/CaseController.update')
-	Route.delete(':id',                 'v1/CaseController.destroy')
-	Route.post(  'share',               'v1/CaseController.share')
+	Route.get( 	 '',            'v1/CaseController.index')
+	Route.get(   ':id',         'v1/CaseController.show') 
+	Route.post(  'register',	'v1/CaseController.store')
+	Route.put(   ':id',         'v1/CaseController.update')
+	Route.delete(':id',         'v1/CaseController.destroy')
+	Route.post(  'share',       'v1/CaseController.share')
 
 }).prefix('/api/v1/case').middleware(['auth:jwt', 'is:author'])
 
@@ -100,7 +98,7 @@ Route.group(() => {
 	Route.get(   'role/:id/permissions',	'v1/AdminController.list_permissions_by_role')
 	Route.get(   'user/:id/permissions',	'v1/AdminController.list_permissions_by_user')
 
-}).prefix('/api/v1/admin').middleware(['auth', 'is:administrator'])
+}).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 
 
 

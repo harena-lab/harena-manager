@@ -8,15 +8,15 @@ class Case extends Model {
         return false
     }
 
-    contributors(){
-        return this.belongsToMany('App/Models/v1/User')
-            .pivotTable('contributors')
-            .withPivot(['author'])
-            .withTimestamps()
-    }
-
     versions(){
         return this.hasMany('App/Models/v1/CaseVersion')
+    }
+
+    contributors(){
+        return this.belongsToMany('App/Models/v1/User')
+            .pivotTable('case_contributors')
+            .withPivot(['role'])
+            .withTimestamps()
     }
 
     quests () {
