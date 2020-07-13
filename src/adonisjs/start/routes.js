@@ -19,6 +19,9 @@ Route.get('/', () => { return 'Hello from the harena-manager'} )
 */
 Route.post('/api/v1/user/register',                 'v1/UserController.store')
 Route.post('/api/v1/user/login',                    'v1/AuthController.login') 
+Route.post('/api/v2/user/login',                    'AuthController.login') 
+Route.post('/api/v2/user/logout',                   'AuthController.logout') 
+
 Route.group(() => { 
                     Route.get(   '',                'v1/UserController.index')
                     Route.get(   ':id',             'v1/UserController.show') 

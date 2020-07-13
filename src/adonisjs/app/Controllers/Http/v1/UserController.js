@@ -69,9 +69,9 @@ class UserController {
       user.login = request.input('login')
       await user.save()
 
-      let token = await auth.generate(user)
+      // let token = await auth.generate(user)
 
-      Object.assign(user, token)
+      // Object.assign(user, token)
       response.json(user)
     } catch (e) {
       console.log(e)
