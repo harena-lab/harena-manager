@@ -20,7 +20,7 @@ class AuthController {
                 console.log('auth.check() - pass')
             }
 
-            await auth.attempt(email, password)
+            await auth.remember(true).attempt(email, password)
             
             console.log(1)
 
@@ -79,13 +79,20 @@ class AuthController {
     async logout({ auth, response }) {
         try{
                         // let token = await auth.authenticator('jwt').generate(user)
+            // await auth.check()
 
             const user = auth.user
-            console.log(1)
-            const token = auth.getAuthHeader()
+            // console.log(user)
+            const token = auth.authenticator('jwt').getAuthHeader()
             console.log(token)
 
-            console.log(await auth.authenticator('jwt').listTokens())
+            // let user = await User().findBy(user.email)
+console.log(user)
+            await user.tokens().where('token', token).update({ is_revoked:true })
+console.log(6)
+
+auth.authenticator('jwt')
+            // console.log(await auth.authenticator('jwt').listTokens())
             await auth.logout()
             return response.json('successfully logout')
         } catch(e){

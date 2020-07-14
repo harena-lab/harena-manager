@@ -20,7 +20,9 @@ Route.get('/', () => { return 'Hello from the harena-manager'} )
 Route.post('/api/v1/user/register',                 'v1/UserController.store')
 Route.post('/api/v1/user/login',                    'v1/AuthController.login') 
 Route.post('/api/v2/user/login',                    'AuthController.login') 
-Route.post('/api/v2/user/logout',                   'AuthController.logout') 
+
+Route.post('/api/v2/user/logout',                   'AuthController.logout')
+	.middleware(['auth']) 
 
 Route.group(() => { 
                     Route.get(   '',                'v1/UserController.index')
@@ -49,7 +51,7 @@ Route.group(() => {
 	Route.delete(':id',         'v1/CaseController.destroy')
 	Route.post(  'share',       'v1/CaseController.share')
 
-}).prefix('/api/v1/case').middleware(['auth:jwt', 'is:author'])
+}).prefix('/api/v1/case').middleware(['auth', 'is:author'])
 
 
 /*
