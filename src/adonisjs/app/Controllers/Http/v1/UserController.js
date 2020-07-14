@@ -67,11 +67,9 @@ class UserController {
       user.email = request.input('email')
       user.password = request.input('password')
       user.login = request.input('login')
-      await user.save()
 
-      // let token = await auth.generate(user)
+      let user = await user.save()
 
-      // Object.assign(user, token)
       response.json(user)
     } catch (e) {
       console.log(e)

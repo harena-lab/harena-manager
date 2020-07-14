@@ -22,17 +22,31 @@ class AuthController {
 
             await auth.remember(true).attempt(email, password)
             
-            console.log(1)
-
             let user = auth.user
 
-            let token = await auth.authenticator('jwt').generate(user)
-            console.log(token)
+            // const test = await User.query().where('id', user.id).with('tokens').fetch()
+            // let testJSON = test.toJSON()
 
-            Object.assign(user, token)
+            let storedUser = await User.find(user.id)
+//             console.log(storedUser)
 
+//             // let token = await auth.authenticator('jwt').generate(user)
 
-            return response.json(user)
+//             Object.assign(user, token)
+
+//            // let token = await auth.authenticator('jwt').withRefreshToken().attempt(email, password)
+//             let token = await auth.authenticator('jwt').generate(user)
+
+//             let tokens = await storedUser.tokens().fetch()
+//             let tokens_rows = tokens.rows
+
+//             let stored_token = {}
+//             for (let i = 0; i < tokens_rows.length; i++) {
+//                 stored_token.token = tokens_rows[i].token
+//             }
+
+//             Object.assign(storedUser, stored_token)
+            return response.json(storedUser)
 
         } catch (e){
             console.log(e)
@@ -42,38 +56,6 @@ class AuthController {
             return response.status(500).json(payload)
 
         }
-        // await auth.logout()
-    
-        // try {
-        //   if (await auth.remember(true).attempt(email, password)) {
-        //     console.log(1)
-
-        //     let user_instance = await User.findBy('email', email)
-        //     let token = await auth.generate(user_instance)
-
-        //     // await auth.loginViaId(user_instance.id)
-
-        //     // const user = auth.user
-        //     // auth = await auth.authenticator('jwt')
-        //     // console.log(2)
-
-
-        //     // let token = await auth.generate(user_instance)
-                   
-        //     // let authenticatedUser = new User()
-        //     // authenticatedUser.id = user.id
-        //     // authenticatedUser.email = user.email
-        //     // authenticatedUser.username = user.username
-        //     // Object.assign(user_instance, token)
-
-        //     return response.json(token)
-        //   }
-          
-        // }
-        // catch (e) {
-        //     console.log(e)
-        //     return response.status(e.status).json({ message: e })
-        // }
     }
 
     async logout({ auth, response }) {
@@ -82,17 +64,15 @@ class AuthController {
             // await auth.check()
 
             const user = auth.user
-            // console.log(user)
+
             const token = auth.authenticator('jwt').getAuthHeader()
-            console.log(token)
 
-            // let user = await User().findBy(user.email)
-console.log(user)
-            await user.tokens().where('token', token).update({ is_revoked:true })
-console.log(6)
-
-auth.authenticator('jwt')
-            // console.log(await auth.authenticator('jwt').listTokens())
+//             // let user = await User().findBy(user.email)
+// console.log(user)
+//             // await user.tokens().where('type', 'remember_token').update({ is_revoked:true })
+            await auth.authenticator("jwt").revokeTokens([token])
+// // auth.authenticator('jwt')
+//             // console.log(await auth.authenticator('jwt').listTokens())
             await auth.logout()
             return response.json('successfully logout')
         } catch(e){

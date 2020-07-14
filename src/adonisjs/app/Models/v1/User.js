@@ -63,6 +63,10 @@ class User extends Model {
         return this.hasMany('App/Models/v1/Token')
     }
 
+    static scopeHasTokens(query) {
+        return query.has('tokens')
+    }
+
     // Attach role and permissions of a user
     static get traits () {
         return [

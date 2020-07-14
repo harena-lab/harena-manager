@@ -51,7 +51,10 @@ Route.group(() => {
 	Route.delete(':id',         'v1/CaseController.destroy')
 	Route.post(  'share',       'v1/CaseController.share')
 
-}).prefix('/api/v1/case').middleware(['auth:jwt', 'is:author'])
+}).prefix('/api/v1/case').middleware(['auth', 'is:author'])
+
+// Uma possível soluçao para manter jwt e session funcionando junto: separar a url entre api e web
+// Route.post(  '/web/v1/case/register',	'v1/CaseController.store').middleware(['auth:session', 'is:author'])
 
 
 /*
