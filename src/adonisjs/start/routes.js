@@ -8,7 +8,7 @@ const Route   = use('Route')
 |  index                                                   
 |----------------------------------------------------------------------------------------------
 */
-Route.get('/', () => { return 'Hello from the harena-manager'} )
+Route.get('/', () => { return 'Hello from Harena Manager'} )
 
 
 /*
@@ -17,8 +17,9 @@ Route.get('/', () => { return 'Hello from the harena-manager'} )
 |  resource: /user
 |----------------------------------------------------------------------------------------------
 */
-Route.post('/api/v1/user/register',                 'v1/UserController.store')
+Route.post('/api/v1/user/',		 	                'v1/UserController.store')
 Route.post('/api/v1/user/login',                    'v1/AuthController.login') 
+Route.post('/api/v1/user/login',                    'AuthController.login') 
 Route.group(() => { 
                     Route.get(   '',                'v1/UserController.index')
                     Route.get(   ':id',             'v1/UserController.show') 
@@ -97,6 +98,9 @@ Route.group(() => {
 	Route.get(   'user/:id/roles',		  	'v1/AdminController.list_roles_by_user')
 	Route.get(   'role/:id/permissions',	'v1/AdminController.list_permissions_by_role')
 	Route.get(   'user/:id/permissions',	'v1/AdminController.list_permissions_by_user')
+
+	Route.post(   'institution',       		'v1/InstitutionController.store')
+
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 

@@ -5,7 +5,7 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const User = use('App/Models/v1/User');
-const CaseVersion = use('App/Models/v1/CaseVersion');
+const Institution = use('App/Models/v1/Institution');
 
 const uuidv4 = require('uuid/v4');
 
@@ -65,14 +65,20 @@ class UserController {
       user.id =  await uuidv4()
       user.username = request.input('username')
       user.email = request.input('email')
-      user.password = request.input('password')
+      // user.password = request.input('password')
       user.login = request.input('login')
-      await user.save()
 
-      let token = await auth.generate(user)
+      let institution = await Institution.findBy('acronym',request.input('institution'))
 
-      Object.assign(user, token)
-      response.json(user)
+      await user.institution().associate(institution)
+      // await profile.user().associate(user)
+
+      // await user.save()
+
+      // let token = await auth.generate(user)
+
+      // Object.assign(user, token)
+      return response.json('user successfully created')
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
