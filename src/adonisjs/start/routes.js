@@ -17,9 +17,30 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 |  resource: /user
 |----------------------------------------------------------------------------------------------
 */
-Route.post('/api/v1/user/',		 	                'v1/UserController.store')
-Route.post('/api/v1/user/login',                    'v1/AuthController.login') 
-Route.post('/api/v1/user/login',                    'AuthController.login') 
+Route.group(() => { 
+                    Route.post('',		 	'v1/UserController.store')
+					Route.post('login',		'v1/AuthController.login') 
+					
+}).prefix('/api/v1/user')
+
+
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v2                                                   
+|  resource: /auth
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => { 
+                    Route.post('login1',	'AuthController.login1') 
+					Route.post('login2', 	'AuthController.login2') 
+					Route.post('logout', 	'AuthController.logout').middleware(['auth'])
+
+}).prefix('/api/v2/auth')
+
+
+
+
 Route.group(() => { 
                     Route.get(   '',                'v1/UserController.index')
                     Route.get(   ':id',             'v1/UserController.show') 
@@ -100,6 +121,8 @@ Route.group(() => {
 	Route.get(   'user/:id/permissions',	'v1/AdminController.list_permissions_by_user')
 
 	Route.post(   'institution',       		'v1/InstitutionController.store')
+
+	Route.post(   'revoke_tokens',     		'v1/AdminController.revoke_tokens')
 
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])

@@ -65,15 +65,17 @@ class UserController {
       user.id =  await uuidv4()
       user.username = request.input('username')
       user.email = request.input('email')
-      // user.password = request.input('password')
+      user.password = request.input('password')
       user.login = request.input('login')
 
-      let institution = await Institution.findBy('acronym',request.input('institution'))
+      let request_institution = request.input('institution')
 
-      await user.institution().associate(institution)
-      // await profile.user().associate(user)
-
-      // await user.save()
+      if (request_institution != null) {
+        let institution = await Institution.findBy('acronym',request.input('institution'))
+        await user.institution().associate(institution)
+      } else{
+        await user.save()
+      }
 
       // let token = await auth.generate(user)
 

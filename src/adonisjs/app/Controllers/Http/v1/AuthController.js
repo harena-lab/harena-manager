@@ -3,7 +3,7 @@
 const User = use('App/Models/v1/User');
 
 class AuthController {
-    async login({ request, auth, response }) {
+    async login({ request, auth, response }) {njhhhhhhhhhhhhhhhhhh,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,}}}}}}}}}}}}}A<:mjkfmkp,7 bbbbbbbbbbbbbb
         let { email, password } = request.all();
 
         try {
