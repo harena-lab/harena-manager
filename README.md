@@ -1,46 +1,22 @@
-[![NPM Version](https://img.shields.io/npm/v/adonis-acl.svg?style=flat-square)](https://npmjs.org/package/adonis-acl)
-
-[![Coverage Status](https://coveralls.io/repos/github/enniel/adonis-acl/badge.svg?branch=master)](https://coveralls.io/github/enniel/adonis-acl?branch=master)
-
-
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/datasci4health/harena-manager/blob/master/LICENSE)
 [![Docker Automated](https://img.shields.io/docker/cloud/automated/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Build](https://img.shields.io/docker/cloud/build/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Pulls](https://img.shields.io/docker/pulls/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 [![Docker Stars](https://img.shields.io/docker/stars/datasci4health/harena-manager.svg?style=flat)](https://cloud.docker.com/u/datasci4health/repository/registry-1.docker.io/datasci4health/harena-manager)
 
-[![NPM Version](https://img.shields.io/npm/v/adonis-acl.svg?style=flat-square)](https://npmjs.org/package/adonis-acl)
-
-
 
 # Harena Manager
 
-Relational Database Management Module of [Harena project](https://github.com/datasci4health/harena).
+Harena's Database Access API.
 
-## Table of contents
 
-<!-- MarkdownTOC autolink=true -->
+## Available end points
 
-- [Change log](#change-log)
-- [Getting Started](#getting-started)
-    - [Access harena-manager service](#running-locally---linux)
-    - [Running as Docker containers - Linux](#running-as-docker-containers---linux)
-- [Branch organization](#branch-organization)
-
-<!-- /MarkdownTOC -->
-
-## Change log
-
-The change log can be found in the CHANGELOG.md file.
+Check https://documenter.getpostman.com/view/7243662/T1Ds8ag7?version=latest to discover the available endpoints provided by harena manager API.
 
 ## Getting Started
 
-### Access `harena-manager` service
-
-`<URL_HARENA_MANAGER>`
-
-### Running locally within docker containers
-
-We provide a docker container to run `harena-manager` code. Containers usage guarantees the minimal configuration required to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
+We provide a docker container to locally run `harena-manager` code. Containers usage guarantees the minimal configuration required to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
 
 #### Instructions (for Linux users)
 
@@ -100,11 +76,6 @@ docker exec -it harena-manager_harena-manager_1 bash
 ## Configuration
 -->
 
-## Dependencies
-- adonis
-- node
-- npm
-
 ## Contributing
 
 ### Branch organization
@@ -120,3 +91,7 @@ docker exec -it harena-manager_harena-manager_1 bash
     * new bugs registered on the issue list https://github.com/datasci4health/harena-manager/issues.
 * `tags`:
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
+
+## Change log
+
+The change log can be found in the [CHANGELOG.md](https://github.com/datasci4health/harena-manager/blob/feature/70/CHANGELOG.md) file.
