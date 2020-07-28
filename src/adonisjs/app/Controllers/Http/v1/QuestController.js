@@ -22,7 +22,7 @@ class QuestController {
             quest.merge(q)
 
             await quest.save()
-console.log(quest)
+
             return response.json(quest)
         } catch(e){
             console.log(e)
@@ -90,10 +90,11 @@ console.log(quest)
         }
     }
 
-    async list_cases({ params, response }) {
+    async list_cases({ request, response }) {
         try{
-            let quest = await Quest.find(params.id)
-
+            let quest_id = request.input('quest_id')
+            let quest = await Quest.find(quest_id)
+            
             return response.json(await quest.cases().fetch())
         } catch(e){
             console.log(e)

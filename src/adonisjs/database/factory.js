@@ -24,7 +24,9 @@ Factory.blueprint('App/Models/v1/User', async (faker, i, data) => {
     username:  username,
     login:  username,
     email: data[i].email,
-    password: await Hash.make(faker.password()),
+    password: username,
+
+    // password: faker.password(),
     id: await uuidv4()
   }
 })

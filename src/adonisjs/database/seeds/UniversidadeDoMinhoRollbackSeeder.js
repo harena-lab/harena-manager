@@ -39,6 +39,7 @@ class UniversidadeDoMinhoSeeder {
 			}
 
 			const quest = await Quest.findBy('title', 'Decisões Extremas')
+			await quest.cases().detach()
 			await quest.delete(trx)
 
 		    trx.commit()

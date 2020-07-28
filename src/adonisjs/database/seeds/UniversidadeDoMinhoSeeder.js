@@ -19,6 +19,10 @@ const uuidv4 = require('uuid/v4');
 
 const User = use('App/Models/v1/User');
 const Quest = use('App/Models/v1/Quest');
+const Case = use('App/Models/v1/Case');
+
+const Role = use('App/Models/v1/Role');
+const Permission = use('App/Models/v1/Permission');
 
 class UniversidadeDoMinhoRollbackSeeder {
 
@@ -36,6 +40,8 @@ class UniversidadeDoMinhoRollbackSeeder {
 
 		    let users = await Factory.model('App/Models/v1/User').createMany(3, emails, trx)
 
+			let role_player = await Role.findBy('slug', 'player')
+	    	
 	    	for (var i = 0; i < users.length; i++) {
 
 				await quest.users().attach(users[i].id, (row) => {
@@ -43,7 +49,18 @@ class UniversidadeDoMinhoRollbackSeeder {
 	    	    	row.role = PLAYER
 	      		}, trx)
 
+				await users[i].roles().attach([role_player.id], trx)
 	    	}
+
+            let c = await Case.findBy('title', 'default-case')
+			await quest.cases().attach(c.id, (row) => {
+                row.order_position = 0
+            }, trx)
+
+			
+			
+			
+
 
 		    trx.commit()
 		}catch(e){

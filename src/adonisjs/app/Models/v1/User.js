@@ -16,9 +16,9 @@ class User extends Model {
     //     return this.hasMany('App/Models/v1/Case')
     // }
 
-    contributes_with_cases(){
+    cases(){
         return this.belongsToMany('App/Models/v1/Case')
-            .pivotTable('case_contributors')
+            .pivotTable('users_cases')
             .withPivot(['role'])
             .withTimestamps()
     }
