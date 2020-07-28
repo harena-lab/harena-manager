@@ -24,7 +24,7 @@ const Case = use('App/Models/v1/Case');
 const Role = use('App/Models/v1/Role');
 const Permission = use('App/Models/v1/Permission');
 
-class UniversidadeDoMinhoRollbackSeeder {
+class UniversidadeDoMinhoSeeder {
 
 
   	async run () {
@@ -73,4 +73,4 @@ class UniversidadeDoMinhoRollbackSeeder {
   	}
 }
 
-module.exports = UniversidadeDoMinhoRollbackSeeder
+module.exports = UniversidadeDoMinhoSeeder

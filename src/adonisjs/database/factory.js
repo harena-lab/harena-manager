@@ -45,20 +45,31 @@ Factory.blueprint('App/Models/v1/CaseVersion', async (faker, i, data) => {
   }
 })
 
-Factory.blueprint('Adonis/Acl/Role', (faker, i, data = {}) => {
-  data = Object.assign({
-    name: 'Administrator' || data.name,
-    slug: 'administrator' || data.slug,
-    description: 'manage administration privileges' || data.description
-  }, data)
-  return data
+Factory.blueprint('App/Models/v1/Role', async (faker, i, data ) => {
+  return {
+      name: data[i].name,
+      slug: data[i].slug,
+      description: data[i].description,
+
+      // password: faker.password(),
+      id: await uuidv4()
+    }
 })
 
-Factory.blueprint('Adonis/Acl/Permission', (faker, i, data = {}) => {
-  data = Object.assign({
-    name: data.name,
-    slug: data.slug,
-    description: data.description
-  }, data)
-  return data
+  // data = Object.assign({
+  //   name: 'Administrator' || data[i].name,
+  //   slug: 'administrator' || data[i].slug,
+  //   description: 'manage administration privileges' || data[i].description
+  // }, data)
+  // return data
+
+Factory.blueprint('App/Models/v1/Permission', async (faker, i, data ) => {
+  return {
+    name: data[i].name,
+    slug: data[i].slug,
+    description: data[i].description,
+
+      // password: faker.password(),
+    id: await uuidv4()
+  }
 })

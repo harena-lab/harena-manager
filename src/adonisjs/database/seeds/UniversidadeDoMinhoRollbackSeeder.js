@@ -20,7 +20,7 @@ const uuidv4 = require('uuid/v4');
 const User = use('App/Models/v1/User');
 const Quest = use('App/Models/v1/Quest');
 
-class UniversidadeDoMinhoSeeder {
+class UniversidadeDoMinhoRollbackSeeder {
 
 
   	async run () {
@@ -53,4 +53,4 @@ class UniversidadeDoMinhoSeeder {
   	}
 }
 
-module.exports = UniversidadeDoMinhoSeeder
+module.exports = UniversidadeDoMinhoRollbackSeeder

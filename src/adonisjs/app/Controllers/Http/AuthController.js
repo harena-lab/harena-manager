@@ -26,10 +26,17 @@ console.log(2)
                     }
                 }); 
             }
-
+console.log(3)
             // unloged user
-            if (e.code == 'E_INVALID_JWT_TOKEN')
-                token = await auth.withRefreshToken().attempt(email, password)
+            if (e.code == 'E_INVALID_JWT_TOKEN'){
+                console.log(7)
+                try{
+                   token = await auth.withRefreshToken().attempt(email, password)
+                } catch(e){
+                    console.log(e)
+                }
+            }
+console.log(4)
 
             // generic error
             if (token == "")
