@@ -3,12 +3,11 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class QuestContributorSchema extends Schema {
+class QuestsUsersSchema extends Schema {
   up () {
+    this.dropIfExists('quests_users')
 
-	this.dropIfExists('quest_contributors')
-
-    this.create('quest_contributors', (table) => {
+    this.create('quests_users', (table) => {
       table.uuid('user_id').references('id').inTable('users').index('user_id');
       table.uuid('quest_id').references('id').inTable('quests').index('quest_id');
       table.primary(['quest_id', 'user_id'])
@@ -20,8 +19,8 @@ class QuestContributorSchema extends Schema {
   }
 
   down () {
-    this.drop('quest_contributors')
+    this.drop('quests_users')
   }
 }
 
-module.exports = QuestContributorSchema
+module.exports = QuestsUsersSchema

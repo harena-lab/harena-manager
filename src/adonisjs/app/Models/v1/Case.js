@@ -12,9 +12,9 @@ class Case extends Model {
         return this.hasMany('App/Models/v1/CaseVersion')
     }
 
-    contributors(){
+    users(){
         return this.belongsToMany('App/Models/v1/User')
-            .pivotTable('case_contributors')
+            .pivotTable('users_cases')
             .withPivot(['role'])
             .withTimestamps()
     }
@@ -23,7 +23,7 @@ class Case extends Model {
         return this
             .belongsToMany('App/Models/v1/Quest')
             .pivotTable('quests_cases')
-            .withPivot(['argument'])
+            .withPivot(['order_position'])
             .withTimestamps()
     }
 } 
