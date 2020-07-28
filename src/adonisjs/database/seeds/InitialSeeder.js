@@ -39,6 +39,11 @@ class UserSeeder {
 
         await this.seed_roles_and_permissions(user, trx)
 
+        let quest = new Quest()
+        quest.title = 'default-quest'
+        quest.id =  await uuidv4()
+        await quest.save(trx)
+
       } else {
         console.log('Database is already populated')
         trx.commit()
@@ -58,7 +63,7 @@ class UserSeeder {
         let user = new User()
         user.username = 'jacinto'
         user.login = 'jacinto'
-        user.email = 'jacinto@example.com'
+        user.email = 'jacinto@email.com'
         user.password = 'jacinto'
         user.id =  await uuidv4()
 
@@ -88,7 +93,7 @@ class UserSeeder {
 
 
       // await user.contributes_with_cases().attach([c.id], trx)
-      await c.contributors().attach(user.id, (row) => {
+      await c.users().attach(user.id, (row) => {
         const AUTHOR = 0
         row.role = AUTHOR
       }, trx)
