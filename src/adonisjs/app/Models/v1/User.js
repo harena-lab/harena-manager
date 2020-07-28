@@ -12,10 +12,6 @@ class User extends Model {
         return false
     }
 
-    static async getAuthenticatedUser(email){
-        return await Database.table('users').select('username', 'email').where('email', email)
-    }
-
     // cases() {
     //     return this.hasMany('App/Models/v1/Case')
     // }
@@ -27,16 +23,20 @@ class User extends Model {
             .withTimestamps()
     }
 
-    contributes_with_quests() {
+    quests() {
         return this
             .belongsToMany('App/Models/v1/Quest')
-            .pivotTable('quest_contributors')
+            .pivotTable('quests_users')
             .withPivot(['role'])
             .withTimestamps()
     }
 
     artifacts() {
         return this.hasMany('App/Models/v1/Artifact')
+    }
+
+    institution(){
+        return this.belongsTo('App/Models/v1/Institution')
     }
 
     static boot() {

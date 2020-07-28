@@ -8,7 +8,7 @@ const uuidv4 = require('uuid/v4');
 class Quest extends Model {
     users(){
         return this.belongsToMany('App/Models/v1/User')
-            .pivotTable('users_quests')
+            .pivotTable('quests_users')
             .withTimestamps()
     }
 
