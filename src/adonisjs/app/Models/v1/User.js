@@ -12,25 +12,21 @@ class User extends Model {
         return false
     }
 
-    static async getAuthenticatedUser(email){
-        return await Database.table('users').select('username', 'email').where('email', email)
-    }
-
     // cases() {
     //     return this.hasMany('App/Models/v1/Case')
     // }
 
-    contributes_with_cases(){
+    cases(){
         return this.belongsToMany('App/Models/v1/Case')
-            .pivotTable('case_contributors')
+            .pivotTable('users_cases')
             .withPivot(['role'])
             .withTimestamps()
     }
 
-    contributes_with_quests() {
+    quests() {
         return this
             .belongsToMany('App/Models/v1/Quest')
-            .pivotTable('quest_contributors')
+            .pivotTable('quests_users')
             .withPivot(['role'])
             .withTimestamps()
     }

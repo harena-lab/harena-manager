@@ -15,12 +15,19 @@
 const Factory = use('Factory')
 const Hash = use('Hash')
 
+const uuidv4 = require('uuid/v4');
+
+
 Factory.blueprint('App/Models/v1/User', async (faker, i, data) => {
+  let username = faker.username()
   return {
-    username:  faker.username(),
-    email: faker.email(),
-    password: await Hash.make(faker.password()),
-    id: data.id
+    username:  username,
+    login:  username,
+    email: data[i].email,
+    password: username,
+
+    // password: faker.password(),
+    id: await uuidv4()
   }
 })
 

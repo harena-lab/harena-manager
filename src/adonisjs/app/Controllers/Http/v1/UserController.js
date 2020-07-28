@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Database = use('Database')
+
 const User = use('App/Models/v1/User');
 const Institution = use('App/Models/v1/Institution');
 
@@ -40,12 +42,13 @@ class UserController {
    * @param {View} ctx.view
    */
   async show({ params, request, response, view }) {
+    console.log(12323)
     try{
       let user = await User.find(params.id)
 
       if (user != null)
         return response.json(user)
-      else return response.status(500).json('user nout found')
+      else return response.status(500).json('user not found')
     } catch(e){
       console.log(e)
       return response.status(e.status).json({ message: e.message })
@@ -135,44 +138,53 @@ class UserController {
     }
   }
 
-  async list_quests({ params, response }) {
+  async list_quests({ request, response, auth }) {
     try{
-      let user = await User.find(params.id)
 
-      if (user != null) {
-        return response.json(await user.contributes_with_quests().fetch())
-      } else return response.status(500).json('user not found')
+      let user = await auth.user
+
+      return response.json(await user.quests().fetch())
     } catch(e){
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
 
-  async list_cases({ params, response }) {
+  async list_cases({ params, response, auth }) {
     try{
-      let user = await User.find(params.id)
-      console.log(user)
+      let user = await auth.user
 
-      if (user != null) {
-        return response.json(await user.contributes_with_cases().fetch())
-      } else return response.status(500).json('user not found')
+      let cases = await user.cases().fetch()
 
-// console.log('filter')
-//         let user = await User.find(filter)
-//         let cases = await user.contributes_with_cases().fetch()
+      return response.json(cases)
+    } catch(e){
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
 
-//         for (var i = 0; i < cases.length; i++) {
-//           cases[i].contributors = cases[i].contributors().fetch()
-//         }
+  async list_cases_by_quests({ params, response, auth }) {
+    try{
+      let user = await auth.user
 
-//         // cases.contributors = cases.contributors().fetch()
-//         return response.json(cases)
+      Database
+        .select('*')
+        .from('quests_users')
+        .where('user_id', user.id)
+        .leftJoin('cases', 'quests.case_id', 'cases.id')
+
+      let quests = await user.quests().fetch()
+
+      let cases = await user.cases().fetch()
+
 
     } catch(e){
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
+
+  
 }
 
 module.exports = UserController
