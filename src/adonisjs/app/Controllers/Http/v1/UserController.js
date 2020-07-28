@@ -20,7 +20,9 @@ class UserController {
    * @param {View} ctx.view
    */
   async index({ request, response, view, auth }) {
+    console.log(1)
     try{
+
       let users = await User.all()
       return response.json(users)
     } catch(e){

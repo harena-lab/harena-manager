@@ -5,23 +5,40 @@ const Token = use('App/Models/v1/Token');
 
 class AuthController {
 
-	async login1({ request, auth, response }) {
-
-        try {
-            let { email, password } = request.all();
-
-            let token = await auth.withRefreshToken().attempt(email, password)
+	async login({ request, auth, response }) {
+console.log(2)
+        let { email, password, refresh_token } = request.all();
+        let user = ""
+        let token = ""
             
-            let refresh_token = ""
-            Object.entries(token).forEach(entry => {
-                if (entry[0] == 'refreshToken'){
-                    refresh_token = entry[1]
-                }
-            });
-            return response.json({'access_code':refresh_token })
-        } catch (e) {
+        try{
+            await auth.check()
+            return response.json('user is signed already')
+        } catch(e) {
             console.log(e)
-            return response.status(e.status).json(e.message)
+            // token expired
+            if (e.code == 'E_JWT_TOKEN_EXPIRED'){
+                token = await auth.generateForRefreshToken(refresh_token)
+
+                Object.entries(token).forEach(entry => {
+                    if (entry[0] == 'refreshToken'){
+                        refresh_token = entry[1]
+                    }
+                }); 
+            }
+
+            // unloged user
+            if (e.code == 'E_INVALID_JWT_TOKEN')
+                token = await auth.withRefreshToken().attempt(email, password)
+
+            // generic error
+            if (token == "")
+                return response.status(e.status).json(e.message)
+
+            user = await User.findBy('email', email)
+            Object.assign(user, token)
+
+            return response.json(user)
         }
     }
 

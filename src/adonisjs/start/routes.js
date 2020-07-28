@@ -32,8 +32,7 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => { 
-                    Route.post('login1',	'AuthController.login1') 
-					Route.post('login2', 	'AuthController.login2') 
+                    Route.post('login',		'AuthController.login') 
 					Route.post('logout', 	'AuthController.logout').middleware(['auth'])
 
 }).prefix('/api/v2/auth')
