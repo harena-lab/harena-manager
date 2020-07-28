@@ -15,7 +15,7 @@ class Quest extends Model {
     cases(){
         return this.belongsToMany('App/Models/v1/Case')
             .pivotTable('quests_cases')
-            .withPivot(['argument'])
+            .withPivot(['order_position'])
             .withTimestamps()
     }
 

@@ -37,7 +37,6 @@ class UniversidadeDoMinhoRollbackSeeder {
 		    let users = await Factory.model('App/Models/v1/User').createMany(3, emails, trx)
 
 	    	for (var i = 0; i < users.length; i++) {
-	    		let user = User.find(users[i].id)
 
 				await quest.users().attach(users[i].id, (row) => {
 		        	const PLAYER = 2

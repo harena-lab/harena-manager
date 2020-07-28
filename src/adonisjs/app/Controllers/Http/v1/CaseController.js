@@ -73,12 +73,12 @@ class CaseController {
         cv.source = request.input('source')
 
         await c.versions().save(cv)
-        await c.contributors().attach(auth.user.id, (row) => {
+        await c.users().attach(auth.user.id, (row) => {
           row.role = 0
         })
 
         c.versions = await c.versions().fetch()
-        c.contributors = await c.contributors().fetch()
+        c.users = await c.users().fetch()
         return response.json(c)
 
       } else return response.status(500).json('title already exists')

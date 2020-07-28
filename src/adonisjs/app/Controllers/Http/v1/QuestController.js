@@ -22,7 +22,7 @@ class QuestController {
             quest.merge(q)
 
             await quest.save()
-
+console.log(quest)
             return response.json(quest)
         } catch(e){
             console.log(e)
@@ -57,13 +57,13 @@ class QuestController {
 
     async link_case({ request, response }) {
         try {
-            const {quest_id, case_id, argument} = request.post()
+            const {quest_id, case_id, order_position} = request.post()
 
-            let c = await Case.find(case_id)
+            // let c = await Case.find(case_id)
             let quest = await Quest.find(quest_id)
 
-            await quest.cases().create(c, (row) => {
-                row.argument = argument
+            await quest.cases().attach(case_id, (row) => {
+                row.order_position = order_position
             })
 
             quest.cases = await quest.cases().fetch()
@@ -75,7 +75,7 @@ class QuestController {
                 return response.status(409).json({ message: e.message })
             }
 
-            return response.json({ message: e.toString() })
+            return response.status(500).json( e )
         }
     }
 

@@ -76,7 +76,7 @@ Route.group(() => {
 	Route.get(   ':id/users',      	'v1/QuestController.list_users')
 	Route.get(   ':id/cases',      	'v1/QuestController.list_cases')
 
-}).prefix('/api/v1/quest').middleware('auth', 'is:administrator')
+}).prefix('/api/v1/quest').middleware('auth', 'is:admin')
 
 
 /*

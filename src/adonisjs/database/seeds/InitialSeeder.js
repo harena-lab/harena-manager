@@ -63,7 +63,7 @@ class UserSeeder {
         let user = new User()
         user.username = 'jacinto'
         user.login = 'jacinto'
-        user.email = 'jacinto@example.com'
+        user.email = 'jacinto@email.com'
         user.password = 'jacinto'
         user.id =  await uuidv4()
 
