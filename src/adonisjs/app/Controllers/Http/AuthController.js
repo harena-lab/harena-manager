@@ -6,7 +6,7 @@ const Token = use('App/Models/v1/Token');
 class AuthController {
 
 	async login({ request, auth, response }) {
-console.log(2)
+
         let { email, password, refresh_token } = request.all();
         let user = ""
         let token = ""
@@ -26,7 +26,7 @@ console.log(2)
                     }
                 }); 
             }
-console.log(3)
+
             // unloged user
             if (e.code == 'E_INVALID_JWT_TOKEN'){
                 console.log(7)
@@ -36,7 +36,6 @@ console.log(3)
                     console.log(e)
                 }
             }
-console.log(4)
 
             // generic error
             if (token == "")

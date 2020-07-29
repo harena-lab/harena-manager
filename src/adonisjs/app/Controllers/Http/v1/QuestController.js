@@ -90,8 +90,17 @@ class QuestController {
         }
     }
 
-    async list_cases({ request, response }) {
+    async list_cases({ request, response, auth }) {
         try{
+            let use = await auth.user
+
+            Database
+              .select('*')
+              .from('quests')
+              .leftJoin('users', 'quests.user_id', 'users.id')
+
+
+
             let quest_id = request.input('quest_id')
             let quest = await Quest.find(quest_id)
             

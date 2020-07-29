@@ -39,6 +39,12 @@ class User extends Model {
         return this.belongsTo('App/Models/v1/Institution')
     }
 
+    roles(){
+        return this.belongsToMany('App/Models/v1/Role')
+            .pivotTable('role_user')
+            .withTimestamps()
+    }
+
     static boot() {
         super.boot()
 

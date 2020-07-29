@@ -8,6 +8,13 @@ class Role extends Model {
         return false
     }
 
+    users() {
+        return this
+            .belongsToMany('App/Models/v1/User')
+            .pivotTable('role_user')
+            .withTimestamps()
+    }
+
     permissions() {
         return this
             .belongsToMany('App/Models/v1/Permission')

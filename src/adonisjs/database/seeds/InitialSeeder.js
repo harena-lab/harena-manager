@@ -36,15 +36,32 @@ class UserSeeder {
       if (jacinto == null){
 
         let user = await this.seed_default_users(trx)
-        await this.seed_default_case(user, trx)
 
-        await this.seed_roles_and_permissions(user, trx)
+        let c = await this.seed_default_case(trx)
+
+        await user.save(trx)
+
+        await c.users().attach([user.id], (row) => {
+          const AUTHOR = 0
+          row.role = AUTHOR
+        }, trx)
+        // await user.cases().attach(c.id, trx)
+
+        let role = await this.seed_roles_and_permissions(trx)
+
+        await trx.commit()
+        
+        trx = await Database.beginTransaction()
+
+        await user.roles().attach(role.id, trx)
 
         let quest = new Quest()
         quest.title = 'default-quest'
         quest.id =  await uuidv4()
         await quest.save(trx)
-        trx.commit()
+
+        await trx.commit()
+
 
       } else {
         console.log('Database is already populated')
@@ -68,14 +85,14 @@ class UserSeeder {
         user.password = 'jacinto'
         user.id =  await uuidv4()
 
-        await user.save(trx)
+        // await user.save(trx)
         return user
     } catch (e){
       console.log(e)
     }
   }
 
-  async seed_default_case(user, trx){
+  async seed_default_case(trx){
     try{
    
       let c = new Case()
@@ -90,14 +107,10 @@ class UserSeeder {
       let cv = new CaseVersion()
       cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
       cv.id = await uuidv4()
+
+      
+
       await c.versions().save(cv, trx)
-
-
-      // await user.contributes_with_cases().attach([c.id], trx)
-      await c.users().attach(user.id, (row) => {
-        const AUTHOR = 0
-        row.role = AUTHOR
-      }, trx)
 
       return c
     } catch (e){
@@ -105,52 +118,28 @@ class UserSeeder {
     }
   }
 
-  async seed_roles_and_permissions(user, trx){
-    let administrator = {name: 'Administrator', slug: 'admin', description: 'system admin', id: await uuidv4()}
+  async seed_roles_and_permissions(trx){
+    let admin = {name: 'Administrator', slug: 'admin', description: 'system admin', id: await uuidv4()}
     let author = {name: 'Case Author', slug: 'author', description: 'user who write cases', id: await uuidv4()}
     let player = {name: 'Player', slug: 'player', description: 'user who read cases', id: await uuidv4()}
 
-    let admin_permissions = {name: 'admin permissions', slug: 'admin_permissions', description: 'higher permissions', id: await uuidv4()}
-    let author_permissions = {name: 'author permissions', slug: 'author_permissions', description: 'can create, update, delete, list cases', id: await uuidv4()}
-    let player_permissions = {name: 'player permissions', slug: 'player_permissions', description: 'can play cases', id: await uuidv4()}
+    // let admin_permissions = {name: 'admin permissions', slug: 'admin_permissions', description: 'higher permissions', id: await uuidv4()}
+    // let author_permissions = {name: 'author permissions', slug: 'author_permissions', description: 'can create, update, delete, list cases', id: await uuidv4()}
+    // let player_permissions = {name: 'player permissions', slug: 'player_permissions', description: 'can play cases', id: await uuidv4()}
 
 
-    let roles = await Factory.model('App/Models/v1/Role').createMany(3, [administrator, author, player], trx)
-    let permissions = await Factory.model('App/Models/v1/Permission').createMany(3, [admin_permissions, author_permissions, player_permissions], trx)
+    let roles = await Factory.model('App/Models/v1/Role').makeMany(3, [admin, author, player])
+    // let permissions = await Factory.model('App/Models/v1/Permission').makeMany(1, [admin_permissions], trx)
 
-    await roles[0].permissions().attach([permissions[0].id], trx)
-    await roles[1].permissions().attach([permissions[1].id], trx)
-    await roles[2].permissions().attach([permissions[2].id], trx)
+    // await roles[1].permissions().attach([permissions[1].id], trx)
+    // await roles[2].permissions().attach([permissions[2].id], trx)
 
+    await roles[0].save(trx)
+    await roles[1].save(trx)
+    await roles[2].save(trx)
 
-    // await user.roles().attach([administrator.id], trx)
+    return roles[0]
 
-    return roles
-
-    // let player_permission = new Permission()
-    // player_permission.name = 'Play Cases'
-    // player_permission.slug = 'player_permissions'
-    // player_permission.description = 'can play cases'
-    // player_permission.id = await uuidv4()
-    // await player_permission.save(trx)
-
-    // // trx.commit()
-
-    // // trx = await Database.beginTransaction()
-
-    // // const roleAdmin = await Role.findBy('slug', 'admin')
-    // await administrator.permissions().attach([admin_permissions.id], trx)
-    // await user.roles().attach([administrator.id], trx)
-     
-    // // const roleAuthor = await Role.findBy('slug', 'author')
-    // await author.permissions().attach([author_permission.id], trx)
-    // await user.roles().attach([author.id], trx)
-
-    // // const rolePlayer = await Role.findBy('slug', 'player')
-    // await rolePlayer.permissions().attach([player_permission.id], trx)
-    // await user.roles().attach([rolePlayer.id], trx)
-  
-    // trx.commit()
   }
 
 }
