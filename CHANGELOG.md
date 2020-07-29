@@ -1,10 +1,27 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Features
+- 🎸 Auth mechanism with `refresh token`: From now on, `POST auth/login/` responds with a pair of `<<token, refresh token>>`. `refresh_token` must be used to re-signin the user
+whose `token` was revoked by `harena-manager` server.
+    
+     ✅ Closes issue #70
+
+- 🎸 Enable `logout` through endpoint `POST auth/logout`
+- 🎸 Newly created REST endpoint `POST /admin/institution` for create a new institution
+- 🎸 Newly created REST endpoints: `GET auth/quest/cases` and `GET play/quest/cases`
+    
+	 ✅ Closes: #71
+
+- 🎸 Migrate database - Related issue: [#62](https://github.com/datasci4health/harena-manager/issues/23)
+- 🎸 Share cases: Allows the author associate more contributors to her case
+- 🎸 Auth: Implement adonis ACL to control roles and permissions - Closes issue: #40
+- 🎸 Provide quest services 
+     ✅ Closes issue #37
+
 ### Fix
-- Error on delete case - Related issue: [#23](https://github.com/datasci4health/harena-manager/issues/23)
-- **artifact:** Enable upload of .jpeg files
-- **artifact:** Fix error at artifact upload
+- Error on delete case. Related issue: [#23](https://github.com/datasci4health/harena-manager/issues/23)
+- Enable upload of .jpeg files
 
 ### Chore
 - 🤖 dependency update: Apply suggestions made by dependabot alerts
@@ -13,24 +30,18 @@ Thecontainer orchastrate the whole environment (harenamanager, database,
 and database-ui).
 
 ### Docs
-- ✏️ add auth sequence diagram
+- ✏️ Add auth sequence diagram
 - ✏️ Add a schema versioning mechanism. It keeps the track of 3 such files: schema.dia,
 schema.pdf, schema.png. They are representations of the schema defined
 on database/migrations. Schemas are located at https://github.com/datasci4health/harena-manager/tree/development/src/adonisjs/database/schema_design)
+- ✏️ Added a CHANGELOG in the project.
 
-### Feat
-- 🎸 Newly created REST endpoint `POST /admin/institution` for create a new institution
-- 🎸 Migrate database - Related issue: [#62](https://github.com/datasci4health/harena-manager/issues/23)
-- 🎸 Share cases: Allows the author associate more contributors to her case
-- 🎸 Auth: Implement adonis ACL to control roles and permissions - Closes issue: #40
-- 🎸 Provide quest services - Closes issue: #37
-- **documentation:** Added a CHANGELOG in the project.
 
-### Perf
+<!-- ### Performance Improvements
 - ⚡️ improvement on auth mechanism: Enable `logout` through the endpoint `POST auth/logout`
-
+ -->
 ### Refactor
-- 💡 improvements on REST endpoints: Refactoring code related to REST endpoints
+<!-- - 💡 improvements on REST endpoints: Refactoring code related to REST endpoints -->
 - 💡 Implements hooks through `file.method`
 
 ### BREAKING CHANGE

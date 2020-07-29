@@ -7,16 +7,16 @@
 
 # Harena Manager
 
-Harena's Database Access API.
-
+Harena's database management module
+> It provides an api for data access
 
 ## Available end points
 
-Check https://documenter.getpostman.com/view/7243662/T1Ds8ag7?version=latest to discover the available endpoints provided by harena manager API.
+Check https://documenter.getpostman.com/view/7243662/T1Ds8ag7?version=latest to discover available endpoints provided by `harena manager api`.
 
 ## Getting Started
 
-We provide a docker container to locally run `harena-manager` code. Containers usage guarantees the minimal configuration required to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
+We provide a `docker container` to locally run `harena-manager` code. Containers guarantee the required minimal configuration to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
 
 #### Instructions (for Linux users)
 
@@ -31,13 +31,13 @@ docker build . -t manager
 cd ..
 ```
 
-Then, up the docker container:
+Start up the docker container:
 
 ```bash
 docker-compose -f docker-compose-dev.yml up
 ```
 
-After starting the container, access http://localhost:10020/ to check if the system is up.
+Once the start up process is done, access http://localhost:10020/ to check if the system is working.
 
 If you want to get the command line of the container, then run the command:
 
@@ -94,4 +94,4 @@ docker exec -it harena-manager_harena-manager_1 bash
 
 ## Change log
 
-The change log can be found in the [CHANGELOG.md](https://github.com/datasci4health/harena-manager/blob/feature/70/CHANGELOG.md) file.
+Release updates can be found at [CHANGELOG.md](https://github.com/datasci4health/harena-manager/blob/development/CHANGELOG.md) file.
