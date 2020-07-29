@@ -32,8 +32,19 @@ class UniversidadeDoMinhoRollbackSeeder {
 
 			for (var i = 0; i < users.length; i++) {
 				const user = await User.findBy('email', users[i].email)
-
+				console.log(users[i].email)
+				console.log(user)
 				await user.quests().detach()
+				await user.roles().detach()
+				let tokens = await user.tokens().fetch()
+
+        		let tokens_rows = tokens.rows
+				for (var j = 0; j < tokens_rows.length; j++) {
+					console.log('vi deletar')
+					tokens_rows[j].delete(trx)
+				}
+
+
 				await user.delete(trx)
 
 			}
