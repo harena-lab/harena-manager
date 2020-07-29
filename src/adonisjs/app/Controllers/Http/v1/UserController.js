@@ -7,7 +7,7 @@
 const Database = use('Database')
 
 const User = use('App/Models/v1/User');
-const CaseVersion = use('App/Models/v1/CaseVersion');
+const Institution = use('App/Models/v1/Institution');
 
 const uuidv4 = require('uuid/v4');
 
@@ -22,7 +22,9 @@ class UserController {
    * @param {View} ctx.view
    */
   async index({ request, response, view, auth }) {
+    console.log(1)
     try{
+
       let users = await User.all()
       return response.json(users)
     } catch(e){
@@ -70,12 +72,20 @@ class UserController {
       user.email = request.input('email')
       user.password = request.input('password')
       user.login = request.input('login')
-      await user.save()
 
-      let token = await auth.generate(user)
+      let request_institution = request.input('institution')
 
-      Object.assign(user, token)
-      response.json(user)
+      if (request_institution != null) {
+        let institution = await Institution.findBy('acronym',request.input('institution'))
+        await user.institution().associate(institution)
+      } else{
+        await user.save()
+      }
+
+      // let token = await auth.generate(user)
+
+      // Object.assign(user, token)
+      return response.json('user successfully created')
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {

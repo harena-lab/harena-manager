@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Database = use('Database')
+
 const Role = use('Adonis/Acl/Role');
 const Permission = use('Adonis/Acl/Permission');
 const User = use('App/Models/v1/User');
@@ -139,6 +141,24 @@ class AdminController {
             // let role = await Role.find(params.id)
 
             return response.json(await user.getPermissions())
+        } catch(e){
+            console.log(e)
+            return response.status(500).json({ message: e.message })
+        }
+    }
+
+    async revoke_tokens({ auth, params, response }) {
+        try{
+            // await user.tokens().update({ is_revoked: true })
+// console.log('antes')
+// console.log(await auth.listTokens())
+// //         const affectedRows = await Database
+// //             .table('tokens').update('is_revoked', true)
+// // console.log(affectedRows)
+// console.log('depois')
+// console.log(await auth.listTokens())
+await auth.revokeTokens()
+            return response.json('tokens revoked')
         } catch(e){
             console.log(e)
             return response.status(500).json({ message: e.message })

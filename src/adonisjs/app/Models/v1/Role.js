@@ -8,6 +8,28 @@ class Role extends Model {
         return false
     }
 
+    users() {
+        return this
+            .belongsToMany('App/Models/v1/User')
+            .pivotTable('role_user')
+            .withTimestamps()
+    }
+
+    permissions() {
+        return this
+            .belongsToMany('App/Models/v1/Permission')
+            .pivotTable('permission_role')
+            .withTimestamps()
+    }
+
+    // quests() {
+    //     return this
+    //         .belongsToMany('App/Models/v1/Quest')
+    //         .pivotTable('quests_users')
+    //         .withPivot(['role'])
+    //         .withTimestamps()
+    // }
+
     static get traits () {
         return [
             '@provider:Adonis/Acl/HasPermission'

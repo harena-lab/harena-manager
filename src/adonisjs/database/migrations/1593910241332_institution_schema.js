@@ -11,7 +11,7 @@ class InstitutionSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      table.string('acronym', 30)
+      table.string('acronym', 30).unique()
       table.string('title', 100)
       table.string('country', 2)
 
