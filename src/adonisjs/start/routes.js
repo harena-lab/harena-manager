@@ -71,12 +71,12 @@ Route.group(() => {
 	
 	Route.get( 	 '',            'v1/CaseController.index')
 	Route.get(   ':id',         'v1/CaseController.show') 
-	Route.post(  'register',	'v1/CaseController.store')
+	Route.post(  '',			'v1/CaseController.store')
 	Route.put(   ':id',         'v1/CaseController.update')
 	Route.delete(':id',         'v1/CaseController.destroy')
 	Route.post(  'share',       'v1/CaseController.share')
 
-}).prefix('/api/v1/case').middleware(['auth:jwt', 'is:author'])
+}).prefix('/api/v1/case').middleware(['auth', 'is:author'])
 
 
 /*

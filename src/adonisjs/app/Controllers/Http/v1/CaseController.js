@@ -54,7 +54,7 @@ class CaseController {
   /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
     try {
-
+      console.log(1)
       let c = await Case.findBy('title', request.input('title'))
 
       if (c == null) {
@@ -94,10 +94,10 @@ class CaseController {
     try {
       let logged_user = auth.user.id
 
-      // verify if the loged user is contributor of the given case
-      let sqlQuery = 'select cc.user_id from users u ' +
-                        'left join case_contributors cc on u.id = cc.user_id ' +
-                        'where cc.user_id = ? and cc.case_id = ? and cc.role = 1'
+      // verify if the loged user is a contributor of the given case
+      let sqlQuery = 'select uc.user_id from users u ' +
+                        'left join users_cases uc on u.id = uc.user_id ' +
+                        'where uc.user_id = ? and uc.case_id = ? and uc.role = 1'
       let contributor = await Database.raw(sqlQuery, [logged_user, params.id])
 
       if (contributor == null)
@@ -125,7 +125,7 @@ class CaseController {
 
     } catch (e) {
       console.log(e)
-      return response.status(500).json({ message: e.message })
+      return response.status(500).json({ message: e })
     }
   }
 
@@ -139,14 +139,13 @@ class CaseController {
    */
   async destroy({ params, response, auth }) {
     const trx = await Database.beginTransaction()
-
     try {
       let logged_user = auth.user.id
 
       // verify if the loged user is owner of the case
-      let sqlQuery = 'select cc.user_id from users u ' +
-                        'left join case_contributors cc on u.id = cc.user_id ' +
-                        'where cc.user_id = ? and cc.case_id = ? and cc.role = 0'
+      let sqlQuery = 'select uc.user_id from users u ' +
+                        'left join users_cases uc on u.id = uc.user_id ' +
+                        'where uc.user_id = ? and uc.case_id = ? and uc.role = 0'
       let author = await Database.raw(sqlQuery, [logged_user, params.id])
 
       if (author == null)
@@ -163,7 +162,7 @@ class CaseController {
           cv.delete()
         }
 
-        let contributors = await c.contributors().fetch()
+        let contributors = await c.users().fetch()
         let contributors_rows = contributors.rows
         let contributors_ids = []
 
@@ -171,7 +170,7 @@ class CaseController {
           contributors_ids.push(contributors_rows[i].id)
         }
 
-        await c.contributors().detach(contributors_ids)
+        await c.users().detach(contributors_ids)
 
 
         c.delete()
@@ -182,7 +181,7 @@ class CaseController {
     } catch (e) {
       console.log(e)
       trx.rollback()
-      return response.status(500).json({ message: e.message })
+      return response.status(500).json({ message: e })
     }
   }
 

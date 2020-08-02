@@ -47,13 +47,13 @@ class UserSeeder {
         }, trx)
         // await user.cases().attach(c.id, trx)
 
-        let role = await this.seed_roles_and_permissions(trx)
+        let roles = await this.seed_roles_and_permissions(trx)
 
         await trx.commit()
         
         trx = await Database.beginTransaction()
 
-        await user.roles().attach(role.id, trx)
+        await user.roles().attach([roles[0].id, roles[1].id], trx)
 
         let quest = new Quest()
         quest.title = 'default-quest'
@@ -138,7 +138,7 @@ class UserSeeder {
     await roles[1].save(trx)
     await roles[2].save(trx)
 
-    return roles[0]
+    return roles
 
   }
 
