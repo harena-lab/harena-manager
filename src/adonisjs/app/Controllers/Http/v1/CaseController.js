@@ -90,22 +90,9 @@ class CaseController {
   }
 
   /** * Update case details. PUT or PATCH case/:id */
-  async update({ params, request, response, auth }) {
+  async update({ params, request, response }) {
     try {
-      let logged_user = auth.user.id
-
-      // verify if the loged user is a contributor of the given case
-      let sqlQuery = 'select uc.user_id from users u ' +
-                        'left join users_cases uc on u.id = uc.user_id ' +
-                        'where uc.user_id = ? and uc.case_id = ? and uc.role = 1'
-      let contributor = await Database.raw(sqlQuery, [logged_user, params.id])
-
-      if (contributor == null)
-        return response.status(500).json('you are not contributor of this case')
-
-
       let c = await Case.find(params.id)
-
 
       if (c != null){
          c.title = request.input('title')
@@ -137,19 +124,9 @@ class CaseController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, response, auth }) {
+  async destroy({ params, response }) {
     const trx = await Database.beginTransaction()
     try {
-      let logged_user = auth.user.id
-
-      // verify if the loged user is owner of the case
-      let sqlQuery = 'select uc.user_id from users u ' +
-                        'left join users_cases uc on u.id = uc.user_id ' +
-                        'where uc.user_id = ? and uc.case_id = ? and uc.role = 0'
-      let author = await Database.raw(sqlQuery, [logged_user, params.id])
-
-      if (author == null)
-        return response.status(500).json('you are not owner of this case')
 
       let c = await Case.findBy('id', params.id)
       
@@ -194,24 +171,26 @@ class CaseController {
         return response.status(500).json('cannot share a case with herself')
       }
 
-      // get cases in which logged_user is author of
-      let sqlQuery = 'select cc.case_id from users u ' +
-                        'left join case_contributors cc on u.id = cc.user_id ' +
-                        'where cc.user_id = ? and cc.case_id = ? and cc.role = 0'
-      let owned_cases = await Database.raw(sqlQuery, [logged_user, case_id])
-
-      console.log(owned_cases)
-      if (owned_cases[0] == undefined ){
-        return response.status(500).json('you are not owner of this case')
-      }
-
       let user = await User.find(user_id)
 
-      await user.contributes_with_cases().attach(case_id, (row) => {
-        row.role = 1
-      })
+      // Check if target user is an author
+      let sql_return = await Database
+        .select('slug')
+        .from('roles')
+        .where('slug', '=', 'author')
+        .leftJoin('role_user', 'roles.id', 'role_user.role_id')
+        .where('role_user.user_id', '=' , user_id)
 
-      return response.json('case successfully shared')
+      if (sql_return[0] != undefined){
+        await user.cases().attach(case_id, (row) => {
+          row.role = 1
+        })
+        return response.json('case successfully shared')
+
+      } else {
+        return response.status(500).json('target user is not an author')
+      }
+
 
     } catch (e) {
       console.log(e)
