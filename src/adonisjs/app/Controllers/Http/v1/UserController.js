@@ -82,10 +82,7 @@ class UserController {
         await user.save()
       }
 
-      // let token = await auth.generate(user)
-
-      // Object.assign(user, token)
-      return response.json('user successfully created')
+      return response.json(user)
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
@@ -130,7 +127,7 @@ class UserController {
 
       if (user != null) {
         await user.delete()
-      } else return response.json('user nout found')
+      } else return response.json('user not found')
 
       return response.json(user)
     }catch(e){

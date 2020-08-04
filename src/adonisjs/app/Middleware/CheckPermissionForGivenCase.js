@@ -61,4 +61,4 @@ class CheckPermissionForGivenCase {
   }
 }
 
-module.exports = CheckPermissionForGivenCase
+module.exports = CheckPermissionForGivenCaseh h 

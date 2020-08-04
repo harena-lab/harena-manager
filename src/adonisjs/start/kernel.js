@@ -43,7 +43,8 @@ const namedMiddleware = {
   guest: 'Adonis/Middleware/AllowGuestOnly',
   is: 'Adonis/Acl/Is',
   can: 'Adonis/Acl/Can',
-  check_permission: 'App/Middleware/CheckPermissionForGivenCase'
+  check_permission: 'App/Middleware/CheckPermissionForGivenCase',
+  quest_permission: 'App/Middleware/CheckUserQuestPermission'
 }
 
 /*

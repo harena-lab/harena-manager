@@ -60,6 +60,11 @@ class UserSeeder {
         quest.id =  await uuidv4()
         await quest.save(trx)
 
+        await user.quests().attach([quest.id], (row) => {
+          row.role = 0
+        }, trx)
+
+
         await trx.commit()
 
 

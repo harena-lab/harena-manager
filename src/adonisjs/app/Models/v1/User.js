@@ -12,10 +12,6 @@ class User extends Model {
         return false
     }
 
-    // cases() {
-    //     return this.hasMany('App/Models/v1/Case')
-    // }
-
     cases(){
         return this.belongsToMany('App/Models/v1/Case')
             .pivotTable('users_cases')
@@ -45,6 +41,24 @@ class User extends Model {
             .withTimestamps()
     }
 
+    tokens() {
+        return this.hasMany('App/Models/Token')
+    }
+
+    async check_role(role) {
+        let query_result = await Database
+            .from('roles')
+            .where('roles.slug', role)
+            .leftJoin('role_user', 'roles.id', 'role_user.role_id')
+            .where('role_user.user_id', this.id)
+            .count()
+
+        if (query_result[0]['count(*)'] === 0)
+            return 0
+        else
+            return 1
+    }
+
     static boot() {
         super.boot()
 
@@ -55,19 +69,6 @@ class User extends Model {
         this.addHook('beforeCreate', 'UserHook.hashPassword')
     }
 
-    /**
-     * A relationship on tokens is required for auth to
-     * work. Since features like `refreshTokens` or
-     * `rememberToken` will be saved inside the
-     * tokens table.
-     *
-     * @method tokens
-     *
-     * @return {Object}
-     */
-    tokens() {
-        return this.hasMany('App/Models/Token')
-    }
 
     // Attach role and permissions of a user
     static get traits () {

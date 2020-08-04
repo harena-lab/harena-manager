@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Database = use('Database')
+
 const Quest = use('App/Models/v1/Quest');
 const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
@@ -13,7 +15,11 @@ const uuidv4 = require('uuid/v4');
 class QuestController {
 
     async store({ request, response, auth }) {
+        let trx = await Database.beginTransaction()
+
         try{
+
+            let user = auth.user
             let q = request.all()
 
             q.id = await uuidv4()
@@ -21,10 +27,16 @@ class QuestController {
             let quest = new Quest()
             quest.merge(q)
 
-            await quest.save()
+            await quest.save(trx)
+
+            await user.quests().attach([quest.id], (row) => {
+                row.role = 0
+            }, trx)
+            trx.commit()
 
             return response.json(quest)
         } catch(e){
+            trs.rollback()
             console.log(e)
 
             if (e.code === 'ER_DUP_ENTRY') {
@@ -40,11 +52,18 @@ class QuestController {
             let user = await User.find(user_id)
             let quest = await Quest.find(quest_id)
 
-            await quest.users().attach(user.id)
+            if (await user.check_role('author')){
+                await user.quests().attach([quest.id], (row) => {
+                    row.role = 1
+                })
 
-            user.quests = await user.quests().fetch()
+                user.quests = await user.quests().fetch()
 
-            return response.json(user)
+                return response.json(user)
+            } else {
+                return response.status(500).json('target user must be an author')
+            }
+            
         } catch (e) {
             console.log(e)
             if (e.code === 'ER_DUP_ENTRY') {
@@ -91,10 +110,11 @@ class QuestController {
     }
 
     async list_cases({ request, response }) {
+
         try{
             let quest_id = request.input('quest_id')
             let quest = await Quest.find(quest_id)
-            
+            console.log(quest)
             return response.json(await quest.cases().fetch())
         } catch(e){
             console.log(e)
