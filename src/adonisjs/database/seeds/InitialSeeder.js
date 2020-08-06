@@ -58,12 +58,16 @@ class UserSeeder {
         let quest = new Quest()
         quest.title = 'default-quest'
         quest.id =  await uuidv4()
+        
         await quest.save(trx)
+        
+        await quest.cases().attach([c.id], (row) => {
+          row.order_position = 0
+        }, trx)
 
         await user.quests().attach([quest.id], (row) => {
           row.role = 0
         }, trx)
-
 
         await trx.commit()
 

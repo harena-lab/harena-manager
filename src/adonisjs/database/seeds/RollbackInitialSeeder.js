@@ -56,6 +56,8 @@ class RollbackInitialSeeder {
 
       const quest = await Quest.findBy('title', 'default-quest')
       await quest.cases().detach()
+      await quest.users().detach()
+
       await quest.delete(trx)
 
       let user = await User.findBy('username', 'jacinto')

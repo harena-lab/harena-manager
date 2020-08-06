@@ -131,30 +131,18 @@ class CaseController {
       let c = await Case.findBy('id', params.id)
       
       if (c != null){
-        let versions = await c.versions().fetch()
-        let versions_rows = versions.rows
+        await c.versions().delete()
+        await c.users().detach()
+        await c.quests().detach()
 
-        for (let i = 0; i < versions_rows.length; i++) {
-          let cv = await CaseVersion.findBy('id', versions_rows[i].id)
-          cv.delete()
-        }
-
-        let contributors = await c.users().fetch()
-        let contributors_rows = contributors.rows
-        let contributors_ids = []
-
-        for (let i = 0; i < contributors_rows.length; i++) {
-          contributors_ids.push(contributors_rows[i].id)
-        }
-
-        await c.users().detach(contributors_ids)
-
-
-        c.delete()
+        await c.delete(trx)
 
         trx.commit()
         return response.json(c)
-      } else return response.status(500).json('case not found')
+      } else {
+        trx.rollback()
+        return response.status(500).json('case not found')
+      }
     } catch (e) {
       console.log(e)
       trx.rollback()

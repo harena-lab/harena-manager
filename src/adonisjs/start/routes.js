@@ -61,16 +61,18 @@ Route.group(() => {
 |  resource: /case
 |----------------------------------------------------------------------------------------------
 */
+
 Route.group(() => {
-	
+
 	Route.get( 	 '',            'v1/CaseController.index')
 	Route.get(   ':id',         'v1/CaseController.show') 
 	Route.post(  '',			'v1/CaseController.store')
 	Route.put(   ':id',         'v1/CaseController.update').middleware(['check_permission:contributor'])
-	Route.delete(':id',         'v1/CaseController.destroy').middleware(['check_permission:author'])
 	Route.post(  'share',       'v1/CaseController.share').middleware(['check_permission:author'])
+	Route.delete(':id',         'v1/CaseController.destroy').middleware(['check_permission:author'])
 
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
+
 
 
 /*

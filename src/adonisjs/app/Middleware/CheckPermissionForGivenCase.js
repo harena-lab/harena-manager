@@ -12,7 +12,7 @@ class CheckPermissionForGivenCase {
    * @param {Function} next
    */
   async handle ({ params, request, response, auth }, next, properties) {
-
+console.log(2)
     try{
 	    let logged_user = auth.user.id
 		let sqlQuery = ""
@@ -54,6 +54,7 @@ class CheckPermissionForGivenCase {
 			else return response.status(500).json('you are not contributor of this case')
 		}
     }catch(e){
+    	console.log('quebrou')
     	console.log(e)
     	return response.status(500).json( e )
     }
@@ -61,4 +62,4 @@ class CheckPermissionForGivenCase {
   }
 }
 
-module.exports = CheckPermissionForGivenCaseh h 
+module.exports = CheckPermissionForGivenCase
