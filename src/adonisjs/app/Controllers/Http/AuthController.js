@@ -7,7 +7,7 @@ class AuthController {
 
 	async login({ request, auth, response }) {
         console.log(request.all())
-        let { login, password, refresh_token } = request.all();
+        let { email, password, refresh_token } = request.all();
         let user = ""
         let token = ""
             
@@ -31,7 +31,7 @@ class AuthController {
             if (e.code == 'E_INVALID_JWT_TOKEN'){
                 console.log(7)
                 try{
-                   token = await auth.withRefreshToken().attempt(login, password)
+                   token = await auth.withRefreshToken().attempt(email, password)
                 } catch(e){
                     console.log('erro aqui')
                     console.log(e)
@@ -42,7 +42,7 @@ class AuthController {
             if (token == "")
                 return response.status(e.status).json(e.message)
 
-            user = await User.findBy('login', login)
+            user = await User.findBy('email', email)
             Object.assign(user, token)
 
             return response.json(user)
