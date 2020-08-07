@@ -144,8 +144,9 @@ class CaseController {
         return response.status(500).json('case not found')
       }
     } catch (e) {
-      console.log(e)
       trx.rollback()
+
+      console.log(e)
       return response.status(500).json({ message: e })
     }
   }

@@ -45,6 +45,10 @@ class User extends Model {
         return this.hasMany('App/Models/Token')
     }
 
+    static get hidden () {
+        return ['password']
+    }
+
     async check_role(role) {
         let query_result = await Database
             .from('roles')
