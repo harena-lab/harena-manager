@@ -5,24 +5,21 @@ const Schema = use('Schema')
 
 class QuestCaseSchema extends Schema {
   up () {
-    this.dropIfExists('quest_cases')
+    this.dropIfExists('quests_cases')
 
-    this.create('quest_cases', (table) => {
-
-
-
+    this.create('quests_cases', (table) => {
       table.uuid('quest_id').references('id').inTable('quests').index('quest_id');
       table.uuid('case_id').references('id').inTable('cases').index('case_id');
       table.primary(['case_id', 'quest_id'])
 
-      table.string('argument')
+      table.integer('order_position')
 
       table.timestamps()
     })
   }
 
   down () {
-    this.drop('quest_cases')
+    this.drop('quests_cases')
   }
 }
 

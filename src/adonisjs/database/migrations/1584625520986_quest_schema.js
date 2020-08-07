@@ -11,9 +11,7 @@ class QuestSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      table.string('name', 255).notNullable().unique()
-
-      table.uuid('author_id').references('id').inTable('users').index('author_id');
+      table.string('title', 255).notNullable().unique()
 
       table.timestamps()
     })

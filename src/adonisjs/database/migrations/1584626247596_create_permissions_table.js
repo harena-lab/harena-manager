@@ -7,7 +7,8 @@ class PermissionsTableSchema extends Schema {
     this.dropIfExists('permissions')
 
     this.create('permissions', table => {
-      table.increments()
+      table.uuid('id')
+      table.primary('id')
 
       table.string('slug').notNullable().unique()
       table.string('name').notNullable().unique()

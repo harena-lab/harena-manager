@@ -12,23 +12,55 @@ class User extends Model {
         return false
     }
 
-    static async getAuthenticatedUser(email){
-        return await Database.table('users').select('username', 'email').where('email', email)
+    cases(){
+        return this.belongsToMany('App/Models/v1/Case')
+            .pivotTable('users_cases')
+            .withPivot(['role'])
+            .withTimestamps()
     }
 
-    cases() {
-        return this.hasMany('App/Models/v1/Case')
-    }
-
-    quests () {
+    quests() {
         return this
             .belongsToMany('App/Models/v1/Quest')
-            .pivotTable('users_quests')
+            .pivotTable('quests_users')
+            .withPivot(['role'])
             .withTimestamps()
     }
 
     artifacts() {
         return this.hasMany('App/Models/v1/Artifact')
+    }
+
+    institution(){
+        return this.belongsTo('App/Models/v1/Institution')
+    }
+
+    roles(){
+        return this.belongsToMany('App/Models/v1/Role')
+            .pivotTable('role_user')
+            .withTimestamps()
+    }
+
+    tokens() {
+        return this.hasMany('App/Models/Token')
+    }
+
+    static get hidden () {
+        return ['password']
+    }
+
+    async check_role(role) {
+        let query_result = await Database
+            .from('roles')
+            .where('roles.slug', role)
+            .leftJoin('role_user', 'roles.id', 'role_user.role_id')
+            .where('role_user.user_id', this.id)
+            .count()
+
+        if (query_result[0]['count(*)'] === 0)
+            return 0
+        else
+            return 1
     }
 
     static boot() {
@@ -38,27 +70,11 @@ class User extends Model {
          * A hook to hash the user password before saving
          * it to the database.
          */
-        this.addHook('beforeSave', async (userInstance) => {
-            if (userInstance.dirty.password) {
-                userInstance.password = await Hash.make(userInstance.password)
-            }
-        })
+        this.addHook('beforeCreate', 'UserHook.hashPassword')
     }
 
-    /**
-     * A relationship on tokens is required for auth to
-     * work. Since features like `refreshTokens` or
-     * `rememberToken` will be saved inside the
-     * tokens table.
-     *
-     * @method tokens
-     *
-     * @return {Object}
-     */
-    tokens() {
-        return this.hasMany('App/Models/Token')
-    }
 
+    // Attach role and permissions of a user
     static get traits () {
         return [
             '@provider:Adonis/Acl/HasRole',

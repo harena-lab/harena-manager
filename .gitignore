@@ -62,3 +62,8 @@ typings/
 
 .idea/
 .chglog/
+
+src/adonisjs/public/artifacts/cases/
+
+# vscode configuration file
+.vscode/

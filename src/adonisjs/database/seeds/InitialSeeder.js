@@ -13,7 +13,14 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 
+const CaseVersion = use('App/Models/v1/CaseVersion');
+const Case = use('App/Models/v1/Case');
 const User = use('App/Models/v1/User');
+const Quest = use('App/Models/v1/Quest');
+
+const Role = use('App/Models/v1/Role');
+const Permission = use('App/Models/v1/Permission');
+
 const Database = use('Database')
 const RESOURCE_DIR = "resources/"
 
@@ -22,53 +29,128 @@ const uuidv4 = require('uuid/v4');
 
 class UserSeeder {
   async run() {
-    const trx = await Database.beginTransaction()
+    let trx = await Database.beginTransaction()
     try{
-      let user = new User()
-      user.username = 'jacinto'
-      user.email = 'jacinto@example.com'
-      user.password = 'jacinto'
-      user.id =  await uuidv4()
+      let jacinto = await User.findBy('username', 'jacinto')
 
-      await user.save(trx)
+      if (jacinto == null){
 
-      const c = await Factory.model('App/Models/v1/Case').make({ name: 'case001-development', id:  await uuidv4() })
-      await user.cases().save(c, trx)
+        let user = await this.seed_default_users(trx)
 
-      const cv = await Factory.model('App/Models/v1/CaseVersion').make({ source: fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8'), id:  await uuidv4() })
-      await c.versions().save(cv, trx)
+        let c = await this.seed_default_case(trx)
 
-      //await Factory.model('App/Models/v1/User').createMany(5)
-      trx.commit()
+        await user.save(trx)
+
+        await c.users().attach([user.id], (row) => {
+          const AUTHOR = 0
+          row.role = AUTHOR
+        }, trx)
+        // await user.cases().attach(c.id, trx)
+
+        let roles = await this.seed_roles_and_permissions(trx)
+
+        await trx.commit()
+        
+        trx = await Database.beginTransaction()
+
+        await user.roles().attach([roles[0].id, roles[1].id], trx)
+
+        let quest = new Quest()
+        quest.title = 'default-quest'
+        quest.id =  await uuidv4()
+        
+        await quest.save(trx)
+        
+        await quest.cases().attach([c.id], (row) => {
+          row.order_position = 0
+        }, trx)
+
+        await user.quests().attach([quest.id], (row) => {
+          row.role = 0
+        }, trx)
+
+        await trx.commit()
 
 
-      const administrator = await Factory.model('Adonis/Acl/Role').make({ name: 'Administrator', slug:  'administrator', description: 'manage administration privileges'})
-      await administrator.save()
-      const admin_permission = await Factory.model('Adonis/Acl/Permission').make({ name: 'Manage users', slug:  'manage_users', description: 'Create, update, delete, list users'})
-      await admin_permission.save()
-      await administrator.permissions().attach([admin_permission.id])
-      await user.roles().attach([administrator.id])
-
-      const author = await Factory.model('Adonis/Acl/Role').make({ name: 'Case author', slug:  'author', description: 'manage cases'})
-      await author.save()
-      const author_permission = await Factory.model('Adonis/Acl/Permission').make({ name: 'Manage cases', slug:  'manage_cases', description: 'Create, update, delete, list cases'})
-      await author_permission.save()
-      await author.permissions().attach([author_permission.id])
-      await user.roles().attach([author.id])
-
-      const player = await Factory.model('Adonis/Acl/Role').make({ name: 'Player', slug:  'player', description: 'Case player'})
-      await player.save()
-      const player_permission = await Factory.model('Adonis/Acl/Permission').make({ name: 'Play cases', slug:  'play_cases', description: 'Play cases'})
-      await player_permission.save()
-      await player.permissions().attach([player_permission.id])
-      await user.roles().attach([player.id])
+      } else {
+        console.log('Database is already populated')
+        trx.commit()
+      }
 
     } catch(e){
+      console.log('Error on seed process. Transactions rolled back. Log:')
       console.log(e)
-      console.log('Error on seed process. Transactions rolled back')
+
       trx.rollback()
     }
   }
+
+  async seed_default_users(trx){
+    try{
+        let user = new User()
+        user.username = 'jacinto'
+        user.login = 'jacinto'
+        user.email = 'jacinto@email.com'
+        user.password = 'jacinto'
+        user.id =  await uuidv4()
+
+        // await user.save(trx)
+        return user
+    } catch (e){
+      console.log(e)
+    }
+  }
+
+  async seed_default_case(trx){
+    try{
+   
+      let c = new Case()
+      c.title = 'default-case'
+      c.description = 'Case for tests'
+      c.language = 'pt-br'
+      c.domain = 'domain-test'
+      c.specialty = 'specialty-test'
+      c.keywords = 'keyword1; keyword2'
+      c.id = await uuidv4()
+
+      let cv = new CaseVersion()
+      cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
+      cv.id = await uuidv4()
+
+      
+
+      await c.versions().save(cv, trx)
+
+      return c
+    } catch (e){
+      console.log(e)
+    }
+  }
+
+  async seed_roles_and_permissions(trx){
+    let admin = {name: 'Administrator', slug: 'admin', description: 'system admin', id: await uuidv4()}
+    let author = {name: 'Case Author', slug: 'author', description: 'user who write cases', id: await uuidv4()}
+    let player = {name: 'Player', slug: 'player', description: 'user who read cases', id: await uuidv4()}
+
+    // let admin_permissions = {name: 'admin permissions', slug: 'admin_permissions', description: 'higher permissions', id: await uuidv4()}
+    // let author_permissions = {name: 'author permissions', slug: 'author_permissions', description: 'can create, update, delete, list cases', id: await uuidv4()}
+    // let player_permissions = {name: 'player permissions', slug: 'player_permissions', description: 'can play cases', id: await uuidv4()}
+
+
+    let roles = await Factory.model('App/Models/v1/Role').makeMany(3, [admin, author, player])
+    // let permissions = await Factory.model('App/Models/v1/Permission').makeMany(1, [admin_permissions], trx)
+
+    // await roles[1].permissions().attach([permissions[1].id], trx)
+    // await roles[2].permissions().attach([permissions[2].id], trx)
+
+    await roles[0].save(trx)
+    await roles[1].save(trx)
+    await roles[2].save(trx)
+
+    return roles
+
+  }
+
 }
 
 module.exports = UserSeeder

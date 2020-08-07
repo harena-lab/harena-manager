@@ -4,8 +4,10 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Database = use('Database')
+
 const User = use('App/Models/v1/User');
-const CaseVersion = use('App/Models/v1/CaseVersion');
+const Institution = use('App/Models/v1/Institution');
 
 const uuidv4 = require('uuid/v4');
 
@@ -20,7 +22,9 @@ class UserController {
    * @param {View} ctx.view
    */
   async index({ request, response, view, auth }) {
+    console.log(1)
     try{
+
       let users = await User.all()
       return response.json(users)
     } catch(e){
@@ -38,10 +42,15 @@ class UserController {
    * @param {View} ctx.view
    */
   async show({ params, request, response, view }) {
+    console.log(12323)
     try{
-      let users = await User.find(params.id)
-      return response.json(users)
+      let user = await User.find(params.id)
+
+      if (user != null)
+        return response.json(user)
+      else return response.status(500).json('user not found')
     } catch(e){
+      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }
@@ -62,12 +71,18 @@ class UserController {
       user.username = request.input('username')
       user.email = request.input('email')
       user.password = request.input('password')
-      await user.save()
+      user.login = request.input('login')
 
-      let token = await auth.generate(user)
+      let request_institution = request.input('institution')
 
-      Object.assign(user, token)
-      response.json(user)
+      if (request_institution != null) {
+        let institution = await Institution.findBy('acronym',request.input('institution'))
+        await user.institution().associate(institution)
+      } else{
+        await user.save()
+      }
+
+      return response.json(user)
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
@@ -93,10 +108,12 @@ class UserController {
 
       let storeduser = await User.find(params.id)
 
-      await storeduser.merge(newUser)
-      await storeduser.save()
-     
-      return response.json(storeduser)
+      if (storeduser != null){
+        await storeduser.merge(newUser)
+        await storeduser.save()
+        return response.json(storeduser)
+      } else return response.status(500).json('user not found')
+
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
@@ -107,7 +124,10 @@ class UserController {
   async destroy({ params, response, auth }) {
     try{
       let user = await User.find(params.id)
-      await user.delete()
+
+      if (user != null) {
+        await user.delete()
+      } else return response.json('user not found')
 
       return response.json(user)
     }catch(e){
@@ -115,15 +135,53 @@ class UserController {
     }
   }
 
-  async list_quests({ params, response }) {
+  async list_quests({ request, response, auth }) {
     try{
-      let user = await User.find(params.id)
+
+      let user = await auth.user
 
       return response.json(await user.quests().fetch())
     } catch(e){
       console.log(e)
+      return response.status(500).json({ message: e.message })
     }
   }
+
+  async list_cases({ params, response, auth }) {
+    try{
+      let user = await auth.user
+
+      let cases = await user.cases().fetch()
+
+      return response.json(cases)
+    } catch(e){
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
+  async list_cases_by_quests({ params, response, auth }) {
+    try{
+      let user = await auth.user
+
+      Database
+        .select('*')
+        .from('quests_users')
+        .where('user_id', user.id)
+        .leftJoin('cases', 'quests.case_id', 'cases.id')
+
+      let quests = await user.quests().fetch()
+
+      let cases = await user.cases().fetch()
+
+
+    } catch(e){
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
+  
 }
 
 module.exports = UserController

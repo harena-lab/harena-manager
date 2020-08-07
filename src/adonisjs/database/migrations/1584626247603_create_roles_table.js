@@ -7,7 +7,8 @@ class RolesTableSchema extends Schema {
     this.dropIfExists('roles')
 
     this.create('roles', table => {
-      table.increments()
+      table.uuid('id')
+      table.primary('id')
 
       table.string('slug').notNullable().unique()
       table.string('name').notNullable().unique()

@@ -14,22 +14,14 @@ const uuidv4 = require('uuid/v4');
 
 /** * Resourceful controller for interacting with cases */
 class CaseController {
+  
   /** Show a list of all cases */
-  async index({ request, response }) {
+  async index({ request, response, }) {
     try {
-      let filterBy = request.input('filterBy')
-      if (filterBy == null){
-        let cases = await Case.query().with('versions').fetch()
-        return response.json(cases)
-      }
-      if (filterBy == 'user'){
-        let user = await User.find(request.input('filter'))
-        let cases = await user.cases().fetch()
-        return response.json(cases)
-      }
-    } catch (e) {
-      console.log(e)
-      return response.status(e.status).json({ message: e.message })
+      let cases = await Case.all()
+      return response.json(cases)
+    } catch(e){
+      return response.status(500).json({ message: e.message })
     }
   }
 
@@ -47,11 +39,13 @@ class CaseController {
 
       let c = await Case.find( params.id )
 
-      let versions = await CaseVersion.query().where('case_id', '=', params.id ).orderBy('created_at', 'asc').fetch()
+      if (c != null){
+        let versions = await CaseVersion.query().where('case_id', '=', params.id ).orderBy('created_at', 'asc').fetch()
 
-      c.source = versions.last().source
-      c.versions = versions
-      return response.json(c)
+        c.source = versions.last().source
+        c.versions = versions
+        return response.json(c)
+      } else return response.status(500).json('case not found')
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
@@ -60,23 +54,38 @@ class CaseController {
   /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
     try {
-      let c = new Case()
+      console.log(1)
+      let c = await Case.findBy('title', request.input('title'))
 
-      c.id = await uuidv4()
-      c.name = request.input('name')
-      c.user_id = auth.user.id
-      
-      let cv = new CaseVersion()
-      cv.id = await uuidv4()
+      if (c == null) {
+        c = new Case()
+        c.id = await uuidv4()
+        c.title = request.input('title')
+        c.description = request.input('description')
+        c.language = request.input('language')
+        c.domain = request.input('domain')
+        c.specialty = request.input('specialty')
+        c.keywords = request.input('keywords')
 
-      cv.source = request.input('source')
-      await c.versions().save(cv)
-      await c.versions().fetch()
 
-      return response.json(c)
+        let cv = new CaseVersion()
+        cv.id = await uuidv4()
+        cv.source = request.input('source')
+
+        await c.versions().save(cv)
+        await c.users().attach(auth.user.id, (row) => {
+          row.role = 0
+        })
+
+        c.versions = await c.versions().fetch()
+        c.users = await c.users().fetch()
+        return response.json(c)
+
+      } else return response.status(500).json('title already exists')
+
     } catch (e) {
       console.log(e)
-      return response.status(e.status).json({ message: e.message })
+      return response.status(500).json({ message: e.message })
     }
   }
 
@@ -85,17 +94,25 @@ class CaseController {
     try {
       let c = await Case.find(params.id)
 
-      c.name = request.input('name')
-      
-      let cv = new CaseVersion()
-      cv.source = request.input('source')
-        cv.id = await uuidv4()
-      await c.versions().save(cv)
-      await c.save() 
-      return response.json(c)
+      if (c != null){
+         c.title = request.input('title')
+         c.description = request.input('description')
+         c.language = request.input('language')
+         c.domain = request.input('domain')
+         c.specialty = request.input('specialty')
+         c.keywords = request.input('keywords')
+          
+         let cv = new CaseVersion()
+         cv.source = request.input('source')
+         cv.id = await uuidv4()
+         await c.versions().save(cv)
+         await c.save() 
+         return response.json(c)
+       } else return response.status(500).json('case not found')
+
     } catch (e) {
       console.log(e)
-      return response.status(e.status).json({ message: e.message })
+      return response.status(500).json({ message: e })
     }
   }
 
@@ -109,25 +126,64 @@ class CaseController {
    */
   async destroy({ params, response }) {
     const trx = await Database.beginTransaction()
-
     try {
+
       let c = await Case.findBy('id', params.id)
+      
+      if (c != null){
+        await c.versions().delete()
+        await c.users().detach()
+        await c.quests().detach()
 
-      let versions = await c.versions().fetch()
-      let cvs = versions.rows
+        await c.delete(trx)
 
-      for (let i = 0; i < cvs.length; i++) {
-        let cv = await CaseVersion.findBy('id', cvs[i].id)
-        cv.delete()
+        trx.commit()
+        return response.json(c)
+      } else {
+        trx.rollback()
+        return response.status(500).json('case not found')
       }
-
-      c.delete()
-
-      trx.commit()
-      return response.json(c)
     } catch (e) {
       trx.rollback()
-      return response.status(500).json({ message: e.message })
+
+      console.log(e)
+      return response.status(500).json({ message: e })
+    }
+  }
+
+  async share({ request, auth, response }) {  
+    try {
+      let logged_user = auth.user.id
+      let {user_id, case_id} = request.post()
+
+      if (logged_user == user_id){
+        return response.status(500).json('cannot share a case with herself')
+      }
+
+      let user = await User.find(user_id)
+
+      // Check if target user is an author
+      let sql_return = await Database
+        .select('slug')
+        .from('roles')
+        .where('slug', '=', 'author')
+        .leftJoin('role_user', 'roles.id', 'role_user.role_id')
+        .where('role_user.user_id', '=' , user_id)
+
+      if (sql_return[0] != undefined){
+        await user.cases().attach(case_id, (row) => {
+          row.role = 1
+        })
+        return response.json('case successfully shared')
+
+      } else {
+        return response.status(500).json('target user is not an author')
+      }
+
+
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
     }
   }
 }
