@@ -18,9 +18,12 @@ Check https://documenter.getpostman.com/view/7243662/T1Ds8ag7?version=latest to 
 
 We provide a `docker container` to locally run `harena-manager` code. Containers guarantee the required minimal configuration to run the code. Read [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/) documentations to install docker and learn further about containers.
 
+> In order to execute `docker` without `sudo`, read this link: https://docs.docker.com/engine/install/linux-postinstall/, which shows another optional and valuable configurations in docker environment.
+
 #### Instructions (for Linux users)
 
 Clone `harena-manager` repository, get into it, checkout `development` branch, and build the manager docker image:
+
 ```bash
 git clone https://github.com/datasci4health/harena-manager.git
 cd harena-manager
@@ -80,18 +83,21 @@ docker exec -it harena-manager_harena-manager_1 bash
 
 ### Branch organization
 * `master`:
-    * Version running at http://harena.ds4h.org/latest .
-    * Protected. Must use _pull request_ to merge evolutions of the _development_ branch.
+    * The code used by our production cloud server: http://harena.ds4h.org/
+    * Protected. Must use _pull request_ to merge evolutions from _development_ branch
 * `development`:
+    * The latest code contaning the most recent updates made by the development team
+    * [Changelog file](https://github.com/datasci4health/harena-manager/blob/development/CHANGELOG.md) show unreleased features which will be merged into `master` from `development` branch in the next release
     * Version running at http://harena.ds4h.org/development . 
     * Protected. Must use _pull request_ to merge new features.
-* `feature/< github-issue >`:
+<!--* `feature/< github-issue >`:
     * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
-* `bug/< github-issue >`:
+ * `bug/< github-issue >`:
     * new bugs registered on the issue list https://github.com/datasci4health/harena-manager/issues.
 * `tags`:
     * Are used for creating Dockerhub image versions at https://cloud.docker.com/u/datasci4health/repository/docker/datasci4health/harena-manager .    
+-->
 
 ## Change log
 
-Release updates can be found at [CHANGELOG.md](https://github.com/datasci4health/harena-manager/blob/development/CHANGELOG.md) file.
+Release updates can be found at [CHANGELOG.md file](https://github.com/datasci4health/harena-manager/blob/development/CHANGELOG.md).
