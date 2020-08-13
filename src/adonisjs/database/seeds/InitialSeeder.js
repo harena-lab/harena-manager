@@ -119,11 +119,11 @@ class UserSeeder {
       cv.id = await uuidv4()
 
       let artifact = new Artifact()
-RESOURCE_DIR + 'hospital-background.png'
-      let fs_path = Helpers.publicPath('/resources/artifacts/')
-      let case_relative_path = this.relativePath
-      fs_path += 'cases/' + case_id + '/'
-      case_relative_path += 'cases/' + case_id + '/'
+// RESOURCE_DIR + 'hospital-background.png'
+      // let fs_path = Helpers.publicPath('/resources/artifacts/')
+      // let case_relative_path = this.relativePath
+      // fs_path += 'cases/' + case_id + '/'
+      // case_relative_path += 'cases/' + case_id + '/'
 
       await c.artifacts().save(cv, trx)
 
