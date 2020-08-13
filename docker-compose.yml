@@ -22,8 +22,6 @@ services:
       - DB_USER=jacinto
       - DB_PASSWORD=jacinto
       - HASH_DRIVER=bcrypt
-    env_file:      
-      - web-variables.env
     depends_on:
       - harena-manager-database
     restart: always  
