@@ -17,6 +17,7 @@ const CaseVersion = use('App/Models/v1/CaseVersion');
 const Case = use('App/Models/v1/Case');
 const User = use('App/Models/v1/User');
 const Quest = use('App/Models/v1/Quest');
+const Artifact = use('App/Models/v1/Artifact');
 
 const Role = use('App/Models/v1/Role');
 const Permission = use('App/Models/v1/Permission');
@@ -117,7 +118,14 @@ class UserSeeder {
       cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
       cv.id = await uuidv4()
 
-      
+      let artifact = new Artifact()
+// RESOURCE_DIR + 'hospital-background.png'
+      // let fs_path = Helpers.publicPath('/resources/artifacts/')
+      // let case_relative_path = this.relativePath
+      // fs_path += 'cases/' + case_id + '/'
+      // case_relative_path += 'cases/' + case_id + '/'
+
+      await c.artifacts().save(cv, trx)
 
       await c.versions().save(cv, trx)
 

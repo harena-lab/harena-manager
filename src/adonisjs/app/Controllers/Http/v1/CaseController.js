@@ -40,7 +40,10 @@ class CaseController {
       let c = await Case.find( params.id )
 
       if (c != null){
-        let versions = await CaseVersion.query().where('case_id', '=', params.id ).orderBy('created_at', 'asc').fetch()
+        let versions = await CaseVersion.query()
+                                          .where('case_id', '=', params.id )
+                                          .orderBy('created_at', 'asc')
+                                          .fetch()
 
         c.source = versions.last().source
         c.versions = versions
@@ -54,34 +57,32 @@ class CaseController {
   /**  * Create/save a new case.*/
   async store({ request, auth, response }) {
     try {
-      console.log(1)
-      let c = await Case.findBy('title', request.input('title'))
+      // let c = await Case.findBy('title', request.input('title'))
 
-      if (c == null) {
-        c = new Case()
-        c.id = await uuidv4()
-        c.title = request.input('title')
-        c.description = request.input('description')
-        c.language = request.input('language')
-        c.domain = request.input('domain')
-        c.specialty = request.input('specialty')
-        c.keywords = request.input('keywords')
+      // if (c == null) {
+      let c = new Case()
+      c.id = await uuidv4()
+      c.title = request.input('title')
+      c.description = request.input('description')
+      c.language = request.input('language')
+      c.domain = request.input('domain')
+      c.specialty = request.input('specialty')
+      c.keywords = request.input('keywords')
+      c.original_date = request.input('original_date')
 
+      let cv = new CaseVersion()
+      cv.id = await uuidv4()
+      cv.source = request.input('source')
 
-        let cv = new CaseVersion()
-        cv.id = await uuidv4()
-        cv.source = request.input('source')
+      await c.versions().save(cv)
+      await c.users().attach(auth.user.id, (row) => {
+        row.role = 0
+      })
 
-        await c.versions().save(cv)
-        await c.users().attach(auth.user.id, (row) => {
-          row.role = 0
-        })
-
-        c.versions = await c.versions().fetch()
-        c.users = await c.users().fetch()
-        return response.json(c)
-
-      } else return response.status(500).json('title already exists')
+      c.versions = await c.versions().fetch()
+      c.users = await c.users().fetch()
+      return response.json(c)
+     // } else return response.status(500).json('title already exists')
 
     } catch (e) {
       console.log(e)
@@ -101,7 +102,8 @@ class CaseController {
          c.domain = request.input('domain')
          c.specialty = request.input('specialty')
          c.keywords = request.input('keywords')
-          
+         c.original_date = request.input('original_date')
+ 
          let cv = new CaseVersion()
          cv.source = request.input('source')
          cv.id = await uuidv4()
