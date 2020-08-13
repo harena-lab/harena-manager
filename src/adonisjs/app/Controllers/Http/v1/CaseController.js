@@ -134,6 +134,7 @@ class CaseController {
         await c.versions().delete()
         await c.users().detach()
         await c.quests().detach()
+        await c.artifacts().delete()
 
         await c.delete(trx)
 
