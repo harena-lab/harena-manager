@@ -102,7 +102,7 @@ class CaseController {
          c.domain = request.input('domain')
          c.specialty = request.input('specialty')
          c.keywords = request.input('keywords')
-         c.original_date = request.input('original_date')
+         c.original_date = request.input('originalDate')
  
          let cv = new CaseVersion()
          cv.source = request.input('source')
