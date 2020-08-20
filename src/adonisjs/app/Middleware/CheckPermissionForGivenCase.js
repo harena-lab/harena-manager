@@ -26,7 +26,6 @@ console.log(2)
     	
     	// verify if the loged user is owner of the case
 	    if (properties[0] == 'author'){
-	    	console.log('case author check')
 		    
 		    sqlQuery = 'select uc.user_id from users u ' +
 		                      'left join users_cases uc on u.id = uc.user_id ' +
@@ -39,7 +38,6 @@ console.log(2)
 	    }
 
 		if (properties[0] == 'contributor'){
-	    	console.log('case contributor check')
 
 			let logged_user = auth.user.id
 

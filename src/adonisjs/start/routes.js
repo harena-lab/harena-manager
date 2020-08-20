@@ -21,7 +21,7 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 Route.group(() => { 
 
 	Route.post(	 '',		 		'v1/UserController.store')
-	Route.post(	 'login',			'v1/AuthController.login') 
+	// Route.post(	 'login',			'v1/AuthController.login') 
 
 	
     Route.get( 	 'cases',        	'v1/UserController.list_cases').middleware(['auth'])  
@@ -37,6 +37,8 @@ Route.group(() => {
 Route.get('/api/v1/users',          'v1/UserController.index').middleware(['auth', 'is:admin'])
 
 
+Route.post('/api/v1/auth/login',			'v1/AuthController.login') 
+Route.post('/api/v1/auth/logout',			'v1/AuthController.logout').middleware(['auth'])
 
 /*
 |----------------------------------------------------------------------------------------------

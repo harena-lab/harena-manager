@@ -64,7 +64,7 @@ class AuthController {
 
     async logout({ auth, response }) {
         try{
-
+console.log(reuest)
             const refreshToken = auth.getAuthHeader()
             await auth.revokeTokens(refreshToken)
             
