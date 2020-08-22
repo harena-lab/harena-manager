@@ -67,6 +67,7 @@ module.exports = {
     httpOnly: true,
     sameSite: false,
     path: '/'
+    // domain: Env.get('COOKIE_DOMAIN', null)
   },
 
   /*
