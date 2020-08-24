@@ -6,6 +6,7 @@ class AuthController {
     async login({ request, auth, response }) {
         try {
             let { email, password } = request.all();
+
 console.log(request)
             if (await auth.attempt(email, password)) {
                 console.log('------------------------------- attempt')

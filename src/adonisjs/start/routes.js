@@ -96,17 +96,17 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 
-Route.get('/api/v1/author/quest/cases', 'v1/QuestController.list_cases').middleware(['auth', 'is:author', 'quest_permission:contributor'])
-Route.get('/api/v1/player/quest/cases', 'v1/QuestController.list_playable_cases').middleware(['auth', 'is:player', 'quest_permission:player'])
+Route.get('/api/v1/quests',     	'v1/QuestController.index').middleware('auth', 'is:admin')
+Route.get('/api/v1/quest/cases', 	'v1/QuestController.listCases').middleware(['auth', 'is:(author or player)', 'quest_permission'])
 
 Route.group(() => {
 
-	Route.get(   '',     			'v1/QuestController.index')
 	Route.put(   '',             	'v1/QuestController.store')
 
 	Route.post(  'link/user',		'v1/QuestController.link_user').middleware('quest_permission:contributor')
-	Route.post(  'link/case',		'v1/QuestController.link_case')
-	Route.get(   ':id/users',      	'v1/QuestController.list_users')
+	Route.post(  'link/case',		'v1/QuestController.link_case').middleware('quest_permission:contributor')
+	
+	Route.get(   'users',      		'v1/QuestController.listUsers').middleware('quest_permission:contributor')
 
 }).prefix('/api/v1/quest').middleware('auth', 'is:author')
 

@@ -22,7 +22,6 @@ class UserController {
    * @param {View} ctx.view
    */
   async index({ request, response, view, auth }) {
-    console.log(1)
     try{
 
       let users = await User.all()
@@ -42,7 +41,6 @@ class UserController {
    * @param {View} ctx.view
    */
   async show({ params, request, response, view }) {
-    console.log(12323)
     try{
       let user = await User.find(params.id)
 

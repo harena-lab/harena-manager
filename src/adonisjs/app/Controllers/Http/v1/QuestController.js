@@ -114,40 +114,31 @@ class QuestController {
     }
 
 
-    async list_users({ params, response }) {
+    async listUsers({ request, response }) {
         try{
-            let quest = await Quest.find(params.id)
+            let questId = request.input('questId')
+
+            let quest = await Quest.find(questId)
 
             return response.json(await quest.users().fetch())
         } catch(e){
             console.log(e)
+            return response.status(500).json(e)
         }
     }
 
-    async list_cases({ request, response }) {
-
+    async listCases({ request, response }) {
         try{
-            let quest_id = request.input('quest_id')
-            let quest = await Quest.find(quest_id)
-                return response.json(await quest.cases().fetch())
-        } catch(e){
-            console.log(e)
-        }
-    }
+            let questId = request.input('questId')
 
+            let quest = await Quest.find(questId)
 
-
-    async list_playable_cases({ request, response }) {
-console.log('playable')
-        try{
-            let quest_id = request.input('quest_id')
-            let quest = await Quest.find(quest_id)
-            console.log(quest)
             return response.json(await quest.cases().fetch())
         } catch(e){
             console.log(e)
         }
     }
+
 }
 
 module.exports = QuestController
