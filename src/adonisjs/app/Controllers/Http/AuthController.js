@@ -9,8 +9,9 @@ class AuthController {
         console.log('v2/session')
         try {
             let { email, password } = request.all();
-// console.log(request)
+            // if (await auth.remember(true).attempt(email, password)) {
             if (await auth.remember(true).attempt(email, password)) {
+
                 console.log('------------------------------- attempt')
                         // console.log(session.all())
 
@@ -22,13 +23,13 @@ class AuthController {
                 // authenticatedUser.email = user.email
                 // authenticatedUser.username = user.username
 
-                // Object.assign(authenticatedUser, token)
+                Object.assign(user, { 'adonisAuth': session.get('adonis-auth') })
                 // return response.json('Logged in successfully')
 
-                let adonis_session = session.get('adonis-auth')
-                console.log(adonis_session)
-                console.log(auth)
-                return response.json(adonis_session)
+                // let adonis_session = session.get('adonis-auth')
+                console.log(session.all())
+                // console.log(auth)
+                return response.json(user)
 
             }
         }

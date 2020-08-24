@@ -6,7 +6,7 @@ const Token = use('App/Models/v1/Token');
 class AuthController {
 
     async login({ request, auth, response }) {
-        console.log(request.all())
+        // console.log(request.all())
         let { email, password, refresh_token } = request.all();
         let user = ""
         let token = ""
@@ -29,7 +29,6 @@ class AuthController {
 
             // unloged user
             if (e.code == 'E_INVALID_JWT_TOKEN'){
-                console.log(7)
                 try{
                    token = await auth.withRefreshToken().attempt(email, password)
                 } catch(e){
@@ -64,7 +63,6 @@ class AuthController {
 
     async logout({ auth, response }) {
         try{
-console.log(reuest)
             const refreshToken = auth.getAuthHeader()
             await auth.revokeTokens(refreshToken)
             
