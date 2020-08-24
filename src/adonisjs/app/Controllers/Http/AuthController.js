@@ -6,7 +6,6 @@ const Token = use('App/Models/v1/Token');
 class AuthController {
 
 	async login({ request, auth, response }) {
-        console.log(request.all())
         let { email, password, refresh_token } = request.all();
         let user = ""
         let token = ""

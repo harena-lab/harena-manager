@@ -97,7 +97,7 @@ Route.group(() => {
 */
 
 Route.get('/api/v1/author/quest/cases', 'v1/QuestController.list_cases').middleware(['auth', 'is:author', 'quest_permission:contributor'])
-// Route.get('/api/v1/play/quest/cases', 'v1/QuestController.list_cases').middleware(['auth', 'is:player'])
+Route.get('/api/v1/player/quest/cases', 'v1/QuestController.list_playable_cases').middleware(['auth', 'is:player', 'quest_permission:player'])
 
 Route.group(() => {
 
@@ -108,7 +108,7 @@ Route.group(() => {
 	Route.post(  'link/case',		'v1/QuestController.link_case')
 	Route.get(   ':id/users',      	'v1/QuestController.list_users')
 
-}).prefix('/api/v1/quest').middleware('auth', 'is:admin')
+}).prefix('/api/v1/quest').middleware('auth', 'is:author')
 
 
 /*
@@ -123,7 +123,7 @@ Route.group(() => {
 	Route.get(   'roles',               	'v1/AdminController.list_roles')
 	Route.get(   'permissions',             'v1/AdminController.list_permissions')
 
-	Route.post(  'role/link/user',			'v1/AdminController.link_role_user')
+	Route.post(  'role/link/user',			'v1/AdminController.linkRoleUser')
 	Route.post(  'role/link/permission',	'v1/AdminController.link_role_permission')
 
 	Route.get(   'user/:id/roles',		  	'v1/AdminController.list_roles_by_user')
@@ -134,6 +134,7 @@ Route.group(() => {
 
 	Route.post(   'revoke_tokens',     		'v1/AdminController.revoke_tokens')
 
+	Route.post(  'quest/link/user',			'v1/QuestController.link_user')
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 

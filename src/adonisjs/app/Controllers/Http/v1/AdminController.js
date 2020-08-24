@@ -51,24 +51,17 @@ class AdminController {
         }
     }
 
-    async link_role_user({ request, response }) {
+    async linkRoleUser({ request, response }) {
         try {
             const {user_id, role_id} = request.post()
             let user = await User.find(user_id)
             let role = await Role.find(role_id)
 
             await user.roles().attach(role.id)
-
-            // user.quests = await user.quests().fetch()
-
-            return response.json(user)
+            return response.json(role.slug + ' role has given to the user ' + user.username)
         } catch (e) {
             console.log(e)
-            if (e.code === 'ER_DUP_ENTRY') {
-                return response.status(409).json({ message: e.message })
-            }
-
-            return response.status(500).json({ message: e.toString() })
+            return response.status(500).json(e)
         }
     }
 

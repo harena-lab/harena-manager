@@ -86,7 +86,7 @@ class UserController {
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ message: e.message })
+        return response.status(409).json(e.sqlMessage)
       }
 
       return response.status(e.status).json({ message: e.message })
