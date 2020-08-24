@@ -14,7 +14,6 @@ class AuthController {
             await auth.check()
             return response.json('user is signed already')
         } catch(e) {
-            console.log(e)
             // token expired
             if (e.code == 'E_JWT_TOKEN_EXPIRED'){
                 token = await auth.generateForRefreshToken(refresh_token)
@@ -28,11 +27,9 @@ class AuthController {
 
             // unloged user
             if (e.code == 'E_INVALID_JWT_TOKEN'){
-                console.log(7)
                 try{
                    token = await auth.withRefreshToken().attempt(email, password)
                 } catch(e){
-                    console.log('erro aqui')
                     console.log(e)
                 }
             }
@@ -63,7 +60,6 @@ class AuthController {
 
     async logout({ auth, response }) {
         try{
-console.log(reuest)
             const refreshToken = auth.getAuthHeader()
             await auth.revokeTokens(refreshToken)
             
