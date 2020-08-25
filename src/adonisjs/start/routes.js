@@ -21,7 +21,7 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 Route.group(() => { 
 
 	Route.post(	 '',		 		'v1/UserController.store')
-	Route.post(	 'login',			'v1/AuthController.login') 
+	// Route.post(	 'login',			'v1/AuthController.login') 
 
 	
     Route.get( 	 'cases',        	'v1/UserController.list_cases').middleware(['auth'])  
@@ -37,6 +37,8 @@ Route.group(() => {
 Route.get('/api/v1/users',          'v1/UserController.index').middleware(['auth', 'is:admin'])
 
 
+Route.post('/api/v1/auth/login',			'v1/AuthController.login') 
+Route.post('/api/v1/auth/logout',			'v1/AuthController.logout').middleware(['auth'])
 
 /*
 |----------------------------------------------------------------------------------------------
@@ -94,19 +96,19 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 
-Route.get('/api/v1/author/quest/cases', 'v1/QuestController.list_cases').middleware(['auth', 'is:author', 'quest_permission:contributor'])
-// Route.get('/api/v1/play/quest/cases', 'v1/QuestController.list_cases').middleware(['auth', 'is:player'])
+Route.get('/api/v1/quests',     	'v1/QuestController.index').middleware('auth', 'is:admin')
+Route.get('/api/v1/quest/cases', 	'v1/QuestController.listCases').middleware(['auth', 'is:(author or player)', 'quest_permission'])
 
 Route.group(() => {
 
-	Route.get(   '',     			'v1/QuestController.index')
 	Route.put(   '',             	'v1/QuestController.store')
 
 	Route.post(  'link/user',		'v1/QuestController.link_user').middleware('quest_permission:contributor')
-	Route.post(  'link/case',		'v1/QuestController.link_case')
-	Route.get(   ':id/users',      	'v1/QuestController.list_users')
+	Route.post(  'link/case',		'v1/QuestController.link_case').middleware('quest_permission:contributor')
+	
+	Route.get(   'users',      		'v1/QuestController.listUsers').middleware('quest_permission:contributor')
 
-}).prefix('/api/v1/quest').middleware('auth', 'is:admin')
+}).prefix('/api/v1/quest').middleware('auth', 'is:author')
 
 
 /*
@@ -121,7 +123,7 @@ Route.group(() => {
 	Route.get(   'roles',               	'v1/AdminController.list_roles')
 	Route.get(   'permissions',             'v1/AdminController.list_permissions')
 
-	Route.post(  'role/link/user',			'v1/AdminController.link_role_user')
+	Route.post(  'role/link/user',			'v1/AdminController.linkRoleUser')
 	Route.post(  'role/link/permission',	'v1/AdminController.link_role_permission')
 
 	Route.get(   'user/:id/roles',		  	'v1/AdminController.list_roles_by_user')
@@ -132,6 +134,7 @@ Route.group(() => {
 
 	Route.post(   'revoke_tokens',     		'v1/AdminController.revoke_tokens')
 
+	Route.post(  'quest/link/user',			'v1/QuestController.link_user')
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 

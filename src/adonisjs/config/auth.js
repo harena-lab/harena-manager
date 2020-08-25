@@ -54,7 +54,7 @@ module.exports = {
     scheme: 'basic',
     uid: 'email',
     password: 'password'
-  },
+  }, 
 
   /*
   |--------------------------------------------------------------------------
@@ -75,6 +75,7 @@ module.exports = {
       secret: Env.get('APP_KEY'),
       // expiresIn: 300
       expiresIn: 86400
+      // algorithm: 
     }
   },
 

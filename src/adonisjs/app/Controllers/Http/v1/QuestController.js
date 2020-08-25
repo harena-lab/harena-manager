@@ -9,10 +9,23 @@ const Database = use('Database')
 const Quest = use('App/Models/v1/Quest');
 const User = use('App/Models/v1/User');
 const Case = use('App/Models/v1/Case');
+const Role = use('App/Models/v1/Role');
 
 const uuidv4 = require('uuid/v4');
 
 class QuestController {
+
+    async index({ response }) {
+        console.log('aqui')
+        try{
+            let quests = await Quest.all()
+            return response.json(quests)
+        } catch(e){
+            return response.status(e.status).json({ message: e.message })
+        }
+    }
+
+
 
     async store({ request, response, auth }) {
         let trx = await Database.beginTransaction()
@@ -48,29 +61,31 @@ class QuestController {
 
     async link_user({ request, response }) {
         try {
-            const {user_id, quest_id} = request.post()
+            const {user_id, quest_id, roleSlug} = request.post()
             let user = await User.find(user_id)
             let quest = await Quest.find(quest_id)
+            let role = await Role.findBy('slug', roleSlug)
 
-            if (await user.check_role('author')){
+            if (role == null)
+                return response.status(500).json('Invalid roleSlug')
+
+            if (await user.check_role(role.slug)){
                 await user.quests().attach([quest.id], (row) => {
-                    row.role = 1
+                    if (role.slug == 'author'){
+                        row.role = 1
+                    }
+                    if (role.slug == 'player'){
+                        row.role = 2
+                    }
                 })
 
-                user.quests = await user.quests().fetch()
-
-                return response.json(user)
+                return response.json(role.slug + ' ' + user.username + ' was added to the quest '+ quest.title)
             } else {
-                return response.status(500).json('target user must be an author')
+                return response.status(500).json('target user must have ' + role.slug + ' role')
             }
-            
         } catch (e) {
             console.log(e)
-            if (e.code === 'ER_DUP_ENTRY') {
-                return response.status(409).json({ message: e.message })
-            }
-
-            return response.json({ message: e.toString() })
+            return response.status(500).json(e)
         }
     }
 
@@ -99,36 +114,31 @@ class QuestController {
     }
 
 
-    async list_users({ params, response }) {
+    async listUsers({ request, response }) {
         try{
-            let quest = await Quest.find(params.id)
+            let questId = request.input('questId')
+
+            let quest = await Quest.find(questId)
 
             return response.json(await quest.users().fetch())
         } catch(e){
             console.log(e)
+            return response.status(500).json(e)
         }
     }
 
-    async list_cases({ request, response }) {
-
+    async listCases({ request, response }) {
         try{
-            let quest_id = request.input('quest_id')
-            let quest = await Quest.find(quest_id)
-            console.log(quest)
+            let questId = request.input('questId')
+
+            let quest = await Quest.find(questId)
+
             return response.json(await quest.cases().fetch())
         } catch(e){
             console.log(e)
         }
     }
 
-    async index({ response }) {
-        try{
-            let quests = await Quest.all()
-            return response.json(quests)
-        } catch(e){
-            return response.status(e.status).json({ message: e.message })
-        }
-    }
 }
 
 module.exports = QuestController
