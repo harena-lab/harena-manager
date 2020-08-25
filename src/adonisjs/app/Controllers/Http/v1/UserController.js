@@ -22,7 +22,6 @@ class UserController {
    * @param {View} ctx.view
    */
   async index({ request, response, view, auth }) {
-    console.log(1)
     try{
 
       let users = await User.all()
@@ -42,7 +41,6 @@ class UserController {
    * @param {View} ctx.view
    */
   async show({ params, request, response, view }) {
-    console.log(12323)
     try{
       let user = await User.find(params.id)
 
@@ -86,7 +84,7 @@ class UserController {
     } catch (e) {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ message: e.message })
+        return response.status(409).json(e.sqlMessage)
       }
 
       return response.status(e.status).json({ message: e.message })

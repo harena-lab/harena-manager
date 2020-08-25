@@ -12,7 +12,6 @@ class CheckPermissionForGivenCase {
    * @param {Function} next
    */
   async handle ({ params, request, response, auth }, next, properties) {
-console.log(2)
     try{
 	    let logged_user = auth.user.id
 		let sqlQuery = ""

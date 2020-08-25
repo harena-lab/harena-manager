@@ -41,9 +41,8 @@ class AuthController {
 
     async logout({ auth, response }) {
         try{
-
             await auth.logout()
-            
+           
             return response.json('Logged out successfuly')
         }catch(e){
             console.log(e)
