@@ -50,7 +50,7 @@ class CheckUserQuestPermission {
       if (query_result[0]['count(*)'] === 0)
         return response.status(500).json('user dont have ' + properties[0] + ' permissions for such quest')
       else {
-        Logger.info('check user\'s quest permission - OK')
+        // Logger.info('check user\'s quest permission - OK')
         await next()
       }
   	} catch(e){

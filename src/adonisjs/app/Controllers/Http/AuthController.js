@@ -7,6 +7,7 @@ const User = use('App/Models/v1/User');
 class AuthController {
     async login({ request, auth, response, session }) {
         console.log('v2/session')
+        Logger.info('login attempt via v2/auth/login (SESSION)')
         try {
             let { email, password } = request.all();
             // if (await auth.remember(true).attempt(email, password)) {

@@ -59,11 +59,11 @@ class QuestController {
         }
     }
 
-    async link_user({ request, response }) {
+    async linkUser({ request, response }) {
         try {
-            const {user_id, quest_id, roleSlug} = request.post()
-            let user = await User.find(user_id)
-            let quest = await Quest.find(quest_id)
+            const {userId, questId, roleSlug} = request.post()
+            let user = await User.find(userId)
+            let quest = await Quest.find(questId)
             let role = await Role.findBy('slug', roleSlug)
 
             if (role == null)
@@ -89,15 +89,15 @@ class QuestController {
         }
     }
 
-    async link_case({ request, response }) {
+    async linkCase({ request, response }) {
         try {
-            const {quest_id, case_id, order_position} = request.post()
+            const {questId, caseId, orderPosition} = request.post()
 
             // let c = await Case.find(case_id)
-            let quest = await Quest.find(quest_id)
+            let quest = await Quest.find(questId)
 
-            await quest.cases().attach(case_id, (row) => {
-                row.order_position = order_position
+            await quest.cases().attach(caseId, (row) => {
+                row.order_position = orderPosition
             })
 
             quest.cases = await quest.cases().fetch()
