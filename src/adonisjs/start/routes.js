@@ -103,8 +103,8 @@ Route.group(() => {
 
 	Route.put(   '',             	'v1/QuestController.store')
 
-	Route.post(  'link/user',		'v1/QuestController.link_user').middleware('quest_permission:contributor')
-	Route.post(  'link/case',		'v1/QuestController.link_case').middleware('quest_permission:contributor')
+	Route.post(  'link/user',		'v1/QuestController.linkUser').middleware('quest_permission:contributor')
+	Route.post(  'link/case',		'v1/QuestController.linkCase').middleware('quest_permission:contributor')
 	
 	Route.get(   'users',      		'v1/QuestController.listUsers').middleware('quest_permission:contributor')
 

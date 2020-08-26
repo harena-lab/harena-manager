@@ -27,6 +27,8 @@ const RESOURCE_DIR = "resources/"
 
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
+const Hash = use('Hash')
+
 
 class UserSeeder {
   async run() {
@@ -92,7 +94,11 @@ class UserSeeder {
         user.username = 'jacinto'
         user.login = 'jacinto'
         user.email = 'jacinto@email.com'
-        user.password = 'jacinto'
+
+        const safePassword = await Hash.make('jacinto')
+        user.password = safePassword
+
+        // user.password = 'jacinto'
         user.id =  await uuidv4()
 
         // await user.save(trx)
