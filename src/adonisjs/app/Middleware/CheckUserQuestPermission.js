@@ -46,9 +46,9 @@ class CheckUserQuestPermission {
             .whereIn('quests_users.role', [2])
             .count()
       }
-  		
+
       if (query_result[0]['count(*)'] === 0)
-        return response.status(500).json('user dont have ' + properties[0] + ' permissions for such quest')
+        return response.status(500).json('user dont have ' + properties[0] + ' permissions for such quest or quest id is incorrect')
       else {
         // Logger.info('check user\'s quest permission - OK')
         await next()
@@ -57,7 +57,7 @@ class CheckUserQuestPermission {
   		console.log(e)
       return response.status(500).json(e)
   	}
-  	
+
   }
 }
 
