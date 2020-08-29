@@ -31,7 +31,7 @@ services:
       - harena-manager
     volumes:
       - ./src/adonisjs:/app
-      - /app/node_modules
+      - node-modules:/app/node_modules
 
   harena-manager-database:
     image: mysql:5.7
@@ -67,7 +67,8 @@ services:
 volumes:
   harena-manager-database:
     driver: "local"
-
+  node-modules:
+    driver: "local"
 
 networks:
   harena-manager:

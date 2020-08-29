@@ -18,17 +18,19 @@ const Case = use('App/Models/v1/Case');
 const User = use('App/Models/v1/User');
 const Quest = use('App/Models/v1/Quest');
 const Artifact = use('App/Models/v1/Artifact');
-
 const Role = use('App/Models/v1/Role');
 const Permission = use('App/Models/v1/Permission');
 
-const Database = use('Database')
-const RESOURCE_DIR = "resources/"
-
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
-const Hash = use('Hash')
 
+const Hash = use('Hash')
+const Drive = use('Drive');
+const Database = use('Database')
+const Helpers  = use('Helpers')
+
+const RESOURCE_DIR = "resources/"
+const ARTIFACTS_DIR = RESOURCE_DIR + "artifacts/"
 
 class UserSeeder {
   async run() {
@@ -41,6 +43,9 @@ class UserSeeder {
         let user = await this.seed_default_users(trx)
 
         let c = await this.seed_default_case(trx)
+        let artifact = await this.seed_artifact(c, trx)
+
+        await user.artifacts().save(artifact, trx)
 
         await user.save(trx)
 
@@ -124,18 +129,38 @@ class UserSeeder {
       cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
       cv.id = await uuidv4()
 
-      let artifact = new Artifact()
-// RESOURCE_DIR + 'hospital-background.png'
-      // let fs_path = Helpers.publicPath('/resources/artifacts/')
-      // let case_relative_path = this.relativePath
-      // fs_path += 'cases/' + case_id + '/'
-      // case_relative_path += 'cases/' + case_id + '/'
-
-      await c.artifacts().save(cv, trx)
+      const artifact_id       = await uuidv4() 
+      let fileName = artifact_id + ".png"
+      let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' + c.id + '/'
+      let case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
 
       await c.versions().save(cv, trx)
 
       return c
+    } catch (e){
+      console.log(e)
+    }
+  }
+
+  async seed_artifact(c, trx){
+    try{
+   
+      const artifact_id       = await uuidv4() 
+      let fileName = artifact_id + ".png"
+      let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' + c.id + '/'
+      let case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
+
+      let artifact = new Artifact()
+      artifact.id            = await uuidv4()
+      artifact.relative_path = case_relative_path + fileName
+      artifact.fs_path       = fs_path + fileName
+      artifact.case_id       = c.id
+
+      await Drive.copy(Helpers.resourcesPath('home-image.png'), fs_path + fileName )
+
+      await c.artifacts().save(artifact, trx)
+
+      return artifact
     } catch (e){
       console.log(e)
     }

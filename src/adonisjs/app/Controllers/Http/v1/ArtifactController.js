@@ -29,7 +29,6 @@ class ArtifactController {
 			
 			var c = await Case.find(case_id)
 	
-			console.log(c)
 			if (case_id != null && c == null){
 				return response.json({ message: "Case id not found" })
 			} 
