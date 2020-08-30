@@ -19,7 +19,6 @@ const User = use('App/Models/v1/User');
 const Quest = use('App/Models/v1/Quest');
 const Artifact = use('App/Models/v1/Artifact');
 const Role = use('App/Models/v1/Role');
-const Permission = use('App/Models/v1/Permission');
 
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
@@ -43,8 +42,8 @@ class UserSeeder {
         let user = await this.seed_default_users(trx)
 
         let c = await this.seed_default_case(trx)
+        
         let artifact = await this.seed_artifact(c, trx)
-
         await user.artifacts().save(artifact, trx)
 
         await user.save(trx)
@@ -53,21 +52,23 @@ class UserSeeder {
           const AUTHOR = 0
           row.role = AUTHOR
         }, trx)
-        // await user.cases().attach(c.id, trx)
 
-        let roles = await this.seed_roles_and_permissions(trx)
-
-        await trx.commit()
-        
-        trx = await Database.beginTransaction()
-
-        await user.roles().attach([roles[0].id, roles[1].id], trx)
+        let roles = await this.seed_roles(trx)
 
         let quest = new Quest()
         quest.title = 'default-quest'
         quest.id =  await uuidv4()
         
         await quest.save(trx)
+
+        await trx.commit()
+
+
+
+        
+        trx = await Database.beginTransaction()
+
+        await user.roles().attach([roles[0].id, roles[1].id], trx)
         
         await quest.cases().attach([c.id], (row) => {
           row.order_position = 0
@@ -103,10 +104,8 @@ class UserSeeder {
         const safePassword = await Hash.make('jacinto')
         user.password = safePassword
 
-        // user.password = 'jacinto'
         user.id =  await uuidv4()
 
-        // await user.save(trx)
         return user
     } catch (e){
       console.log(e)
@@ -150,7 +149,7 @@ class UserSeeder {
       let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' + c.id + '/'
       let case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
 
-      let artifact = new Artifact()
+      let artifact           = new Artifact()
       artifact.id            = await uuidv4()
       artifact.relative_path = case_relative_path + fileName
       artifact.fs_path       = fs_path + fileName
@@ -166,21 +165,12 @@ class UserSeeder {
     }
   }
 
-  async seed_roles_and_permissions(trx){
+  async seed_roles(trx){
     let admin = {name: 'Administrator', slug: 'admin', description: 'system admin', id: await uuidv4()}
     let author = {name: 'Case Author', slug: 'author', description: 'user who write cases', id: await uuidv4()}
     let player = {name: 'Player', slug: 'player', description: 'user who read cases', id: await uuidv4()}
 
-    // let admin_permissions = {name: 'admin permissions', slug: 'admin_permissions', description: 'higher permissions', id: await uuidv4()}
-    // let author_permissions = {name: 'author permissions', slug: 'author_permissions', description: 'can create, update, delete, list cases', id: await uuidv4()}
-    // let player_permissions = {name: 'player permissions', slug: 'player_permissions', description: 'can play cases', id: await uuidv4()}
-
-
     let roles = await Factory.model('App/Models/v1/Role').makeMany(3, [admin, author, player])
-    // let permissions = await Factory.model('App/Models/v1/Permission').makeMany(1, [admin_permissions], trx)
-
-    // await roles[1].permissions().attach([permissions[1].id], trx)
-    // await roles[2].permissions().attach([permissions[2].id], trx)
 
     await roles[0].save(trx)
     await roles[1].save(trx)
