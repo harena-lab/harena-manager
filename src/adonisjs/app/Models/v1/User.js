@@ -77,8 +77,7 @@ class User extends Model {
     // Attach role and permissions of a user
     static get traits () {
         return [
-            '@provider:Adonis/Acl/HasRole',
-            '@provider:Adonis/Acl/HasPermission'
+            '@provider:Adonis/Acl/HasRole'
         ]
     }
 }
