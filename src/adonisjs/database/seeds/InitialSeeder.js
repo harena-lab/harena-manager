@@ -128,11 +128,6 @@ class UserSeeder {
       cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
       cv.id = await uuidv4()
 
-      const artifact_id       = await uuidv4() 
-      let fileName = artifact_id + ".png"
-      let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' + c.id + '/'
-      let case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
-
       await c.versions().save(cv, trx)
 
       return c
@@ -146,7 +141,9 @@ class UserSeeder {
    
       const artifact_id       = await uuidv4() 
       let fileName = artifact_id + ".png"
-      let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' + c.id + '/'
+      // let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' 
+      let fs_path = Helpers.publicPath('/resources/artifacts/cases/') + c.id + '/'
+
       let case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
 
       let artifact           = new Artifact()
