@@ -42,7 +42,7 @@ class RollbackInitialSeeder {
 
       await c.delete(trx)
 
-      let artifactPath = Helpers.resourcesPath() + '/artifacts/cases/' + c.id + '/'
+      let artifactPath = Helpers.publicPath('/resources/artifacts/cases/') + c.id + '/'
 
       await Drive.delete(artifactPath)
 
