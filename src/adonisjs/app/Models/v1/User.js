@@ -20,12 +20,34 @@ class User extends Model {
     }
 
     quests() {
+        console.log('quests()')
         return this
             .belongsToMany('App/Models/v1/Quest')
             .pivotTable('quests_users')
             .withPivot(['role'])
             .withTimestamps()
     }
+
+    // async quests() {
+    //     console.log('quests()')
+    //     return this.quests()
+    // }
+
+//     saveQuests(quest) {
+//       console.log('aqui2')
+//       console.log(quest)
+//       this.quests().attach([quest], (row) => {
+//                     console.log('await')
+//                     // console.log(row)
+//                     // if (role.slug == 'author'){
+//                     //     row.role = 1
+//                     // }
+//                     // if (role.slug == 'player'){
+//                     //     row.role = 2
+//                     // }
+// console.log(2)                    
+//                 })
+//     }
 
     artifacts() {
         return this.hasMany('App/Models/v1/Artifact')
@@ -50,13 +72,14 @@ class User extends Model {
     }
 
     async check_role(role) {
+        console.log('check role')
         let query_result = await Database
             .from('roles')
             .where('roles.slug', role)
             .leftJoin('role_user', 'roles.id', 'role_user.role_id')
             .where('role_user.user_id', this.id)
             .count()
-
+console.log(query_result)
         if (query_result[0]['count(*)'] === 0)
             return 0
         else

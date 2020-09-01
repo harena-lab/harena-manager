@@ -179,6 +179,25 @@ class UserController {
     }
   }
 
+  async listPlayingQuests({ response, auth }) {
+    try{
+      let user = await auth.user
+
+      let result = await Database
+        .select('*')
+        .from('quests_users')
+        .where('user_id', user.id)
+        .where('role', 2)
+        .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
+
+      console.log(result)
+
+
+    } catch(e){
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
   
 }
 

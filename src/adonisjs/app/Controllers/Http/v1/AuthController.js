@@ -11,6 +11,7 @@ class AuthController {
         Logger.info('login attempt via v1/auth/login (JWT)')
 
         let { email, password, refresh_token } = request.all();
+        console.log(password)
         let user = ""
         let token = ""
             

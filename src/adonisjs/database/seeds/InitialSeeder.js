@@ -100,9 +100,7 @@ class UserSeeder {
         user.username = 'jacinto'
         user.login = 'jacinto'
         user.email = 'jacinto@email.com'
-
-        const safePassword = await Hash.make('jacinto')
-        user.password = safePassword
+        user.password = 'jacinto'
 
         user.id =  await uuidv4()
 

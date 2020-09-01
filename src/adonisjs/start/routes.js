@@ -95,9 +95,8 @@ Route.group(() => {
 |  resource: /quest
 |----------------------------------------------------------------------------------------------
 */
-
-Route.get('/api/v1/quests',     	'v1/QuestController.index').middleware('auth', 'is:admin')
-Route.get('/api/v1/quest/cases', 	'v1/QuestController.listCases').middleware(['auth', 'is:(author or player)', 'quest_permission'])
+Route.get('/api/v1/player/quests',     		'v1/UserController.listPlayingQuests').middleware('auth', 'is:(player)')
+Route.get('/api/v1/quest/cases', 			'v1/QuestController.listCases').middleware(['auth', 'is:(author or player)', 'quest_permission'])
 
 Route.group(() => {
 
@@ -134,6 +133,7 @@ Route.group(() => {
 
 	Route.post(   'revoke_tokens',     		'v1/AdminController.revoke_tokens')
 
+	Route.get(	 'quests',     				'v1/QuestController.index').middleware('auth')
 	Route.post(  'quest/link/user',			'v1/QuestController.link_user')
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])

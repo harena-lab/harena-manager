@@ -19,7 +19,7 @@ class CheckUserQuestPermission {
   		let questId = request.input('questId')
 
       let query_result
-
+console.log(properties)
       if (properties[0] == null){
         query_result = await Database
             .from('quests_users')
