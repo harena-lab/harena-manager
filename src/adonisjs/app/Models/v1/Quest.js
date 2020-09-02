@@ -6,12 +6,20 @@ const Model = use('Model')
 const uuidv4 = require('uuid/v4');
 
 class Quest extends Model {
+    
+    static get incrementing () {
+        return false
+    }
+
+
     users(){
         return this.belongsToMany('App/Models/v1/User')
             .pivotTable('quests_users')
+            .withPivot(['role'])
             .withTimestamps()
     }
 
+    
     cases(){
         return this.belongsToMany('App/Models/v1/Case')
             .pivotTable('quests_cases')
@@ -19,8 +27,9 @@ class Quest extends Model {
             .withTimestamps()
     }
 
-    static get incrementing () {
-        return false
+    
+    artifact() {
+        return this.belongsTo('App/Models/v1/Artifact')
     }
 }
 

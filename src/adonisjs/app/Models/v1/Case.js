@@ -13,7 +13,7 @@ class Case extends Model {
     }
 
     artifacts() {
-        return this.hasMany('App/Models/v1/Artifact')
+        return this.hasMany('App/Models/CaseArtifact')
     }
 
     users(){

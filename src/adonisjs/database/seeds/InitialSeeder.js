@@ -13,6 +13,8 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 
+const Property = use('App/Models/Property');
+const CaseArtifacts = use('App/Models/CaseArtifact');
 const CaseVersion = use('App/Models/v1/CaseVersion');
 const Case = use('App/Models/v1/Case');
 const User = use('App/Models/v1/User');
@@ -28,8 +30,7 @@ const Drive = use('Drive');
 const Database = use('Database')
 const Helpers  = use('Helpers')
 
-const RESOURCE_DIR = "resources/"
-const ARTIFACTS_DIR = RESOURCE_DIR + "artifacts/"
+const ARTIFACTS_DIR = "/resources/artifacts/"
 
 class UserSeeder {
   async run() {
@@ -59,6 +60,42 @@ class UserSeeder {
         quest.title = 'default-quest'
         quest.id =  await uuidv4()
         
+        let artifactQuestId            = await uuidv4()
+
+        let fileName = artifactQuestId + ".svg"
+        let questRelativePath = ARTIFACTS_DIR + 'quests/' + quest.id + '/'
+
+        let artifactQuest           = new Artifact()
+        artifactQuest.id            = artifactQuestId
+        artifactQuest.relative_path = questRelativePath + fileName
+      
+        let property   = new Property()
+        property.id    = await uuidv4()
+        property.title = 'color'
+
+        await property.save(trx)
+
+        let property2   = new Property()
+        property2.id    = await uuidv4()
+        property2.title = 'shape'
+
+        await property2.save(trx)
+        
+
+        let fsPath = Helpers.publicPath('/resources/artifacts/quests/') + quest.id + '/'
+
+        await Drive.copy(Helpers.publicPath('/resources/artifacts/plus.svg'), fsPath + fileName )
+
+        await quest.artifact().associate(artifactQuest, trx)
+        await artifactQuest.properties().attach([property.id], (row) => {
+          row.value = '#505050'
+        }, trx)
+
+        await artifactQuest.properties().attach([property2.id], (row) => {
+          row.value = 'square'
+        }, trx)
+        await user.artifacts().save(artifactQuest, trx)
+
         await quest.save(trx)
 
         await trx.commit()
@@ -68,16 +105,22 @@ class UserSeeder {
         
         trx = await Database.beginTransaction()
 
-        await user.roles().attach([roles[0].id, roles[1].id], trx)
+        
+
+        await user.roles().attach([roles[0].id, roles[1].id, roles[2].id], trx)
         
         await quest.cases().attach([c.id], (row) => {
           row.order_position = 0
         }, trx)
 
-        await user.quests().attach([quest.id], (row) => {
-          row.role = 0
-        }, trx)
+        // await user.quests().attach([quest.id], (row) => {
+        //   row.role = 0
+        // }, trx)
 
+        await user.quests().attach([quest.id], (row) => {
+          row.role = 2
+        }, trx)
+        
         await trx.commit()
 
 
@@ -100,9 +143,7 @@ class UserSeeder {
         user.username = 'jacinto'
         user.login = 'jacinto'
         user.email = 'jacinto@email.com'
-
-        const safePassword = await Hash.make('jacinto')
-        user.password = safePassword
+        user.password = 'jacinto'
 
         user.id =  await uuidv4()
 
@@ -125,7 +166,7 @@ class UserSeeder {
       c.id = await uuidv4()
 
       let cv = new CaseVersion()
-      cv.source = fs.readFileSync(RESOURCE_DIR + 'case.md', 'utf8')
+      cv.source = fs.readFileSync(Helpers.publicPath(ARTIFACTS_DIR) + 'case.md', 'utf8')
       cv.id = await uuidv4()
 
       await c.versions().save(cv, trx)
@@ -141,7 +182,7 @@ class UserSeeder {
    
       const artifact_id       = await uuidv4() 
       let fileName = artifact_id + ".png"
-      // let fs_path = Helpers.resourcesPath() + '/artifacts/cases/' 
+
       let fs_path = Helpers.publicPath('/resources/artifacts/cases/') + c.id + '/'
 
       let case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
@@ -149,13 +190,14 @@ class UserSeeder {
       let artifact           = new Artifact()
       artifact.id            = await uuidv4()
       artifact.relative_path = case_relative_path + fileName
-      artifact.fs_path       = fs_path + fileName
-      artifact.case_id       = c.id
+      
+      await Drive.copy(Helpers.publicPath('/resources/artifacts/home-image.png'), fs_path + fileName )
 
-      await Drive.copy(Helpers.resourcesPath('home-image.png'), fs_path + fileName )
+      let ca     = new CaseArtifacts()
+      ca.case_id = c.id
 
-      await c.artifacts().save(artifact, trx)
-
+      await ca.artifact().associate(artifact, trx)
+   
       return artifact
     } catch (e){
       console.log(e)

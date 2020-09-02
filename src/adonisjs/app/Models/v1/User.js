@@ -49,7 +49,7 @@ class User extends Model {
         return ['password']
     }
 
-    async check_role(role) {
+    async checkRole(role) {
         let query_result = await Database
             .from('roles')
             .where('roles.slug', role)

@@ -37,6 +37,17 @@ class RollbackInitialSeeder {
 
       await c.versions().delete()
       await c.users().detach()
+
+      let caseArtifacts = await c.artifacts().fetch()
+      console.log(caseArtifacts)
+      console.log(caseArtifacts[0])
+
+      for (var i = 0; i < caseArtifacts.length; i++) {
+
+        console.log('iiii')
+        artifacts[i].users().dissociate(trx)
+        console.log('jjjj')
+      }
       await c.artifacts().delete()
       await c.quests().detach()
 
@@ -62,6 +73,7 @@ class RollbackInitialSeeder {
       await quest.delete(trx)
 
       let user = await User.findBy('username', 'jacinto')
+
       await user.delete(trx)
 
       trx.commit()

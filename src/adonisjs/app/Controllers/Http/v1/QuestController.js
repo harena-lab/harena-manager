@@ -16,7 +16,6 @@ const uuidv4 = require('uuid/v4');
 class QuestController {
 
     async index({ response }) {
-        console.log('aqui')
         try{
             let quests = await Quest.all()
             return response.json(quests)
@@ -69,18 +68,23 @@ class QuestController {
             if (role == null)
                 return response.status(500).json('Invalid roleSlug')
 
-            if (await user.check_role(role.slug)){
+            if (await user.checkRole(role.slug)){
                 await user.quests().attach([quest.id], (row) => {
+                    console.log('--------------------- await promisse OK')                    
+
                     if (role.slug == 'author'){
                         row.role = 1
                     }
                     if (role.slug == 'player'){
                         row.role = 2
                     }
+                    console.log('--------------------- promisse EXECUTED')                    
                 })
 
+                console.log(3)
                 return response.json(role.slug + ' ' + user.username + ' was added to the quest '+ quest.title)
             } else {
+                console.log(e)
                 return response.status(500).json('target user must have ' + role.slug + ' role')
             }
         } catch (e) {
