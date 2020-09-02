@@ -96,17 +96,16 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.get('/api/v1/player/quests',     		'v1/UserController.listPlayingQuests').middleware('auth', 'is:(player)')
-Route.get('/api/v1/quest/cases', 			'v1/QuestController.listCases').middleware(['auth', 'is:(author or player)', 'quest_permission'])
+Route.get('/api/v1/author/quest/cases', 			'v1/QuestController.listCases').middleware('auth', 'is:author', 'quest_permission:contributor')
+// Route.get('/api/v1/quest/cases', 			'v1/QuestController.listCases').middleware(['auth', 'is:(author or player)', 'quest_permission'])
 
 Route.group(() => {
+	Route.get(   'users',      		'v1/QuestController.listUsers').middleware('quest_permission:contributor')
 
-	Route.put(   '',             	'v1/QuestController.store')
+	Route.post(   '',             	'v1/QuestController.store')
 
 	Route.post(  'link/user',		'v1/QuestController.linkUser').middleware('quest_permission:contributor')
 	Route.post(  'link/case',		'v1/QuestController.linkCase').middleware('quest_permission:contributor')
-	
-	Route.get(   'users',      		'v1/QuestController.listUsers').middleware('quest_permission:contributor')
-
 }).prefix('/api/v1/quest').middleware('auth', 'is:author')
 
 
@@ -117,25 +116,21 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.put(   'role',             		'v1/AdminController.create_role')
-	Route.put(   'permission',        		'v1/AdminController.create_permission')
 	Route.get(   'roles',               	'v1/AdminController.list_roles')
-	Route.get(   'permissions',             'v1/AdminController.list_permissions')
-
-	Route.post(  'role/link/user',			'v1/AdminController.linkRoleUser')
+	Route.post(  'role',             		'v1/AdminController.create_role')
 	Route.post(  'role/link/permission',	'v1/AdminController.link_role_permission')
 
 	Route.get(   'user/:id/roles',		  	'v1/AdminController.list_roles_by_user')
-	Route.get(   'role/:id/permissions',	'v1/AdminController.list_permissions_by_role')
-	Route.get(   'user/:id/permissions',	'v1/AdminController.list_permissions_by_user')
+	Route.post(  'user/link/role',			'v1/AdminController.linkRoleUser')
+
+
+	Route.get(	 'quests',     				'v1/QuestController.index')
+	Route.post(  'quest/link/user',			'v1/QuestController.linkUser')
+
 
 	Route.post(   'institution',       		'v1/InstitutionController.store')
 
 	Route.post(   'revoke_tokens',     		'v1/AdminController.revoke_tokens')
-
-	Route.get(	 'quests',     				'v1/QuestController.index').middleware('auth')
-	Route.post(  'quest/link/user',			'v1/QuestController.linkUser')
-
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 
 

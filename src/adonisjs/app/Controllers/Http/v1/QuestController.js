@@ -28,19 +28,16 @@ class QuestController {
 
     async store({ request, response, auth }) {
         let trx = await Database.beginTransaction()
-
         try{
-
             let user = auth.user
-            let q = request.all()
-
-            q.id = await uuidv4()
 
             let quest = new Quest()
+            quest.id = await uuidv4()
+
+            let q = request.all()
             quest.merge(q)
 
             await quest.save(trx)
-
             await user.quests().attach([quest.id], (row) => {
                 row.role = 0
             }, trx)
@@ -48,7 +45,7 @@ class QuestController {
 
             return response.json(quest)
         } catch(e){
-            trs.rollback()
+            trx.rollback()
             console.log(e)
 
             if (e.code === 'ER_DUP_ENTRY') {
