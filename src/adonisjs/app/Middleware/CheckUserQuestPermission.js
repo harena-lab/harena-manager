@@ -14,6 +14,7 @@ class CheckUserQuestPermission {
    * @param {Function} next
    */
   async handle ({ params, request, auth, response }, next, properties) {
+    console.log('dijsi')
     try{
   		let userId = auth.user.id
   		let questId = request.input('questId')

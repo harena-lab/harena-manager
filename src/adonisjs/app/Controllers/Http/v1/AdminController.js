@@ -10,12 +10,17 @@ const Role = use('Adonis/Acl/Role');
 const Permission = use('Adonis/Acl/Permission');
 const User = use('App/Models/v1/User');
 
+const uuidv4 = require('uuid/v4');
+
 class AdminController {
+
     async create_role({ request, response }) {
         try {
-            let r = request.all()
 
             let role = new Role()
+            role.id = await uuidv4()
+
+            let r = request.all()
             role.merge(r)
 
             await role.save()
@@ -31,31 +36,12 @@ class AdminController {
         }
     }
 
-    async create_permission({ request, response }) {
-        try {
-            let input = request.all()
-
-            let permission = new Permission()
-            permission.merge(input)
-
-            await permission.save()
-
-            return response.json(permission)
-        } catch(e){
-            console.log(e)
-
-            if (e.code === 'ER_DUP_ENTRY') {
-                return response.status(409).json({ code: e.code, message: e.sqlMessage })
-            }
-            return response.status(500).json({ message: e.toString() })
-        }
-    }
 
     async linkRoleUser({ request, response }) {
         try {
-            const {user_id, role_id} = request.post()
-            let user = await User.find(user_id)
-            let role = await Role.find(role_id)
+            const {userId, roleId} = request.post()
+            let user = await User.find(userId)
+            let role = await Role.find(roleId)
 
             await user.roles().attach(role.id)
             return response.json(role.slug + ' role has given to the user ' + user.username)
@@ -95,14 +81,7 @@ class AdminController {
         }
     }
 
-    async list_permissions({ response }) {
-        try{
-            let permissions = await Permission.all()
-            return response.json(permissions)
-        } catch(e){
-            return response.status(500).json({ message: e.toString() })
-        }
-    }
+
 
     async list_roles_by_user({ params, response }) {
         try{
@@ -115,30 +94,7 @@ class AdminController {
         }
     }
 
-    async list_permissions_by_role({ params, response }) {
-        try{
-            let role = await Role.find(params.id)
 
-            return response.json(await role.permissions().fetch())
-        } catch(e){
-            console.log(e)
-            return response.status(500).json({ message: e.message })
-        }
-    }
-
-    async list_permissions_by_user({ params, response }) {
-        try{
-
-            let user = await User.find(params.id)
-            
-            // let role = await Role.find(params.id)
-
-            return response.json(await user.getPermissions())
-        } catch(e){
-            console.log(e)
-            return response.status(500).json({ message: e.message })
-        }
-    }
 
     async revoke_tokens({ auth, params, response }) {
         try{

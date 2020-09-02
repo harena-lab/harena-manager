@@ -1,135 +1,106 @@
 'use strict'
 
 const Helpers  = use('Helpers')
-const Artifact = use('App/Models/v1/Artifact');
-const Case     = use('App/Models/v1/Case');
 const Env      = use('Env')
 const uuid4     = require('uuid/v4');
 
+const Artifact = use('App/Models/v1/Artifact');
+const Case     = use('App/Models/v1/Case');
+const Quest     = use('App/Models/v1/Quest');
+const CaseArtifacts = use('App/Models/CaseArtifact');
+
 class ArtifactController {
 
-	constructor(){
- 		// See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
-		this.validationOptions = {
-			  						size:     '100mb',
-			  						types:    ['image','video'],
-			  						extnames: ['png', 'jpg', 'jpeg', 'gif','mp4','avi', '.wmv']
-								  }
+  constructor(){
+ 	// See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
+	this.validationOptions = {
+		  						size:     '100mb',
+		  						types:    ['image','video'],
+		  						extnames: ['png', 'jpg', 'jpeg', 'gif','mp4','avi', '.wmv']
+  						     }
 
-		this.relativePath     = '/resources/artifacts/' 
+	this.relativePath      = '/resources/artifacts/' 
+	this.baseUrl 	       = Env.getOrFail('APP_URL')
+  }
 
 
+  async store({ request, auth, response }) {
+    try{
+	  
+
+	let file    = request.file('file', this.validationOptions)
+	let questId = request.input('questId')
+	let caseId  = request.input('caseId', null)
+
+     	let artifactId       = await uuid4()
+	let artifactFileName = artifactId + "." + file.extname
+	let fs_path 		   = Helpers.publicPath(this.relativePath)
+
+	let artifact 		   = new Artifact()
+	artifact.id          = artifactId
+
+	let bodyMessage = { filename:      artifactFileName,
+  			    size_in_bytes: file.size,
+			    type:          file.type,
+			    subtype:       file.subtype,
+			    extension:     file.extname,
+			    status:        file.status
+			  }
+
+	if (caseId != null && questId == null){
+		var c = await Case.find(caseId)
+		
+		if (c == null)
+		  return response.json({ message: "Case id not found" })
+				
+		fs_path += 'cases/' + caseId + '/'
+		let case_relative_path = this.relativePath + 'cases/' + caseId + '/'
+		
+		artifact.relative_path = case_relative_path + artifactFileName
+		
+		let ca     = new CaseArtifacts()
+	      	ca.case_id = c.id
+
+		await ca.artifact().associate(artifact)
+
+		bodyMessage.case = c 
+		bodyMessage.url	 = this.baseUrl+artifact.relative_path 
 	}
 
-	async store({ request, auth, response }) {
-		try{
+	if (questId != null && caseId == null){
+		var quest = await Quest.find(questId)
 
-			const file             = request.file('file', this.validationOptions)
-			const case_id           = request.input('case_id', null)
-			
-			var c = await Case.find(case_id)
-	
-			if (case_id != null && c == null){
-				return response.json({ message: "Case id not found" })
-			} 
-			
-			let fs_path = Helpers.publicPath(this.relativePath)
-			let case_relative_path = this.relativePath
-			if (case_id != null){
-				fs_path += 'cases/' + case_id + '/'
-				case_relative_path += 'cases/' + case_id + '/'
-			}
-			
-			const artifact_id       = await uuid4() 
-			const artifact_file_name = artifact_id + "." + file.extname
-	
-			await file.move(fs_path, {name: artifact_file_name, overwrite: false})
-	
-			const artifact = new Artifact()
-			artifact.id       = artifact_id
-			artifact.fs_path       = fs_path + artifact_file_name
-			artifact.relative_path = case_relative_path + artifact_file_name
-			artifact.case_id       = c != null ? c.id : c;
+		if (quest == null){
+		  return response.json({ message: "Quest id not found" })
+		} 
+
+	        let questRelativePath = this.relativePath + 'quests/' + quest.id + '/'
+
+		artifact.relative_path = questRelativePath + artifactFileName
 		
-			const base_url = Env.getOrFail('APP_URL')
-		
-			let bodyMessage = { message:       "Artifact successfully stored",
-								filename:      artifact_file_name,
-								case:          c,										   
-								size_in_bytes: file.size,
-								type:          file.type,
-								subtype:       file.subtype,
-								extension:     file.extname,
-								status:        file.status,
-								relative_path: artifact.relative_path,
-								url:           base_url+artifact.relative_path 
-			}
+		await quest.artifact().associate(artifact)
 
-			await auth.user.artifacts().save(artifact)
+		fs_path += 'quests/' + quest.id + '/'
 
-			return response.status(200).json(bodyMessage)
-		} catch(e){
-			console.log(e)
-      		return response.status(e.status).json({ message: e.message })
-		}
+		bodyMessage.quest = quest 
+		bodyMessage.url	  = this.baseUrl+artifact.relative_path 
+	} 
+
+	if (questId == null && caseId == null){
+		artifact.relative_path = this.relativePath + artifactFileName
+		bodyMessage.url	  = this.baseUrl+artifact.relative_path 
 	}
 
-// O CÓDIGO COMENTADO É PRA NO FUTURO QUANDO A PASTA DAS IMAGENS FOR RESOURCES INVES DE PUBLIC 
+	await file.move(fs_path, {name: artifactFileName, overwrite: false})
+	await auth.user.artifacts().save(artifact)
 
-	// async store({ request, auth, response }) {
-	// 	try{
-
-	// 		const file             = request.file('file', this.validationOptions)
-	// 		const case_id           = request.input('case_id', null)
-			
-	// 		var c = await Case.find(case_id)
+	return response.json(bodyMessage)
 	
-	// 		if (case_id != null && c == null){
-	// 			return response.json({ message: "Case id not found" })
-	// 		} 
-			
-	// 		let fs_path = Helpers.resourcesPath() + '/artifacts/'
-	// 		let case_relative_path = Helpers.resourcesPath() + '/artifacts/' 
-	// 		if (case_id != null){
-	// 			fs_path += 'cases/' + case_id + '/'
-	// 			case_relative_path += 'cases/' + case_id + '/'
-	// 		}
-			
-	// 		const artifact_id       = await uuid4() 
-	// 		const artifact_file_name = artifact_id + "." + file.extname
-	
-	// 		await file.move(fs_path, {name: artifact_file_name, overwrite: false})
-	
-	// 		const artifact = new Artifact()
-	// 		artifact.id       = artifact_id
-	// 		artifact.fs_path       = fs_path + artifact_file_name
-	// 		artifact.relative_path = case_relative_path + artifact_file_name
-	// 		artifact.case_id       = c != null ? c.id : c;
-		
-	// 		const base_url = Env.getOrFail('APP_URL')
-		
-	// 		let bodyMessage = { message:       "Artifact successfully stored",
-	// 							filename:      artifact_file_name,
-	// 							case:          c,										   
-	// 							size_in_bytes: file.size,
-	// 							type:          file.type,
-	// 							subtype:       file.subtype,
-	// 							extension:     file.extname,
-	// 							status:        file.status,
-	// 							relative_path: artifact.relative_path,
-	// 							url:           base_url+artifact.relative_path 
-	// 		}
-
-	// 		await auth.user.artifacts().save(artifact)
-
-	// 		return response.status(200).json(bodyMessage)
-	// 	} catch(e){
-	// 		console.log(e)
- //      		return response.status(e.status).json({ message: e.message })
-	// 	}
-
-
-	// }
+    } catch(e){
+	console.log(e)
+	return response.status(e.status).json({ message: e.message })
+    }
+  }
 
 }
 

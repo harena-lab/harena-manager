@@ -5,7 +5,7 @@ const Schema = use('Schema')
 
 class UsersCasesSchema extends Schema {
   up () {
-	this.dropIfExists('users_cases')
+    this.dropIfExists('users_cases')
 
     this.create('users_cases', (table) => {
       table.uuid('user_id').references('id').inTable('users').index('user_id');
