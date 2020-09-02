@@ -75,25 +75,15 @@ class UserSeeder {
 
         await property.save(trx)
 
-        let property2   = new Property()
-        property2.id    = await uuidv4()
-        property2.title = 'shape'
-
-        await property2.save(trx)
-        
-
         let fsPath = Helpers.publicPath('/resources/artifacts/quests/') + quest.id + '/'
 
-        await Drive.copy(Helpers.publicPath('/resources/artifacts/plus.svg'), fsPath + fileName )
+        await Drive.copy(Helpers.resourcesPath('imgs/default-image.svg'), fsPath + fileName )
 
         await quest.artifact().associate(artifactQuest, trx)
         await artifactQuest.properties().attach([property.id], (row) => {
           row.value = '#505050'
         }, trx)
 
-        await artifactQuest.properties().attach([property2.id], (row) => {
-          row.value = 'square'
-        }, trx)
         await user.artifacts().save(artifactQuest, trx)
 
         await quest.save(trx)
@@ -166,7 +156,7 @@ class UserSeeder {
       c.id = await uuidv4()
 
       let cv = new CaseVersion()
-      cv.source = fs.readFileSync(Helpers.publicPath(ARTIFACTS_DIR) + 'case.md', 'utf8')
+      cv.source = fs.readFileSync(Helpers.resourcesPath('case.md'), 'utf8')
       cv.id = await uuidv4()
 
       await c.versions().save(cv, trx)
@@ -191,13 +181,24 @@ class UserSeeder {
       artifact.id            = await uuidv4()
       artifact.relative_path = case_relative_path + fileName
       
-      await Drive.copy(Helpers.publicPath('/resources/artifacts/home-image.png'), fs_path + fileName )
+      await Drive.copy(Helpers.resourcesPath('imgs/default-image.png'), fs_path + fileName )
 
       let ca     = new CaseArtifacts()
       ca.case_id = c.id
 
       await ca.artifact().associate(artifact, trx)
    
+      let property   = new Property()
+      property.id    = await uuidv4()
+      property.title = 'shape'
+
+      await property.save(trx)
+
+      await artifact.properties().attach([property.id], (row) => {
+        row.value = 'square'
+      }, trx)
+
+
       return artifact
     } catch (e){
       console.log(e)
