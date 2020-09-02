@@ -14,15 +14,6 @@ class Artifact extends Model {
         return this.belongsTo('App/Models/v1/User');
     }
 
-
-    properties() {
-        return this
-            .belongsToMany('App/Models/Property')
-            .pivotTable('artifacts_properties')
-            .withPivot(['value'])
-            .withTimestamps()
-    }
-
 }
 
 module.exports = Artifact

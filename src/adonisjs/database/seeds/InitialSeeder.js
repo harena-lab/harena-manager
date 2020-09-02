@@ -57,9 +57,10 @@ class UserSeeder {
         let roles = await this.seed_roles(trx)
 
         let quest = new Quest()
-        quest.title = 'default-quest'
         quest.id =  await uuidv4()
-        
+        quest.title = 'default-quest'
+        quest.color = '#505050'
+                
         let artifactQuestId            = await uuidv4()
 
         let fileName = artifactQuestId + ".svg"
@@ -69,51 +70,35 @@ class UserSeeder {
         artifactQuest.id            = artifactQuestId
         artifactQuest.relative_path = questRelativePath + fileName
       
-        let property   = new Property()
-        property.id    = await uuidv4()
-        property.title = 'color'
-
-        await property.save(trx)
-
         let fsPath = Helpers.publicPath('/resources/artifacts/quests/') + quest.id + '/'
 
         await Drive.copy(Helpers.resourcesPath('imgs/default-image.svg'), fsPath + fileName )
 
         await quest.artifact().associate(artifactQuest, trx)
-        await artifactQuest.properties().attach([property.id], (row) => {
-          row.value = '#505050'
-        }, trx)
-
-        await user.artifacts().save(artifactQuest, trx)
+        
+	await user.artifacts().save(artifactQuest, trx)
 
         await quest.save(trx)
 
         await trx.commit()
-
-
-
         
         trx = await Database.beginTransaction()
-
-        
-
+   
         await user.roles().attach([roles[0].id, roles[1].id, roles[2].id], trx)
         
         await quest.cases().attach([c.id], (row) => {
           row.order_position = 0
         }, trx)
 
-        // await user.quests().attach([quest.id], (row) => {
-        //   row.role = 0
-        // }, trx)
-
         await user.quests().attach([quest.id], (row) => {
-          row.role = 2
-        }, trx)
+           row.role = 0
+        d}, trx)
+
+        // await user.quests().attach([quest.id], (row) => {
+        //   row.role = 2
+	// }, trx)
         
         await trx.commit()
-
-
       } else {
         console.log('Database is already populated')
         trx.commit()
@@ -188,15 +173,15 @@ class UserSeeder {
 
       await ca.artifact().associate(artifact, trx)
    
-      let property   = new Property()
-      property.id    = await uuidv4()
-      property.title = 'shape'
+      // let property   = new Property()
+      // property.id    = await uuidv4()
+      // property.title = 'shape'
 
-      await property.save(trx)
+      // await property.save(trx)
 
-      await artifact.properties().attach([property.id], (row) => {
-        row.value = 'square'
-      }, trx)
+      // await artifact.properties().attach([property.id], (row) => {
+      //   row.value = 'square'
+      // }, trx)
 
 
       return artifact

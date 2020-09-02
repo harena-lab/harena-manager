@@ -184,6 +184,43 @@ class UserController {
     }
   }
 
+
+  async listContributingQuests({ response, auth }) {
+    try{
+      let user = await auth.user
+
+      let resultQuest = await Database
+        .select('*')
+        .from('quests_users')
+        .where('user_id', user.id)
+        .whereIn('role', [0, 1])
+        .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
+
+      const base_url = Env.getOrFail('APP_URL')
+      let quests = []
+
+      for (var i = 0; i < resultQuest.length; i++) {
+        let questJSON = {}
+        
+        questJSON.id = resultQuest[i].quest_id
+        questJSON.title = resultQuest[i].title
+        questJSON.color = resultQuest[i].color
+
+        let artifact = await Artifact.find(resultQuest[i].artifact_id)
+        questJSON.url = base_url+artifact.relative_path
+
+        quests.push(questJSON)
+      }
+
+      return response.json(quests)
+
+    } catch(e){
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
+  
   async listPlayingQuests({ response, auth }) {
     try{
       let user = await auth.user
@@ -203,30 +240,31 @@ class UserController {
         
         questJSON.id = resultQuest[i].quest_id
         questJSON.title = resultQuest[i].title
+        questJSON.color = resultQuest[i].color
 
         let artifact = await Artifact.find(resultQuest[i].artifact_id)
         questJSON.url = base_url+artifact.relative_path
 
-        let properties = await artifact.properties().fetch()
+        // let properties = await artifact.properties().fetch()
 
-        let resultProperties = await Database
-          .select('*')
-          .from('artifacts_properties')
-          .where('artifact_id', artifact.id)
-          .leftJoin('properties', 'artifacts_properties.property_id', 'properties.id')
+        // let resultProperties = await Database
+        //   .select('*')
+        //   .from('artifacts_properties')
+        //   .where('artifact_id', artifact.id)
+        //   .leftJoin('properties', 'artifacts_properties.property_id', 'properties.id')
 
-        let propertiesJSON = []
-        console.log(artifact.id)
-        console.log(resultProperties)
-        for (var i = 0; i < resultProperties.length; i++) {
-          console.log('aqui')
-          let propertyJSON = {}
-          propertyJSON.title = resultProperties[i].title
-          propertyJSON.value = resultProperties[i].value
-          propertiesJSON.push(propertyJSON)
-        }
+        // let propertiesJSON = []
+        // console.log(artifact.id)
+        // console.log(resultProperties)
+        // for (var i = 0; i < resultProperties.length; i++) {
+        //   console.log('aqui')
+        //   let propertyJSON = {}
+        //   propertyJSON.title = resultProperties[i].title
+        //   propertyJSON.value = resultProperties[i].value
+        //   propertiesJSON.push(propertyJSON)
+        // }
 
-        questJSON.properties = propertiesJSON
+        // questJSON.properties = propertiesJSON
 
         quests.push(questJSON)
       }
