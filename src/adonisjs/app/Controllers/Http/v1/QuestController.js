@@ -68,15 +68,10 @@ class QuestController {
             if (role == null)
                 return response.status(500).json('Invalid roleSlug')
 
-            if (await user.check_role(role.slug)){
-                // console.log(user)
-                // let response_fetch  = await user.quests().fetch()
-                // console.log(response_fetch)
-                // await user.saveQuests(quest.id)
+            if (await user.checkRole(role.slug)){
                 await user.quests().attach([quest.id], (row) => {
-                    console.log('--------------------- promisse OK')                    
+                    console.log('--------------------- await promisse OK')                    
 
-                    console.log('await')
                     if (role.slug == 'author'){
                         row.role = 1
                     }
@@ -84,10 +79,7 @@ class QuestController {
                         row.role = 2
                     }
                     console.log('--------------------- promisse EXECUTED')                    
-                }).catch(function (error) {
-                    console.log(error)
                 })
-                // await user.save()
 
                 console.log(3)
                 return response.json(role.slug + ' ' + user.username + ' was added to the quest '+ quest.title)

@@ -134,7 +134,7 @@ Route.group(() => {
 	Route.post(   'revoke_tokens',     		'v1/AdminController.revoke_tokens')
 
 	Route.get(	 'quests',     				'v1/QuestController.index').middleware('auth')
-	Route.post(  'quest/link/user',			'v1/QuestController.link_user')
+	Route.post(  'quest/link/user',			'v1/QuestController.linkUser')
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 

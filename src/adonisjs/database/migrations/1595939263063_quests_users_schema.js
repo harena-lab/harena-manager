@@ -10,9 +10,9 @@ class QuestsUsersSchema extends Schema {
     this.create('quests_users', (table) => {
       table.uuid('user_id').references('id').inTable('users').index('user_id');
       table.uuid('quest_id').references('id').inTable('quests').index('quest_id');
-      table.primary(['quest_id', 'user_id'])
-
       table.integer('role')
+
+      table.primary(['quest_id', 'user_id', 'role'])
 
       table.timestamps()
     })

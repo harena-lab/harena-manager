@@ -5,11 +5,16 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Database = use('Database')
+const Helpers  = use('Helpers')
 
 const User = use('App/Models/v1/User');
 const Institution = use('App/Models/v1/Institution');
+const Artifact = use('App/Models/v1/Artifact');
+const Quest = use('App/Models/v1/Quest');
+const Property = use('App/Models/Property');
 
 const uuidv4 = require('uuid/v4');
+const Env      = use('Env')
 
 class UserController {
   /**
@@ -183,15 +188,50 @@ class UserController {
     try{
       let user = await auth.user
 
-      let result = await Database
+      let resultQuest = await Database
         .select('*')
         .from('quests_users')
         .where('user_id', user.id)
         .where('role', 2)
         .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
-      console.log(result)
+      const base_url = Env.getOrFail('APP_URL')
+      let quests = []
 
+      for (var i = 0; i < resultQuest.length; i++) {
+        let questJSON = {}
+        
+        questJSON.id = resultQuest[i].quest_id
+        questJSON.title = resultQuest[i].title
+
+        let artifact = await Artifact.find(resultQuest[i].artifact_id)
+        questJSON.url = base_url+artifact.relative_path
+
+        let properties = await artifact.properties().fetch()
+
+        let resultProperties = await Database
+          .select('*')
+          .from('artifacts_properties')
+          .where('artifact_id', artifact.id)
+          .leftJoin('properties', 'artifacts_properties.property_id', 'properties.id')
+
+        let propertiesJSON = []
+        console.log(artifact.id)
+        console.log(resultProperties)
+        for (var i = 0; i < resultProperties.length; i++) {
+          console.log('aqui')
+          let propertyJSON = {}
+          propertyJSON.title = resultProperties[i].title
+          propertyJSON.value = resultProperties[i].value
+          propertiesJSON.push(propertyJSON)
+        }
+
+        questJSON.properties = propertiesJSON
+
+        quests.push(questJSON)
+      }
+
+      return response.json(quests)
 
     } catch(e){
       console.log(e)
