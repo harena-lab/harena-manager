@@ -6,14 +6,18 @@ const Schema = use('Schema')
 class ArtifactUpdateAddPropertyAndQuestRelationshipsSchema extends Schema {
   up () {
     this.table('artifacts', (table) => {
-      table.uuid('quest_id').references('id').inTable('quests').index('quest_id')
+      table.dropForeign('case_id')
+      table.dropColumn('case_id')
+
+      table.dropColumn('fs_path')
     })
   }
 
   down () {
     this.table('artifacts', (table) => {
-      table.dropForeign('quest_id')
-      table.dropColumn('quest_id')
+      table.string('fs_path', 300).notNullable()
+      
+      table.uuid('case_id').references('id').inTable('cases').index('case_id');
     })
   }
 }

@@ -59,6 +59,22 @@ class UserSeeder {
         quest.title = 'default-quest'
         quest.id =  await uuidv4()
         
+        let artifactQuestId            = await uuidv4()
+
+        let fileName = artifactQuestId + ".svg"
+        let questRelativePath = ARTIFACTS_DIR + 'quests/' + quest.id + '/'
+
+        let artifactQuest           = new Artifact()
+        artifactQuest.id            = artifactQuestId
+        artifactQuest.relative_path = questRelativePath + fileName
+      
+        let fsPath = Helpers.publicPath('/resources/artifacts/quests/') + quest.id + '/'
+
+        await Drive.copy(Helpers.publicPath('/resources/artifacts/plus.svg'), fsPath + fileName )
+
+        await quest.artifact().associate(artifactQuest, trx)
+        await user.artifacts().save(artifactQuest, trx)
+
         await quest.save(trx)
 
         await trx.commit()
@@ -147,13 +163,14 @@ class UserSeeder {
       let artifact           = new Artifact()
       artifact.id            = await uuidv4()
       artifact.relative_path = case_relative_path + fileName
-      artifact.fs_path       = fs_path + fileName
-      artifact.case_id       = c.id
-
+      
       await Drive.copy(Helpers.resourcesPath('home-image.png'), fs_path + fileName )
 
-      await c.artifacts().save(artifact, trx)
+      let ca     = new CaseArtifacts()
+      ca.case_id = c.id
 
+      await ca.artifact().associate(artifact, trx)
+   
       return artifact
     } catch (e){
       console.log(e)

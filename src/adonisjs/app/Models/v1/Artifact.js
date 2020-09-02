@@ -4,9 +4,11 @@
 const Model = use('Model')
 
 class Artifact extends Model {
+
     static get incrementing () {
         return false
     }
+
 
     user() {
         return this.belongsTo('App/Models/v1/User');

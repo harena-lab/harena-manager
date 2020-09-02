@@ -47,7 +47,7 @@ class ArtifactController {
 	
 			const artifact = new Artifact()
 			artifact.id       = artifact_id
-			artifact.fs_path       = fs_path + artifact_file_name
+			// artifact.fs_path       = fs_path + artifact_file_name
 			artifact.relative_path = case_relative_path + artifact_file_name
 			artifact.case_id       = c != null ? c.id : c;
 		
