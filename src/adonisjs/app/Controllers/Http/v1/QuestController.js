@@ -35,6 +35,13 @@ class QuestController {
             quest.id = await uuidv4()
 
             let q = request.all()
+            q.color = q.color ? q.color : '#505050'
+            q.artifact_id = q.artifact_id ? q.artifact_id : 'default-quest-image-00000-0000-00000'
+            // if(q.color == null || q.color =='')
+            //   q.color = '#505050'
+            // if(q.artifact_id == null || q.artifact_id =='')
+            //   q.artifact_id = 'default-quest-image-00000-0000-00000'
+
             quest.merge(q)
 
             await quest.save(trx)
@@ -67,7 +74,7 @@ class QuestController {
 
             if (await user.checkRole(role.slug)){
                 await user.quests().attach([quest.id], (row) => {
-                    console.log('--------------------- await promisse OK')                    
+                    console.log('--------------------- await promisse OK')
 
                     if (role.slug == 'author'){
                         row.role = 1
@@ -75,7 +82,7 @@ class QuestController {
                     if (role.slug == 'player'){
                         row.role = 2
                     }
-                    console.log('--------------------- promisse EXECUTED')                    
+                    console.log('--------------------- promisse EXECUTED')
                 })
 
                 console.log(3)
