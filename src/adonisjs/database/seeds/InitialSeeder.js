@@ -43,7 +43,7 @@ class UserSeeder {
         let user = await this.seed_default_users(trx)
 
         let c = await this.seed_default_case(trx)
-        
+
         let artifact = await this.seed_artifact(c, trx)
         await user.artifacts().save(artifact, trx)
 
@@ -60,44 +60,44 @@ class UserSeeder {
         quest.id =  await uuidv4()
         quest.title = 'default-quest'
         quest.color = '#505050'
-                
-        let artifactQuestId            = await uuidv4()
 
-        let fileName = artifactQuestId + ".svg"
-        let questRelativePath = ARTIFACTS_DIR + 'quests/' + quest.id + '/'
+        //let artifactQuestId            = await uuidv4()
+        let artifactDefaultId = 'default-quest-image-00000-0000-00000'
 
-        let artifactQuest           = new Artifact()
-        artifactQuest.id            = artifactQuestId
-        artifactQuest.relative_path = questRelativePath + fileName
-      
-        let fsPath = Helpers.publicPath('/resources/artifacts/quests/') + quest.id + '/'
+        let fileName = artifactDefaultId + ".png"
+        let questRelativePath = ARTIFACTS_DIR
 
-        await Drive.copy(Helpers.resourcesPath('imgs/default-image.svg'), fsPath + fileName )
+        let artifactDefault           = new Artifact()
+        artifactDefault.id            = artifactDefaultId
+        artifactDefault.relative_path = questRelativePath + fileName
 
-        await quest.artifact().associate(artifactQuest, trx)
-        
-	await user.artifacts().save(artifactQuest, trx)
+        let fsPath = Helpers.publicPath('/resources/artifacts/')
+
+        await Drive.copy(Helpers.resourcesPath('imgs/default-quest.png'), fsPath + fileName )
+
+        await quest.artifact().associate(artifactDefault, trx)
+
+	await user.artifacts().save(artifactDefault, trx)
 
         await quest.save(trx)
 
         await trx.commit()
-        
+
         trx = await Database.beginTransaction()
-   
+
         await user.roles().attach([roles[0].id, roles[1].id, roles[2].id], trx)
-        
+
         await quest.cases().attach([c.id], (row) => {
           row.order_position = 0
         }, trx)
 
         await user.quests().attach([quest.id], (row) => {
-           row.role = 0
-        d}, trx)
+           row.role = 0 }, trx)
 
         // await user.quests().attach([quest.id], (row) => {
         //   row.role = 2
 	// }, trx)
-        
+
         await trx.commit()
       } else {
         console.log('Database is already populated')
@@ -130,7 +130,7 @@ class UserSeeder {
 
   async seed_default_case(trx){
     try{
-   
+
       let c = new Case()
       c.title = 'default-case'
       c.description = 'Case for tests'
@@ -154,8 +154,8 @@ class UserSeeder {
 
   async seed_artifact(c, trx){
     try{
-   
-      const artifact_id       = await uuidv4() 
+
+      const artifact_id       = await uuidv4()
       let fileName = artifact_id + ".png"
 
       let fs_path = Helpers.publicPath('/resources/artifacts/cases/') + c.id + '/'
@@ -165,14 +165,14 @@ class UserSeeder {
       let artifact           = new Artifact()
       artifact.id            = await uuidv4()
       artifact.relative_path = case_relative_path + fileName
-      
+
       await Drive.copy(Helpers.resourcesPath('imgs/default-image.png'), fs_path + fileName )
 
       let ca     = new CaseArtifacts()
       ca.case_id = c.id
 
       await ca.artifact().associate(artifact, trx)
-   
+
       // let property   = new Property()
       // property.id    = await uuidv4()
       // property.title = 'shape'
