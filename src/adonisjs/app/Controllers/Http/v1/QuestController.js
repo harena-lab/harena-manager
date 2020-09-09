@@ -6,148 +6,195 @@
 
 const Database = use('Database')
 
-const Quest = use('App/Models/v1/Quest');
-const User = use('App/Models/v1/User');
-const Case = use('App/Models/v1/Case');
-const Role = use('App/Models/v1/Role');
+const Quest = use('App/Models/v1/Quest')
+const User = use('App/Models/v1/User')
+const Case = use('App/Models/v1/Case')
+const Role = use('App/Models/v1/Role')
+const Artifact = use('App/Models/v1/Artifact')
 
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid/v4')
 
 class QuestController {
-
-    async index({ response }) {
-        try{
-            let quests = await Quest.all()
-            return response.json(quests)
-        } catch(e){
-            return response.status(e.status).json({ message: e.message })
-        }
+  async index ({ response }) {
+    try {
+      const quests = await Quest.all()
+      return response.json(quests)
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
     }
+  }
 
+  async store ({ request, response, auth }) {
+    const trx = await Database.beginTransaction()
+    try {
+      const user = auth.user
 
+      const quest = new Quest()
+      quest.id = await uuidv4()
 
-    async store({ request, response, auth }) {
-        let trx = await Database.beginTransaction()
-        try{
-            let user = auth.user
+      const q = request.all()
+      q.color = q.color ? q.color : '#505050'
+      q.artifact_id = q.artifact_id ? q.artifact_id : 'default-quest-image'
+      // if(q.color == null || q.color =='')
+      //   q.color = '#505050'
+      // if(q.artifact_id == null || q.artifact_id =='')
+      //   q.artifact_id = 'default-quest-image-00000-0000-00000'
 
-            let quest = new Quest()
-            quest.id = await uuidv4()
+      quest.merge(q)
 
-            let q = request.all()
-            q.color = q.color ? q.color : '#505050'
-            q.artifact_id = q.artifact_id ? q.artifact_id : 'default-quest-image-00000-0000-00000'
-            // if(q.color == null || q.color =='')
-            //   q.color = '#505050'
-            // if(q.artifact_id == null || q.artifact_id =='')
-            //   q.artifact_id = 'default-quest-image-00000-0000-00000'
+      await quest.save(trx)
+      await user.quests().attach([quest.id], (row) => {
+        row.role = 0
+      }, trx)
+      trx.commit()
 
-            quest.merge(q)
+      return response.json(quest)
+    } catch (e) {
+      trx.rollback()
+      console.log(e)
 
-            await quest.save(trx)
-            await user.quests().attach([quest.id], (row) => {
-                row.role = 0
-            }, trx)
-            trx.commit()
-
-            return response.json(quest)
-        } catch(e){
-            trx.rollback()
-            console.log(e)
-
-            if (e.code === 'ER_DUP_ENTRY') {
-                return response.status(409).json({ code: e.code, message: e.sqlMessage })
-            }
-            return response.status(e.status).json({ message: e.message })
-        }
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({ code: e.code, message: e.sqlMessage })
+      }
+      return response.status(e.status).json({ message: e.message })
     }
+  }
+  async update ({ params, request, response }) {
 
-    async linkUser({ request, response }) {
-        try {
-            const {userId, questId, roleSlug} = request.post()
-            let user = await User.find(userId)
-            let quest = await Quest.find(questId)
-            let role = await Role.findBy('slug', roleSlug)
+    try {
 
-            if (role == null)
-                return response.status(500).json('Invalid roleSlug')
+      const q = await Quest.find(params.id)
 
-            if (await user.checkRole(role.slug)){
-                await user.quests().attach([quest.id], (row) => {
-                    console.log('--------------------- await promisse OK')
+      if (q != null) {
+        q.title = request.input('title')
+        q.color = request.input('color')
 
-                    if (role.slug == 'author'){
-                        row.role = 1
-                    }
-                    if (role.slug == 'player'){
-                        row.role = 2
-                    }
-                    console.log('--------------------- promisse EXECUTED')
-                })
-
-                console.log(3)
-                return response.json(role.slug + ' ' + user.username + ' was added to the quest '+ quest.title)
-            } else {
-                console.log(e)
-                return response.status(500).json('target user must have ' + role.slug + ' role')
-            }
-        } catch (e) {
-            console.log(e)
-            return response.status(500).json(e)
-        }
+        await q.save()
+        return response.json(q)
+      } else return response.status(500).json('quest not found, update failed')
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e })
     }
+  }
 
-    async linkCase({ request, response }) {
-        try {
-            const {questId, caseId, orderPosition} = request.post()
+  async destroy ({ params, response }) {
+    const trx = await Database.beginTransaction()
+    try {
+      const q = await Quest.findBy('id', params.id)
 
-            // let c = await Case.find(case_id)
-            let quest = await Quest.find(questId)
+      if (q != null) {
+        console.log('===== Deleting quest...')
+        console.log(q)
+        await q.users().detach()
+        await q.cases().detach()
+        let artifact = await Artifact.find(q.artifact_id)
+        await q.artifact().dissociate()
+        await artifact.delete(trx)
+        await q.delete(trx)
 
-            await quest.cases().attach(caseId, (row) => {
-                row.order_position = orderPosition
-            })
+        // await c.users().detach()
+        // await c.quests().detach()
+        // await c.artifacts().delete()
+        //
+        // await c.delete(trx)
 
-            quest.cases = await quest.cases().fetch()
+        trx.commit()
+        return response.json('Quest deletion successfull')
+      } else {
+        trx.rollback()
+        return response.status(500).json('quest not found')
+      }
+    } catch (e) {
+      trx.rollback()
 
-            return response.json(quest)
-        } catch (e) {
-            console.log(e)
-            if (e.code === 'ER_DUP_ENTRY') {
-                return response.status(409).json({ message: e.message })
-            }
-
-            return response.status(500).json( e )
-        }
+      console.log(e)
+      return response.status(500).json({ message: e })
     }
+  }
 
+  async linkUser ({ request, response }) {
+    try {
+      const { userId, questId, roleSlug } = request.post()
+      const user = await User.find(userId)
+      const quest = await Quest.find(questId)
+      const role = await Role.findBy('slug', roleSlug)
 
-    async listUsers({ request, response }) {
-        try{
-            let questId = request.input('questId')
+      if (role == null) { return response.status(500).json('Invalid roleSlug') }
 
-            let quest = await Quest.find(questId)
+      if (await user.checkRole(role.slug)) {
+        await user.quests().attach([quest.id], (row) => {
+          console.log('--------------------- await promisse OK')
 
-            return response.json(await quest.users().fetch())
-        } catch(e){
-            console.log(e)
-            return response.status(500).json(e)
-        }
+          if (role.slug == 'author') {
+            row.role = 1
+          }
+          if (role.slug == 'player') {
+            row.role = 2
+          }
+          console.log('--------------------- promisse EXECUTED')
+        })
+
+        console.log(3)
+        return response.json(role.slug + ' ' + user.username + ' was added to the quest ' + quest.title)
+      } else {
+        console.log(e)
+        return response.status(500).json('target user must have ' + role.slug + ' role')
+      }
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json(e)
     }
+  }
 
+  async linkCase ({ request, response }) {
+    try {
+      const { questId, caseId, orderPosition } = request.post()
 
-    async listCases({ request, response }) {
-        try{
-            let questId = request.input('questId')
+      // let c = await Case.find(case_id)
+      const quest = await Quest.find(questId)
 
-            let quest = await Quest.find(questId)
+      await quest.cases().attach(caseId, (row) => {
+        row.order_position = orderPosition
+      })
 
-            return response.json(await quest.cases().fetch())
-        } catch(e){
-            console.log(e)
-        }
+      quest.cases = await quest.cases().fetch()
+
+      return response.json(quest)
+    } catch (e) {
+      console.log(e)
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({ message: e.message })
+      }
+
+      return response.status(500).json(e)
     }
+  }
 
+  async listUsers ({ request, response }) {
+    try {
+      const questId = request.input('questId')
+
+      const quest = await Quest.find(questId)
+
+      return response.json(await quest.users().fetch())
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json(e)
+    }
+  }
+
+  async listCases ({ request, response }) {
+    try {
+      const questId = request.input('questId')
+
+      const quest = await Quest.find(questId)
+
+      return response.json(await quest.cases().fetch())
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 module.exports = QuestController
