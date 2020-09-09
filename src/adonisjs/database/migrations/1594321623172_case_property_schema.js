@@ -8,8 +8,8 @@ class CasePropertySchema extends Schema {
     this.dropIfExists('case_properties')
 
     this.create('case_properties', (table) => {
-      table.uuid('case_id').references('id').inTable('cases').index('case_id');
-      table.uuid('property_id').references('id').inTable('properties').index('property_id');
+      table.uuid('case_id').references('id').inTable('cases').index('case_id')
+      table.uuid('property_id').references('id').inTable('properties').index('property_id')
       table.primary(['case_id', 'property_id'])
 
       table.string('value', 255)

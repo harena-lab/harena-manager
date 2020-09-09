@@ -14,7 +14,7 @@ class TypeSchema extends Schema {
       table.string('title', 100)
       table.string('description')
 
-      table.uuid('kos_id').references('id').inTable('kos').index('kos_id');
+      table.uuid('kos_id').references('id').inTable('kos').index('kos_id')
 
       table.timestamps()
     })

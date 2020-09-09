@@ -8,8 +8,8 @@ class QuestCaseSchema extends Schema {
     this.dropIfExists('quests_cases')
 
     this.create('quests_cases', (table) => {
-      table.uuid('quest_id').references('id').inTable('quests').index('quest_id');
-      table.uuid('case_id').references('id').inTable('cases').index('case_id');
+      table.uuid('quest_id').references('id').inTable('quests').index('quest_id')
+      table.uuid('case_id').references('id').inTable('cases').index('case_id')
       table.primary(['case_id', 'quest_id'])
 
       table.integer('order_position')

@@ -11,11 +11,11 @@ class ArtifactSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      table.string( 'fs_path',         300).notNullable()
-      table.string( 'relative_path', 300).notNullable()
+      table.string('fs_path', 300).notNullable()
+      table.string('relative_path', 300).notNullable()
 
-      table.uuid('user_id').references('id').inTable('users').index('user_id');
-      table.uuid('case_id').references('id').inTable('cases').index('case_id');
+      table.uuid('user_id').references('id').inTable('users').index('user_id')
+      table.uuid('case_id').references('id').inTable('cases').index('case_id')
 
       table.timestamps()
     })

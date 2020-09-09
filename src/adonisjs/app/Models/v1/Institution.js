@@ -4,9 +4,9 @@
 const Model = use('Model')
 
 class Institution extends Model {
-	static get incrementing () {
-        return false
-    }
+  static get incrementing () {
+    return false
+  }
 }
 
 module.exports = Institution

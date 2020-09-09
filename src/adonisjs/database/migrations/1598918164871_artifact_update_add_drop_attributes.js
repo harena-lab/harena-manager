@@ -16,8 +16,8 @@ class ArtifactUpdateAddPropertyAndQuestRelationshipsSchema extends Schema {
   down () {
     this.table('artifacts', (table) => {
       table.string('fs_path', 300).notNullable()
-      
-      table.uuid('case_id').references('id').inTable('cases').index('case_id');
+
+      table.uuid('case_id').references('id').inTable('cases').index('case_id')
     })
   }
 }

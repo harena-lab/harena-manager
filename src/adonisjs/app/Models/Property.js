@@ -4,11 +4,9 @@
 const Model = use('Model')
 
 class Property extends Model {
-
-    static get incrementing () {
-        return false
-    }
-   
+  static get incrementing () {
+    return false
+  }
 }
 
 module.exports = Property

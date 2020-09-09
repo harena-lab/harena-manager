@@ -8,8 +8,8 @@ class UsersCasesSchema extends Schema {
     this.dropIfExists('users_cases')
 
     this.create('users_cases', (table) => {
-      table.uuid('user_id').references('id').inTable('users').index('user_id');
-      table.uuid('case_id').references('id').inTable('cases').index('case_id');
+      table.uuid('user_id').references('id').inTable('users').index('user_id')
+      table.uuid('case_id').references('id').inTable('cases').index('case_id')
       table.primary(['case_id', 'user_id'])
 
       table.integer('role')

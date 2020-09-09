@@ -13,7 +13,7 @@ class TermSchema extends Schema {
 
       table.string('value', 255)
 
-	    table.uuid('property_id').references('id').inTable('properties').index('property_id');
+	    table.uuid('property_id').references('id').inTable('properties').index('property_id')
 
       table.timestamps()
     })

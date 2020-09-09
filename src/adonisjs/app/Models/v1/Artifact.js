@@ -4,16 +4,13 @@
 const Model = use('Model')
 
 class Artifact extends Model {
+  static get incrementing () {
+    return false
+  }
 
-    static get incrementing () {
-        return false
-    }
-
-
-    user() {
-        return this.belongsTo('App/Models/v1/User');
-    }
-
+  user () {
+    return this.belongsTo('App/Models/v1/User')
+  }
 }
 
 module.exports = Artifact

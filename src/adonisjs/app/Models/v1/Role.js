@@ -4,37 +4,37 @@
 const Model = use('Model')
 
 class Role extends Model {
-    static get incrementing () {
-        return false
-    }
+  static get incrementing () {
+    return false
+  }
 
-    users() {
-        return this
-            .belongsToMany('App/Models/v1/User')
-            .pivotTable('role_user')
-            .withTimestamps()
-    }
+  users () {
+    return this
+      .belongsToMany('App/Models/v1/User')
+      .pivotTable('role_user')
+      .withTimestamps()
+  }
 
-    permissions() {
-        return this
-            .belongsToMany('App/Models/v1/Permission')
-            .pivotTable('permission_role')
-            .withTimestamps()
-    }
+  permissions () {
+    return this
+      .belongsToMany('App/Models/v1/Permission')
+      .pivotTable('permission_role')
+      .withTimestamps()
+  }
 
-    // quests() {
-    //     return this
-    //         .belongsToMany('App/Models/v1/Quest')
-    //         .pivotTable('quests_users')
-    //         .withPivot(['role'])
-    //         .withTimestamps()
-    // }
+  // quests() {
+  //     return this
+  //         .belongsToMany('App/Models/v1/Quest')
+  //         .pivotTable('quests_users')
+  //         .withPivot(['role'])
+  //         .withTimestamps()
+  // }
 
-    static get traits () {
-        return [
-            '@provider:Adonis/Acl/HasPermission'
-        ]
-    }
+  static get traits () {
+    return [
+      '@provider:Adonis/Acl/HasPermission'
+    ]
+  }
 }
 
 module.exports = Role

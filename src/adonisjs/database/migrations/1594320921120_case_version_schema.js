@@ -13,7 +13,7 @@ class CaseVersionSchema extends Schema {
 
       table.text('source')
 
-      table.uuid('case_id').references('id').inTable('cases').index('case_id');
+      table.uuid('case_id').references('id').inTable('cases').index('case_id')
 
       table.timestamps()
     })
