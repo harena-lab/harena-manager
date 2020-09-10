@@ -15,14 +15,13 @@
 const Factory = use('Factory')
 const Hash = use('Hash')
 
-const uuidv4 = require('uuid/v4');
-
+const uuidv4 = require('uuid/v4')
 
 Factory.blueprint('App/Models/v1/User', async (faker, i, data) => {
-  let username = faker.username()
+  const username = faker.username()
   return {
-    username:  username,
-    login:  username,
+    username: username,
+    login: username,
     email: data[i].email,
     password: username,
 
@@ -45,31 +44,31 @@ Factory.blueprint('App/Models/v1/CaseVersion', async (faker, i, data) => {
   }
 })
 
-Factory.blueprint('App/Models/v1/Role', async (faker, i, data ) => {
-  return {
-      name: data[i].name,
-      slug: data[i].slug,
-      description: data[i].description,
-
-      // password: faker.password(),
-      id: await uuidv4()
-    }
-})
-
-  // data = Object.assign({
-  //   name: 'Administrator' || data[i].name,
-  //   slug: 'administrator' || data[i].slug,
-  //   description: 'manage administration privileges' || data[i].description
-  // }, data)
-  // return data
-
-Factory.blueprint('App/Models/v1/Permission', async (faker, i, data ) => {
+Factory.blueprint('App/Models/v1/Role', async (faker, i, data) => {
   return {
     name: data[i].name,
     slug: data[i].slug,
     description: data[i].description,
 
-      // password: faker.password(),
+    // password: faker.password(),
+    id: await uuidv4()
+  }
+})
+
+// data = Object.assign({
+//   name: 'Administrator' || data[i].name,
+//   slug: 'administrator' || data[i].slug,
+//   description: 'manage administration privileges' || data[i].description
+// }, data)
+// return data
+
+Factory.blueprint('App/Models/v1/Permission', async (faker, i, data) => {
+  return {
+    name: data[i].name,
+    slug: data[i].slug,
+    description: data[i].description,
+
+    // password: faker.password(),
     id: await uuidv4()
   }
 })

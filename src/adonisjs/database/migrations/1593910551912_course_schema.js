@@ -1,17 +1,17 @@
-  'use strict'
+'use strict'
 
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
 class CourseSchema extends Schema {
   up () {
-	this.dropIfExists('courses')
+    this.dropIfExists('courses')
 
     this.create('courses', (table) => {
       table.uuid('id')
       table.primary('id')
 
-      table.string('title',100)
+      table.string('title', 100)
       table.timestamps()
     })
   }

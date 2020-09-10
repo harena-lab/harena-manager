@@ -14,7 +14,7 @@ class TokenSchema extends Schema {
     	table.string('type', 80).notNullable()
       table.boolean('is_revoked').defaultTo(false)
 
-	    table.uuid('user_id').references('id').inTable('users').index('user_id');
+	    table.uuid('user_id').references('id').inTable('users').index('user_id')
 
     	table.timestamps()
     })

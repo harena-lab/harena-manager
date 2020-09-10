@@ -35,8 +35,18 @@
     "npm": "^6.13.4",
     "uuid": "^3.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "standard": "^14.3.4"
+  },
   "autoload": {
     "App": "./app"
+  },
+  "standard": {
+    "globals": [
+      "use"
+    ],
+    "ignore": [
+      "start/routes.js"
+    ]
   }
 }

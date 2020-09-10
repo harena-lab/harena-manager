@@ -13,7 +13,7 @@ class KosSchema extends Schema {
 
       table.string('title', 100)
       table.string('description')
-      
+
       table.timestamps()
     })
   }

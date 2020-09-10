@@ -4,11 +4,9 @@
 const Model = use('Model')
 
 class CaseArtifact extends Model {
-
-    artifact() {
+  artifact () {
     	return this.belongsTo('App/Models/v1/Artifact')
-    }
-
+  }
 }
 
 module.exports = CaseArtifact

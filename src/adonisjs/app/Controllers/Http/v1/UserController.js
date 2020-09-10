@@ -5,16 +5,16 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Database = use('Database')
-const Helpers  = use('Helpers')
+const Helpers = use('Helpers')
 
-const User = use('App/Models/v1/User');
-const Institution = use('App/Models/v1/Institution');
-const Artifact = use('App/Models/v1/Artifact');
-const Quest = use('App/Models/v1/Quest');
-const Property = use('App/Models/Property');
+const User = use('App/Models/v1/User')
+const Institution = use('App/Models/v1/Institution')
+const Artifact = use('App/Models/v1/Artifact')
+const Quest = use('App/Models/v1/Quest')
+const Property = use('App/Models/Property')
 
-const uuidv4 = require('uuid/v4');
-const Env      = use('Env')
+const uuidv4 = require('uuid/v4')
+const Env = use('Env')
 
 class UserController {
   /**
@@ -26,12 +26,11 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view, auth }) {
-    try{
-
-      let users = await User.all()
+  async index ({ request, response, view, auth }) {
+    try {
+      const users = await User.all()
       return response.json(users)
-    } catch(e){
+    } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
   }
@@ -45,14 +44,12 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
-    try{
-      let user = await User.find(params.id)
+  async show ({ params, request, response, view }) {
+    try {
+      const user = await User.find(params.id)
 
-      if (user != null)
-        return response.json(user)
-      else return response.status(500).json('user not found')
-    } catch(e){
+      if (user != null) { return response.json(user) } else return response.status(500).json('user not found')
+    } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
@@ -66,22 +63,22 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, auth, response }) {
+  async store ({ request, auth, response }) {
     try {
-      let user = new User()
+      const user = new User()
 
-      user.id =  await uuidv4()
+      user.id = await uuidv4()
       user.username = request.input('username')
       user.email = request.input('email')
       user.password = request.input('password')
       user.login = request.input('login')
 
-      let request_institution = request.input('institution')
+      const request_institution = request.input('institution')
 
       if (request_institution != null) {
-        let institution = await Institution.findBy('acronym',request.input('institution'))
+        const institution = await Institution.findBy('acronym', request.input('institution'))
         await user.institution().associate(institution)
-      } else{
+      } else {
         await user.save()
       }
 
@@ -105,18 +102,17 @@ class UserController {
    * @param {Response} ctx.response
 
    */
-  async update({ params, request, response, auth }) {
+  async update ({ params, request, response, auth }) {
     try {
-      let newUser = request.all()
+      const newUser = request.all()
 
-      let storeduser = await User.find(params.id)
+      const storeduser = await User.find(params.id)
 
-      if (storeduser != null){
+      if (storeduser != null) {
         await storeduser.merge(newUser)
         await storeduser.save()
         return response.json(storeduser)
       } else return response.status(500).json('user not found')
-
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
@@ -124,48 +120,47 @@ class UserController {
 
   /** Delete a user with id.
    * DELETE user/:id */
-  async destroy({ params, response, auth }) {
-    try{
-      let user = await User.find(params.id)
+  async destroy ({ params, response, auth }) {
+    try {
+      const user = await User.find(params.id)
 
       if (user != null) {
         await user.delete()
       } else return response.json('user not found')
 
       return response.json(user)
-    }catch(e){
+    } catch (e) {
       return response.status(e.status).json({ message: e.message })
     }
   }
 
-  async list_quests({ request, response, auth }) {
-    try{
-
-      let user = await auth.user
+  async list_quests ({ request, response, auth }) {
+    try {
+      const user = await auth.user
 
       return response.json(await user.quests().fetch())
-    } catch(e){
+    } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
 
-  async list_cases({ params, response, auth }) {
-    try{
-      let user = await auth.user
+  async list_cases ({ params, response, auth }) {
+    try {
+      const user = await auth.user
 
-      let cases = await user.cases().fetch()
+      const cases = await user.cases().fetch()
 
       return response.json(cases)
-    } catch(e){
+    } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
 
-  async list_cases_by_quests({ params, response, auth }) {
-    try{
-      let user = await auth.user
+  async list_cases_by_quests ({ params, response, auth }) {
+    try {
+      const user = await auth.user
 
       Database
         .select('*')
@@ -173,23 +168,20 @@ class UserController {
         .where('user_id', user.id)
         .leftJoin('cases', 'quests.case_id', 'cases.id')
 
-      let quests = await user.quests().fetch()
+      const quests = await user.quests().fetch()
 
-      let cases = await user.cases().fetch()
-
-
-    } catch(e){
+      const cases = await user.cases().fetch()
+    } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
 
+  async listContributingQuests ({ response, auth }) {
+    try {
+      const user = await auth.user
 
-  async listContributingQuests({ response, auth }) {
-    try{
-      let user = await auth.user
-
-      let resultQuest = await Database
+      const resultQuest = await Database
         .select('*')
         .from('quests_users')
         .where('user_id', user.id)
@@ -197,35 +189,33 @@ class UserController {
         .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
       const base_url = Env.getOrFail('APP_URL')
-      let quests = []
+      const quests = []
 
       for (var i = 0; i < resultQuest.length; i++) {
-        let questJSON = {}
-        
+        const questJSON = {}
+
         questJSON.id = resultQuest[i].quest_id
         questJSON.title = resultQuest[i].title
         questJSON.color = resultQuest[i].color
 
-        let artifact = await Artifact.find(resultQuest[i].artifact_id)
-        questJSON.url = base_url+artifact.relative_path
+        const artifact = await Artifact.find(resultQuest[i].artifact_id)
+        questJSON.url = base_url + artifact.relative_path
 
         quests.push(questJSON)
       }
 
       return response.json(quests)
-
-    } catch(e){
+    } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
 
-  
-  async listPlayingQuests({ response, auth }) {
-    try{
-      let user = await auth.user
+  async listPlayingQuests ({ response, auth }) {
+    try {
+      const user = await auth.user
 
-      let resultQuest = await Database
+      const resultQuest = await Database
         .select('*')
         .from('quests_users')
         .where('user_id', user.id)
@@ -233,17 +223,17 @@ class UserController {
         .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
       const base_url = Env.getOrFail('APP_URL')
-      let quests = []
+      const quests = []
 
       for (var i = 0; i < resultQuest.length; i++) {
-        let questJSON = {}
-        
+        const questJSON = {}
+
         questJSON.id = resultQuest[i].quest_id
         questJSON.title = resultQuest[i].title
         questJSON.color = resultQuest[i].color
 
-        let artifact = await Artifact.find(resultQuest[i].artifact_id)
-        questJSON.url = base_url+artifact.relative_path
+        const artifact = await Artifact.find(resultQuest[i].artifact_id)
+        questJSON.url = base_url + artifact.relative_path
 
         // let properties = await artifact.properties().fetch()
 
@@ -270,13 +260,11 @@ class UserController {
       }
 
       return response.json(quests)
-
-    } catch(e){
+    } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
-  
 }
 
 module.exports = UserController

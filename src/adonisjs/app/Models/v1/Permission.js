@@ -4,9 +4,9 @@
 const Model = use('Model')
 
 class Permission extends Model {
-    static get incrementing () {
-        return false
-    }
+  static get incrementing () {
+    return false
+  }
 }
 
 module.exports = Permission

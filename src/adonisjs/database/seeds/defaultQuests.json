@@ -1,0 +1,38 @@
+[
+    {
+        "id": "68eeb917-0638-4f7c-a25d-44428980d97b",
+        "title": "Quiz da Emergência",
+        "color": "#e64e31",
+        "url": "imgs/quiz-emergencia.png"
+    },
+    {
+        "id": "74ae85f1-8b5b-444d-8039-061f99fec333",
+        "title": "Desafio de Eletrocardiograma",
+        "color": "#ae9e00",
+        "url": "desafio-eletro.png"
+    },
+    {
+        "id": "7f835ce4-d221-4fe8-ae3a-c48e3a0382fc",
+        "title": "Desafio Radiológico",
+        "color": "#348f00",
+        "url": "desafio-radio.png"
+    },
+    {
+        "id": "ab31e7e1-117c-4e3a-b3c0-192d8efa885c",
+        "title": "default-quest",
+        "color": "#505050",
+        "url": "default-image.png"
+    },
+    {
+        "id": "c0a4e21c-570b-47e2-8a08-f6bb60a49dcc",
+        "title": "Visita Virtual",
+        "color": "#245797",
+        "url": "visita-virtual.png"
+    },
+    {
+        "id": "df0e0655-3b16-41fb-884c-e9248ba9a964",
+        "title": "Decisões Extremas",
+        "color": "#a34fa3",
+        "url": "decisoes-extremas.png"
+    }
+]

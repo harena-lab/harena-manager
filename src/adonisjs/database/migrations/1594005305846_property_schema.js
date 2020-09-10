@@ -13,8 +13,8 @@ class PropertySchema extends Schema {
 
 		    table.string('title', 100)
       	table.string('description')
-      
-        table.uuid('type_id').references('id').inTable('types').index('type_id');
+
+      table.uuid('type_id').references('id').inTable('types').index('type_id')
 
       	table.timestamps()
     })
