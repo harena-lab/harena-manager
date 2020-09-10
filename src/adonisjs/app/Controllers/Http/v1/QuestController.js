@@ -5,6 +5,8 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Database = use('Database')
+const Helpers = use('Helpers')
+const Drive = use('Drive')
 
 const Quest = use('App/Models/v1/Quest')
 const User = use('App/Models/v1/User')
@@ -90,7 +92,14 @@ class QuestController {
         await q.cases().detach()
         let artifact = await Artifact.find(q.artifact_id)
         await q.artifact().dissociate()
-        await artifact.delete(trx)
+        try {
+          const artifactPath = Helpers.publicPath('/resources/artifacts/quests/') + params.id + '/'
+          await artifact.delete(trx)
+          await Drive.delete(artifactPath)
+        } catch (e) {
+          console.log('Error deleting artifact quest')
+          console.log(e)
+        }
         await q.delete(trx)
 
         // await c.users().detach()
@@ -106,6 +115,7 @@ class QuestController {
         return response.status(500).json('quest not found')
       }
     } catch (e) {
+      console.log('Some error: ' + e)
       trx.rollback()
 
       console.log(e)

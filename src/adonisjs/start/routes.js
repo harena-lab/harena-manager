@@ -141,7 +141,7 @@ Route.group(() => {
 
 	Route.get(   'quests',     							'v1/QuestController.index')
 	Route.post(  'quest/link/user',					'v1/QuestController.linkUser')
-	Route.delete('quest/:id',								'QuestController.destroy')
+	Route.delete('quest/:id',								'v1/QuestController.destroy')
 
 	Route.post(  'institution',       			'v1/InstitutionController.store')
 
