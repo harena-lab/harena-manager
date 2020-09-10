@@ -11,12 +11,12 @@ const CaseArtifacts = use('App/Models/CaseArtifact')
 
 class ArtifactController {
   constructor () {
- 	// See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
+    // See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
     this.validationOptions = {
-		  						size: '100mb',
-		  						types: ['image', 'video'],
-		  						extnames: ['png', 'jpg', 'jpeg', 'gif', 'mp4', 'avi', '.wmv']
-  						     }
+      size: '100mb',
+      types: ['image', 'video'],
+      extnames: ['png', 'jpg', 'jpeg', 'gif', 'mp4', 'avi', '.wmv']
+    }
 
     this.relativePath = '/resources/artifacts/'
     this.baseUrl = Env.getOrFail('APP_URL')
@@ -28,7 +28,7 @@ class ArtifactController {
       const questId = request.input('questId')
       const caseId = request.input('caseId', null)
 
-     	const artifactId = await uuid4()
+      const artifactId = request.input('id') || await uuid4()
       const artifactFileName = artifactId + '.' + file.extname
       let fs_path = Helpers.publicPath(this.relativePath)
 
@@ -37,12 +37,12 @@ class ArtifactController {
 
       const bodyMessage = {
         filename: artifactFileName,
-  			    size_in_bytes: file.size,
-			    type: file.type,
-			    subtype: file.subtype,
-			    extension: file.extname,
-			    status: file.status
-			  }
+        size_in_bytes: file.size,
+        type: file.type,
+        subtype: file.subtype,
+        extension: file.extname,
+        status: file.status
+      }
 
       if (caseId != null && questId == null) {
         var c = await Case.find(caseId)
@@ -55,7 +55,7 @@ class ArtifactController {
         artifact.relative_path = case_relative_path + artifactFileName
 
         const ca = new CaseArtifacts()
-	      	ca.case_id = c.id
+        ca.case_id = c.id
 
         await ca.artifact().associate(artifact)
 
@@ -67,10 +67,9 @@ class ArtifactController {
         var quest = await Quest.find(questId)
 
         if (quest == null) {
-		  return response.json({ message: 'Quest id not found' })
+          return response.json({ message: 'Quest id not found' })
         }
-
-	        const questRelativePath = this.relativePath + 'quests/' + quest.id + '/'
+        const questRelativePath = this.relativePath + 'quests/' + quest.id + '/'
 
         artifact.relative_path = questRelativePath + artifactFileName
 
