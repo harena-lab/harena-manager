@@ -94,8 +94,13 @@ class QuestController {
         await q.artifact().dissociate()
         try {
           const artifactPath = Helpers.publicPath('/resources/artifacts/quests/') + params.id + '/'
-          await artifact.delete(trx)
-          await Drive.delete(artifactPath)
+
+          if (artifact.id === 'default-quest-image') {
+            console.log('Cannot delete default quest image...Moving on...')
+          } else {
+            await artifact.delete(trx)
+            await Drive.delete(artifactPath)
+          }
         } catch (e) {
           console.log('Error deleting artifact quest')
           console.log(e)
