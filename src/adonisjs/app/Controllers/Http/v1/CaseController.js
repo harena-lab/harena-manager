@@ -67,6 +67,7 @@ class CaseController {
       c.specialty = request.input('specialty')
       c.keywords = request.input('keywords')
       c.original_date = request.input('original_date')
+      c.complexity = request.input('complexity')
 
       const cv = new CaseVersion()
       cv.id = await uuidv4()
@@ -100,6 +101,7 @@ class CaseController {
         c.specialty = request.input('specialty')
         c.keywords = request.input('keywords')
         c.original_date = request.input('originalDate')
+        c.complexity = request.input('complexity')
 
         const cv = new CaseVersion()
         cv.source = request.input('source')

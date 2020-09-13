@@ -207,6 +207,7 @@ class UserSeeder {
       c.domain = 'domain-test'
       c.specialty = 'specialty-test'
       c.keywords = 'keyword1; keyword2'
+      c.complexity = 'undergraduate'
       c.id = await uuidv4()
 
       const cv = new CaseVersion()
