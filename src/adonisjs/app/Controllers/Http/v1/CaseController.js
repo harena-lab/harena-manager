@@ -9,6 +9,7 @@ const Database = use('Database')
 const User = use('App/Models/v1/User')
 const Case = use('App/Models/v1/Case')
 const CaseVersion = use('App/Models/v1/CaseVersion')
+const Institution = use('App/Models/v1/Institution')
 
 const uuidv4 = require('uuid/v4')
 
@@ -45,6 +46,10 @@ class CaseController {
 
         c.source = versions.last().source
         c.versions = versions
+
+        const institution = await Institution.find(c.institution_id)
+        c.institution = institution.acronym
+
         return response.json(c)
       } else return response.status(500).json('case not found')
     } catch (e) {
@@ -68,6 +73,10 @@ class CaseController {
       c.keywords = request.input('keywords')
       c.original_date = request.input('original_date')
       c.complexity = request.input('complexity')
+
+      const institutionAcronym = request.input('institution')
+      let institution = await Institution.findBy('acronym', institutionAcronym)
+      await c.institution().associate(institution)
 
       const cv = new CaseVersion()
       cv.id = await uuidv4()

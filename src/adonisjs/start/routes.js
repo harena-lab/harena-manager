@@ -18,15 +18,15 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.post(	 '',		 		'v1/UserController.store')
+    Route.post(	 '',		    'v1/UserController.store')
 
-    	Route.get('cases',            'v1/UserController.list_cases').middleware(['auth'])
-	Route.get(   	'quests',  		      'v1/UserController.list_quests').middleware(['auth'])
-	Route.get(    'cases_by_quest', 	'v1/UserController.list_cases_by_quests').middleware(['auth'])
+    Route.get(	 'cases',           'v1/UserController.list_cases').middleware(['auth'])
+    Route.get(   'quests',  	    'v1/UserController.list_quests').middleware(['auth'])
+    Route.get(   'cases_by_quest',  'v1/UserController.list_cases_by_quests').middleware(['auth'])
 
-	Route.get(   ':id',             		'v1/UserController.show').middleware(['auth'])
-    	Route.put(   ':id',             'v1/UserController.update').middleware(['auth'])
-    	Route.delete(':id',             'v1/UserController.destroy').middleware(['auth'])
+    Route.get(   ':id',             'v1/UserController.show').middleware(['auth'])
+    Route.put(   ':id',             'v1/UserController.update').middleware(['auth'])
+    Route.delete(':id',             'v1/UserController.destroy').middleware(['auth'])
 }).prefix('/api/v1/user')
 
 
@@ -63,9 +63,8 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.get( 	 '',            'v1/CaseController.index')
 	Route.get(   ':id',         'v1/CaseController.show')
-	Route.post(  '',						'v1/CaseController.store')
+	Route.post(  '',	    'v1/CaseController.store')
 	Route.put(   ':id',         'v1/CaseController.update').middleware(['check_permission:contributor'])
 	Route.post(  'share',       'v1/CaseController.share').middleware(['check_permission:author'])
 	Route.delete(':id',         'v1/CaseController.destroy').middleware(['check_permission:author'])
@@ -130,18 +129,20 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.get(   'users',          					'v1/UserController.index')
+	Route.get(   'users',          				'v1/UserController.index')
 
 	Route.get(   'roles',               		'v1/AdminController.list_roles')
-	Route.post(  'role',             				'v1/AdminController.create_role')
+	Route.post(  'role',             			'v1/AdminController.create_role')
 	Route.post(  'role/link/permission',		'v1/AdminController.link_role_permission')
 
 	Route.get(   'user/:id/roles',		  		'v1/AdminController.list_roles_by_user')
-	Route.post(  'user/link/role',					'v1/AdminController.linkRoleUser')
+	Route.post(  'user/link/role',				'v1/AdminController.linkRoleUser')
 
-	Route.get(   'quests',     							'v1/QuestController.index')
-	Route.post(  'quest/link/user',					'v1/QuestController.linkUser')
-	Route.delete('quest/:id',								'v1/QuestController.destroy')
+	Route.get(   'cases',     					'v1/CaseController.index')
+
+	Route.get(   'quests',     					'v1/QuestController.index')
+	Route.post(  'quest/link/user',				'v1/QuestController.linkUser')
+	Route.delete('quest/:id',					'v1/QuestController.destroy')
 
 	Route.post(  'institution',       			'v1/InstitutionController.store')
 

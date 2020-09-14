@@ -30,6 +30,10 @@ class Case extends Model {
       .withPivot(['order_position'])
       .withTimestamps()
   }
+
+  institution () {
+    return this.belongsTo('App/Models/v1/Institution')
+  }
 }
 
 module.exports = Case
