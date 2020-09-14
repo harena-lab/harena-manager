@@ -103,19 +103,24 @@ class CaseController {
       const c = await Case.find(params.id)
 
       if (c != null) {
-        c.title = request.input('title')
-        c.description = request.input('description')
-        c.language = request.input('language')
-        c.domain = request.input('domain')
-        c.specialty = request.input('specialty')
-        c.keywords = request.input('keywords')
-        c.original_date = request.input('originalDate')
-        c.complexity = request.input('complexity')
+        c.title = request.input('title') || null
+        c.description = request.input('description')|| null
+        c.language = request.input('language')|| null
+        c.domain = request.input('domain')|| null
+        c.specialty = request.input('specialty')|| null
+        c.keywords = request.input('keywords')|| null
+        c.original_date = request.input('originalDate')|| null
+        c.complexity = request.input('complexity')|| null
+
+        const institutionAcronym = request.input('institution')
+        let institution = await Institution.findBy('acronym', institutionAcronym)
+        await c.institution().associate(institution)
 
         const cv = new CaseVersion()
         cv.source = request.input('source')
         cv.id = await uuidv4()
         await c.versions().save(cv)
+
         await c.save()
         return response.json(c)
       } else return response.status(500).json('case not found')
