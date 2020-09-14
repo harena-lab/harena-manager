@@ -7,10 +7,11 @@
 
 # Harena Manager
 
-Harena's database management module
-> It provides an api for data access
+Harena's backend module.
 
-## Available end points
+Check [Harena Docs Repository](https://github.com/datasci4health/harena-docs/tree/master/manager) to get documentation
+
+## Available Services
 
 Check https://documenter.getpostman.com/view/7243662/T1Ds8ag7?version=latest to discover available endpoints provided by `harena manager api`.
 
@@ -47,38 +48,6 @@ If you want to get the command line of the container, then run the command:
 ```bash
 docker exec -it harena-manager_harena-manager_1 bash
 ```
-
-<!-- ## Dependencies
-
-### System-wide
-
-* [node.js >= 8.0.0]()
-* [npm     >= 6.8.0]()
-* [mysql   >= 5.7]() or [postgresql >= 7.0.0]()
-
-
-### NPM packages
-
-* [adonisjs 4.1.0](https://adonisjs.com/docs/4.1/i) <b><sup>1</sup></b>
-* [adonisjs/ace ^5.0.8]()
-* [adonisjs/bodyparser]()
-* [adonisjs/auth]()
-* [adonisjs/cors ^1.0.6]()
-* [adonisjs/fold ^4.0.8]()
-* [adonisjs/framework ^5.0.7]()
-* [adonisjs/ignitor ^2.0.6]()
-* [adonisjs/lucid ^5.0.4]()
-* [moment 2.22.2]()
-* [moment-timezone 0.5.21]()
-* [pg 7.4.3]() 
-* [mysql ^2.16.0]()
-
-
-<b><sup>1</sup></b> In *api mode*. Please refer to [this repository](https://github.com/adonisjs/adonis-api-app) for more details or take a look at the `-api-only` directive in the [AdonisJS installation guide](https://adonisjs.com/docs/4.1/installation#_installing_adonisjs).
-
-## Configuration
--->
-
 ## Contributing
 
 ### Branch organization
