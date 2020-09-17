@@ -13,7 +13,6 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 
-const Institution = use('App/Models/v1/Institution')
 const Property = use('App/Models/Property')
 const CaseArtifacts = use('App/Models/CaseArtifact')
 const CaseVersion = use('App/Models/v1/CaseVersion')
@@ -40,14 +39,12 @@ class UserSeeder {
       const jacinto = await User.findBy('username', 'jacinto')
 
       if (jacinto == null) {
-        
-        const institution = await this.seed_institution(trx)
         const user = await this.seed_default_users(trx)
+
         const c = await this.seed_default_case(trx)
 
         const artifact = await this.seed_artifact(c, trx)
         await user.artifacts().save(artifact, trx)
-        await user.institution().associate(institution, trx)
 
         await user.save(trx)
 
@@ -177,32 +174,9 @@ class UserSeeder {
     }
   }
 
-  async seed_institution(trx) {
+  async seed_default_quests (trx) {
     try {
 
-        const institution = new Institution()
-        institution.id = await uuidv4()
-        institution.acronym = 'uni'
-        institution.title = 'Universidade'
-        institution.country = 'UN'
-
-        const institution2 = new Institution()
-        institution2.id = await uuidv4()
-        institution2.acronym = 'unicamp'
-        institution2.title = 'Universidade Estadual de Campinas'
-        institution2.country = 'BR'
-
-        const institution3 = new Institution()
-        institution3.id = await uuidv4()
-        institution3.acronym = 'minho'
-        institution3.title = 'Universidade do Minho'
-        institution3.country = 'PT'
-
-        institution.save(trx)
-        institution2.save(trx)
-        institution3.save(trx)
-
-        return institution
     } catch (e) {
 
     }
@@ -233,7 +207,6 @@ class UserSeeder {
       c.domain = 'domain-test'
       c.specialty = 'specialty-test'
       c.keywords = 'keyword1; keyword2'
-      c.complexity = 'undergraduate'
       c.id = await uuidv4()
 
       const cv = new CaseVersion()
