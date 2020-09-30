@@ -13,7 +13,7 @@ class Quest extends Model {
   users () {
     return this.belongsToMany('App/Models/v1/User')
       .pivotTable('quests_users')
-      .withPivot(['role'])
+      .withPivot(['permission'])
       .withTimestamps()
   }
 

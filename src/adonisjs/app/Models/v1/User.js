@@ -15,7 +15,7 @@ class User extends Model {
   cases () {
     return this.belongsToMany('App/Models/v1/Case')
       .pivotTable('users_cases')
-      .withPivot(['role'])
+      .withPivot(['permission'])
       .withTimestamps()
   }
 
@@ -23,7 +23,7 @@ class User extends Model {
     return this
       .belongsToMany('App/Models/v1/Quest')
       .pivotTable('quests_users')
-      .withPivot(['role'])
+      .withPivot(['permission'])
       .withTimestamps()
   }
 
@@ -49,6 +49,7 @@ class User extends Model {
     return ['password']
   }
 
+
   async checkRole (role) {
     const query_result = await Database
       .from('roles')
@@ -57,8 +58,24 @@ class User extends Model {
       .where('role_user.user_id', this.id)
       .count()
 
-    if (query_result[0]['count(*)'] === 0) { return 0 } else { return 1 }
+    if (query_result[0]['count(*)'] === 0) { return false } else { return true }
   }
+
+
+  async checkCasePermission(caseId, permission) {
+    let queryResult
+    if (permission == 'share'){
+      queryResult = await Database
+        .from('users_cases')
+        .where('users_cases.user_id', this.id)
+        .where('users_cases.case_id', caseId)
+        .whereIn('users_cases.permission', ['share', 'write', 'delete'])
+        .count()
+    }
+
+    if (queryResult[0]['count(*)'] === 0) { return false } else { return true }
+  }
+
 
   static boot () {
     super.boot()

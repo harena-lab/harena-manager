@@ -61,6 +61,8 @@ class QuestController {
       return response.status(e.status).json({ message: e.message })
     }
   }
+
+
   async update ({ params, request, response }) {
 
     try {
@@ -79,6 +81,7 @@ class QuestController {
       return response.status(500).json({ message: e })
     }
   }
+
 
   async destroy ({ params, response }) {
     const trx = await Database.beginTransaction()
@@ -128,63 +131,70 @@ class QuestController {
     }
   }
 
+
   async linkUser ({ request, response }) {
     try {
-      const { userId, questId, roleSlug } = request.post()
+      const { userId, questId, permission } = request.post()
       const user = await User.find(userId)
       const quest = await Quest.find(questId)
-      const role = await Role.findBy('slug', roleSlug)
 
-      if (role == null) { return response.status(500).json('Invalid roleSlug') }
-
-      if (await user.checkRole(role.slug)) {
-        await user.quests().attach([quest.id], (row) => {
-          console.log('--------------------- await promisse OK')
-
-          if (role.slug == 'author') {
-            row.role = 1
-          }
-          if (role.slug == 'player') {
-            row.role = 2
-          }
-          console.log('--------------------- promisse EXECUTED')
-        })
-
-        console.log(3)
-        return response.json(role.slug + ' ' + user.username + ' was added to the quest ' + quest.title)
-      } else {
-        console.log(e)
-        return response.status(500).json('target user must have ' + role.slug + ' role')
+      if (permission != 'read' && permission != 'share' && permission != 'write'){
+        return response.json('invalid permission')
       }
+
+      if (permission == 'read'){
+        if (await user.checkRole('player') || await user.checkRole('author')){
+          await user.quests().attach([quest.id], (row) => {
+            row.permission = permission
+          })
+          return response.json('user and quest successfully linked')
+        }else {
+          return response.status(500).json('target user must be an author or a player')
+        }
+      }
+
+      if (permission == 'write' || permission == 'share'){
+        if (await user.checkRole('author')){
+          await user.quests().attach([quest.id], (row) => {
+            row.permission = permission
+          })
+          return response.json('user and quest successfully linked')
+        } else {
+          return response.status(500).json('target user must be an author')
+        }
+      }
+
     } catch (e) {
       console.log(e)
       return response.status(500).json(e)
     }
   }
 
-  async linkCase ({ request, response }) {
+  async linkCase ({ request, response, auth }) {
     try {
+      const loggedUser = auth.user
       const { questId, caseId, orderPosition } = request.post()
 
-      // let c = await Case.find(case_id)
-      const quest = await Quest.find(questId)
+      if (await loggedUser.checkCasePermission(caseId, 'share')){
 
-      await quest.cases().attach(caseId, (row) => {
-        row.order_position = orderPosition
-      })
+        const quest = await Quest.find(questId)
 
-      quest.cases = await quest.cases().fetch()
+        await quest.cases().attach(caseId, (row) => {
+          row.order_position = orderPosition
+        })
 
-      return response.json(quest)
+        quest.cases = await quest.cases().fetch()
+
+        return response.json(quest)
+      } else{
+        return response.status(500).json('you dont have permission to add such case for quests')
+      }
     } catch (e) {
       console.log(e)
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({ message: e.message })
-      }
-
       return response.status(500).json(e)
     }
   }
+
 
   async listUsers ({ request, response }) {
     try {
@@ -198,6 +208,7 @@ class QuestController {
       return response.status(500).json(e)
     }
   }
+
 
   async listCases ({ request, response }) {
     try {

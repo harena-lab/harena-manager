@@ -84,7 +84,7 @@ class CaseController {
 
       await c.versions().save(cv)
       await c.users().attach(auth.user.id, (row) => {
-        row.role = 0
+        row.permission = 'delete'
       })
 
       c.versions = await c.versions().fetch()
@@ -165,33 +165,38 @@ class CaseController {
     }
   }
 
-  async share ({ request, auth, response }) {
-    try {
-      const logged_user = auth.user.id
-      const { user_id, case_id } = request.post()
 
-      if (logged_user == user_id) {
+  async linkUser ({ request, auth, response }) {
+    try {
+      const loggedUser = auth.user.id
+      const { userId, caseId, permission } = request.post()
+
+      if (loggedUser == userId) {
         return response.status(500).json('cannot share a case with herself')
       }
 
-      const user = await User.find(user_id)
+      const user = await User.find(userId)
 
-      // Check if target user is an author
-      const sql_return = await Database
-        .select('slug')
-        .from('roles')
-        .where('slug', '=', 'author')
-        .leftJoin('role_user', 'roles.id', 'role_user.role_id')
-        .where('role_user.user_id', '=', user_id)
-
-      if (sql_return[0] != undefined) {
-        await user.cases().attach(case_id, (row) => {
-          row.role = 1
+      if (permission == 'read'){
+        await user.cases().attach(caseId, (row) => {
+          row.permission = permission
         })
-        return response.json('case successfully shared')
-      } else {
-        return response.status(500).json('target user is not an author')
+        return response.json('successfully shared')
       }
+
+      if (permission == 'write' || permission == 'share'){
+        // Check if target user is an author
+        if (await user.checkRole('author')){
+          await user.cases().attach(caseId, (row) => {
+            row.permission = permission
+          })
+          return response.json('successfully shared')
+        } else {
+          return response.status(500).json('target user must be an author')
+        }
+      }
+
+
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.toString() })

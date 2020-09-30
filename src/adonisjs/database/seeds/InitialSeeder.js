@@ -40,7 +40,7 @@ class UserSeeder {
       const jacinto = await User.findBy('username', 'jacinto')
 
       if (jacinto == null) {
-        
+
         const institution = await this.seed_institution(trx)
         const user = await this.seed_default_users(trx)
         const c = await this.seed_default_case(trx)
@@ -52,8 +52,8 @@ class UserSeeder {
         await user.save(trx)
 
         await c.users().attach([user.id], (row) => {
-          const AUTHOR = 0
-          row.role = AUTHOR
+          // const AUTHOR = 0
+          row.permission = 'delete'
         }, trx)
 
         const roles = await this.seed_roles(trx)
@@ -143,7 +143,7 @@ class UserSeeder {
           await user.artifacts().save(_artifactDefault, trx)
           await _quest.save(trx)
           await user.quests().attach([_quest.id], (row) => {
-            row.role = 0
+            row.permission = 'delete'
           }, trx)
         }
         await trx.commit()
@@ -157,7 +157,7 @@ class UserSeeder {
         }, trx)
 
         await user.quests().attach(['default-quest'], (row) => {
-          row.role = 0
+          row.permission = 'delete'
         }, trx)
 
         // await user.quests().attach([quest.id], (row) => {
