@@ -133,23 +133,28 @@ class QuestController {
 
 
   async linkUser ({ request, response }) {
+    const trx = await Database.beginTransaction()
+
     try {
       const { userId, questId, permission } = request.post()
-      const user = await User.find(userId)
-      const quest = await Quest.find(questId)
 
       if (permission != 'read' && permission != 'share' && permission != 'write'){
         return response.json('invalid permission')
       }
 
+      const user = await User.find(userId)
+      const quest = await Quest.find(questId)
+
+      await user.quests().detach(null, trx)
+
       if (permission == 'read'){
         if (await user.checkRole('player') || await user.checkRole('author')){
           await user.quests().attach([quest.id], (row) => {
             row.permission = permission
-          })
-          return response.json('user and quest successfully linked')
+          }, trx)
         }else {
-          return response.status(500).json('target user must be an author or a player')
+          trx.rollback()
+          return response.status(500).json('target user must be an author or a player to be elegible for such permission')
         }
       }
 
@@ -157,14 +162,17 @@ class QuestController {
         if (await user.checkRole('author')){
           await user.quests().attach([quest.id], (row) => {
             row.permission = permission
-          })
-          return response.json('user and quest successfully linked')
+          }, trx)
         } else {
-          return response.status(500).json('target user must be an author')
+          trx.rollback()
+          return response.status(500).json('target user must be an author to be elegible for such permission')
         }
       }
 
+      trx.commit()
+      return response.json('user and quest successfully linked')
     } catch (e) {
+      trx.rollback()
       console.log(e)
       return response.status(500).json(e)
     }

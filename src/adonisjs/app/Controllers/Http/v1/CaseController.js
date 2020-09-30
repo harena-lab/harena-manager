@@ -167,9 +167,15 @@ class CaseController {
 
 
   async linkUser ({ request, auth, response }) {
+    const trx = await Database.beginTransaction()
+
     try {
       const loggedUser = auth.user.id
       const { userId, caseId, permission } = request.post()
+
+      if (permission != 'read' && permission != 'share' && permission != 'write'){
+        return response.json('invalid permission')
+      }
 
       if (loggedUser == userId) {
         return response.status(500).json('cannot share a case with herself')
@@ -177,27 +183,35 @@ class CaseController {
 
       const user = await User.find(userId)
 
+      await user.cases().detach(null, trx)
+
       if (permission == 'read'){
-        await user.cases().attach(caseId, (row) => {
-          row.permission = permission
-        })
-        return response.json('successfully shared')
+        if (await user.checkRole('player') || await user.checkRole('author')){
+          await user.cases().attach(caseId, (row) => {
+            row.permission = permission
+          }, trx)
+        }else {
+          return response.status(500).json('target user must be an author or a player to be elegible for such permission')
+        }
+
       }
 
       if (permission == 'write' || permission == 'share'){
         // Check if target user is an author
         if (await user.checkRole('author')){
+
           await user.cases().attach(caseId, (row) => {
             row.permission = permission
-          })
-          return response.json('successfully shared')
+          }, trx)
+
         } else {
-          return response.status(500).json('target user must be an author')
+          return response.status(500).json('target user must be an author to be elegible for such permission')
         }
       }
-
-
+      trx.commit()
+      return response.json('user and case successfully linked')
     } catch (e) {
+      trx.rollback()
       console.log(e)
       return response.status(e.status).json({ message: e.toString() })
     }
