@@ -221,7 +221,6 @@ class QuestController {
   async listCases ({ request, response }) {
     try {
       const questId = request.input('questId')
-
       const quest = await Quest.find(questId)
 
       return response.json(await quest.cases().fetch())

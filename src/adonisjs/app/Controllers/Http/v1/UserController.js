@@ -185,7 +185,7 @@ class UserController {
         .select('*')
         .from('quests_users')
         .where('user_id', user.id)
-        .whereIn('role', [0, 1])
+        .whereIn('permission', ['write', 'share', 'delete'])
         .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
       const base_url = Env.getOrFail('APP_URL')
@@ -219,7 +219,7 @@ class UserController {
         .select('*')
         .from('quests_users')
         .where('user_id', user.id)
-        .where('role', 2)
+        .where('permission', 'read')
         .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
       const base_url = Env.getOrFail('APP_URL')

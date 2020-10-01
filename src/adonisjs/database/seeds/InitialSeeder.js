@@ -52,117 +52,21 @@ class UserSeeder {
         await user.save(trx)
 
         await c.users().attach([user.id], (row) => {
-          // const AUTHOR = 0
           row.permission = 'delete'
         }, trx)
 
         const roles = await this.seed_roles(trx)
+        const defaultQuest = await this.seedQuests(user, trx)
 
-        const quest = new Quest()
-        quest.id = 'default-quest'
-        quest.title = 'default-quest'
-        quest.color = '#505050'
-
-        // let artifactQuestId            = await uuidv4()
-        const artifactDefaultId = 'default-quest-image'
-
-        const fileName = artifactDefaultId + '.png'
-        const questRelativePath = ARTIFACTS_DIR
-
-        const artifactDefault = new Artifact()
-        artifactDefault.id = artifactDefaultId
-        artifactDefault.relative_path = questRelativePath + fileName
-
-        const fsPath = Helpers.publicPath('/resources/artifacts/')
-
-        await Drive.copy(Helpers.resourcesPath('imgs/default-quest.png'), fsPath + fileName)
-
-        await quest.artifact().associate(artifactDefault, trx)
-
-	      await user.artifacts().save(artifactDefault, trx)
-
-        await quest.save(trx)
-
-        // Adding default quests information
-        const quests = [
-          {
-            id: 'quiz-da-emergencia',
-            title: 'Quiz da Emergência',
-            color: '#e64e31',
-            artifactId: 'quiz-da-emergencia',
-            url: 'imgs/quiz-emergencia.png'
-
-          },
-          {
-            id: 'desafio-de-eletrocardiograma',
-            title: 'Desafio de Eletrocardiograma',
-            color: '#ae9e00',
-            artifactId: 'desafio-de-eletrocardiograma',
-            url: 'imgs/desafio-eletro.png'
-          },
-          {
-            id: 'desafio-radiologico',
-            title: 'Desafio Radiológico',
-            color: '#348f00',
-            artifactId: 'desafio-radiologico',
-            url: 'imgs/desafio-radio.png'
-          },
-          {
-            id: 'visita-virtual',
-            title: 'Visita Virtual',
-            color: '#245797',
-            artifactId: 'visita-virtual',
-            url: 'imgs/visita-virtual.png'
-          },
-          {
-            id: 'decisoes-extremas',
-            title: 'Decisões Extremas',
-            color: '#a34fa3',
-            artifactId: 'decisoes-extremas',
-            url: 'imgs/decisoes-extremas.png'
-          }
-        ]
-
-        // Adding default quests in DB
-
-        for (var q in quests) {
-          const _quest = new Quest()
-          _quest.id = quests[q].id
-          _quest.title = quests[q].title
-          _quest.color = quests[q].color
-          const _artifactDefault = new Artifact()
-          let _artifactDefaultId = quests[q].artifactId
-
-          _artifactDefaultId = quests[q].id
-          const _fileName = _artifactDefaultId + '.png'
-          _artifactDefault.id = _artifactDefaultId
-          _artifactDefault.relative_path = questRelativePath + _fileName
-
-          await Drive.copy(Helpers.resourcesPath(quests[q].url), fsPath + _fileName)
-          await _quest.artifact().associate(_artifactDefault, trx)
-          await user.artifacts().save(_artifactDefault, trx)
-          await _quest.save(trx)
-          await user.quests().attach([_quest.id], (row) => {
-            row.permission = 'delete'
-          }, trx)
-        }
         await trx.commit()
 
         trx = await Database.beginTransaction()
 
         await user.roles().attach([roles[0].id, roles[1].id, roles[2].id], trx)
 
-        await quest.cases().attach([c.id], (row) => {
+        await defaultQuest.cases().attach([c.id], (row) => {
           row.order_position = 0
         }, trx)
-
-        await user.quests().attach(['default-quest'], (row) => {
-          row.permission = 'delete'
-        }, trx)
-
-        // await user.quests().attach([quest.id], (row) => {
-        //   row.role = 2
-        // }, trx)
 
         await trx.commit()
       } else {
@@ -296,6 +200,69 @@ class UserSeeder {
     await roles[2].save(trx)
 
     return roles
+  }
+
+  async seedQuests(user, trx){
+    const quests = [
+      { id: 'quiz-da-emergencia',
+        title: 'Quiz da Emergência',
+        color: '#e64e31',
+        artifactId: 'quiz-da-emergencia-image',
+        url: 'imgs/quiz-emergencia.png' },
+      { id: 'desafio-de-eletrocardiograma',
+        title: 'Desafio de Eletrocardiograma',
+        color: '#ae9e00',
+        artifactId: 'desafio-de-eletrocardiograma-image',
+        url: 'imgs/desafio-eletro.png' },
+      { id: 'desafio-radiologico',
+        title: 'Desafio Radiológico',
+        color: '#348f00',
+        artifactId: 'desafio-radiologico-image',
+        url: 'imgs/desafio-radio.png' },
+      { id: 'visita-virtual',
+        title: 'Visita Virtual',
+        color: '#245797',
+        artifactId: 'visita-virtual-image',
+        url: 'imgs/visita-virtual.png' },
+      { id: 'decisoes-extremas',
+        title: 'Decisões Extremas',
+        color: '#a34fa3',
+        artifactId: 'decisoes-extremas-image',
+        url: 'imgs/decisoes-extremas.png' },
+      { id: 'default-quest',
+        title: 'Default Quest',
+        color: '#505050',
+        artifactId: 'default-quest-image',
+        url: 'imgs/default-quest.png' }
+    ]
+
+    let defaultQuest
+
+    for (var q of quests) {
+      console.log(q)
+      const quest = new Quest()
+      quest.id = q.id
+      quest.title = q.title
+      quest.color = q.color
+
+      const fileName = q.artifactId + '.png'
+
+      const artifactDefault = new Artifact()
+      artifactDefault.id = q.artifactId
+      artifactDefault.relative_path = ARTIFACTS_DIR + 'quests/' + q.id + '/' + fileName
+
+      const fsPath = Helpers.publicPath('/resources/artifacts/quests/') + q.id + '/'
+      await Drive.copy(Helpers.resourcesPath(q.url), fsPath + fileName)
+      await quest.artifact().associate(artifactDefault, trx)
+      await user.artifacts().save(artifactDefault, trx)
+      await quest.save(trx)
+      await user.quests().attach([quest.id], (row) => {
+        row.permission = 'delete'
+      }, trx)
+
+      defaultQuest = quest
+    }
+    return defaultQuest
   }
 }
 
