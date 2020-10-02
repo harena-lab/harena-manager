@@ -1,0 +1,1940 @@
+{
+	"info": {
+		"_postman_id": "c4d86d5c-12a7-453f-acf3-3e8299c1f4bf",
+		"name": "harena-manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "v2 (pre-release)",
+					"item": [
+						{
+							"name": "/auth/login session",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e2d515d1-5571-464b-a3d7-7dca13fabde0",
+										"exec": [
+											"var response = pm.response.json();",
+											"pm.environment.set(\"user-token\", response.token);",
+											"pm.environment.set(\"user-id\", response.id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "",
+											"type": "text"
+										}
+									],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{api-base-url}}/auth/login/",
+									"host": [
+										"{{api-base-url}}"
+									],
+									"path": [
+										"auth",
+										"login",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/auth/logout session",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "61354d75-f614-407e-8626-f12dad8bc7cb",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [],
+									"options": {
+										"formdata": {}
+									}
+								},
+								"url": {
+									"raw": "{{api-base-url}}/auth/logout/",
+									"host": [
+										"{{api-base-url}}"
+									],
+									"path": [
+										"auth",
+										"logout",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "210bffb4-f1fb-436d-bb08-3c04acbe45eb",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e2d5a8f-3147-4a77-86d1-cf96fbca691c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "/auth/login jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a55ec69-03f6-4bd6-8489-9c0d9bca8876",
+								"exec": [
+									"var response = pm.response.json();",
+									"console.log(response)",
+									"pm.environment.set(\"user-token\", response.token);",
+									"pm.environment.set(\"user-refreshToken\", response.refreshToken);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{user-refreshToken}}",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/auth/login",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/logout jwt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e5cdda0c-372f-4c37-a13f-323c5fe6ccef",
+								"exec": [
+									"pm.environment.set(\"user-token\", 'revoked');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/auth/logout",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/checkToken jwt",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/auth/check",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "/cases_by_quest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7fbd815e-c68c-4818-9c5f-339101999cd7",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "quest_id",
+									"value": "aa9da08a-1bd4-4a57-b4bf-076a889d6046",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/cases_by_quest",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"cases_by_quest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17500a17-a342-494e-902e-c05375e34aa5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/user/{{user-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6947898d-25e2-400c-b4b8-ab5b3549fbf4",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"// pm.environment.set(\"case-id\", response.token);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "029bf43f-77bd-44a2-80ca-c0ccc3031393",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/user/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3b1d6e3a-4bf3-41f4-a053-2015c2d1ab3b",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"user-id\", response.id);",
+									"// pm.environment.set(\"user\", response);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "adu",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "adu@email.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "adu",
+									"type": "text"
+								},
+								{
+									"key": "login",
+									"value": "adu",
+									"type": "text"
+								},
+								{
+									"key": "institution",
+									"value": "unicamp",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "course",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/:id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/user/{{user-id}}?login=adrubal2",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"{{user-id}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{user-username}}",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "{{user-email}}",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "{{user-password}}",
+									"disabled": true
+								},
+								{
+									"key": "login",
+									"value": "adrubal2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7f5ad2b9-e8bb-43fa-a6e3-e9aaad181732",
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/user/{{user-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"{{user-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "User services",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "case",
+			"item": [
+				{
+					"name": "/case/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/case/{{case-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"{{case-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "21ba346f-8350-4fb1-b290-030db7ee88fc",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"// pm.environment.set(\"case-id\", response.token);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "52a25632-0e73-4057-b225-5eebea28e999",
+								"exec": [
+									"var response = pm.response.json();",
+									"console.log(response.id)",
+									"pm.environment.set(\"case-id\", response.id);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "um novíssimo caso",
+									"type": "text"
+								},
+								{
+									"key": "source",
+									"value": "{{case-source}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "test description",
+									"type": "text"
+								},
+								{
+									"key": "language",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "domain",
+									"value": "test domain",
+									"type": "text"
+								},
+								{
+									"key": "specialty",
+									"value": "test specialty ",
+									"type": "text"
+								},
+								{
+									"key": "keywords",
+									"value": "keyword4;kw6",
+									"type": "text"
+								},
+								{
+									"key": "original_date",
+									"value": "1987-09-13",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case/link/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ab3d5f29-5f8f-4a96-bbf0-dc6c962ac562",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"// pm.environment.set(\"case-uuid\", response.uuid);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "40132dcd-5eaa-4c82-b834-5ad6323de2c7",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "07c714ae-d22c-490b-ab91-9a0a15965f18",
+									"type": "text"
+								},
+								{
+									"key": "permission",
+									"value": "write",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/share",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"share"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case/:id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test 444",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "new description 33333",
+									"type": "text"
+								},
+								{
+									"key": "language",
+									"value": "en-us",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "domain",
+									"value": "new domain",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "specialty",
+									"value": "new specialty",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "keywords",
+									"value": "kw1;kw2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "source",
+									"value": "nc1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "original_date",
+									"value": "",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/{{case-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"{{case-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/case/{{case-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"{{case-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "author",
+			"item": [
+				{
+					"name": "/author/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bef67464-dd73-4d9c-ac3d-7095daa3bc8f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/author/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/author/quest/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b0fbae17-caa2-4630-8abe-6ec8391b0527",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/author/quest/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quest",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "player",
+			"item": [
+				{
+					"name": "/player/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40fc71d0-7829-4b97-9ff1-29755977d9ba",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/player/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"player",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/player/quest/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "297537ba-20ee-4e62-a265-0f578b1cee3b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "ea8dbc12-e879-46e6-b5d7-e67ad88e841b",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/player/quest/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"player",
+								"quest",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "artifact",
+			"item": [
+				{
+					"name": "/artifact",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/faguim/Pictures/Screenshot from 2020-06-16 22-12-19.png"
+								},
+								{
+									"key": "caseId",
+									"value": "8fac1e26-5824-4b19-9d7b-5091e10856b3",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "questId",
+									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/artifact",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"artifact"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "467a99b9-e8a6-4740-bd7d-04f7d7ffd02b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9549afd7-ca33-4681-bca3-6a364640770d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "quest",
+			"item": [
+				{
+					"name": "/quest/users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa667acf-93ed-4732-a705-e9c76ed8d97e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "5885fb0d-ce64-421f-9b9e-1ea2cef3143f",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/users",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b976963-5a8f-45ca-959e-ca3c3b55ba6b",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "default-quest",
+									"type": "text"
+								},
+								{
+									"key": "color",
+									"value": "#505050",
+									"type": "text"
+								},
+								{
+									"key": "artifact_id",
+									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest/link/user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "5a0064c7-fc6a-4629-b33a-bd835d8efd64",
+									"type": "text"
+								},
+								{
+									"key": "questId",
+									"value": "c458b50b-3cae-4df8-a9eb-b2bed98ae640",
+									"type": "text"
+								},
+								{
+									"key": "roleSlug",
+									"value": "player",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/link/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"link",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest/link/case",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "775bd2ac-68b5-45a9-82c6-b796894114c7",
+									"type": "text"
+								},
+								{
+									"key": "caseId",
+									"value": "00f42405-743c-4a9d-8bb4-52b41f7df9ac",
+									"type": "text"
+								},
+								{
+									"key": "orderPosition",
+									"value": "0",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/link/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"link",
+								"case"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "/category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b1027959-b827-4ad1-aacb-d779f44d4c32",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "default-quest",
+									"type": "text"
+								},
+								{
+									"key": "color",
+									"value": "#505050",
+									"type": "text"
+								},
+								{
+									"key": "artifact_id",
+									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/category/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"category",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/category/link/case",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "775bd2ac-68b5-45a9-82c6-b796894114c7",
+									"type": "text"
+								},
+								{
+									"key": "caseId",
+									"value": "00f42405-743c-4a9d-8bb4-52b41f7df9ac",
+									"type": "text"
+								},
+								{
+									"key": "orderPosition",
+									"value": "0",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/category/link/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"category",
+								"link",
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/category/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "18761952-bf3b-43cd-9cfe-17510b76da98",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/author/quest/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quest",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "/admin/users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "77986c7b-8d84-4105-8742-ae461823af23",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"console.log(response);",
+									"        ",
+									"checkUserID = function(){",
+									"    ",
+									"    for(var index in response){",
+									"        ",
+									"        if (response[index].id === pm.variables.get(\"user-id\"))",
+									"            return true;",
+									"            ",
+									"    }",
+									"    ",
+									"    throw new Error(\"user-id not found\");",
+									"    ",
+									"}",
+									"",
+									"pm.test(\"Checking if user ID is present\",checkUserID)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/users",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "115796af-9524-495e-819e-beade5fa0a4c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/admin/roles",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/user/{{user-id}}/roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f97426c-1342-4c97-9ece-dc552cfcb837",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/admin/user/1d6851cf-f3c7-4a00-8b5c-7fd7b0f36db9/roles",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"1d6851cf-f3c7-4a00-8b5c-7fd7b0f36db9",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "56fb6349-c280-4b3b-8ed5-11e905b08766",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/admin/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/user/link/role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "7d1c3323-3169-40d4-b000-4723cff87886",
+									"type": "text"
+								},
+								{
+									"key": "roleId",
+									"value": "0c3ed16e-9ad2-46ff-85e2-8586a80df0eb",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/user/link/role",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"link",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/institution",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ecc6dac1-c664-467f-98c0-b553e228673a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "acronym",
+									"value": "unicamp",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Universidade Estadual de Campinas",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "BR",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/institution",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"institution"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/revoke_tokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c0bef0ca-8c76-4502-867e-2269135e2c54",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/revoke_tokens",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"revoke_tokens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/quest/link/user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "d14252e7-57d2-4577-b0cc-7fcd23161452",
+									"type": "text"
+								},
+								{
+									"key": "questId",
+									"value": "5bc14c72-2862-45e7-9239-2e71e64bb9cc",
+									"type": "text"
+								},
+								{
+									"key": "roleSlug",
+									"value": "author",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/quest/link/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"quest",
+								"link",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d6c7dbea-568d-4ba2-84ee-5fc50a7b8216",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Project Manager",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "manager",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Research project member",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/role",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/quest/{{id}}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Services for administrate `harena`",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{user-token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0d6f9b68-1bb9-4d3f-8706-fe310164e50f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9f34c745-6f2a-4002-9330-bef44490cc9a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
