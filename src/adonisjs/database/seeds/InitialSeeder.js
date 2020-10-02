@@ -18,6 +18,7 @@ const Property = use('App/Models/Property')
 const CaseArtifacts = use('App/Models/CaseArtifact')
 const CaseVersion = use('App/Models/v1/CaseVersion')
 const Case = use('App/Models/v1/Case')
+const Category = use('App/Models/v1/Category')
 const User = use('App/Models/v1/User')
 const Quest = use('App/Models/v1/Quest')
 const Artifact = use('App/Models/v1/Artifact')
@@ -41,13 +42,13 @@ class UserSeeder {
 
       if (jacinto == null) {
 
-        const institution = await this.seed_institution(trx)
         const user = await this.seed_default_users(trx)
         const c = await this.seed_default_case(trx)
 
-        const artifact = await this.seed_artifact(c, trx)
-        await user.artifacts().save(artifact, trx)
-        await user.institution().associate(institution, trx)
+        await this.seed_artifact(user, c, trx)
+        await this.seed_institution(user, trx)
+        await this.seedCategories(user, trx)
+
 
         await user.save(trx)
 
@@ -56,7 +57,8 @@ class UserSeeder {
         }, trx)
 
         const roles = await this.seed_roles(trx)
-        const defaultQuest = await this.seedQuests(user, trx)
+
+        const quest = await this.seedQuest(user, trx)
 
         await trx.commit()
 
@@ -64,7 +66,7 @@ class UserSeeder {
 
         await user.roles().attach([roles[0].id, roles[1].id, roles[2].id], trx)
 
-        await defaultQuest.cases().attach([c.id], (row) => {
+        await quest.cases().attach([c.id], (row) => {
           row.order_position = 0
         }, trx)
 
@@ -81,9 +83,8 @@ class UserSeeder {
     }
   }
 
-  async seed_institution(trx) {
+  async seed_institution(user, trx) {
     try {
-
         const institution = new Institution()
         institution.id = await uuidv4()
         institution.acronym = 'uni'
@@ -102,13 +103,13 @@ class UserSeeder {
         institution3.title = 'Universidade do Minho'
         institution3.country = 'PT'
 
-        institution.save(trx)
+        // institution.save(trx)
         institution2.save(trx)
         institution3.save(trx)
 
-        return institution
+        await user.institution().associate(institution, trx)
     } catch (e) {
-
+      console.log(e)
     }
   }
 
@@ -152,7 +153,7 @@ class UserSeeder {
     }
   }
 
-  async seed_artifact (c, trx) {
+  async seed_artifact (user, c, trx) {
     try {
       const artifact_id = await uuidv4()
       const fileName = artifact_id + '.png'
@@ -171,18 +172,8 @@ class UserSeeder {
       ca.case_id = c.id
 
       await ca.artifact().associate(artifact, trx)
+      await user.artifacts().save(artifact, trx)
 
-      // let property   = new Property()
-      // property.id    = await uuidv4()
-      // property.title = 'shape'
-
-      // await property.save(trx)
-
-      // await artifact.properties().attach([property.id], (row) => {
-      //   row.value = 'square'
-      // }, trx)
-
-      return artifact
     } catch (e) {
       console.log(e)
     }
@@ -202,67 +193,81 @@ class UserSeeder {
     return roles
   }
 
-  async seedQuests(user, trx){
-    const quests = [
+  async seedQuest(user, trx){
+    const quest = new Quest()
+    quest.id = 'default-quest'
+    quest.title = 'default-quest'
+    quest.color = '#505050'
+
+    const artifactId = 'default-quest-image'
+
+    const fileName = artifactId + '.png'
+
+    const artifact = new Artifact()
+    artifact.id = artifactId
+    artifact.relative_path =  ARTIFACTS_DIR + 'quests/' + quest.id + '/' + fileName
+
+    const fsPath = Helpers.publicPath('/resources/artifacts/quests/') + quest.id + '/'
+
+    await Drive.copy(Helpers.resourcesPath('imgs/default-quest.png'), fsPath + fileName)
+
+    await quest.artifact().associate(artifact, trx)
+    await user.artifacts().save(artifact, trx)
+    await quest.save(trx)
+    await user.quests().attach([quest.id], (row) => {
+      row.permission = 'delete'
+    }, trx)
+
+    return quest
+  }
+
+  async seedCategories(user, trx){
+    const categories = [
       { id: 'quiz-da-emergencia',
         title: 'Quiz da Emergência',
-        color: '#e64e31',
+        template: 'quiz-da-emergencia',
         artifactId: 'quiz-da-emergencia-image',
         url: 'imgs/quiz-emergencia.png' },
       { id: 'desafio-de-eletrocardiograma',
         title: 'Desafio de Eletrocardiograma',
-        color: '#ae9e00',
+        template: 'desafio-de-eletrocardiograma',
         artifactId: 'desafio-de-eletrocardiograma-image',
         url: 'imgs/desafio-eletro.png' },
       { id: 'desafio-radiologico',
         title: 'Desafio Radiológico',
-        color: '#348f00',
+        template: 'desafio-radiologico',
         artifactId: 'desafio-radiologico-image',
         url: 'imgs/desafio-radio.png' },
       { id: 'visita-virtual',
         title: 'Visita Virtual',
-        color: '#245797',
+        template: 'visita-virtual',
         artifactId: 'visita-virtual-image',
         url: 'imgs/visita-virtual.png' },
       { id: 'decisoes-extremas',
         title: 'Decisões Extremas',
-        color: '#a34fa3',
+        template: 'decisoes-extremas',
         artifactId: 'decisoes-extremas-image',
-        url: 'imgs/decisoes-extremas.png' },
-      { id: 'default-quest',
-        title: 'Default Quest',
-        color: '#505050',
-        artifactId: 'default-quest-image',
-        url: 'imgs/default-quest.png' }
+        url: 'imgs/decisoes-extremas.png' }
     ]
 
-    let defaultQuest
+    for (var c of categories) {
+      const category = new Category()
+      category.id = c.id
+      category.title = c.title
+      category.template = c.template
 
-    for (var q of quests) {
-      console.log(q)
-      const quest = new Quest()
-      quest.id = q.id
-      quest.title = q.title
-      quest.color = q.color
+      const fileName = c.artifactId + '.png'
 
-      const fileName = q.artifactId + '.png'
+      const artifact = new Artifact()
+      artifact.id = c.artifactId
+      artifact.relative_path = ARTIFACTS_DIR + 'categories/' + c.id + '/' + fileName
 
-      const artifactDefault = new Artifact()
-      artifactDefault.id = q.artifactId
-      artifactDefault.relative_path = ARTIFACTS_DIR + 'quests/' + q.id + '/' + fileName
-
-      const fsPath = Helpers.publicPath('/resources/artifacts/quests/') + q.id + '/'
-      await Drive.copy(Helpers.resourcesPath(q.url), fsPath + fileName)
-      await quest.artifact().associate(artifactDefault, trx)
-      await user.artifacts().save(artifactDefault, trx)
-      await quest.save(trx)
-      await user.quests().attach([quest.id], (row) => {
-        row.permission = 'delete'
-      }, trx)
-
-      defaultQuest = quest
+      const fsPath = Helpers.publicPath('/resources/artifacts/categories/') + c.id + '/'
+      await Drive.copy(Helpers.resourcesPath(c.url), fsPath + fileName)
+      await category.artifact().associate(artifact, trx)
+      await user.artifacts().save(artifact, trx)
+      await category.save(trx)
     }
-    return defaultQuest
   }
 }
 

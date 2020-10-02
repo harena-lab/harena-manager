@@ -125,6 +125,20 @@ Route.group(() => {
 /*
 |----------------------------------------------------------------------------------------------
 |       api: v1
+|  resource: /category
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+	Route.post( '',           'v1/CategoryController.store')
+	Route.post( 'link/case',	'v1/CategoryController.linkCase')
+
+  Route.get(  'cases', 			'v1/CategoryController.listCases')
+
+}).prefix('/api/v1/category').middleware('auth', 'is:author')
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
 |  resource: /admin
 |----------------------------------------------------------------------------------------------
 */
