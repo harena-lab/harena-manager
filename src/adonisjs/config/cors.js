@@ -14,9 +14,9 @@ module.exports = {
   | Array - An array of allowed origins
   | String: * - A wildcard to allow current request origin
   | Function - Receives the current origin and should return one of the above values.
-  |
+  |http://localhost:10010, http://localhost:10020
   */
-  origin: '*',
+  origin: true,
 
   /*
   |--------------------------------------------------------------------------
