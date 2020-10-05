@@ -43,10 +43,11 @@ class UserSeeder {
       if (jacinto == null) {
 
         const user = await this.seed_default_users(trx)
-        const c = await this.seed_default_case(trx)
+        const institution = await this.seed_institution(user, trx)
+
+        const c = await this.seed_default_case(institution, trx)
 
         await this.seed_artifact(user, c, trx)
-        await this.seed_institution(user, trx)
         await this.seedCategories(user, trx)
 
 
@@ -108,6 +109,7 @@ class UserSeeder {
         institution3.save(trx)
 
         await user.institution().associate(institution, trx)
+        return institution
     } catch (e) {
       console.log(e)
     }
@@ -129,7 +131,7 @@ class UserSeeder {
     }
   }
 
-  async seed_default_case (trx) {
+  async seed_default_case (institution, trx) {
     try {
       const c = new Case()
       c.title = 'default-case'
@@ -146,6 +148,7 @@ class UserSeeder {
       cv.id = await uuidv4()
 
       await c.versions().save(cv, trx)
+      await c.institution().associate(institution, trx)
 
       return c
     } catch (e) {
