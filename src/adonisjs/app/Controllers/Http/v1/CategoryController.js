@@ -49,7 +49,6 @@ class CategoryController {
     }
   }
 
-
   async listCases ({ request, response }) {
     try {
       const categoryId = request.input('categoryId')
@@ -60,6 +59,15 @@ class CategoryController {
       console.log(e)
     }
   }
-}
 
+  async listCategories ({ request, response, auth }) {
+    try {
+      const category = await Category.all()
+      return response.json(category)
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+}
 module.exports = CategoryController
