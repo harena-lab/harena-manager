@@ -1,47 +1,87 @@
 'use strict'
 
+const User = use('App/Models/v1/User')
+const Token = use('App/Models/v1/Token')
 const Logger = use('Logger')
 
-const User = use('App/Models/v1/User')
-
 class AuthController {
-  async login ({ request, auth, response, session }) {
-    console.log('v2/session')
-    Logger.info('login attempt via v2/auth/login (SESSION)')
+  async checkToken ({ request, auth, response }) {
     try {
-      const { email, password } = request.all()
-      // if (await auth.remember(true).attempt(email, password)) {
-      if (await auth.remember(true).attempt(email, password)) {
-        console.log('------------------------------- attempt')
-        // console.log(session.all())
+      console.log('====Checking token...')
+      await auth.check()
+      response.json('token valid')
+      console.log('====Token valid')
+    } catch (error) {
+      console.log('====Token invalid')
+    }
+  }
 
-        const user = await User.findBy('email', email)
-        // let token = await auth.generate(user)
+  async login ({ request, auth, response }) {
+    // console.log(request.all())
+    Logger.info('login attempt via v1/auth/login (JWT)')
 
-        // let authenticatedUser = new User()
-        // authenticatedUser.id = user.id
-        // authenticatedUser.email = user.email
-        // authenticatedUser.username = user.username
+    let { email, password, refresh_token } = request.all()
+    console.log(password)
+    let user = ''
+    let token = ''
 
-        Object.assign(user, { adonisAuth: session.get('adonis-auth') })
-        // return response.json('Logged in successfully')
+    try {
+      await auth.check()
+      return response.json('user is signed already')
+    } catch (e) {
+      // token expired
+      if (e.code == 'E_JWT_TOKEN_EXPIRED') {
+        token = await auth.generateForRefreshToken(refresh_token)
 
-        // let adonis_session = session.get('adonis-auth')
-        console.log(session.all())
-        // console.log(auth)
-        return response.json(user)
+        Object.entries(token).forEach(entry => {
+          if (entry[0] == 'refreshToken') {
+            refresh_token = entry[1]
+          }
+        })
+        Logger.info('expired token')
       }
+
+      // unloged user
+      if (e.code == 'E_INVALID_JWT_TOKEN') {
+        try {
+          token = await auth.withRefreshToken().attempt(email, password)
+          Logger.info('newly generated token')
+        } catch (e) {
+          console.log(e)
+        }
+      }
+
+      // generic error
+      if (token == '') { return response.status(e.status).json(e.message) }
+
+      user = await User.findBy('email', email)
+      Object.assign(user, token)
+
+      return response.json(user)
+    }
+  }
+
+  async login2 ({ request, auth, response }) {
+    try {
+      const refresh_token = request.input('access_code')
+
+      const token = await auth.generateForRefreshToken(refresh_token)
+      return response.json(token)
     } catch (e) {
       console.log(e)
-      return response.status(e.status).json({ message: e.message })
+      return response.status(500).json(e.message)
     }
   }
 
   async logout ({ auth, response }) {
     try {
-      await auth.logout()
+      Logger.info('logout attempt via v1/auth/logout (JWT)')
 
-      return response.json('Logged out successfuly')
+      const refreshToken = auth.getAuthHeader()
+      // console.log(refreshToken);
+      await auth.revokeTokens(refreshToken)
+
+      return response.json('successfull logout')
     } catch (e) {
       console.log(e)
       return response.status(500).json(e.message)
