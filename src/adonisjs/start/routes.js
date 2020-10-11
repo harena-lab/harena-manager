@@ -131,7 +131,7 @@ Route.group(() => {
 Route.group(() => {
 	Route.post( '',           'v1/CategoryController.store')
 	Route.post( 'link/case',	'v1/CategoryController.linkCase')
-
+  Route.get(  'list', 			'v1/CategoryController.listCategories')
   Route.get(  'cases', 			'v1/CategoryController.listCases')
 
 }).prefix('/api/v1/category').middleware('auth', 'is:author')
