@@ -7,12 +7,12 @@ const Logger = use('Logger')
 class AuthController {
   async checkToken ({ request, auth, response }) {
     try {
-      console.log('====Checking token...')
+      // console.log('====Checking token...')
       await auth.check()
       response.json('token valid')
-      console.log('====Token valid')
+      // console.log('====Token valid')
     } catch (error) {
-      console.log('====Token invalid')
+      // console.log('====Token invalid')
     }
   }
 
