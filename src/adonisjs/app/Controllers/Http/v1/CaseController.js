@@ -49,6 +49,7 @@ class CaseController {
 
         const institution = await Institution.find(c.institution_id)
         c.institution = institution.acronym
+        c.institutionTitle = institution.title
 
         return response.json(c)
       } else return response.status(500).json('case not found')
