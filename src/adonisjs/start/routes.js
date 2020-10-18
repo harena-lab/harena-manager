@@ -63,12 +63,13 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.get(   ':id',         'v1/CaseController.show').middleware(['case_permission:read'])
+	// Route.get(   ':id',         'v1/CaseController.show').middleware(['case_permission:read'])
 	Route.post(  '',	          'v1/CaseController.store')
 	Route.put(   ':id',         'v1/CaseController.update').middleware(['case_permission:write'])
 	Route.post(  'link/user',   'v1/CaseController.linkUser').middleware(['case_permission:share'])
 	Route.delete(':id',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
+Route.get(   '/api/v1/case/:id',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
 
 
 /*
