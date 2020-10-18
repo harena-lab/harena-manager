@@ -19,7 +19,7 @@ class Case extends Model {
   users () {
     return this.belongsToMany('App/Models/v1/User')
       .pivotTable('users_cases')
-      .withPivot(['role'])
+      .withPivot(['permission'])
       .withTimestamps()
   }
 
