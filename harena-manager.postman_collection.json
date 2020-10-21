@@ -9,10 +9,10 @@
 			"name": "auth",
 			"item": [
 				{
-					"name": "v2 (pre-release)",
+					"name": "v2 (JWT)",
 					"item": [
 						{
-							"name": "/auth/login session",
+							"name": "/auth/login jwt",
 							"event": [
 								{
 									"listen": "test",
@@ -39,13 +39,19 @@
 									"formdata": [
 										{
 											"key": "email",
-											"value": "",
+											"value": "jacinto@email.com",
 											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "",
+											"value": "jacinto",
 											"type": "text"
+										},
+										{
+											"key": "refresh_token",
+											"value": "{{user-refreshToken}}",
+											"type": "text",
+											"disabled": true
 										}
 									],
 									"options": {
@@ -67,7 +73,7 @@
 							"response": []
 						},
 						{
-							"name": "/auth/logout session",
+							"name": "/auth/logout jwt",
 							"event": [
 								{
 									"listen": "test",
@@ -82,7 +88,14 @@
 							],
 							"request": {
 								"auth": {
-									"type": "noauth"
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{user-token}}",
+											"type": "string"
+										}
+									]
 								},
 								"method": "POST",
 								"header": [],
@@ -134,7 +147,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "/auth/login jwt",
+					"name": "/auth/login session",
 					"event": [
 						{
 							"listen": "test",
@@ -166,12 +179,6 @@
 									"key": "password",
 									"value": "",
 									"type": "text"
-								},
-								{
-									"key": "refresh_token",
-									"value": "{{user-refreshToken}}",
-									"type": "text",
-									"disabled": true
 								}
 							],
 							"options": {
@@ -192,7 +199,7 @@
 					"response": []
 				},
 				{
-					"name": "/auth/logout jwt",
+					"name": "/auth/logout session",
 					"event": [
 						{
 							"listen": "test",
@@ -207,14 +214,7 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{user-token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
@@ -232,7 +232,7 @@
 					"response": []
 				},
 				{
-					"name": "/auth/checkToken jwt",
+					"name": "/auth/checkToken session",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -679,12 +679,12 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "um novíssimo caso",
+									"value": "Mais um postman",
 									"type": "text"
 								},
 								{
 									"key": "source",
-									"value": "{{case-source}}",
+									"value": "# Presentation (quiz, end)\n\nWrite here the **stem** of your quiz.\n\n> Write here the **lead-in** of your quiz.\n+ Answer-key <-> Presentation References \"Feedback for Answer-key\" >((right))\n+ Distractor 1 <-> \"Feedback for Distractor 1\"\n+ Distractor 2 <-> \"Feedback for Distractor 2\"\n+ Distractor 3 <-> \"Feedback for Distractor 3\"\n\n* Next Case -> Case.Next ((right))?\n\n# Note (note)\n\n**You answered:** ^Previous.input1^.\n\n\n\n^parameter^\n\n# Presentation References (note)\n\n**You answered:** ^Previous.input1^.\n\n\n\n^parameter^\n\nReferences <-> References\n\n# References (note_references)\n\n* [Enter References](References)\n\n___ Flow ___\n\n* Sequential:\n  * _sequential_\n\n___ Data ___\n\n* theme: simple(red)\n* namespaces:\n  * evidence: http://purl.org/versum/evidence/\n* templates:\n  * categories:\n    * detailed: simple/knot/description",
 									"type": "text"
 								},
 								{
@@ -781,17 +781,17 @@
 							"formdata": [
 								{
 									"key": "caseId",
-									"value": "40132dcd-5eaa-4c82-b834-5ad6323de2c7",
+									"value": "ad129f0e-0b4b-41bf-a18e-b2f6d2205f2d",
 									"type": "text"
 								},
 								{
-									"key": "user_id",
-									"value": "07c714ae-d22c-490b-ab91-9a0a15965f18",
+									"key": "userId",
+									"value": "a4f64e13-1ef6-4c25-9b11-be8dc9778408",
 									"type": "text"
 								},
 								{
 									"key": "permission",
-									"value": "write",
+									"value": "read",
 									"type": "text"
 								}
 							],
@@ -800,13 +800,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{api-base-url}}/case/share",
+							"raw": "{{api-base-url}}/case/link/user",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
 								"case",
-								"share"
+								"link",
+								"user"
 							]
 						}
 					},
@@ -905,89 +906,6 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "author",
-			"item": [
-				{
-					"name": "/author/quests",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "b66fc72e-7206-4b20-9750-53667c651776",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/author/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"author",
-								"quests"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/author/quest/cases",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "4f1838db-2a67-4e69-b9b4-c487dd0d3c2b",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "questId",
-									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/author/quest/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"author",
-								"quest",
-								"cases"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "player",
 			"item": [
 				{
@@ -1071,6 +989,89 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "author",
+			"item": [
+				{
+					"name": "/author/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b66fc72e-7206-4b20-9750-53667c651776",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/author/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/author/quest/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f1838db-2a67-4e69-b9b4-c487dd0d3c2b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/author/quest/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quest",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "artifact",
 			"item": [
 				{
@@ -1091,7 +1092,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/faguim/Pictures/Screenshot from 2020-06-16 22-12-19.png"
+									"src": "/home/hmatt/Desktop/Jacinto-images/pocus-challenge.png"
 								},
 								{
 									"key": "caseId",
@@ -1102,6 +1103,12 @@
 								{
 									"key": "questId",
 									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "desafio-pocus-image",
 									"type": "text"
 								}
 							],
@@ -1377,18 +1384,18 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "title",
-									"value": "default-quest",
+									"key": "id",
+									"value": "desafio-pocus",
 									"type": "text"
 								},
 								{
-									"key": "color",
-									"value": "#505050",
+									"key": "title",
+									"value": "Desafio POCUS",
 									"type": "text"
 								},
 								{
 									"key": "artifact_id",
-									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
+									"value": "desafio-pocus-image",
 									"type": "text"
 								}
 							],
