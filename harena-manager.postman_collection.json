@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "07702665-ba09-4b0b-94f3-2094ea956bbb",
+		"_postman_id": "776d4bc5-e2e7-4d0e-a725-efb0e3ebf478",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,7 +17,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "567f58fe-d502-485c-a557-e64d44ee08a9",
+										"id": "71176650-4a91-4a88-be70-eafe434159a2",
 										"exec": [
 											"var response = pm.response.json();",
 											"pm.environment.set(\"user-token\", response.token);",
@@ -78,7 +78,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3d934f14-e90d-4b1d-8d2c-b1b8ee81fe32",
+										"id": "7baf2193-1fa7-4b2d-86fd-98a6735dd0c4",
 										"exec": [
 											""
 										],
@@ -125,7 +125,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "da0fa33a-7a78-450f-8339-8c4fc909e175",
+								"id": "daf55783-2287-4a44-8075-d2fd9fde74d9",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -135,7 +135,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9e9584d9-38cd-474d-97cf-73aa67aeddaa",
+								"id": "b9104b51-3352-4c64-ba41-bd7404e8fb2c",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -152,7 +152,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "91e2df22-41c1-448e-b3e0-e8e033c1cb77",
+								"id": "e3e1e6bb-8122-4160-a7a7-aa0c1887718b",
 								"exec": [
 									"var response = pm.response.json();",
 									"console.log(response)",
@@ -204,7 +204,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3a9f31a1-d665-46b0-b24c-6dbf7d6e8fd8",
+								"id": "d83becb6-fe93-482d-ab3b-acbcb561ae74",
 								"exec": [
 									"pm.environment.set(\"user-token\", 'revoked');"
 								],
@@ -262,7 +262,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "36b974e1-931e-4a34-b7b0-4fbcee9af8fd",
+								"id": "69f56421-278a-40b6-956d-db953a5484e6",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -315,7 +315,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "92b0cce6-4a84-4ff4-81c7-0b1633fcb81a",
+								"id": "4054afa4-4923-4eea-a47c-1e87cc2850d7",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -347,7 +347,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "15d8f8af-11b5-41b0-88eb-673f3674b357",
+								"id": "8d597d86-03d0-484e-b9f3-b234bc823f7b",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -395,7 +395,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f3514b63-b332-4c8c-947e-fe77d5c0fd20",
+								"id": "61555704-7f4e-4319-869b-e512f0d1e94d",
 								"exec": [
 									""
 								],
@@ -425,7 +425,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ba3beae2-1cbf-42ca-98c1-6d1e965934c1",
+								"id": "2611fb6e-ccb9-429b-a4de-a189e6448b17",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -542,7 +542,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b0bc7d04-65d4-49a7-97d2-58bfa69a962c",
+								"id": "9c2845e4-1cd9-456f-b6f2-b5fd036ba735",
 								"exec": [
 									"pm.test(\"Status code is 200 or 204\", function () {",
 									"    ",
@@ -601,7 +601,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "82a99ba1-14bc-4295-9860-0090d986d9ea",
+								"id": "189705dd-20ce-4c7f-a13e-07015b75033b",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -631,12 +631,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api-base-url}}/case",
+							"raw": "{{api-base-url}}/admin/cases",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
-								"case"
+								"admin",
+								"cases"
 							]
 						}
 					},
@@ -648,7 +649,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7c669a24-5cdb-493f-9d31-d735adb3733c",
+								"id": "b84a4629-ed23-48d1-956c-4304ae6befb0",
 								"exec": [
 									"var response = pm.response.json();",
 									"console.log(response.id)",
@@ -750,7 +751,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d7b34f12-8154-4251-94cf-68490ec63ff9",
+								"id": "53670015-9beb-42ee-bf14-2fd68ec94863",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -914,7 +915,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9c92b7da-e2cd-49bc-9eb9-4c181ebab6a0",
+								"id": "28483bff-1e74-4b64-906d-bca62af74a90",
 								"exec": [
 									""
 								],
@@ -944,7 +945,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "633d4edc-ff80-43f3-bf49-1c5b69ca27e2",
+								"id": "ca417be0-64db-4768-b9db-43f1c439e198",
 								"exec": [
 									""
 								],
@@ -997,7 +998,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b66fc72e-7206-4b20-9750-53667c651776",
+								"id": "391ff749-55b3-4572-b24c-698139847118",
 								"exec": [
 									""
 								],
@@ -1027,7 +1028,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4f1838db-2a67-4e69-b9b4-c487dd0d3c2b",
+								"id": "ae975475-b512-4449-9a8d-2b5fdb3847c6",
 								"exec": [
 									""
 								],
@@ -1127,13 +1128,31 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/artifact",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/artifact/2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"artifact",
+								"2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6b5445c6-193c-42ed-b492-4d20a8c402c7",
+						"id": "a1af4370-2876-43f8-808d-fcd4725b36fd",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1143,7 +1162,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5f99b0f8-1060-45fc-bfbd-4554b05c1ff8",
+						"id": "a11a62dc-4953-4471-add4-fd7f6794b9f3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1162,7 +1181,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c5a31c15-f698-4d75-8ad4-34fc0cf5987f",
+								"id": "99fe21c1-7e1c-4cc3-bb62-50d1cfae6b3c",
 								"exec": [
 									""
 								],
@@ -1208,7 +1227,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c864d920-e0b9-4c63-965c-d3ae8e93547e",
+								"id": "fc6d4c18-707a-4781-93ba-8780c01ab8c3",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1360,7 +1379,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "38d0d1fe-0734-4312-a8ad-337b82eca94a",
+								"id": "fac99f61-2280-4647-9674-bcbd0af05bd2",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1464,7 +1483,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "58534689-6772-46ad-9b0d-4affd8fd747f",
+								"id": "e181bad9-353a-4d34-88dc-f1d8079c1ff3",
 								"exec": [
 									""
 								],
@@ -1528,6 +1547,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/category/:id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/category/decisoes-extremas?title=Desafio POCUS2&artifactId=desafio-de-eletrocardiograma-image",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"category",
+								"decisoes-extremas"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Desafio POCUS2"
+								},
+								{
+									"key": "artifactId",
+									"value": "desafio-de-eletrocardiograma-image"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1541,7 +1588,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dce3f18a-9ee0-4103-bbd1-583e031102e9",
+								"id": "d168718f-d5e8-4b6d-b07f-103591574144",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1598,7 +1645,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "05548dfb-1e21-4b80-bf6b-b00a2c8fe689",
+								"id": "6fc8ba14-a08c-4f52-ae1a-85335e157ac0",
 								"exec": [
 									""
 								],
@@ -1628,7 +1675,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "592df749-fa5b-4564-84bb-56bbeff2e660",
+								"id": "04280a62-618e-42d8-a697-32bdf01d88ae",
 								"exec": [
 									""
 								],
@@ -1660,7 +1707,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2cf289af-4e53-40b5-a442-35a11e68a812",
+								"id": "084e18a6-2319-473c-9953-3cd872e84a1c",
 								"exec": [
 									""
 								],
@@ -1728,7 +1775,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3528171d-8ffc-409e-b9a3-96d1443c78d3",
+								"id": "2c6aed0d-503d-490c-b8f8-abe9a6ab33a4",
 								"exec": [
 									""
 								],
@@ -1788,7 +1835,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3d03a439-99d7-46a2-95bb-49bc78086521",
+								"id": "c268060d-9580-41e7-93b3-a2b44f262e42",
 								"exec": [
 									""
 								],
@@ -1875,7 +1922,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d5a31a63-3bcd-46c3-870b-6acdba5c1a5f",
+								"id": "9660ca71-0255-40fe-8ca8-34db70c070c3",
 								"exec": [
 									""
 								],
@@ -1959,7 +2006,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "acaa6f27-94d6-45ac-808d-423f35cdb2f3",
+				"id": "82563290-1ea3-4d58-a93c-a7886f66dc42",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1969,7 +2016,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "bf2b717e-9bf0-4a33-b28f-d3b22d76d241",
+				"id": "260c915e-e419-4ddd-b1c1-02c4eac99e3b",
 				"type": "text/javascript",
 				"exec": [
 					""
