@@ -8,6 +8,7 @@ const Env = use('Env')
 const Category = use('App/Models/v1/Category')
 const Case = use('App/Models/v1/Case')
 
+
 class CategoryController {
   async store ({ request, response }) {
     const trx = await Database.beginTransaction()
@@ -31,6 +32,36 @@ class CategoryController {
       console.log(e)
 
       return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+
+  async update ({ params, request, response }) {
+    try {
+      console.log(params.id)
+      const category = await Category.find(params.id)
+
+      if (category != null) {
+        category.title = request.input('title') || null
+
+        if (request.input('artifactId'))
+          category.artifact_id = request.input('artifactId')
+
+        // const artifactId = request.input('artifactId')
+        // let artifact = await Artifact.find(artifactId)
+        // await c.institution().associate(institution)
+        //
+        // const cv = new CaseVersion()
+        // cv.source = request.input('source')
+        // cv.id = await uuidv4()
+        // await c.versions().save(cv)
+
+        await category.save()
+        return response.json(category)
+      } else return response.status(500).json('category not found')
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e })
     }
   }
 
