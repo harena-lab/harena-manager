@@ -140,6 +140,23 @@ Route.group(() => {
 
 }).prefix('/api/v1/category').middleware('auth', 'is:author')
 
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /group
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+	Route.post( '',           'GroupController.store')
+	Route.post( 'link/users',	'GroupController.linkUsers')
+
+  // Route.get(  'list', 			'v1/CategoryController.listCategories')
+  // Route.get(  'cases', 			'v1/CategoryController.listCases')
+  // Route.put(  ':id',        'v1/CategoryController.update')
+
+}).prefix('/api/v1/group').middleware('auth')
+
 /*
 |----------------------------------------------------------------------------------------------
 |       api: v1
