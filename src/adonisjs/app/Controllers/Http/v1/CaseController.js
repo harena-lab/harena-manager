@@ -10,6 +10,7 @@ const User = use('App/Models/v1/User')
 const Case = use('App/Models/v1/Case')
 const CaseVersion = use('App/Models/v1/CaseVersion')
 const Institution = use('App/Models/v1/Institution')
+const Permission = use('App/Models/v1/Permission')
 
 const uuidv4 = require('uuid/v4')
 
@@ -58,12 +59,12 @@ class CaseController {
     }
   }
 
+
   /**  * Create/save a new case. */
   async store ({ request, auth, response }) {
-    try {
-      // let c = await Case.findBy('title', request.input('title'))
+    const trx = await Database.beginTransaction()
 
-      // if (c == null) {
+    try {
       const c = new Case()
       c.id = await uuidv4()
       c.title = request.input('title')
@@ -75,23 +76,32 @@ class CaseController {
       c.original_date = request.input('original_date')
       c.complexity = request.input('complexity')
 
-      const institutionAcronym = request.input('institution')
-      let institution = await Institution.findBy('acronym', institutionAcronym)
-      await c.institution().associate(institution)
+      c.author_grade = auth.user.grade
 
       const cv = new CaseVersion()
       cv.id = await uuidv4()
       cv.source = request.input('source')
+      await c.versions().save(cv, trx)
 
-      await c.versions().save(cv)
       await c.users().attach(auth.user.id, (row) => {
         row.permission = 'delete'
-      })
+      }, trx)
 
+      const permission = new Permission()
+      permission.id = await uuidv4()
+      permission.entity = request.input('permissionEntity')
+      permission.subject = request.input('permissionSubjectId')
+      permission.clearance = request.input('permissionClearance')
+      await c.permissions().save(permission, trx)
+
+      const institutionAcronym = request.input('institution')
+      let institution = await Institution.findBy('acronym', institutionAcronym)
+      await c.institution().associate(institution, trx)
+
+      trx.commit()
       c.versions = await c.versions().fetch()
       c.users = await c.users().fetch()
       return response.json(c)
-      // } else return response.status(500).json('title already exists')
     } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })

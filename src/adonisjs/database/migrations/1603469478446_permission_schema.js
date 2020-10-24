@@ -9,12 +9,14 @@ class PermissionSchema extends Schema {
       table.uuid('id')
       table.primary('id')
 
-      // all, institution, course, group, quest, user
-      table.string('scope')
-      // which institution, which course, which group etc...
-      table.string('filter')
-      // play, read, share, comment, edit
-      table.string('level')
+      // system, edition,  institution, group, private, user
+      table.string('entity')
+
+      // unicamp_id, jacinto, minho_id, primeira_turma, residencia_medica_id
+      table.string('subject')
+
+      // read, comment, share, edit, delete
+      table.string('clearance')
 
       table.uuid('case_id').references('id').inTable('cases').index('case_id')
 

@@ -16,6 +16,10 @@ class Case extends Model {
     return this.hasMany('App/Models/CaseArtifact')
   }
 
+  permissions () {
+    return this.hasMany('App/Models/v1/Permission')
+  }
+
   users () {
     return this.belongsToMany('App/Models/v1/User')
       .pivotTable('users_cases')

@@ -7,6 +7,7 @@
 const Database = use('Database')
 const Helpers = use('Helpers')
 
+const Case = use('App/Models/v1/Case')
 const User = use('App/Models/v1/User')
 const Institution = use('App/Models/v1/Institution')
 const Artifact = use('App/Models/v1/Artifact')
@@ -72,6 +73,7 @@ class UserController {
       user.email = request.input('email')
       user.password = request.input('password')
       user.login = request.input('login')
+      user.grade = request.input('grade')
 
       const request_institution = request.input('institution')
 
@@ -145,13 +147,42 @@ class UserController {
     }
   }
 
-  async list_cases ({ params, response, auth }) {
+  async listCases ({ request, response, auth }) {
+    try {
+      const user = await auth.user
+// console.log(user)
+      const clearance = request.input('clearance')
+
+      const result = await Database
+        .select([ 'cases.id', 'cases.title','description', 'users.username'])
+        // .select('*')
+        // .select('cases.id, cases.title, cases.description, cases.')
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.case_id')
+        .where('entity', 'university')
+        .where('subject', user.institution_id)
+        .where('clearance', clearance)
+        .leftJoin('users_cases', 'cases.id', 'users_cases.case_id')
+        .leftJoin('users', 'users.id', 'users_cases.user_id')
+        // No cenário do minho, todos os alunos são da mesma instituição,
+        // logo os casos em que o usuário é autor sao retornados nessa consulta.
+        // Porém pra aleḿ do minho sera preciso repensar se os casos em que o usuario é author
+        // devem (e como??) serão retornados
+      console.log(result)
+      return response.json(result)
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
+  async casesByInstitution ({ params, response, auth }) {
     try {
       const user = await auth.user
 
-      const cases = await user.cases().fetch()
+      let casesByInstitution = await Case.findBy('institution_id', user.institution_id)
 
-      return response.json(cases)
+      return response.json(casesByInstitution)
     } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })

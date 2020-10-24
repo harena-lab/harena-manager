@@ -342,7 +342,7 @@
 					"response": []
 				},
 				{
-					"name": "/user/cases",
+					"name": "/user/cases (wip)",
 					"event": [
 						{
 							"listen": "test",
@@ -371,7 +371,19 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
+							"formdata": [
+								{
+									"key": "clearance",
+									"value": "read",
+									"type": "text"
+								},
+								{
+									"key": "filterBy",
+									"value": "edit",
+									"type": "text",
+									"disabled": true
+								}
+							],
 							"options": {
 								"formdata": {}
 							}
@@ -420,6 +432,54 @@
 					"response": []
 				},
 				{
+					"name": "/user/cases_by_institution (to trash)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "745f06dc-cb08-4fd9-ae0a-feafaa8aad24",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"// pm.environment.set(\"case-id\", response.token);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/cases_by_institution",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"cases_by_institution"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/user",
 					"event": [
 						{
@@ -450,35 +510,33 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "adu",
+									"value": "edu",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "adu@email.com",
+									"value": "edu@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "adu",
+									"value": "edu",
 									"type": "text"
 								},
 								{
 									"key": "login",
-									"value": "adu",
+									"value": "edu",
 									"type": "text"
 								},
 								{
 									"key": "institution",
-									"value": "unicamp",
-									"type": "text",
-									"disabled": true
+									"value": "minho",
+									"type": "text"
 								},
 								{
-									"key": "course",
-									"value": "",
-									"type": "text",
-									"disabled": true
+									"key": "grade",
+									"value": "aluno",
+									"type": "text"
 								}
 							],
 							"options": {
@@ -596,54 +654,6 @@
 					"response": []
 				},
 				{
-					"name": "/cases",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "189705dd-20ce-4c7f-a13e-07015b75033b",
-								"exec": [
-									"var response = pm.response.json();",
-									"",
-									"// pm.environment.set(\"case-id\", response.token);",
-									"",
-									"pm.test(\"Status code is 200 or 201\", function () {",
-									"    ",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-									"    ",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"cases"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "/case",
 					"event": [
 						{
@@ -680,7 +690,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Mais um postman",
+									"value": "Caso final - minhoooo",
 									"type": "text"
 								},
 								{
@@ -725,7 +735,22 @@
 								},
 								{
 									"key": "institution",
-									"value": "uni",
+									"value": "minho",
+									"type": "text"
+								},
+								{
+									"key": "permissionEntity",
+									"value": "university",
+									"type": "text"
+								},
+								{
+									"key": "permissionSubjectId",
+									"value": "8575db0a-e0aa-434c-8ca4-29d7ded3937a",
+									"type": "text"
+								},
+								{
+									"key": "permissionClearance",
+									"value": "read",
 									"type": "text"
 								}
 							],
@@ -1374,6 +1399,52 @@
 			"name": "category",
 			"item": [
 				{
+					"name": "/category/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e181bad9-353a-4d34-88dc-f1d8079c1ff3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "categoryId",
+									"value": "decisoesExtremas",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/category/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"category",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/category",
 					"event": [
 						{
@@ -1478,52 +1549,6 @@
 					"response": []
 				},
 				{
-					"name": "/category/cases",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "e181bad9-353a-4d34-88dc-f1d8079c1ff3",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "categoryId",
-									"value": "decisoesExtremas",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/category/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"category",
-								"cases"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "/category/list",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1582,6 +1607,54 @@
 		{
 			"name": "admin",
 			"item": [
+				{
+					"name": "/admin/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "189705dd-20ce-4c7f-a13e-07015b75033b",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"// pm.environment.set(\"case-id\", response.token);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "/admin/users",
 					"event": [
@@ -1741,12 +1814,12 @@
 							"formdata": [
 								{
 									"key": "userId",
-									"value": "7d1c3323-3169-40d4-b000-4723cff87886",
+									"value": "781c4351-16d7-4b24-b214-bb9fdb3e75bf",
 									"type": "text"
 								},
 								{
 									"key": "roleId",
-									"value": "0c3ed16e-9ad2-46ff-85e2-8586a80df0eb",
+									"value": "41353296-c9ac-4365-83b6-4c9dbc845930",
 									"type": "text"
 								}
 							],
@@ -1989,6 +2062,147 @@
 				}
 			],
 			"description": "Services for administrate `harena`",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "group",
+			"item": [
+				{
+					"name": "/group/cases (wip)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f1ba4ab4-a437-4582-859e-854105e55048",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "groupId",
+									"value": "37b4159f-b2bf-4014-b5dc-655df6506311",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/group/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"group",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/group (wip)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40dce12b-947a-471e-8613-aa9cfb1b1d74",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Turma do Minho",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/group/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"group",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/group/link/user (wip)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "groupId",
+									"value": "37b4159f-b2bf-4014-b5dc-655df6506311",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "781c4351-16d7-4b24-b214-bb9fdb3e75bf",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/group/link/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"group",
+								"link",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
 			"protocolProfileBehavior": {}
 		}
 	],

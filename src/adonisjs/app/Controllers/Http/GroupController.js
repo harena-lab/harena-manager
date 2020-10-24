@@ -1,11 +1,13 @@
 'use strict'
 
 const Group = use('App/Models/Group')
+const User = use('App/Models/v1/User')
 
 const Database = use('Database')
 const uuidv4 = require('uuid/v4')
 
 class GroupController {
+
   async store ({ request, response }) {
     const trx = await Database.beginTransaction()
     try {
@@ -28,55 +30,39 @@ class GroupController {
   }
 
 
-  async linkUsers ({ request, auth, response }) {
-    const trx = await Database.beginTransaction()
-    // console.log(request.all())
+  async linkUser ({ request, auth, response }) {
     try {
-    //   const loggedUser = auth.user.id
-      const { usersId, groupId } = request.post()
-      console.log(usersId)
-    //
-    //   if (permission != 'read' && permission != 'share' && permission != 'write'){
-    //     return response.json('invalid permission')
-    //   }
-    //
-    //   if (loggedUser == userId) {
-    //     return response.status(500).json('cannot share a case with herself')
-    //   }
-    //
-    //   const user = await User.find(userId)
-    //
-    //   await user.cases().detach(null, trx)
-    //
-    //   if (permission == 'read'){
-    //     if (await user.checkRole('player') || await user.checkRole('author')){
-    //       await user.cases().attach(caseId, (row) => {
-    //         row.permission = permission
-    //       }, trx)
-    //     }else {
-    //       return response.status(500).json('target user must be an author or a player to be elegible for such permission')
-    //     }
-    //
-    //   }
-    //
-    //   if (permission == 'write' || permission == 'share'){
-    //     // Check if target user is an author
-    //     if (await user.checkRole('author')){
-    //
-    //       await user.cases().attach(caseId, (row) => {
-    //         row.permission = permission
-    //       }, trx)
-    //
-    //     } else {
-    //       return response.status(500).json('target user must be an author to be elegible for such permission')
-    //     }
-    //   }
-    //   trx.commit()
-      return response.json('user and case successfully linked')
+      const { userId, groupId } = request.post()
+
+      const user = await User.find(userId)
+
+      await user.groups().attach(groupId)
+
+      return response.json('user successfully added to the group')
     } catch (e) {
-      trx.rollback()
       console.log(e)
       return response.status(e.status).json({ message: e.toString() })
+    }
+  }
+
+
+  async listCases ({ request, response }) {
+    try {
+      const groupId = request.input('groupId')
+
+      const result = await Database
+        .select([ 'cases.id', 'cases.title','description', 'users.username'])
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.case_id')
+        .where('entity', 'group')
+        .where('subject', groupId)
+        .where('clearance', 'read')
+        .leftJoin('users_cases', 'cases.id', 'users_cases.case_id')
+        .leftJoin('users', 'users.id', 'users_cases.user_id')
+
+      return response.json(result)
+    } catch (e) {
+      console.log(e)
     }
   }
 }
