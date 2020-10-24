@@ -16,9 +16,13 @@ class PermissionSchema extends Schema {
       table.string('subject')
 
       // read, comment, share, edit, delete
-      table.string('clearance')
+      table.tinyint('clearance')
 
-      table.uuid('case_id').references('id').inTable('cases').index('case_id')
+      // cases, templates, quests,  artifacts
+      table.string('table')
+
+      // 'caseid111-111.sei-la', 'templates1323-xyz', 'quests_id',  'artifactsId'
+      table.uuid('table_id')
 
       table.timestamps()
     })

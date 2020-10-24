@@ -150,24 +150,18 @@ class UserController {
   async listCases ({ request, response, auth }) {
     try {
       const user = await auth.user
-      // console.log('----------------------------------')
-      // console.log(user)
+     
       const clearance = parseInt(request.input('clearance'))
-      // console.log(clearance)
-
+     
+    //  Return casem which the user is author AND cases which she have access permission
+    //  Atualmente retorn somente a permissões via institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
       const result = await Database
         .select([ 'cases.id', 'cases.title','cases.description',  'cases.author_grade', 'users.username'])
         .distinct('cases.id')
-        /*
-          WHERE cases.user_id = user.id OR (permission.entity='university'
-          AND persmission.subject=user.institution_id)
-        */
-        // .select('*')
-        // .select('cases.id, cases.title, cases.description, cases.')
         .from('cases')
-        .leftJoin('permissions', 'cases.id', 'permissions.case_id')
-        .join('users', 'users.id', 'cases.user_id')
-        .where('cases.user_id', user.id)
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users', 'users.id', 'cases.author_id')
+        .where('cases.author_id', user.id)
         .orWhere(function () {
           this
             .where('permissions.entity', 'institution')
@@ -175,10 +169,6 @@ class UserController {
             .where('permissions.clearance', '>=', clearance)
         })
 
-        // No cenário do minho, todos os alunos são da mesma instituição,
-        // logo os casos em que o usuário é autor sao retornados nessa consulta.
-        // Porém pra aleḿ do minho sera preciso repensar se os casos em que o usuario é author
-        // devem (e como??) serão retornados
       console.log(result)
       return response.json(result)
     } catch (e) {

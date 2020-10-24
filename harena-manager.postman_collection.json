@@ -374,7 +374,7 @@
 							"formdata": [
 								{
 									"key": "clearance",
-									"value": "read",
+									"value": "1",
 									"type": "text"
 								},
 								{
@@ -432,54 +432,6 @@
 					"response": []
 				},
 				{
-					"name": "/user/cases_by_institution (to trash)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "745f06dc-cb08-4fd9-ae0a-feafaa8aad24",
-								"exec": [
-									"var response = pm.response.json();",
-									"",
-									"// pm.environment.set(\"case-id\", response.token);",
-									"",
-									"pm.test(\"Status code is 200 or 201\", function () {",
-									"    ",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-									"    ",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/user/cases_by_institution",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"cases_by_institution"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "/user",
 					"event": [
 						{
@@ -510,22 +462,22 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "edu",
+									"value": "dudu",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "edu@email.com",
+									"value": "dudu@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "edu",
+									"value": "dudu",
 									"type": "text"
 								},
 								{
 									"key": "login",
-									"value": "edu",
+									"value": "dudu",
 									"type": "text"
 								},
 								{
@@ -535,7 +487,7 @@
 								},
 								{
 									"key": "grade",
-									"value": "aluno",
+									"value": "student",
 									"type": "text"
 								}
 							],
@@ -690,7 +642,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Caso final - minhoooo",
+									"value": "caso casual",
 									"type": "text"
 								},
 								{
@@ -736,21 +688,22 @@
 								{
 									"key": "institution",
 									"value": "minho",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "permissionEntity",
-									"value": "university",
+									"value": "institution",
 									"type": "text"
 								},
 								{
 									"key": "permissionSubjectId",
-									"value": "8575db0a-e0aa-434c-8ca4-29d7ded3937a",
+									"value": "3811351e-2dbc-49e5-ada8-e78335ac28ee",
 									"type": "text"
 								},
 								{
 									"key": "permissionClearance",
-									"value": "read",
+									"value": "1",
 									"type": "text"
 								}
 							],

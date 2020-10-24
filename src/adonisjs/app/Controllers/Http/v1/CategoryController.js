@@ -79,19 +79,12 @@ class CategoryController {
       const clearance = parseInt(request.input('clearance'))
       const categoryId = request.input('categoryId')
       const category = await Category.find(categoryId)
-      // console.log('-=============================================');
-      // console.log(category);
+
       const test = await Database
         .select([ 'cases.id', 'cases.title','cases.description',  'cases.author_grade', 'users.username'])
         .distinct('cases.id')
-        /*
-          WHERE cases.user_id = user.id OR (permission.entity='university'
-          AND persmission.subject=user.institution_id)
-        */
-        // .select('*')
-        // .select('cases.id, cases.title, cases.description, cases.')
         .from('cases')
-        .leftJoin('permissions', 'cases.id', 'permissions.case_id')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users', 'users.id', 'cases.user_id')
         .where('cases.category_id', category.id)
         .where(function(){
@@ -104,10 +97,6 @@ class CategoryController {
                 .where('permissions.clearance', '>=', clearance)
             })
         })
-
-
-        // .join('cases', 'users_cases.case_id', 'cases.id')
-
 
       return response.json(test)
     } catch (e) {
