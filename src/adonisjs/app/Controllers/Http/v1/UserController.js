@@ -150,20 +150,31 @@ class UserController {
   async listCases ({ request, response, auth }) {
     try {
       const user = await auth.user
-// console.log(user)
-      const clearance = request.input('clearance')
+      // console.log('----------------------------------')
+      // console.log(user)
+      const clearance = parseInt(request.input('clearance'))
+      // console.log(clearance)
 
       const result = await Database
-        .select([ 'cases.id', 'cases.title','description', 'users.username'])
+        .select([ 'cases.id', 'cases.title','cases.description',  'cases.author_grade', 'users.username'])
+        .distinct('cases.id')
+        /*
+          WHERE cases.user_id = user.id OR (permission.entity='university'
+          AND persmission.subject=user.institution_id)
+        */
         // .select('*')
         // .select('cases.id, cases.title, cases.description, cases.')
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.case_id')
-        .where('entity', 'university')
-        .where('subject', user.institution_id)
-        .where('clearance', clearance)
-        .leftJoin('users_cases', 'cases.id', 'users_cases.case_id')
-        .leftJoin('users', 'users.id', 'users_cases.user_id')
+        .join('users', 'users.id', 'cases.user_id')
+        .where('cases.user_id', user.id)
+        .orWhere(function () {
+          this
+            .where('permissions.entity', 'institution')
+            .where('permissions.subject', user.institution_id)
+            .where('permissions.clearance', '>=', clearance)
+        })
+
         // No cenário do minho, todos os alunos são da mesma instituição,
         // logo os casos em que o usuário é autor sao retornados nessa consulta.
         // Porém pra aleḿ do minho sera preciso repensar se os casos em que o usuario é author
