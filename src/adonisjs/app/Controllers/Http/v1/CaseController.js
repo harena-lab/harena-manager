@@ -77,30 +77,30 @@ class CaseController {
       c.complexity = request.input('complexity')
 
       c.author_grade = auth.user.grade
+      c.author_id = auth.user.id
 
       const cv = new CaseVersion()
       cv.id = await uuidv4()
       cv.source = request.input('source')
       await c.versions().save(cv, trx)
 
-      await c.users().attach(auth.user.id, (row) => {
-        row.permission = 'delete'
-      }, trx)
-
       const permission = new Permission()
       permission.id = await uuidv4()
       permission.entity = request.input('permissionEntity')
       permission.subject = request.input('permissionSubjectId')
       permission.clearance = request.input('permissionClearance')
-      await c.permissions().save(permission, trx)
+      permission.table = 'cases'
+      permission.table_id = c.id
 
-      const institutionAcronym = request.input('institution')
-      let institution = await Institution.findBy('acronym', institutionAcronym)
+      permission.save(trx)
+
+      let institution = await Institution.find(auth.user.institution_id)
       await c.institution().associate(institution, trx)
 
       trx.commit()
+
       c.versions = await c.versions().fetch()
-      c.users = await c.users().fetch()
+
       return response.json(c)
     } catch (e) {
       console.log(e)
