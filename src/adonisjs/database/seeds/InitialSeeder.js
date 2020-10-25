@@ -45,7 +45,7 @@ class UserSeeder {
         const user = await this.seed_default_users(trx)
 
         const institution = await this.seed_institution(user, trx)
-        console.log(institution)
+        // console.log(institution)
         await user.save(trx)
 
         // const c = await this.seed_default_case(user,institution, trx)
@@ -58,7 +58,7 @@ class UserSeeder {
         await this.seedCategories(user, trx)
 
 
-console.log(user.id)
+        // console.log(user.id)
 
         // await c.author().attach([user.id], trx)
 
