@@ -12,20 +12,12 @@ class User extends Model {
     return false
   }
 
-  cases () {
-    return this.belongsToMany('App/Models/v1/Case')
-      .pivotTable('users_cases')
-      .withPivot(['permission'])
-      .withTimestamps()
-  }
-
-  quests () {
-    return this
-      .belongsToMany('App/Models/v1/Quest')
-      .pivotTable('quests_users')
-      .withPivot(['permission'])
-      .withTimestamps()
-  }
+  // cases () {
+  //   return this.belongsToMany('App/Models/v1/Case')
+  //     .pivotTable('users_cases')
+  //     .withPivot(['permission'])
+  //     .withTimestamps()
+  // }
 
   groups () {
     return this

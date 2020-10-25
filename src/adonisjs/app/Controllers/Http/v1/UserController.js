@@ -136,6 +136,8 @@ class UserController {
     }
   }
 
+
+// @BROKEN
   async list_quests ({ request, response, auth }) {
     try {
       const user = await auth.user
@@ -152,9 +154,9 @@ class UserController {
       const user = await auth.user
 
       const clearance = parseInt(request.input('clearance'))
-    //  Atualmente retorn somente a permissões via institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
-    //  Return cases which the user is author AND cases which she have access permission
 
+    //  Atualmente retorna somente casos compartilhados com institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
+    //  Return cases which the user is author AND cases which she have access permissions
       const result = await Database
         .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
           'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
@@ -179,19 +181,8 @@ class UserController {
     }
   }
 
-  async casesByInstitution ({ params, response, auth }) {
-    try {
-      const user = await auth.user
 
-      let casesByInstitution = await Case.findBy('institution_id', user.institution_id)
-
-      return response.json(casesByInstitution)
-    } catch (e) {
-      console.log(e)
-      return response.status(500).json({ message: e.message })
-    }
-  }
-
+// @broken
   async list_cases_by_quests ({ params, response, auth }) {
     try {
       const user = await auth.user

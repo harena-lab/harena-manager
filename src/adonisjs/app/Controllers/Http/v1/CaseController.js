@@ -17,6 +17,7 @@ const uuidv4 = require('uuid/v4')
 /** * Resourceful controller for interacting with cases */
 class CaseController {
   /** Show a list of all cases */
+  // Protected by middleware 'is:admin'
   async index ({ request, response }) {
     try {
       const cases = await Case.all()
@@ -103,6 +104,7 @@ class CaseController {
 
       return response.json(c)
     } catch (e) {
+      trx.rollback()
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
@@ -110,6 +112,8 @@ class CaseController {
 
   /** * Update case details. PUT or PATCH case/:id */
   async update ({ params, request, response }) {
+    const trx = await Database.beginTransaction()
+
     try {
       const c = await Case.find(params.id)
 
@@ -123,19 +127,35 @@ class CaseController {
         c.original_date = request.input('originalDate')|| null
         c.complexity = request.input('complexity')|| null
 
-        // const institutionAcronym = request.input('institution')
-        // let institution = await Institution.findBy('acronym', institutionAcronym)
-        // await c.institution().associate(institution)
-
         const cv = new CaseVersion()
         cv.source = request.input('source')
         cv.id = await uuidv4()
         await c.versions().save(cv)
 
+        const institutionAcronym = request.input('institution')
+        if (institutionAcronym != null){
+          let institution = await Institution.findBy('acronym', institutionAcronym)
+          await c.institution().associate(institution)
+        }
+
+        const permission = new Permission()
+        permission.id = await uuidv4()
+        permission.entity = request.input('permissionEntity')
+        permission.subject = request.input('permissionSubjectId')
+        permission.clearance = request.input('permissionClearance')
+        permission.table = 'cases'
+        permission.table_id = c.id
+        permission.save(trx)
+
         await c.save()
+
+        trx.commit()
+
         return response.json(c)
+
       } else return response.status(500).json('case not found')
     } catch (e) {
+      trx.rollback()
       console.log(e)
       return response.status(500).json({ message: e })
     }
@@ -176,57 +196,6 @@ class CaseController {
     }
   }
 
-
-  async linkUser ({ request, auth, response }) {
-    const trx = await Database.beginTransaction()
-
-    try {
-      const loggedUser = auth.user.id
-      const { userId, caseId, permission } = request.post()
-
-      if (permission != 'read' && permission != 'share' && permission != 'write'){
-        return response.json('invalid permission')
-      }
-
-      if (loggedUser == userId) {
-        return response.status(500).json('cannot share a case with herself')
-      }
-
-      const user = await User.find(userId)
-
-      await user.cases().detach(null, trx)
-
-      if (permission == 'read'){
-        if (await user.checkRole('player') || await user.checkRole('author')){
-          await user.cases().attach(caseId, (row) => {
-            row.permission = permission
-          }, trx)
-        }else {
-          return response.status(500).json('target user must be an author or a player to be elegible for such permission')
-        }
-
-      }
-
-      if (permission == 'write' || permission == 'share'){
-        // Check if target user is an author
-        if (await user.checkRole('author')){
-
-          await user.cases().attach(caseId, (row) => {
-            row.permission = permission
-          }, trx)
-
-        } else {
-          return response.status(500).json('target user must be an author to be elegible for such permission')
-        }
-      }
-      trx.commit()
-      return response.json('user and case successfully linked')
-    } catch (e) {
-      trx.rollback()
-      console.log(e)
-      return response.status(e.status).json({ message: e.toString() })
-    }
-  }
 }
 
 module.exports = CaseController
