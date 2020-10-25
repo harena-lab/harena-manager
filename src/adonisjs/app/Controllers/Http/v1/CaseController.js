@@ -123,9 +123,9 @@ class CaseController {
         c.original_date = request.input('originalDate')|| null
         c.complexity = request.input('complexity')|| null
 
-        const institutionAcronym = request.input('institution')
-        let institution = await Institution.findBy('acronym', institutionAcronym)
-        await c.institution().associate(institution)
+        // const institutionAcronym = request.input('institution')
+        // let institution = await Institution.findBy('acronym', institutionAcronym)
+        // await c.institution().associate(institution)
 
         const cv = new CaseVersion()
         cv.source = request.input('source')

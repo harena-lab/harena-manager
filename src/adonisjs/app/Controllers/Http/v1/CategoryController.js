@@ -85,11 +85,11 @@ class CategoryController {
         .distinct('cases.id')
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .join('users', 'users.id', 'cases.user_id')
+        .join('users', 'users.id', 'cases.author_id')
         .where('cases.category_id', category.id)
         .where(function(){
           this
-            .where('cases.user_id', user.id)
+            .where('cases.author_id', user.id)
             .orWhere(function () {
               this
                 .where('permissions.entity', 'institution')
