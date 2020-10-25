@@ -155,23 +155,27 @@ class UserController {
 
       const clearance = parseInt(request.input('clearance'))
 
+      var published = (request.input('published') == '1')
+
     //  Atualmente retorna somente casos compartilhados com institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
     //  Return cases which the user is author AND cases which she have access permissions
       const result = await Database
         .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
           'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
-          'cases.author_grade', 'users.username'])
+          'cases.author_grade', 'cases.published', 'users.username'])
         .distinct('cases.id')
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users', 'users.id', 'cases.author_id')
         .where('cases.author_id', user.id)
+        .where('cases.published', published )
         .orWhere(function () {
           this
             .where('permissions.entity', 'institution')
             .where('permissions.subject', user.institution_id)
             .where('permissions.clearance', '>=', clearance)
         })
+
 
       console.log(result)
       return response.json(result)

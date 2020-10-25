@@ -76,6 +76,7 @@ class CaseController {
       c.keywords = request.input('keywords')
       c.original_date = request.input('original_date')
       c.complexity = request.input('complexity')
+      c.published = request.input('published')
 
       c.author_grade = auth.user.grade
       c.author_id = auth.user.id
