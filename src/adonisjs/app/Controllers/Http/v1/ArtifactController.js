@@ -27,6 +27,7 @@ class ArtifactController {
   async store ({ request, auth, response }) {
     try {
       const file = request.file('file', this.validationOptions)
+
       const questId = request.input('questId')
       const caseId = request.input('caseId', null)
 
@@ -99,6 +100,7 @@ class ArtifactController {
   }
 
 
+// Missing check permission
   async destroy ({ params, response }) {
     const trx = await Database.beginTransaction()
 
