@@ -86,9 +86,9 @@ class CaseController {
 
       const permission = new Permission()
       permission.id = await uuidv4()
-      permission.entity = request.input('permissionEntity')
-      permission.subject = request.input('permissionSubjectId')
-      permission.clearance = request.input('permissionClearance')
+      permission.entity = request.input('permissionEntity') || 'institution'
+      permission.subject = request.input('permissionSubjectId') || auth.user.institution_id
+      permission.clearance = request.input('permissionClearance') || '1'
       permission.table = 'cases'
       permission.table_id = c.id
 
