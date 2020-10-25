@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "776d4bc5-e2e7-4d0e-a725-efb0e3ebf478",
+		"_postman_id": "5cb3e4a3-351f-4715-ae83-501115912a54",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,7 +17,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "71176650-4a91-4a88-be70-eafe434159a2",
+										"id": "991d4448-5e29-4531-84cd-348bb58cf90a",
 										"exec": [
 											"var response = pm.response.json();",
 											"pm.environment.set(\"user-token\", response.token);",
@@ -78,7 +78,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7baf2193-1fa7-4b2d-86fd-98a6735dd0c4",
+										"id": "70ec4ae6-d3a7-4630-8167-685795925637",
 										"exec": [
 											""
 										],
@@ -125,7 +125,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "daf55783-2287-4a44-8075-d2fd9fde74d9",
+								"id": "025d8438-f2d5-43cd-bad4-2e3de683943e",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -135,7 +135,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b9104b51-3352-4c64-ba41-bd7404e8fb2c",
+								"id": "c1496d0d-9a83-456a-988b-e766fa8db99d",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -147,12 +147,12 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "/auth/login session",
+					"name": "/auth/login (session)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "e3e1e6bb-8122-4160-a7a7-aa0c1887718b",
+								"id": "d769f095-ffaa-4882-a451-423ba34b4095",
 								"exec": [
 									"var response = pm.response.json();",
 									"console.log(response)",
@@ -172,12 +172,12 @@
 							"formdata": [
 								{
 									"key": "email",
-									"value": "",
+									"value": "jacinto@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "",
+									"value": "jacinto",
 									"type": "text"
 								}
 							],
@@ -199,12 +199,12 @@
 					"response": []
 				},
 				{
-					"name": "/auth/logout session",
+					"name": "/auth/logout (session)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "d83becb6-fe93-482d-ab3b-acbcb561ae74",
+								"id": "afbfed8c-6d3e-4cbd-ae6f-423c308d7dfc",
 								"exec": [
 									"pm.environment.set(\"user-token\", 'revoked');"
 								],
@@ -232,7 +232,7 @@
 					"response": []
 				},
 				{
-					"name": "/auth/checkToken session",
+					"name": "/auth/checkToken (session)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -257,65 +257,12 @@
 			"name": "user",
 			"item": [
 				{
-					"name": "/cases_by_quest",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "69f56421-278a-40b6-956d-db953a5484e6",
-								"exec": [
-									"var response = pm.response.json();",
-									"",
-									"",
-									"pm.test(\"Status code is 200 or 201\", function () {",
-									"    ",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-									"    ",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "quest_id",
-									"value": "aa9da08a-1bd4-4a57-b4bf-076a889d6046",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/user/cases_by_quest",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"cases_by_quest"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "/user/:id",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "4054afa4-4923-4eea-a47c-1e87cc2850d7",
+								"id": "d1364c49-a450-4491-bd3a-de651e7188f2",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -347,7 +294,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8d597d86-03d0-484e-b9f3-b234bc823f7b",
+								"id": "12c4bf6e-f464-49ba-acc5-ed4aafd4ae33",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -402,12 +349,12 @@
 					"response": []
 				},
 				{
-					"name": "/user/quests",
+					"name": "/user/quests (broken)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "61555704-7f4e-4319-869b-e512f0d1e94d",
+								"id": "d08c0268-88dc-4592-9416-f4cb15e5d7a0",
 								"exec": [
 									""
 								],
@@ -432,12 +379,65 @@
 					"response": []
 				},
 				{
+					"name": "/cases_by_quest (broken)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f7a1321-4786-4ac4-b524-9073788c8c4b",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "quest_id",
+									"value": "aa9da08a-1bd4-4a57-b4bf-076a889d6046",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/cases_by_quest",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"cases_by_quest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/user",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "2611fb6e-ccb9-429b-a4de-a189e6448b17",
+								"id": "b85b40cc-c535-4ddb-80d1-65879f0e68b0",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -552,7 +552,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9c2845e4-1cd9-456f-b6f2-b5fd036ba735",
+								"id": "abd566c9-5809-4581-b79f-42a1a24da45d",
 								"exec": [
 									"pm.test(\"Status code is 200 or 204\", function () {",
 									"    ",
@@ -611,7 +611,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b84a4629-ed23-48d1-956c-4304ae6befb0",
+								"id": "d5247cf3-0c31-4943-a4a1-a287fb5397d2",
 								"exec": [
 									"var response = pm.response.json();",
 									"console.log(response.id)",
@@ -698,7 +698,8 @@
 								},
 								{
 									"key": "permissionSubjectId",
-									"value": "3811351e-2dbc-49e5-ada8-e78335ac28ee",
+									"value": "317def91-a484-4b55-958e-4e51c7f5a916",
+									"description": "can be id of any table, which is defined by permissionEntity param",
 									"type": "text"
 								},
 								{
@@ -724,76 +725,7 @@
 					"response": []
 				},
 				{
-					"name": "/case/link/user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "53670015-9beb-42ee-bf14-2fd68ec94863",
-								"exec": [
-									"var response = pm.response.json();",
-									"",
-									"// pm.environment.set(\"case-uuid\", response.uuid);",
-									"",
-									"pm.test(\"Status code is 200 or 201\", function () {",
-									"    ",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
-									"    ",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "caseId",
-									"value": "ad129f0e-0b4b-41bf-a18e-b2f6d2205f2d",
-									"type": "text"
-								},
-								{
-									"key": "userId",
-									"value": "a4f64e13-1ef6-4c25-9b11-be8dc9778408",
-									"type": "text"
-								},
-								{
-									"key": "permission",
-									"value": "read",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/case/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"link",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/case/:id",
+					"name": "/case/:id (update to PUT)",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -864,359 +796,29 @@
 					"response": []
 				},
 				{
-					"name": "/case",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/case/{{case-id}}",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"{{case-id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "player",
-			"item": [
-				{
-					"name": "/player/quests",
+					"name": "/case?:id",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "28483bff-1e74-4b64-906d-bca62af74a90",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/player/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"player",
-								"quests"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/player/quest/cases",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ca417be0-64db-4768-b9db-43f1c439e198",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "questId",
-									"value": "ea8dbc12-e879-46e6-b5d7-e67ad88e841b",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/player/quest/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"player",
-								"quest",
-								"cases"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "author",
-			"item": [
-				{
-					"name": "/author/quests",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "391ff749-55b3-4572-b24c-698139847118",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/author/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"author",
-								"quests"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/author/quest/cases",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ae975475-b512-4449-9a8d-2b5fdb3847c6",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "questId",
-									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/author/quest/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"author",
-								"quest",
-								"cases"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "artifact",
-			"item": [
-				{
-					"name": "/artifact",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "multipart/form-data",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/home/hmatt/Desktop/Jacinto-images/pocus-challenge.png"
-								},
-								{
-									"key": "caseId",
-									"value": "8fac1e26-5824-4b19-9d7b-5091e10856b3",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "questId",
-									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "id",
-									"value": "desafio-pocus-image",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/artifact",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"artifact"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/artifact",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/artifact/2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"artifact",
-								"2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "a1af4370-2876-43f8-808d-fcd4725b36fd",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "a11a62dc-4953-4471-add4-fd7f6794b9f3",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "quest",
-			"item": [
-				{
-					"name": "/quest/users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "99fe21c1-7e1c-4cc3-bb62-50d1cfae6b3c",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "questId",
-									"value": "5885fb0d-ce64-421f-9b9e-1ea2cef3143f",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/users",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/quest",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "fc6d4c18-707a-4781-93ba-8780c01ab8c3",
+								"id": "78b510e6-adbc-4084-a781-00c0e120cb8b",
 								"exec": [
 									"var response = pm.response.json();",
+									"console.log(response.id)",
+									"pm.environment.set(\"case-id\", response.id);",
 									"",
-									"pm.environment.set(\"quest-id\", response.id);"
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -1230,17 +832,69 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "default-quest",
+									"value": "caso casual2",
 									"type": "text"
 								},
 								{
-									"key": "color",
-									"value": "#505050",
+									"key": "source",
+									"value": "# Presentation (quiz, end)\n\nWrite here the **stem** of your quiz.\n\n> Write here the **lead-in** of your quiz.\n+ Answer-key <-> Presentation References \"Feedback for Answer-key\" >((right))\n+ Distractor 1 <-> \"Feedback for Distractor 1\"\n+ Distractor 2 <-> \"Feedback for Distractor 2\"\n+ Distractor 3 <-> \"Feedback for Distractor 3\"\n\n* Next Case -> Case.Next ((right))?\n\n# Note (note)\n\n**You answered:** ^Previous.input1^.\n\n\n\n^parameter^\n\n# Presentation References (note)\n\n**You answered:** ^Previous.input1^.\n\n\n\n^parameter^\n\nReferences <-> References\n\n# References (note_references)\n\n* [Enter References](References)\n\n___ Flow ___\n\n* Sequential:\n  * _sequential_\n\n___ Data ___\n\n* theme: simple(red)\n* namespaces:\n  * evidence: http://purl.org/versum/evidence/\n* templates:\n  * categories:\n    * detailed: simple/knot/description",
 									"type": "text"
 								},
 								{
-									"key": "artifact_id",
-									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
+									"key": "description",
+									"value": "test description",
+									"type": "text"
+								},
+								{
+									"key": "language",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "domain",
+									"value": "test domain",
+									"type": "text"
+								},
+								{
+									"key": "specialty",
+									"value": "test specialty ",
+									"type": "text"
+								},
+								{
+									"key": "keywords",
+									"value": "keyword4;kw6",
+									"type": "text"
+								},
+								{
+									"key": "originalDate",
+									"value": "1987-09-13",
+									"type": "text"
+								},
+								{
+									"key": "complexity",
+									"value": "Undergraduate",
+									"type": "text"
+								},
+								{
+									"key": "institution",
+									"value": "minho",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "permissionEntity",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "permissionSubjectId",
+									"value": "e672bd5c-1412-46f2-b674-561d1eb914e5",
+									"description": "can be id of any table, which is defined by permissionEntity param",
+									"type": "text"
+								},
+								{
+									"key": "permissionClearance",
+									"value": "4",
 									"type": "text"
 								}
 							],
@@ -1249,97 +903,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{api-base-url}}/quest/",
+							"raw": "{{api-base-url}}/case/{{case-id}}",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
-								"quest",
-								""
+								"case",
+								"{{case-id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/quest/link/user",
+					"name": "/case/:id",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "userId",
-									"value": "5a0064c7-fc6a-4629-b33a-bd835d8efd64",
-									"type": "text"
-								},
-								{
-									"key": "questId",
-									"value": "c458b50b-3cae-4df8-a9eb-b2bed98ae640",
-									"type": "text"
-								},
-								{
-									"key": "roleSlug",
-									"value": "player",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
 						"url": {
-							"raw": "{{api-base-url}}/quest/link/user",
+							"raw": "{{api-base-url}}/case/4b317e97-8b04-4f7b-995c-0dafb5c6e95c",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
-								"quest",
-								"link",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/quest/link/case",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "questId",
-									"value": "775bd2ac-68b5-45a9-82c6-b796894114c7",
-									"type": "text"
-								},
-								{
-									"key": "caseId",
-									"value": "00f42405-743c-4a9d-8bb4-52b41f7df9ac",
-									"type": "text"
-								},
-								{
-									"key": "orderPosition",
-									"value": "0",
-									"type": "text"
-								}
-							],
-							"options": {
-								"formdata": {}
-							}
-						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/link/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"link",
-								"case"
+								"case",
+								"4b317e97-8b04-4f7b-995c-0dafb5c6e95c"
 							]
 						}
 					},
@@ -1357,7 +945,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e181bad9-353a-4d34-88dc-f1d8079c1ff3",
+								"id": "044676ee-f127-4025-a648-809b90281551",
 								"exec": [
 									""
 								],
@@ -1403,7 +991,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fac99f61-2280-4647-9674-bcbd0af05bd2",
+								"id": "0f970d95-e8d3-40bf-9732-d1f80b57ef5e",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1558,6 +1146,514 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "artifact",
+			"item": [
+				{
+					"name": "/artifact",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/hmatt/Desktop/Jacinto-images/pocus-challenge.png"
+								},
+								{
+									"key": "caseId",
+									"value": "8fac1e26-5824-4b19-9d7b-5091e10856b3",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "questId",
+									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "desafio-pocus-image",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/artifact",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"artifact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/artifact (missing check permissions)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/artifact/2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"artifact",
+								"2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ccd62b65-6666-4819-b321-5415554e07e3",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "571e27c0-bd7b-4fc9-a441-fdc61a7eb12a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "player (not tested)",
+			"item": [
+				{
+					"name": "/player/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c5e09c82-6f01-4c0c-9120-29e86cde5cc9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/player/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"player",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/player/quest/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c29ee0b0-d979-4d12-a5eb-87abd6e72430",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "ea8dbc12-e879-46e6-b5d7-e67ad88e841b",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/player/quest/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"player",
+								"quest",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "60463d47-ab27-4ae1-a05d-d6932c08c882",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "cf51bf0a-20a4-454d-be84-34c592b5900d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "author (not tested)",
+			"item": [
+				{
+					"name": "/author/quests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b8107155-ec9a-4503-a34b-eef0c3bc0fcc",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/author/quests",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/author/quest/cases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cbbb9286-0b0a-474c-a4b5-41002a5cdb95",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/author/quest/cases",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"author",
+								"quest",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ac098c7e-4332-43ce-bd6b-7fa92a865f68",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ad1e47e5-49c5-4bb8-8bb4-0306e956b625",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "quest (unstable)",
+			"item": [
+				{
+					"name": "/quest/users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7dd4479e-3e8c-41e8-b5ca-092234faa06a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "5885fb0d-ce64-421f-9b9e-1ea2cef3143f",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/users",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest (broken)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26e390fb-2f7e-4bc8-9c66-1ac226a63f56",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "default-quest",
+									"type": "text"
+								},
+								{
+									"key": "color",
+									"value": "#505050",
+									"type": "text"
+								},
+								{
+									"key": "artifact_id",
+									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest/link/user (not tested)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "5a0064c7-fc6a-4629-b33a-bd835d8efd64",
+									"type": "text"
+								},
+								{
+									"key": "questId",
+									"value": "c458b50b-3cae-4df8-a9eb-b2bed98ae640",
+									"type": "text"
+								},
+								{
+									"key": "roleSlug",
+									"value": "player",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/link/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"link",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest/link/case (not tested)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "questId",
+									"value": "775bd2ac-68b5-45a9-82c6-b796894114c7",
+									"type": "text"
+								},
+								{
+									"key": "caseId",
+									"value": "00f42405-743c-4a9d-8bb4-52b41f7df9ac",
+									"type": "text"
+								},
+								{
+									"key": "orderPosition",
+									"value": "0",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/link/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"link",
+								"case"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "admin",
 			"item": [
 				{
@@ -1566,7 +1662,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "189705dd-20ce-4c7f-a13e-07015b75033b",
+								"id": "e9e927dd-a062-4c2c-a53a-426febd03445",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1614,7 +1710,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d168718f-d5e8-4b6d-b07f-103591574144",
+								"id": "3b93f744-c5b9-4657-a42c-4ab5e002a7a6",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1671,7 +1767,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6fc8ba14-a08c-4f52-ae1a-85335e157ac0",
+								"id": "111bda7d-bf1c-4f25-b77c-74c8ceee2a03",
 								"exec": [
 									""
 								],
@@ -1701,7 +1797,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "04280a62-618e-42d8-a697-32bdf01d88ae",
+								"id": "ed683b4a-66ee-4311-bbe8-c3c8132f6029",
 								"exec": [
 									""
 								],
@@ -1733,7 +1829,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "084e18a6-2319-473c-9953-3cd872e84a1c",
+								"id": "3eab3634-1332-4d35-b870-065289ac4907",
 								"exec": [
 									""
 								],
@@ -1801,7 +1897,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2c6aed0d-503d-490c-b8f8-abe9a6ab33a4",
+								"id": "0ab72452-d863-4c6f-8b1e-3edad8c9e203",
 								"exec": [
 									""
 								],
@@ -1861,7 +1957,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c268060d-9580-41e7-93b3-a2b44f262e42",
+								"id": "8cb10d35-29b4-4bf9-9509-d0d0e999c967",
 								"exec": [
 									""
 								],
@@ -1948,7 +2044,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9660ca71-0255-40fe-8ca8-34db70c070c3",
+								"id": "db01cfae-e3cd-4356-99ec-6368d13819f3",
 								"exec": [
 									""
 								],
@@ -2026,7 +2122,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f1ba4ab4-a437-4582-859e-854105e55048",
+								"id": "17834a20-07bf-4b9d-8395-627e092c5494",
 								"exec": [
 									""
 								],
@@ -2072,7 +2168,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "40dce12b-947a-471e-8613-aa9cfb1b1d74",
+								"id": "8f8151f7-4a69-4ab3-b3dc-6389ad72c862",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -2173,7 +2269,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "82563290-1ea3-4d58-a93c-a7886f66dc42",
+				"id": "3927cd99-79b1-4c21-aafe-6f36290aaa96",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2183,7 +2279,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "260c915e-e419-4ddd-b1c1-02c4eac99e3b",
+				"id": "9522c5ea-7ebe-42be-92b2-ac52bf674283",
 				"type": "text/javascript",
 				"exec": [
 					""
