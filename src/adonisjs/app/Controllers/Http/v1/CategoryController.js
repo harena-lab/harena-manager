@@ -80,13 +80,18 @@ class CategoryController {
       const categoryId = request.input('categoryId')
       const category = await Category.find(categoryId)
 
+      var publishedFilter = parseInt(request.input('published')) || 0
+
       const test = await Database
-        .select([ 'cases.id', 'cases.title','cases.description',  'cases.author_grade', 'users.username'])
+        .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+          'cases.author_grade', 'cases.published', 'users.username'])
         .distinct('cases.id')
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users', 'users.id', 'cases.author_id')
         .where('cases.category_id', category.id)
+        .where('cases.published', '>=', publishedFilter)
         .where(function(){
           this
             .where('cases.author_id', user.id)

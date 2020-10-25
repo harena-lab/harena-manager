@@ -964,7 +964,17 @@
 							"formdata": [
 								{
 									"key": "categoryId",
-									"value": "decisoesExtremas",
+									"value": "quiz-da-emergencia",
+									"type": "text"
+								},
+								{
+									"key": "clearance",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "published",
+									"value": "1",
 									"type": "text"
 								}
 							],
