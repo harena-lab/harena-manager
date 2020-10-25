@@ -150,13 +150,15 @@ class UserController {
   async listCases ({ request, response, auth }) {
     try {
       const user = await auth.user
-     
+
       const clearance = parseInt(request.input('clearance'))
-     
-    //  Return casem which the user is author AND cases which she have access permission
     //  Atualmente retorn somente a permissões via institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
+    //  Return cases which the user is author AND cases which she have access permission
+
       const result = await Database
-        .select([ 'cases.id', 'cases.title','cases.description',  'cases.author_grade', 'users.username'])
+        .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+          'cases.author_grade', 'users.username'])
         .distinct('cases.id')
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')

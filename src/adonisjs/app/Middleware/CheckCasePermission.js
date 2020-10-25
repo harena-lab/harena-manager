@@ -27,37 +27,54 @@ class CheckPermissionForGivenCase {
 
       if (properties[0] == 'read') {
         queryResult = await Database
-          .from('users_cases')
-          .where('users_cases.user_id', loggedUserId)
-          .where('users_cases.case_id', caseId)
-          .whereIn('users_cases.permission', ['read', 'share', 'write', 'delete'])
+          .from('cases')
+          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+          .join('users', 'users.id', 'cases.author_id')
+          .where('cases.author_id', auth.user.id)
+          .orWhere(function () {
+            this
+              .where('permissions.entity', 'institution')
+              .where('permissions.subject', auth.user.institution_id)
+              .where('permissions.clearance', '>=', 1)
+          })
           .count()
       }
 
       if (properties[0] == 'share') {
         queryResult = await Database
-          .from('users_cases')
-          .where('users_cases.user_id', loggedUserId)
-          .where('users_cases.case_id', caseId)
-          .whereIn('users_cases.permission', ['share', 'write', 'delete'])
-          .count()
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users', 'users.id', 'cases.author_id')
+        .where('cases.author_id', auth.user.id)
+        .orWhere(function () {
+          this
+            .where('permissions.entity', 'institution')
+            .where('permissions.subject', auth.user.institution_id)
+            .where('permissions.clearance', '>=', 2)
+        })
+        .count()
       }
 
       if (properties[0] == 'write') {
         queryResult = await Database
-          .from('users_cases')
-          .where('users_cases.user_id', loggedUserId)
-          .where('users_cases.case_id', caseId)
-          .whereIn('users_cases.permission', ['write', 'delete'])
-          .count()
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users', 'users.id', 'cases.author_id')
+        .where('cases.author_id', auth.user.id)
+        .orWhere(function () {
+          this
+            .where('permissions.entity', 'institution')
+            .where('permissions.subject', auth.user.institution_id)
+            .where('permissions.clearance', '>=', 4)
+        })
+        .count()
       }
 
       if (properties[0] == 'delete') {
         queryResult = await Database
-          .from('users_cases')
-          .where('users_cases.user_id', loggedUserId)
-          .where('users_cases.case_id', caseId)
-          .whereIn('users_cases.permission', ['delete'])
+          .from('cases')
+          .join('users', 'users.id', 'cases.author_id')
+          .where('cases.author_id', auth.user.id)
           .count()
       }
 
