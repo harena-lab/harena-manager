@@ -76,7 +76,7 @@ class CaseController {
       c.keywords = request.input('keywords')
       c.original_date = request.input('original_date')
       c.complexity = request.input('complexity')
-      c.published = request.input('published')
+      c.published = 0
 
       c.author_grade = auth.user.grade
       c.author_id = auth.user.id
@@ -127,6 +127,7 @@ class CaseController {
         c.keywords = request.input('keywords')|| null
         c.original_date = request.input('originalDate')|| null
         c.complexity = request.input('complexity')|| null
+        c.published = request.input('published')|| 0
 
         const cv = new CaseVersion()
         cv.source = request.input('source')
