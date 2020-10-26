@@ -84,6 +84,8 @@ class User extends Model {
          * it to the database.
          */
     this.addHook('beforeCreate', 'UserHook.hashPassword')
+    this.addHook('beforeUpdate', 'UserHook.hashPassword')
+
   }
 
   // Attach role and permissions of a user
