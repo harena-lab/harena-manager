@@ -8,8 +8,9 @@ class AuthController {
   async checkToken ({ request, auth, response }) {
     try {
       // console.log('====Checking token...')
-      await auth.check()
-      response.json('token valid')
+      if(await auth.check()){
+        response.json({token:'token valid', username: auth.user.username})
+      }
       // console.log('====Token valid')
     } catch (error) {
       // console.log('====Token invalid')
@@ -17,7 +18,7 @@ class AuthController {
   }
 
   async login ({ request, auth, response, session }) {
-    Logger.info('login attempt via v2/auth/login (SESSION)')
+    Logger.info('login attempt via v1/auth/login (SESSION)')
     const { email, password } = request.all()
     try {
       if (await auth.remember(true).attempt(email, password)) {
