@@ -288,7 +288,12 @@ console.log('c2--------------'+c)
         title: 'Decisões Extremas',
         template: 'decisoes-extremas',
         artifactId: 'decisoes-extremas-image',
-        url: 'imgs/decisoes-extremas.png' }
+        url: 'imgs/decisoes-extremas.png' },
+      { id: 'desafio-pocus',
+        title: 'Desafio POCUS',
+        template: 'desafio-pocus',
+        artifactId: 'desafio-pocus-image',
+        url: 'imgs/desafio-pocus.png' }
     ]
 
     for (var c of categories) {
