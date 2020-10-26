@@ -24,6 +24,7 @@ Route.group(() => {
     Route.get(   'quests',  	            'v1/UserController.list_quests').middleware(['auth'])
     Route.get(   'cases_by_quest',        'v1/UserController.list_cases_by_quests').middleware(['auth'])
 
+    Route.put(   'password',              'v1/UserController.updatePassword').middleware(['auth'])
     Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
     Route.put(   ':id',                   'v1/UserController.update').middleware(['auth'])
     Route.delete(':id',                   'v1/UserController.destroy').middleware(['auth'])

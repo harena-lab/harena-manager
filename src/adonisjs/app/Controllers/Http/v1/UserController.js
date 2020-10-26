@@ -6,6 +6,7 @@
 
 const Database = use('Database')
 const Helpers = use('Helpers')
+const Hash = use('Hash')
 
 const Case = use('App/Models/v1/Case')
 const User = use('App/Models/v1/User')
@@ -114,9 +115,43 @@ class UserController {
         await storeduser.merge(newUser)
         await storeduser.save()
         return response.json(storeduser)
-      } else return response.status(500).json('user not found')
+      } else{
+        console.log('save user error');
+        return response.status(500).json('user not found')
+      }
     } catch (e) {
       return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+  async updatePassword ({ params, request, response, auth }) {
+    try {
+      // console.log('updating password....')
+      const oldPassword = request.input('oldPassword')
+      const newPassword = request.input('newPassword')
+      // console.log('-======================',auth.user.id)
+      const user = await User.find(auth.user.id)
+
+      if (user != null && await Hash.verify(oldPassword, auth.user.password)  && newPassword != oldPassword) {
+        user.password = newPassword
+        await user.save()
+        console.log('Password changed successfully.')
+        return response.json('Password changed successfully.')
+      } else if(!await Hash.verify(oldPassword, auth.user.password)){
+        console.log('Old password incorrect.')
+        return response.json('Old password incorrect.')
+      }else if(newPassword === oldPassword){
+        console.log('Passwords must be different.')
+        return response.json('Passwords must be different.')
+      }else {
+        console.log('Update password error, try again.')
+        return response.json('Update password error, try again.')
+
+      }
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
+    } finally{
+      console.log('finally ended password update');
     }
   }
 
