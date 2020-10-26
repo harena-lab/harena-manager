@@ -18,21 +18,22 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-    Route.post(	 '',		    'v1/UserController.store')
+    Route.post(	 '',		                  'v1/UserController.store')
 
-    Route.get(	 'cases',           'v1/UserController.list_cases').middleware(['auth'])
-    Route.get(   'quests',  	    'v1/UserController.list_quests').middleware(['auth'])
-    Route.get(   'cases_by_quest',  'v1/UserController.list_cases_by_quests').middleware(['auth'])
+    Route.get(	 'cases',                 'v1/UserController.listCases').middleware(['auth'])
+    Route.get(   'quests',  	            'v1/UserController.list_quests').middleware(['auth'])
+    Route.get(   'cases_by_quest',        'v1/UserController.list_cases_by_quests').middleware(['auth'])
 
-    Route.get(   ':id',             'v1/UserController.show').middleware(['auth'])
-    Route.put(   ':id',             'v1/UserController.update').middleware(['auth'])
-    Route.delete(':id',             'v1/UserController.destroy').middleware(['auth'])
+    Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
+    Route.put(   ':id',                   'v1/UserController.update').middleware(['auth'])
+    Route.delete(':id',                   'v1/UserController.destroy').middleware(['auth'])
 }).prefix('/api/v1/user')
 
 
 /*
 |----------------------------------------------------------------------------------------------
-|       api: v1
+|  Authentication via Sessions to harena-space calls
+|  api: v1
 |  resource: /auth
 |----------------------------------------------------------------------------------------------
 */
@@ -45,14 +46,14 @@ Route.group(() => {
 
 /*
 |----------------------------------------------------------------------------------------------
-|       api: v2
+|  Authentication via JWT to api calls
+|  api: v2
 |  resource: /auth
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
   Route.post('login',		'AuthController.login')
 	Route.post('logout', 	'AuthController.logout').middleware(['auth'])
-
 }).prefix('/api/v2/auth')
 
 
@@ -63,12 +64,11 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.get(   ':id',         'v1/CaseController.show').middleware(['case_permission:read'])
 	Route.post(  '',	          'v1/CaseController.store')
 	Route.put(   ':id',         'v1/CaseController.update').middleware(['case_permission:write'])
-	Route.post(  'link/user',   'v1/CaseController.linkUser').middleware(['case_permission:share'])
 	Route.delete(':id',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
+Route.get(   '/api/v1/case/:id',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
 
 
 /*
@@ -78,7 +78,9 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.post(  '', 'v1/ArtifactController.store')
+	Route.post(  '',            'v1/ArtifactController.store')
+  Route.delete(':id',         'v1/ArtifactController.destroy')
+
 }).prefix('/api/v1/artifact/').middleware(['auth', 'is:author'])
 
 
@@ -133,8 +135,26 @@ Route.group(() => {
 	Route.post( 'link/case',	'v1/CategoryController.linkCase')
   Route.get(  'list', 			'v1/CategoryController.listCategories')
   Route.get(  'cases', 			'v1/CategoryController.listCases')
+  Route.put(  ':id',        'v1/CategoryController.update')
 
 }).prefix('/api/v1/category').middleware('auth', 'is:author')
+
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /group
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+	Route.post( '',           'GroupController.store')
+	Route.post( 'link/user',	'GroupController.linkUser')
+  Route.get(  'cases', 			'GroupController.listCases')
+
+  // Route.get(  'list', 			'v1/CategoryController.listCategories')
+  // Route.put(  ':id',        'v1/CategoryController.update')
+
+}).prefix('/api/v1/group').middleware('auth')
 
 /*
 |----------------------------------------------------------------------------------------------

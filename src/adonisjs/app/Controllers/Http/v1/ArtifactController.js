@@ -1,7 +1,9 @@
 'use strict'
 
+const Database = use('Database')
 const Helpers = use('Helpers')
 const Env = use('Env')
+
 const uuid4 = require('uuid/v4')
 
 const Artifact = use('App/Models/v1/Artifact')
@@ -25,6 +27,7 @@ class ArtifactController {
   async store ({ request, auth, response }) {
     try {
       const file = request.file('file', this.validationOptions)
+
       const questId = request.input('questId')
       const caseId = request.input('caseId', null)
 
@@ -93,6 +96,31 @@ class ArtifactController {
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+
+// Missing check permission
+  async destroy ({ params, response }) {
+    const trx = await Database.beginTransaction()
+
+    try {
+      const artifact = await Artifact.findBy('id', params.id)
+
+      if (artifact != null) {
+        await artifact.delete(trx)
+
+        trx.commit()
+        return response.json('artifact successfully deleted')
+      } else {
+        trx.rollback()
+        return response.status(500).json('artifact not found')
+      }
+    } catch (e) {
+      console.log(e)
+      trx.rollback()
+
+      return response.status(500).json({ message: e })
     }
   }
 }

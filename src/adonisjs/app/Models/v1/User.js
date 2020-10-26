@@ -12,18 +12,17 @@ class User extends Model {
     return false
   }
 
-  cases () {
-    return this.belongsToMany('App/Models/v1/Case')
-      .pivotTable('users_cases')
-      .withPivot(['permission'])
-      .withTimestamps()
-  }
+  // cases () {
+  //   return this.belongsToMany('App/Models/v1/Case')
+  //     .pivotTable('users_cases')
+  //     .withPivot(['permission'])
+  //     .withTimestamps()
+  // }
 
-  quests () {
+  groups () {
     return this
-      .belongsToMany('App/Models/v1/Quest')
-      .pivotTable('quests_users')
-      .withPivot(['permission'])
+      .belongsToMany('App/Models/Group')
+      .pivotTable('users_groups')
       .withTimestamps()
   }
 

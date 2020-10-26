@@ -43,23 +43,29 @@ class UserSeeder {
       if (jacinto == null) {
 
         const user = await this.seed_default_users(trx)
+
         const institution = await this.seed_institution(user, trx)
+        // console.log(institution)
+        await user.save(trx)
 
-        const c = await this.seed_default_case(institution, trx)
+        // const c = await this.seed_default_case(user,institution, trx)
 
-        await this.seed_artifact(user, c, trx)
+        // c.author_id = user.id
+
+        // await this.seed_artifact_case(user, c, trx)
+        await this.seed_artifact(user, trx)
+
         await this.seedCategories(user, trx)
 
 
-        await user.save(trx)
+        // console.log(user.id)
 
-        await c.users().attach([user.id], (row) => {
-          row.permission = 'delete'
-        }, trx)
+        // await c.author().attach([user.id], trx)
 
         const roles = await this.seed_roles(trx)
 
-        const quest = await this.seedQuest(user, trx)
+        // broken. Need fix
+        // const quest = await this.seedQuest(user, trx)
 
         await trx.commit()
 
@@ -67,9 +73,9 @@ class UserSeeder {
 
         await user.roles().attach([roles[0].id, roles[1].id, roles[2].id], trx)
 
-        await quest.cases().attach([c.id], (row) => {
-          row.order_position = 0
-        }, trx)
+        // await quest.cases().attach([c.id], (row) => {
+        //   row.order_position = 0
+        // }, trx)
 
         await trx.commit()
       } else {
@@ -122,6 +128,7 @@ class UserSeeder {
       user.login = 'jacinto'
       user.email = 'jacinto@email.com'
       user.password = 'jacinto'
+      user.grade = 'professor'
 
       user.id = await uuidv4()
 
@@ -131,8 +138,9 @@ class UserSeeder {
     }
   }
 
-  async seed_default_case (institution, trx) {
+  async seed_default_case (user, institution, trx) {
     try {
+
       const c = new Case()
       c.title = 'default-case'
       c.description = 'Case for tests'
@@ -142,25 +150,53 @@ class UserSeeder {
       c.keywords = 'keyword1; keyword2'
       c.complexity = 'undergraduate'
       c.id = await uuidv4()
+      console.log('kosdkoskdoskdoksd'+user.id)
+      c.author_id = user.id
 
       const cv = new CaseVersion()
       cv.source = fs.readFileSync(Helpers.resourcesPath('case.md'), 'utf8')
       cv.id = await uuidv4()
+      // cv.case_id = c.id
+      console.log('c1--------------'+c)
+console.log('user---------------'+user)
 
-      await c.versions().save(cv, trx)
+console.log(cv)
+      await c.versions().save([cv.id], trx)
+      console.log('salvoooooooooooooooooooooooooooooooooooooooooooooooou version')
       await c.institution().associate(institution, trx)
-
+console.log('c2--------------'+c)
       return c
     } catch (e) {
       console.log(e)
     }
   }
 
-  async seed_artifact (user, c, trx) {
+
+  async seed_artifact (user, trx) {
+    try {
+      const artifact_id = 'default-quest-image'
+      const fileName = artifact_id + '.png'
+      const fs_path = Helpers.publicPath('/resources/artifacts/')
+
+      const artifact = new Artifact()
+      artifact.id = artifact_id
+      artifact.relative_path = ARTIFACTS_DIR + fileName
+
+      await Drive.copy(Helpers.resourcesPath('imgs/default-quest.png'), fs_path + fileName)
+
+      await user.artifacts().save(artifact, trx)
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+
+  async seed_artifact_case (user, c, trx) {
     try {
       const artifact_id = await uuidv4()
       const fileName = artifact_id + '.png'
-
+      console.log('------------------------------' + c)
       const fs_path = Helpers.publicPath('/resources/artifacts/cases/') + c.id + '/'
 
       const case_relative_path = ARTIFACTS_DIR + 'cases/' + c.id + '/'
@@ -196,6 +232,8 @@ class UserSeeder {
     return roles
   }
 
+
+  // broken. Need fix
   async seedQuest(user, trx){
     const quest = new Quest()
     quest.id = 'default-quest'
@@ -250,7 +288,12 @@ class UserSeeder {
         title: 'Decisões Extremas',
         template: 'decisoes-extremas',
         artifactId: 'decisoes-extremas-image',
-        url: 'imgs/decisoes-extremas.png' }
+        url: 'imgs/decisoes-extremas.png' },
+      { id: 'desafio-pocus',
+        title: 'Desafio POCUS',
+        template: 'desafio-pocus',
+        artifactId: 'desafio-pocus-image',
+        url: 'imgs/desafio-pocus.png' }
     ]
 
     for (var c of categories) {
@@ -270,6 +313,8 @@ class UserSeeder {
       await category.artifact().associate(artifact, trx)
       await user.artifacts().save(artifact, trx)
       await category.save(trx)
+
+
     }
   }
 }

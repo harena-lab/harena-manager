@@ -17,26 +17,20 @@ class AuthController {
   }
 
   async login ({ request, auth, response, session }) {
-    console.log('v2/session')
     Logger.info('login attempt via v2/auth/login (SESSION)')
     const { email, password } = request.all()
     try {
       if (await auth.remember(true).attempt(email, password)) {
-        console.log('------------------------------- attempt')
-        // console.log(session.all())
-
         const user = await User.findBy('email', email)
 
-        console.log(session.all())
         return response.json(user)
       }
     } catch (e) {
       if (e.code === 'E_CANNOT_LOGIN') {
         try {
-          console.log('=============== Another was session found, logging out old session')
+          // console.log('=============== Another was session found, logging out old session')
           await auth.logout()
           if (await auth.remember(true).attempt(email, password)) {
-            console.log('=============== login in to current session')
             const user = await User.findBy('email', email)
             return response.json(user)
           }
@@ -44,7 +38,6 @@ class AuthController {
           console.log(e)
         }
       }
-      console.log(e)
       return response.status(e.status).json({ message: e.message })
     }
   }

@@ -16,11 +16,12 @@ class Case extends Model {
     return this.hasMany('App/Models/CaseArtifact')
   }
 
-  users () {
-    return this.belongsToMany('App/Models/v1/User')
-      .pivotTable('users_cases')
-      .withPivot(['permission'])
-      .withTimestamps()
+  permissions () {
+    return this.hasMany('App/Models/v1/Permission')
+  }
+
+  author () {
+    return this.belongsTo('App/Models/v1/User')
   }
 
   quests () {

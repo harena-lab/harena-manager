@@ -7,6 +7,7 @@
 const Database = use('Database')
 const Helpers = use('Helpers')
 
+const Case = use('App/Models/v1/Case')
 const User = use('App/Models/v1/User')
 const Institution = use('App/Models/v1/Institution')
 const Artifact = use('App/Models/v1/Artifact')
@@ -72,6 +73,7 @@ class UserController {
       user.email = request.input('email')
       user.password = request.input('password')
       user.login = request.input('login')
+      user.grade = request.input('grade')
 
       const request_institution = request.input('institution')
 
@@ -134,6 +136,8 @@ class UserController {
     }
   }
 
+
+// @BROKEN
   async list_quests ({ request, response, auth }) {
     try {
       const user = await auth.user
@@ -145,19 +149,50 @@ class UserController {
     }
   }
 
-  async list_cases ({ params, response, auth }) {
+  async listCases ({ request, response, auth }) {
     try {
       const user = await auth.user
 
-      const cases = await user.cases().fetch()
+      const clearance = parseInt(request.input('clearance'))
 
-      return response.json(cases)
+      var publishedFilter = parseInt(request.input('published')) || 0
+
+      request.input('published') != null
+    //  Atualmente retorna somente casos compartilhados com institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
+    //  Return cases which the user is author AND cases which she have access permissions
+        const result = await Database
+          .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+            'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+            'cases.author_grade', 'cases.published', 'users.username'])
+          .distinct('cases.id')
+          .from('cases')
+          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+          .join('users', 'users.id', 'cases.author_id')
+          .where('cases.published', '>=', publishedFilter)
+          .where(function(){
+            this
+              .where('cases.author_id', user.id)
+              .orWhere(function () {
+                this
+                  .where('permissions.entity', 'institution')
+                  .where('permissions.subject', user.institution_id)
+                  .where('permissions.clearance', '>=', clearance)
+              })
+          })
+
+
+
+
+      console.log(result)
+      return response.json(result)
     } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
   }
 
+
+// @broken
   async list_cases_by_quests ({ params, response, auth }) {
     try {
       const user = await auth.user

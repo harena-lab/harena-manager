@@ -8,6 +8,7 @@ const Env = use('Env')
 const Category = use('App/Models/v1/Category')
 const Case = use('App/Models/v1/Case')
 
+
 class CategoryController {
   async store ({ request, response }) {
     const trx = await Database.beginTransaction()
@@ -35,6 +36,27 @@ class CategoryController {
   }
 
 
+  async update ({ params, request, response }) {
+    try {
+      const category = await Category.find(params.id)
+
+      if (category != null) {
+        category.title = request.input('title') || null
+
+      if (request.input('artifactId')){
+        category.artifact_id = request.input('artifactId')
+      }
+
+        await category.save()
+        return response.json(category)
+      } else return response.status(500).json('category not found')
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e })
+    }
+  }
+
+
   async linkCase ({ request, response }) {
     try {
       const { categoryId, caseId } = request.post()
@@ -54,15 +76,32 @@ class CategoryController {
   async listCases ({ request, response, auth }) {
     try {
       const user = await auth.user
+      const clearance = parseInt(request.input('clearance'))
       const categoryId = request.input('categoryId')
       const category = await Category.find(categoryId)
-      const test = await Database
-        .select('*')
-        .from('users_cases')
-        .where('user_id', user.id)
-        .where('cases.category_id', category.id)
-        .leftJoin('cases', 'users_cases.case_id', 'cases.id')
 
+      var publishedFilter = parseInt(request.input('published')) || 0
+
+      const test = await Database
+        .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+          'cases.author_grade', 'cases.published', 'users.username'])
+        .distinct('cases.id')
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users', 'users.id', 'cases.author_id')
+        .where('cases.category_id', category.id)
+        .where('cases.published', '>=', publishedFilter)
+        .where(function(){
+          this
+            .where('cases.author_id', user.id)
+            .orWhere(function () {
+              this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+                .where('permissions.clearance', '>=', clearance)
+            })
+        })
 
       return response.json(test)
     } catch (e) {
