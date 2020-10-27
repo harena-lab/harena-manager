@@ -24,7 +24,7 @@ class AuthController {
       if (await auth.remember(true).attempt(email, password)) {
         const user = await User.findBy('email', email)
 
-        return response.json(user)
+        return response.json({user: user, response: 'Login successful'})
       }
     } catch (e) {
       if (e.code === 'E_CANNOT_LOGIN') {
@@ -38,6 +38,9 @@ class AuthController {
         } catch (e) {
           console.log(e)
         }
+      }else if(e.code === 'E_PASSWORD_MISMATCH' || e.code === 'E_USER_NOT_FOUND'){
+
+        return response.status(200).json({response: 'Email or password incorrect'})
       }
       return response.status(e.status).json({ message: e.message })
     }

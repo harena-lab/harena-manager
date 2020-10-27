@@ -84,7 +84,7 @@ class User extends Model {
          * it to the database.
          */
     this.addHook('beforeCreate', 'UserHook.hashPassword')
-    this.addHook('beforeUpdate', 'UserHook.hashPassword')
+    this.addHook('beforeSave', 'UserHook.hashPassword')
 
   }
 

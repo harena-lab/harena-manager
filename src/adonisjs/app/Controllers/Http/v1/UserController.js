@@ -107,14 +107,19 @@ class UserController {
    */
   async update ({ params, request, response, auth }) {
     try {
-      const newUser = request.all()
+      const user = await User.find(params.id)
 
-      const storeduser = await User.find(params.id)
+      const updatedUser = {
+          username : request.input('username') || user.username,
+          email : request.input('email') || user.email,
+          login : request.input('login') || user.login,
+          grade : request.input('grade') || user.grade
+      }
 
-      if (storeduser != null) {
-        await storeduser.merge(newUser)
-        await storeduser.save()
-        return response.json(storeduser)
+      if (user != null) {
+        await user.merge(updatedUser)
+        await user.save()
+        return response.json(user)
       } else{
         console.log('save user error');
         return response.status(500).json('user not found')
