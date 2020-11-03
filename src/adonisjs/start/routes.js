@@ -26,7 +26,7 @@ Route.group(() => {
 
     Route.put(   'password',              'v1/UserController.updatePassword').middleware(['auth'])
     Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
-    Route.put(   ':id',                   'v1/UserController.update').middleware(['auth'])
+    Route.put(   '',                   'v1/UserController.update').middleware(['auth'])
     Route.delete(':id',                   'v1/UserController.destroy').middleware(['auth'])
 }).prefix('/api/v1/user')
 
@@ -182,6 +182,9 @@ Route.group(() => {
 	Route.post(  'institution',       			'v1/InstitutionController.store')
 
 	Route.post(  'revoke_tokens',     			'v1/AdminController.revoke_tokens')
+
+  Route.put(  'user/:id',        'v1/AdminController.updateUser')
+
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 
 

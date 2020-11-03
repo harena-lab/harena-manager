@@ -556,7 +556,7 @@
 					"response": []
 				},
 				{
-					"name": "/user/:id",
+					"name": "/user",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -565,29 +565,42 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "username",
-									"type": "text"
+									"value": "edu",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "email",
-									"value": "email@example",
-									"type": "text"
+									"value": "edu@email.com",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "login",
-									"value": "login",
+									"value": "jacinta",
 									"type": "text"
+								},
+								{
+									"key": "grade",
+									"value": "teste1111",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "jacintomaster",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{api-base-url}}/user/{{user-id}}",
+							"raw": "{{api-base-url}}/user",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
-								"user",
-								"{{user-id}}"
+								"user"
 							]
 						}
 					},
@@ -2082,6 +2095,72 @@
 							"path": [
 								"admin",
 								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/user/:id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "edu",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "login",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "grade",
+									"value": "test",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "institution_id",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "course_id",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/user/75131920-cd37-441a-a86e-a2c538d33d64",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"75131920-cd37-441a-a86e-a2c538d33d64"
 							]
 						}
 					},

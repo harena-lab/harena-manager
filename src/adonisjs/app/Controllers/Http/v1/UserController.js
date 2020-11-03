@@ -107,7 +107,7 @@ class UserController {
    */
   async update ({ params, request, response, auth }) {
     try {
-      const user = await User.find(params.id)
+      const user = await User.find(auth.user.id)
 
       const updatedUser = {
           username : request.input('username') || user.username,

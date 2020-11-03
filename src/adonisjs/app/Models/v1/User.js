@@ -83,7 +83,6 @@ class User extends Model {
          * A hook to hash the user password before saving
          * it to the database.
          */
-    this.addHook('beforeCreate', 'UserHook.hashPassword')
     this.addHook('beforeSave', 'UserHook.hashPassword')
 
   }
