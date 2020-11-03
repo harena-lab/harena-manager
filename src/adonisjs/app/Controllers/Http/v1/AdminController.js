@@ -34,6 +34,35 @@ class AdminController {
     }
   }
 
+  async updateUser ({ params, request, response, auth }) {
+    try {
+      console.log('============')
+      const user = await User.find(params.id)
+
+      const newUser = {
+          username : request.input('username') || user.username,
+          email : request.input('email') || user.email,
+          login : request.input('login') || user.login,
+          grade : request.input('grade') || user.grade,
+          password : request.input('password') || user.password,
+          institution_id: request.input('institution_id') || user.institution_id,
+          course_id:  request.input('course_id') || user.course_id
+      }
+
+
+      if (user != null) {
+        await user.merge(newUser)
+        await user.save()
+        return response.json(user)
+      } else{
+        console.log('save user error');
+        return response.status(500).json('user not found')
+      }
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
   async linkRoleUser ({ request, response }) {
     try {
       const { userId, roleId } = request.post()
