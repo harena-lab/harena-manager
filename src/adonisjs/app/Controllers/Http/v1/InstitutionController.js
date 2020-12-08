@@ -22,6 +22,22 @@ class InstitutionController {
       return response.status(500).json({ message: e.message })
     	}
   }
+
+  async listInstitutions ({ request, response }) {
+    try {
+      const institutions = await Institution
+        .query()
+        .where('acronym', '!=', 'uni')
+        .fetch()
+
+
+      return response.json(institutions)
+      } catch (e) {
+          console.log(e)
+      return response.status(500).json({ message: e.message })
+      }
+  }
+
 }
 
 module.exports = InstitutionController
