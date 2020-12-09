@@ -20,14 +20,14 @@ const Env = use('Env')
 
 class UserController {
   /**
-   * Show a list of all users.
-   * GET users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+  * Show a list of all users.
+  * GET users
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  * @param {View} ctx.view
+  */
   async index ({ request, response, view, auth }) {
     try {
       const users = await User.all()
@@ -38,14 +38,14 @@ class UserController {
   }
 
   /**
-   * Display a single user.
-   * GET users/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+  * Display a single user.
+  * GET users/:id
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  * @param {View} ctx.view
+  */
   async show ({ params, request, response, view }) {
     try {
       const user = await User.find(params.id)
@@ -58,13 +58,13 @@ class UserController {
   }
 
   /**
-   * Create/save a new user.
-   * POST users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
+  * Create/save a new user.
+  * POST users
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  */
   async store ({ request, auth, response }) {
     try {
       const user = new User()
@@ -97,23 +97,23 @@ class UserController {
   }
 
   /**
-   * Update user details.
-   * PUT or PATCH users/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
+  * Update user details.
+  * PUT or PATCH users/:id
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
 
-   */
+  */
   async update ({ params, request, response, auth }) {
     try {
       const user = await User.find(auth.user.id)
 
       const updatedUser = {
-          username : request.input('username') || user.username,
-          email : request.input('email') || user.email,
-          login : request.input('login') || user.login,
-          grade : request.input('grade') || user.grade
+        username : request.input('username') || user.username,
+        email : request.input('email') || user.email,
+        login : request.input('login') || user.login,
+        grade : request.input('grade') || user.grade
       }
 
       if (user != null) {
@@ -161,7 +161,7 @@ class UserController {
   }
 
   /** Delete a user with id.
-   * DELETE user/:id */
+  * DELETE user/:id */
   async destroy ({ params, response, auth }) {
     try {
       const user = await User.find(params.id)
@@ -177,7 +177,7 @@ class UserController {
   }
 
 
-// @BROKEN
+  // @BROKEN
   async list_quests ({ request, response, auth }) {
     try {
       const user = await auth.user
@@ -197,30 +197,66 @@ class UserController {
 
       var publishedFilter = parseInt(request.input('published')) || 0
 
+      const institutionFilter = request.input('fInstitution') || `%`
+      const userTypeFilter = request.input('fUserType') || `%`
+      console.log('============')
+      console.log(institutionFilter)
+      console.log(userTypeFilter)
+
       request.input('published') != null
-    //  Atualmente retorna somente casos compartilhados com institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
-    //  Return cases which the user is author AND cases which she have access permissions
-        const result = await Database
-          .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
-            'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
-            'cases.author_grade', 'cases.published', 'users.username'])
-          .distinct('cases.id')
-          .from('cases')
-          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-          .join('users', 'users.id', 'cases.author_id')
-          .where('cases.published', '>=', publishedFilter)
-          .where(function(){
-            this
-              .where('cases.author_id', user.id)
-              .orWhere(function () {
-                this
-                  .where('permissions.entity', 'institution')
-                  .where('permissions.subject', user.institution_id)
-                  .where('permissions.clearance', '>=', clearance)
-              })
-          })
+      // request.input('fInstitution') != null
+      // request.input('fUserType') != null
+      //  Atualmente retorna somente casos compartilhados com institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
+      //  Return cases which the user is author AND cases which she have access permissions
+      // const result = await Database
+      // .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+      // 'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+      // 'cases.author_grade', 'cases.published', 'users.username',
+      // 'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+      // 'institutions.country AS institution_country', 'cases.created_at'])
+      // .distinct('cases.id')
+      // .from('cases')
+      // .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+      // .join('users', 'users.id', 'cases.author_id')
+      // .join('institutions', 'users.institution_id', 'institutions.id')
+      // .where('cases.published', '>=', publishedFilter)
+      // .where(function(){
+      //   this
+      //   .where('cases.author_id', user.id)
+      //   .orWhere(function () {
+      //     this
+      //     .where('permissions.entity', 'institution')
+      //     .where('permissions.subject', user.institution_id)
+      //     .where('permissions.clearance', '>=', clearance)
+      //   })
+      // })
+      // .orderBy('cases.created_at', 'desc')
+      //
 
-
+      const result = await Database
+      .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+      'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+      'cases.author_grade', 'cases.published', 'users.username',
+      'institutions.title AS institution', 'institutions.acronym AS institution_acronym', 'institutions.country AS institution_country', 'cases.created_at'])
+      .distinct('cases.id')
+      .from('cases')
+      .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+      .join('users', 'users.id', 'cases.author_id')
+      .join('institutions', 'users.institution_id', 'institutions.id')
+      .where('cases.published', '>=', publishedFilter)
+      .where('cases.institution_id', 'like', institutionFilter)
+      .where('cases.author_grade', 'like', userTypeFilter)
+      .where(function(){
+        this
+        .where('cases.author_id', user.id)
+        .orWhere(function () {
+          this
+          .where('permissions.entity', 'institution')
+          .where('permissions.subject', user.institution_id)
+          .where('permissions.clearance', '>=', clearance)
+        })
+      })
+      .orderBy('cases.created_at', 'desc')
 
 
       console.log(result)
@@ -232,16 +268,16 @@ class UserController {
   }
 
 
-// @broken
+  // @broken
   async list_cases_by_quests ({ params, response, auth }) {
     try {
       const user = await auth.user
 
       Database
-        .select('*')
-        .from('quests_users')
-        .where('user_id', user.id)
-        .leftJoin('cases', 'quests.case_id', 'cases.id')
+      .select('*')
+      .from('quests_users')
+      .where('user_id', user.id)
+      .leftJoin('cases', 'quests.case_id', 'cases.id')
 
       const quests = await user.quests().fetch()
 
@@ -257,11 +293,11 @@ class UserController {
       const user = await auth.user
 
       const resultQuest = await Database
-        .select('*')
-        .from('quests_users')
-        .where('user_id', user.id)
-        .whereIn('permission', ['write', 'share', 'delete'])
-        .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
+      .select('*')
+      .from('quests_users')
+      .where('user_id', user.id)
+      .whereIn('permission', ['write', 'share', 'delete'])
+      .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
       const base_url = Env.getOrFail('APP_URL')
       const quests = []
@@ -291,11 +327,11 @@ class UserController {
       const user = await auth.user
 
       const resultQuest = await Database
-        .select('*')
-        .from('quests_users')
-        .where('user_id', user.id)
-        .where('permission', 'read')
-        .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
+      .select('*')
+      .from('quests_users')
+      .where('user_id', user.id)
+      .where('permission', 'read')
+      .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
 
       const base_url = Env.getOrFail('APP_URL')
       const quests = []
