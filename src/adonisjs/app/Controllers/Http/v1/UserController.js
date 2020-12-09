@@ -204,40 +204,13 @@ class UserController {
       console.log(userTypeFilter)
 
       request.input('published') != null
-      // request.input('fInstitution') != null
-      // request.input('fUserType') != null
-      //  Atualmente retorna somente casos compartilhados com institution, é preciso aumentar a sql pra comportar outros escopos: grupos, only me, system, etc...
-      //  Return cases which the user is author AND cases which she have access permissions
-      // const result = await Database
-      // .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
-      // 'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
-      // 'cases.author_grade', 'cases.published', 'users.username',
-      // 'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
-      // 'institutions.country AS institution_country', 'cases.created_at'])
-      // .distinct('cases.id')
-      // .from('cases')
-      // .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-      // .join('users', 'users.id', 'cases.author_id')
-      // .join('institutions', 'users.institution_id', 'institutions.id')
-      // .where('cases.published', '>=', publishedFilter)
-      // .where(function(){
-      //   this
-      //   .where('cases.author_id', user.id)
-      //   .orWhere(function () {
-      //     this
-      //     .where('permissions.entity', 'institution')
-      //     .where('permissions.subject', user.institution_id)
-      //     .where('permissions.clearance', '>=', clearance)
-      //   })
-      // })
-      // .orderBy('cases.created_at', 'desc')
-      //
 
       const result = await Database
       .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
       'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
       'cases.author_grade', 'cases.published', 'users.username',
-      'institutions.title AS institution', 'institutions.acronym AS institution_acronym', 'institutions.country AS institution_country', 'cases.created_at'])
+      'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+      'institutions.country AS institution_country', 'cases.created_at'])
       .distinct('cases.id')
       .from('cases')
       .leftJoin('permissions', 'cases.id', 'permissions.table_id')
