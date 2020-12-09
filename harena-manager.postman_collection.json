@@ -382,6 +382,18 @@
 									"value": "\n",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "fInstitution",
+									"value": "c5562bfd-9a94-40f0-b08a-3627e3e417e0",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fUserType",
+									"value": "aluno",
+									"type": "text",
+									"disabled": true
 								}
 							],
 							"options": {
@@ -592,7 +604,10 @@
 									"type": "text",
 									"disabled": true
 								}
-							]
+							],
+							"options": {
+								"formdata": {}
+							}
 						},
 						"url": {
 							"raw": "{{api-base-url}}/user",
@@ -1647,6 +1662,29 @@
 									"key": "title",
 									"value": "Desafio Pocus"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "institution",
+			"item": [
+				{
+					"name": "/institutions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/institutions",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"institutions"
 							]
 						}
 					},
