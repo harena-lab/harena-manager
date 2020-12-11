@@ -206,17 +206,17 @@ class CaseController {
       const subject = request.input('subject')
       const clearance = request.input('clearance')
       const table_id = request.input('table_id').split(',')
-      console.log(entity)
-      console.log(subject)
-      console.log(clearance)
-      console.log(table_id)
+      // console.log(entity)
+      // console.log(subject)
+      // console.log(clearance)
+      // console.log(table_id)
 
       for (let c in table_id){
-        console.log('============ case for')
+        // console.log('============ case for')
         console.log(table_id[c])
         if(await Case.findBy('id', table_id[c])){
-          console.log('================================================ case added')
-          console.log(table_id[c])
+          // console.log('================================================ case added')
+          // console.log(table_id[c])
           let permission = new Permission()
           permission.id = await uuidv4()
           permission.entity = entity
