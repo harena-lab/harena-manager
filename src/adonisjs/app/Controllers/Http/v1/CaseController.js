@@ -198,6 +198,46 @@ class CaseController {
     }
   }
 
+  async share ({params, request, response}){
+    const trx = await Database.beginTransaction()
+
+    try {
+      const entity = request.input('entity')
+      const subject = request.input('subject')
+      const clearance = request.input('clearance')
+      const table_id = request.input('table_id').split(',')
+      console.log(entity)
+      console.log(subject)
+      console.log(clearance)
+      console.log(table_id)
+
+      for (let c in table_id){
+        console.log('============ case for')
+        console.log(table_id[c])
+        if(await Case.findBy('id', table_id[c])){
+          console.log('================================================ case added')
+          console.log(table_id[c])
+          let permission = new Permission()
+          permission.id = await uuidv4()
+          permission.entity = entity
+          permission.subject = subject
+          permission.clearance = clearance
+          permission.table = 'cases'
+          permission.table_id = table_id[c]
+          await permission.save(trx)
+        }else return response.json('Could not find the case id, please review and try again')
+      }
+
+      trx.commit()
+      return response.json('Cases shared successfully!')
+    } catch (e) {
+      trx.rollback()
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+
+  }
+
 }
 
 module.exports = CaseController

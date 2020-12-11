@@ -199,9 +199,9 @@ class UserController {
 
       const institutionFilter = request.input('fInstitution') || `%`
       const userTypeFilter = request.input('fUserType') || `%`
-      console.log('============')
-      console.log(institutionFilter)
-      console.log(userTypeFilter)
+      // console.log('============')
+      // console.log(institutionFilter)
+      // console.log(userTypeFilter)
 
       request.input('published') != null
 

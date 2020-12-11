@@ -68,6 +68,7 @@ Route.group(() => {
 	Route.post(  '',	          'v1/CaseController.store')
 	Route.put(   ':id',         'v1/CaseController.update').middleware(['case_permission:write'])
 	Route.delete(':id',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
+  Route.post('share',         'v1/CaseController.share').middleware(['case_permission:share'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
 Route.get(   '/api/v1/case/:id',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
 
