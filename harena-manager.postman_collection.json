@@ -374,12 +374,12 @@
 							"formdata": [
 								{
 									"key": "clearance",
-									"value": "4",
+									"value": "1",
 									"type": "text"
 								},
 								{
 									"key": "published",
-									"value": "\n",
+									"value": "",
 									"type": "text",
 									"disabled": true
 								},
@@ -988,6 +988,50 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/share",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "entity",
+									"value": "institution",
+									"type": "text"
+								},
+								{
+									"key": "subject",
+									"value": "c5562bfd-9a94-40f0-b08a-3627e3e417e0",
+									"type": "text"
+								},
+								{
+									"key": "clearance",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "table_id",
+									"value": "e6535d2e-28d9-4493-b61d-c715f56f812f",
+									"description": "Separate by comma if you want multiple ids",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/share",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"share"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1484,8 +1528,30 @@
 							"formdata": [
 								{
 									"key": "categoryId",
-									"value": "decisoesExtremas",
+									"value": "quiz-da-emergencia",
 									"type": "text"
+								},
+								{
+									"key": "clearance",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "published",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fInstitution",
+									"value": "c5562bfd-9a94-40f0-b08a-3627e3e417e0",
+									"type": "text"
+								},
+								{
+									"key": "fUserType",
+									"value": "aluno",
+									"type": "text",
+									"disabled": true
 								}
 							],
 							"options": {
