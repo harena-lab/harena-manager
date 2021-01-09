@@ -199,6 +199,7 @@ class UserController {
 
       const institutionFilter = request.input('fInstitution') || `%`
       const userTypeFilter = request.input('fUserType') || `%`
+      const specialtyFilter = request.input('fSpecialty') || `%`
       // console.log('============')
       // console.log(institutionFilter)
       // console.log(userTypeFilter)
@@ -219,6 +220,8 @@ class UserController {
       .where('cases.published', '>=', publishedFilter)
       .where('cases.institution_id', 'like', institutionFilter)
       .where('cases.author_grade', 'like', userTypeFilter)
+      .where('cases.specialty', 'like', specialtyFilter)
+
       .where(function(){
         this
         .where('cases.author_id', user.id)
