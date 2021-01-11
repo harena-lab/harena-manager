@@ -220,8 +220,11 @@ class UserController {
       .where('cases.published', '>=', publishedFilter)
       .where('cases.institution_id', 'like', institutionFilter)
       .where('cases.author_grade', 'like', userTypeFilter)
-      .where('cases.specialty', 'like', specialtyFilter)
-
+      .where(function(){
+        if (specialtyFilter != '%')
+          this.where('cases.specialty', 'like', specialtyFilter)
+      })
+      
       .where(function(){
         this
         .where('cases.author_id', user.id)

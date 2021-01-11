@@ -83,7 +83,7 @@ class CategoryController {
       const category = await Category.find(categoryId)
 
       var publishedFilter = parseInt(request.input('published')) || 0
-      
+
       const institutionFilter = request.input('fInstitution') || `%`
       const userTypeFilter = request.input('fUserType') || `%`
       const specialtyFilter = request.input('fSpecialty') || `%`
@@ -104,7 +104,11 @@ class CategoryController {
         .where('cases.published', '>=', publishedFilter)
         .where('cases.institution_id', 'like', institutionFilter)
         .where('cases.author_grade', 'like', userTypeFilter)
-        .where('cases.specialty', 'like', specialtyFilter)
+        .where(function(){
+          if (specialtyFilter != '%')
+            this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        
         .where(function(){
           this
           .where('cases.author_id', user.id)
