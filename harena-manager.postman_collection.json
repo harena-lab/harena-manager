@@ -17,7 +17,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7e4ca188-f483-438b-92e4-faabcb68e232",
 										"exec": [
 											"var response = pm.response.json();",
 											"pm.environment.set(\"user-token\", response.token);",
@@ -53,10 +52,7 @@
 											"type": "text",
 											"disabled": true
 										}
-									],
-									"options": {
-										"formdata": {}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{api-base-url}}/auth/login/",
@@ -78,7 +74,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4d239fcd-b358-47f3-874b-0f0fe8eb2be6",
 										"exec": [
 											""
 										],
@@ -101,10 +96,7 @@
 								"header": [],
 								"body": {
 									"mode": "formdata",
-									"formdata": [],
-									"options": {
-										"formdata": {}
-									}
+									"formdata": []
 								},
 								"url": {
 									"raw": "{{api-base-url}}/auth/logout/",
@@ -125,7 +117,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7cc84993-51ae-49e5-9d6a-fbcf06c938e3",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -135,16 +126,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e8d036f7-f38d-4f12-9350-332845532e2f",
 								"type": "text/javascript",
 								"exec": [
 									""
 								]
 							}
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "/auth/login session",
@@ -152,7 +140,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "62c53a04-7306-4590-ac1f-e0a0415ee3c5",
 								"exec": [
 									"var response = pm.response.json();",
 									"console.log(response)",
@@ -180,10 +167,7 @@
 									"value": "",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/auth/login",
@@ -204,7 +188,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "005e1c53-285c-4eb4-a33d-7039ac2a6002",
 								"exec": [
 									"pm.environment.set(\"user-token\", 'revoked');"
 								],
@@ -250,8 +233,7 @@
 					"response": []
 				}
 			],
-			"description": "Authentication endpoints",
-			"protocolProfileBehavior": {}
+			"description": "Authentication endpoints"
 		},
 		{
 			"name": "user",
@@ -262,7 +244,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8d76235e-2ca8-4773-802b-41b22c5d37c0",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -291,10 +272,7 @@
 									"value": "aa9da08a-1bd4-4a57-b4bf-076a889d6046",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/user/cases_by_quest",
@@ -315,7 +293,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "db6e3ed4-8ce6-44a3-b4da-60fbd5ec5e80",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -347,7 +324,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ad5da6f0-b5b5-4792-baa7-502b215827c4",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -374,7 +350,7 @@
 							"formdata": [
 								{
 									"key": "clearance",
-									"value": "1",
+									"value": "4",
 									"type": "text"
 								},
 								{
@@ -394,11 +370,14 @@
 									"value": "aluno",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "fSpecialty",
+									"value": "0",
+									"type": "text",
+									"disabled": true
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/user/cases",
@@ -419,7 +398,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d53aca1e-8cff-4141-bfc2-53fca7af2fa8",
 								"exec": [
 									""
 								],
@@ -449,7 +427,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0f147b45-e953-4eda-ac7a-811ca797cd98",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -473,10 +450,7 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"formdata": {}
-							}
+							"formdata": []
 						},
 						"url": {
 							"raw": "{{api-base-url}}/user/cases_by_institution",
@@ -497,7 +471,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "145c56e0-caff-4d47-8fdf-d2f6905abbdd",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -550,10 +523,7 @@
 									"value": "aluno",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/user",
@@ -604,10 +574,7 @@
 									"type": "text",
 									"disabled": true
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/user",
@@ -661,7 +628,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dcbba21c-af88-435a-9948-8d03adfac96f",
 								"exec": [
 									"pm.test(\"Status code is 200 or 204\", function () {",
 									"    ",
@@ -690,8 +656,7 @@
 					"response": []
 				}
 			],
-			"description": "User services",
-			"protocolProfileBehavior": {}
+			"description": "User services"
 		},
 		{
 			"name": "case",
@@ -720,7 +685,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d358db71-a30f-45df-b924-31f9856e2795",
 								"exec": [
 									"var response = pm.response.json();",
 									"console.log(response.id)",
@@ -814,10 +778,7 @@
 									"value": "read",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/case",
@@ -837,7 +798,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b49b1ec2-2db6-4c3e-b47c-68588064b4cb",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -881,10 +841,7 @@
 									"value": "read",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/case/link/user",
@@ -953,10 +910,7 @@
 									"value": "",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/case/{{case-id}}",
@@ -1033,8 +987,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "player",
@@ -1045,7 +998,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6a4896f8-c94a-4be5-b72e-6a37db0822c9",
 								"exec": [
 									""
 								],
@@ -1075,7 +1027,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e4d4a6d3-357b-4d04-aa09-2d744abe950e",
 								"exec": [
 									""
 								],
@@ -1097,10 +1048,7 @@
 									"value": "ea8dbc12-e879-46e6-b5d7-e67ad88e841b",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/player/quest/cases",
@@ -1116,8 +1064,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "author",
@@ -1128,7 +1075,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1fca660b-8774-4143-814c-db7afee7efd3",
 								"exec": [
 									""
 								],
@@ -1158,7 +1104,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d71fe530-8ff2-4d64-8793-5d77ceaf5ccb",
 								"exec": [
 									""
 								],
@@ -1180,10 +1125,7 @@
 									"value": "5131b64a-04ff-4aec-af98-0edab334fd02",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/author/quest/cases",
@@ -1199,8 +1141,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "artifact",
@@ -1242,10 +1183,7 @@
 									"value": "desafio-pocus-image",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/artifact",
@@ -1282,7 +1220,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7bc7d2a4-7bbc-48af-8fee-153860cad3d5",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1292,15 +1229,13 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d36a0f4e-2db8-434c-b0bc-770d22e17c89",
 						"type": "text/javascript",
 						"exec": [
 							""
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "quest",
@@ -1311,7 +1246,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "69612a32-fec9-4c59-b25d-2b672a45cbf1",
 								"exec": [
 									""
 								],
@@ -1333,10 +1267,7 @@
 									"value": "5885fb0d-ce64-421f-9b9e-1ea2cef3143f",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/quest/users",
@@ -1357,7 +1288,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "eb43d5c2-763e-4c25-ac0a-0b2ddf2179cb",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1395,10 +1325,7 @@
 									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/quest/",
@@ -1436,10 +1363,7 @@
 									"value": "player",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/quest/link/user",
@@ -1478,10 +1402,7 @@
 									"value": "0",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/quest/link/case",
@@ -1497,8 +1418,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "category",
@@ -1509,7 +1429,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "626a67ae-8150-4f96-bc9f-2f7c16c9bde9",
 								"exec": [
 									""
 								],
@@ -1528,12 +1447,12 @@
 							"formdata": [
 								{
 									"key": "categoryId",
-									"value": "quiz-da-emergencia",
+									"value": "decisoes-extremas",
 									"type": "text"
 								},
 								{
 									"key": "clearance",
-									"value": "4",
+									"value": "1",
 									"type": "text"
 								},
 								{
@@ -1545,18 +1464,21 @@
 								{
 									"key": "fInstitution",
 									"value": "c5562bfd-9a94-40f0-b08a-3627e3e417e0",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "fUserType",
 									"value": "aluno",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "fSpecialty",
+									"value": "especialidade 1",
+									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/category/cases",
@@ -1577,7 +1499,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3b6e6f6b-df17-42e8-959a-513e0dedc099",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1620,10 +1541,7 @@
 									"value": "desafio-pocus-image",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/category/",
@@ -1661,10 +1579,7 @@
 									"value": "0",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/category/link/case",
@@ -1733,8 +1648,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "institution",
@@ -1756,8 +1670,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "admin",
@@ -1768,7 +1681,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0da4e91e-5a5a-43c6-8fef-223dce72f31f",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1792,10 +1704,7 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"formdata": {}
-							}
+							"formdata": []
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/cases",
@@ -1816,7 +1725,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "edfe7693-8604-45bf-b2bf-600cea846dc0",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1849,10 +1757,7 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"formdata": {}
-							}
+							"formdata": []
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/users",
@@ -1873,7 +1778,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "540ef4ca-e4a5-499d-b06b-e538b4702286",
 								"exec": [
 									""
 								],
@@ -1903,7 +1807,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6055d49e-f43b-4c6e-8a1f-b63e32c17e11",
 								"exec": [
 									""
 								],
@@ -1935,7 +1838,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "222550fd-5a12-4a17-bcef-a3ae88e1be3f",
 								"exec": [
 									""
 								],
@@ -1977,10 +1879,7 @@
 									"value": "41353296-c9ac-4365-83b6-4c9dbc845930",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/user/link/role",
@@ -2003,7 +1902,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "29920f59-a6b7-4f3e-8909-b7171419cb07",
 								"exec": [
 									""
 								],
@@ -2039,10 +1937,7 @@
 									"value": "BR",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/institution",
@@ -2063,7 +1958,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "519ed505-fbc6-4eb8-995e-c704486a84b7",
 								"exec": [
 									""
 								],
@@ -2083,10 +1977,7 @@
 						],
 						"body": {
 							"mode": "formdata",
-							"formdata": [],
-							"options": {
-								"formdata": {}
-							}
+							"formdata": []
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/revoke_tokens",
@@ -2124,10 +2015,7 @@
 									"value": "author",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/quest/link/user",
@@ -2150,7 +2038,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f1647ef8-7e68-4b0a-8bfe-91b84283904f",
 								"exec": [
 									""
 								],
@@ -2186,10 +2073,7 @@
 									"value": "Research project member",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/admin/role",
@@ -2282,8 +2166,7 @@
 					"response": []
 				}
 			],
-			"description": "Services for administrate `harena`",
-			"protocolProfileBehavior": {}
+			"description": "Services for administrate `harena`"
 		},
 		{
 			"name": "group",
@@ -2294,7 +2177,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "94c53d16-ddb2-40c4-8c24-9849f2caf53c",
 								"exec": [
 									""
 								],
@@ -2316,10 +2198,7 @@
 									"value": "37b4159f-b2bf-4014-b5dc-655df6506311",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/group/cases",
@@ -2340,7 +2219,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7667499e-a7f5-4236-9eb6-3e8ca72e7e27",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -2368,10 +2246,7 @@
 									"value": "Turma do Minho",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/group/",
@@ -2404,10 +2279,7 @@
 									"value": "781c4351-16d7-4b24-b214-bb9fdb3e75bf",
 									"type": "text"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{api-base-url}}/group/link/user",
@@ -2423,8 +2295,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"auth": {
@@ -2441,7 +2312,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "304b8626-14c1-4881-8a2a-881c9fa0d3bc",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2451,13 +2321,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "67ec55a1-a62c-4dc7-bcfe-0d21b1d13da8",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
