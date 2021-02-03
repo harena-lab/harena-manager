@@ -3,13 +3,15 @@
 const Logger = use('Logger')
 
 const User = use('App/Models/v1/User')
+const Institution = use('App/Models/v1/Institution')
 
 class AuthController {
   async checkToken ({ request, auth, response }) {
     try {
       // console.log('====Checking token...')
       if(await auth.check()){
-        response.json({token:'token valid', username: auth.user.username})
+        let userInstitution = await Institution.findBy('id', auth.user.institution_id)
+        response.json({token:'token valid', username: auth.user.username, grade: auth.user.grade, institution: userInstitution.acronym})
       }
       // console.log('====Token valid')
     } catch (error) {
