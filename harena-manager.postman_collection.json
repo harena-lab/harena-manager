@@ -38,12 +38,12 @@
 									"formdata": [
 										{
 											"key": "email",
-											"value": "jacinto@email.com",
+											"value": "",
 											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "jacinto",
+											"value": "",
 											"type": "text"
 										},
 										{
@@ -351,7 +351,8 @@
 								{
 									"key": "clearance",
 									"value": "4",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "published",
@@ -374,6 +375,18 @@
 								{
 									"key": "fSpecialty",
 									"value": "0",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fProperty",
+									"value": "feedback",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fPropertyValue",
+									"value": "1",
 									"type": "text",
 									"disabled": true
 								}
@@ -560,7 +573,8 @@
 								{
 									"key": "login",
 									"value": "jacinta",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "grade",
@@ -663,17 +677,29 @@
 			"item": [
 				{
 					"name": "/case/:id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{api-base-url}}/case/{{case-id}}",
+							"raw": "{{api-base-url}}/case",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
-								"case",
-								"{{case-id}}"
+								"case"
 							]
 						}
 					},
@@ -930,14 +956,24 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{api-base-url}}/case/{{case-id}}",
+							"raw": "{{api-base-url}}/case/",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
 								"case",
-								"{{case-id}}"
+								""
 							]
 						}
 					},
@@ -962,14 +998,21 @@
 									"type": "text"
 								},
 								{
+									"key": "subject_grade",
+									"value": "",
+									"description": "Choose a specific user grade (professor/aluno)",
+									"type": "text",
+									"disabled": true
+								},
+								{
 									"key": "clearance",
 									"value": "4",
 									"type": "text"
 								},
 								{
 									"key": "table_id",
-									"value": "e6535d2e-28d9-4493-b61d-c715f56f812f",
-									"description": "Separate by comma if you want multiple ids",
+									"value": "0008f7a0-6635-439d-af22-d0edd6e22138",
+									"description": "Case ids. Separated by comma if you want multiple ids",
 									"type": "text"
 								}
 							]
@@ -982,6 +1025,82 @@
 							"path": [
 								"case",
 								"share"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/property",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "case_id",
+									"value": "88ffeb32-df75-43b4-a7bb-937051cff61e",
+									"type": "text"
+								},
+								{
+									"key": "property_title",
+									"value": "casepropertynovo",
+									"type": "text"
+								},
+								{
+									"key": "property_value",
+									"value": "novissimo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/property",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "case_id",
+									"value": "af19035f-df50-4178-8f9c-bc0eab59e9bd",
+									"type": "text"
+								},
+								{
+									"key": "property_title",
+									"value": "feedback",
+									"type": "text"
+								},
+								{
+									"key": "property_value",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"property"
 							]
 						}
 					},
@@ -1626,22 +1745,22 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{api-base-url}}/category/desafio-pocus?artifactId=desafio-pocus-image&title=Desafio Pocus",
+							"raw": "{{api-base-url}}/category/pocus-training?artifactId=093ebf5d-5cec-48b3-8730-12f92e8a1ffd&title=Treinamento POCUS",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
 								"category",
-								"desafio-pocus"
+								"pocus-training"
 							],
 							"query": [
 								{
 									"key": "artifactId",
-									"value": "desafio-pocus-image"
+									"value": "093ebf5d-5cec-48b3-8730-12f92e8a1ffd"
 								},
 								{
 									"key": "title",
-									"value": "Desafio Pocus"
+									"value": "Treinamento POCUS"
 								}
 							]
 						}
@@ -1871,12 +1990,12 @@
 							"formdata": [
 								{
 									"key": "userId",
-									"value": "781c4351-16d7-4b24-b214-bb9fdb3e75bf",
+									"value": "ec4ab025-879d-4e8b-b4d1-2b5e847c08e0",
 									"type": "text"
 								},
 								{
 									"key": "roleId",
-									"value": "41353296-c9ac-4365-83b6-4c9dbc845930",
+									"value": "74448d95-fd3f-4dc1-a424-cf73c97ced45",
 									"type": "text"
 								}
 							]
