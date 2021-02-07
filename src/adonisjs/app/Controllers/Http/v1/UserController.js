@@ -13,7 +13,7 @@ const User = use('App/Models/v1/User')
 const Institution = use('App/Models/v1/Institution')
 const Artifact = use('App/Models/v1/Artifact')
 const Quest = use('App/Models/v1/Quest')
-const Property = use('App/Models/Property')
+const Property = use('App/Models/v1/Property')
 
 const uuidv4 = require('uuid/v4')
 const Env = use('Env')
@@ -224,7 +224,7 @@ class UserController {
         if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
       })
-      
+
       .where(function(){
         this
         .where('cases.author_id', user.id)
@@ -233,6 +233,11 @@ class UserController {
           .where('permissions.entity', 'institution')
           .where('permissions.subject', user.institution_id)
           .where('permissions.clearance', '>=', clearance)
+          .where(function(){
+            this
+            .whereNull('permissions.subject_grade')
+            .orWhere('permissions.subject_grade', user.grade)
+          })
         })
       })
       .orderBy('cases.created_at', 'desc')

@@ -108,7 +108,7 @@ class CategoryController {
           if (specialtyFilter != '%')
             this.where('cases.specialty', 'like', specialtyFilter)
         })
-        
+
         .where(function(){
           this
           .where('cases.author_id', user.id)
@@ -117,6 +117,11 @@ class CategoryController {
             .where('permissions.entity', 'institution')
             .where('permissions.subject', user.institution_id)
             .where('permissions.clearance', '>=', clearance)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', user.grade)
+            })
           })
         })
         .orderBy('cases.created_at', 'desc')

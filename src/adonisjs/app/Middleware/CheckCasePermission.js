@@ -36,6 +36,11 @@ class CheckPermissionForGivenCase {
               .where('permissions.entity', 'institution')
               .where('permissions.subject', auth.user.institution_id)
               .where('permissions.clearance', '>=', 1)
+              .where(function(){
+                this
+                .whereNull('permissions.subject_grade')
+                .orWhere('permissions.subject_grade', auth.user.grade)
+              })
           })
           .count()
       }
@@ -51,6 +56,11 @@ class CheckPermissionForGivenCase {
             .where('permissions.entity', 'institution')
             .where('permissions.subject', auth.user.institution_id)
             .where('permissions.clearance', '>=', 2)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', auth.user.grade)
+            })
         })
         .count()
       }
@@ -66,6 +76,11 @@ class CheckPermissionForGivenCase {
             .where('permissions.entity', 'institution')
             .where('permissions.subject', auth.user.institution_id)
             .where('permissions.clearance', '>=', 4)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', auth.user.grade)
+            })
         })
         .count()
       }

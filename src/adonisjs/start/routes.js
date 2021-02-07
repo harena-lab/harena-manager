@@ -66,11 +66,14 @@ Route.group(() => {
 */
 Route.group(() => {
 	Route.post(  '',	          'v1/CaseController.store')
-	Route.put(   ':id',         'v1/CaseController.update').middleware(['case_permission:write'])
-	Route.delete(':id',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
+	Route.put(   '',         'v1/CaseController.update').middleware(['case_permission:write'])
+	Route.delete('',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
   Route.post('share',         'v1/CaseController.share').middleware(['case_permission:share'])
+
+  Route.post('property',      'v1/CaseController.storeProperty').middleware(['auth', 'case_permission:write'])
+  Route.put('property',      'v1/CaseController.updateProperty').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
-Route.get(   '/api/v1/case/:id',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
 
 
 /*
