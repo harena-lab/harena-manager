@@ -14,7 +14,7 @@
 const Factory = use('Factory')
 
 const Institution = use('App/Models/v1/Institution')
-const Property = use('App/Models/Property')
+const Property = use('App/Models/v1/Property')
 const CaseArtifacts = use('App/Models/CaseArtifact')
 const CaseVersion = use('App/Models/v1/CaseVersion')
 const Case = use('App/Models/v1/Case')
