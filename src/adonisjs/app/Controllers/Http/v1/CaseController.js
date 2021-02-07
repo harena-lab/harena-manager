@@ -276,12 +276,9 @@ class CaseController {
         { case_id: case_id, property_id: property.id},
         { case_id: case_id, property_id: property.id, value: property_value}, trx
       )
-      caseProperty.value = property_value
 
       await property.save(trx)
-      console.log('============ passei do property')
       await caseProperty.save(trx)
-      console.log('============ passei do case property')
 
       trx.commit()
 
@@ -289,7 +286,7 @@ class CaseController {
 
     } catch (e) {
       trx.rollback()
-      console.log('============catch diiiiis')
+      console.log('============catch error storeProperty')
       console.log(e)
       return response.status(e.status).json({ message: e.message})
     }
@@ -301,12 +298,6 @@ class CaseController {
       const case_id = request.input('case_id')
       const property_title = request.input('property_title')
       const property_value = request.input('property_value')
-      console.log('============ case id')
-      console.log(case_id)
-      console.log('============ title prop')
-      console.log(property_title)
-      console.log('============ value prop')
-      console.log(property_value)
 
       const property = await Property.findBy('title', property_title)
 
@@ -322,26 +313,25 @@ class CaseController {
         .fetch()
       caseProperty = caseProperty.last()
 
-      await Database
+      await trx
       .table('case_properties')
       .where('property_id', property.id)
       .where('case_id', case_id)
       .update({ value: property_value,})
-        console.log('============ db case property')
-
-        console.log(caseProperty)
+      // console.log('============ db case property')
+      // console.log(caseProperty)
 
       caseProperty.value = property_value
 
-        console.log('============ value')
-        console.log(caseProperty.value)
-
+      // console.log('============ value')
+      // console.log(caseProperty.value)
+      trx.commit()
 
 
       return response.json(caseProperty)
     } catch (e) {
-
-      console.log('============catch diiiiis')
+      trx.rollback()
+      console.log('============catch error updateProperty')
       console.log(e)
       return response.status(e.status).json({ message: e.message })
     }

@@ -193,54 +193,101 @@ class UserController {
     try {
       const user = await auth.user
 
-      const clearance = parseInt(request.input('clearance'))
+      const clearance = parseInt(request.input('clearance')) || 10
 
       var publishedFilter = parseInt(request.input('published')) || 0
 
       const institutionFilter = request.input('fInstitution') || `%`
       const userTypeFilter = request.input('fUserType') || `%`
       const specialtyFilter = request.input('fSpecialty') || `%`
-      // console.log('============')
+      const propertyFilter = request.input('fProperty') || null
+      const propertyValueFilter = request.input('fPropertyValue') || '%'
+      let result = null
       // console.log(institutionFilter)
       // console.log(userTypeFilter)
 
-      request.input('published') != null
+      if(propertyFilter != null){
+          const selectPropertyTitle = ('case_properties.value AS ' + propertyFilter)
+         result = await Database
+          .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+          'cases.author_grade', 'cases.published', 'users.username',
+          'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+          'institutions.country AS institution_country', 'cases.created_at',
+            Database.raw(`CASE WHEN case_properties.value = 0 AND properties.title = 'feedback'
+              THEN 'Waiting for feedback' WHEN case_properties.value = 1 AND properties.title = 'feedback'
+                THEN 'Feedback complete' ELSE case_properties.value END AS ?`,[propertyFilter])])
+          .distinct('cases.id')
+          .from('cases')
+          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+          .join('case_properties', 'case_properties.case_id', 'cases.id')
+          .join('properties', 'properties.id', 'case_properties.property_id')
+          .join('users', 'users.id', 'cases.author_id')
+          .join('institutions', 'users.institution_id', 'institutions.id')
+          .where('properties.title', propertyFilter)
+          .where('case_properties.value','like', propertyValueFilter)
+          .where('cases.published', '>=', publishedFilter)
+          .where('cases.institution_id', 'like', institutionFilter)
+          .where('cases.author_grade', 'like', userTypeFilter)
+          .where(function(){
+            if (specialtyFilter != '%')
+              this.where('cases.specialty', 'like', specialtyFilter)
+          })
 
-      const result = await Database
-      .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
-      'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
-      'cases.author_grade', 'cases.published', 'users.username',
-      'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
-      'institutions.country AS institution_country', 'cases.created_at'])
-      .distinct('cases.id')
-      .from('cases')
-      .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-      .join('users', 'users.id', 'cases.author_id')
-      .join('institutions', 'users.institution_id', 'institutions.id')
-      .where('cases.published', '>=', publishedFilter)
-      .where('cases.institution_id', 'like', institutionFilter)
-      .where('cases.author_grade', 'like', userTypeFilter)
-      .where(function(){
-        if (specialtyFilter != '%')
-          this.where('cases.specialty', 'like', specialtyFilter)
-      })
-
-      .where(function(){
-        this
-        .where('cases.author_id', user.id)
-        .orWhere(function () {
-          this
-          .where('permissions.entity', 'institution')
-          .where('permissions.subject', user.institution_id)
-          .where('permissions.clearance', '>=', clearance)
           .where(function(){
             this
-            .whereNull('permissions.subject_grade')
-            .orWhere('permissions.subject_grade', user.grade)
+            .where('cases.author_id', user.id)
+            .orWhere(function () {
+              this
+              .where('permissions.entity', 'institution')
+              .where('permissions.subject', user.institution_id)
+              .where('permissions.clearance', '>=', clearance)
+              .where(function(){
+                this
+                .whereNull('permissions.subject_grade')
+                .orWhere('permissions.subject_grade', user.grade)
+              })
+            })
           })
-        })
-      })
-      .orderBy('cases.created_at', 'desc')
+          .orderBy('cases.created_at', 'desc')
+      }else{
+
+         result = await Database
+          .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+          'cases.author_grade', 'cases.published', 'users.username',
+          'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+          'institutions.country AS institution_country', 'cases.created_at'])
+          .distinct('cases.id')
+          .from('cases')
+          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+          .join('users', 'users.id', 'cases.author_id')
+          .join('institutions', 'users.institution_id', 'institutions.id')
+          .where('cases.published', '>=', publishedFilter)
+          .where('cases.institution_id', 'like', institutionFilter)
+          .where('cases.author_grade', 'like', userTypeFilter)
+          .where(function(){
+            if (specialtyFilter != '%')
+              this.where('cases.specialty', 'like', specialtyFilter)
+          })
+
+          .where(function(){
+            this
+            .where('cases.author_id', user.id)
+            .orWhere(function () {
+              this
+              .where('permissions.entity', 'institution')
+              .where('permissions.subject', user.institution_id)
+              .where('permissions.clearance', '>=', clearance)
+              .where(function(){
+                this
+                .whereNull('permissions.subject_grade')
+                .orWhere('permissions.subject_grade', user.grade)
+              })
+            })
+          })
+          .orderBy('cases.created_at', 'desc')
+      }
 
 
       console.log(result)
