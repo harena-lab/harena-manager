@@ -66,10 +66,14 @@ Route.group(() => {
 */
 Route.group(() => {
 	Route.post(  '',	          'v1/CaseController.store')
-	Route.put(   ':id',         'v1/CaseController.update').middleware(['case_permission:write'])
-	Route.delete(':id',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
+	Route.put(   '',         'v1/CaseController.update').middleware(['case_permission:write'])
+	Route.delete('',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
+  Route.post('share',         'v1/CaseController.share').middleware(['case_permission:share'])
+
+  Route.post('property',      'v1/CaseController.storeProperty').middleware(['auth', 'case_permission:write'])
+  Route.put('property',      'v1/CaseController.updateProperty').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
-Route.get(   '/api/v1/case/:id',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
 
 
 /*
@@ -134,11 +138,26 @@ Route.group(() => {
 Route.group(() => {
 	Route.post( '',           'v1/CategoryController.store')
 	Route.post( 'link/case',	'v1/CategoryController.linkCase')
-  Route.get(  'list', 			'v1/CategoryController.listCategories')
-  Route.get(  'cases', 			'v1/CategoryController.listCases')
   Route.put(  ':id',        'v1/CategoryController.update')
 
 }).prefix('/api/v1/category').middleware('auth', 'is:author')
+
+Route.group(() => {
+  Route.get(  'list', 			'v1/CategoryController.listCategories')
+  Route.get(  'cases', 			'v1/CategoryController.listCases')
+
+}).prefix('/api/v1/category').middleware('auth')
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /institution
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+
+    Route.get( '',          'v1/InstitutionController.listInstitutions').middleware(['auth'])
+}).prefix('/api/v1/institutions')
 
 
 /*

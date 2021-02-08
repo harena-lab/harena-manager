@@ -11,6 +11,8 @@ const Case = use('App/Models/v1/Case')
 const CaseVersion = use('App/Models/v1/CaseVersion')
 const Institution = use('App/Models/v1/Institution')
 const Permission = use('App/Models/v1/Permission')
+const Property = use('App/Models/v1/Property')
+const CaseProperty = use('App/Models/v1/CaseProperty')
 
 const uuidv4 = require('uuid/v4')
 
@@ -36,18 +38,33 @@ class CaseController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, response }) {
+  async show ({ request, response }) {
     try {
-      const c = await Case.find(params.id)
+
+      const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
         const versions = await CaseVersion.query()
-          .where('case_id', '=', params.id)
+          .where('case_id', '=', request.input('caseId'))
           .orderBy('created_at', 'asc')
           .fetch()
 
+        const properties = await Database
+          .select(['properties.title', 'case_properties.value'])
+          .from('case_properties')
+          .leftJoin('properties', 'case_properties.property_id', 'properties.id')
+          .where('case_properties.case_id', request.input('caseId'))
+
+          var prop = {}
+        for(let p in properties){
+          let title = properties[p].title
+          let value = properties[p].value
+          prop[title] = value
+        }
+
         c.source = versions.last().source
         c.versions = versions
+        c.property = prop
 
         const institution = await Institution.find(c.institution_id)
         c.institution = institution.acronym
@@ -112,11 +129,11 @@ class CaseController {
   }
 
   /** * Update case details. PUT or PATCH case/:id */
-  async update ({ params, request, response }) {
+  async update ({ request, response }) {
     const trx = await Database.beginTransaction()
 
     try {
-      const c = await Case.find(params.id)
+      const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
         c.title = request.input('title') || null
@@ -171,10 +188,10 @@ class CaseController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, response }) {
+  async destroy ({ request, response }) {
     const trx = await Database.beginTransaction()
     try {
-      const c = await Case.findBy('id', params.id)
+      const c = await Case.findBy('id', request.input('caseId'))
 
       if (c != null) {
         await c.versions().delete()
@@ -195,6 +212,136 @@ class CaseController {
 
       console.log(e)
       return response.status(500).json({ message: e })
+    }
+  }
+
+  async share ({params, request, response}){
+    const trx = await Database.beginTransaction()
+
+    try {
+      const entity = request.input('entity')
+      const subject = request.input('subject')
+      const subject_grade = request.input('subject_grade')
+      const clearance = request.input('clearance')
+      const table_id = request.input('table_id').split(',')
+      // console.log(entity)
+      // console.log(subject)
+      // console.log(clearance)
+      // console.log(table_id)
+
+      for (let c in table_id){
+        // console.log('============ case for')
+        console.log(table_id[c])
+        if(await Case.findBy('id', table_id[c])){
+          // console.log('================================================ case added')
+          // console.log(table_id[c])
+          let permission = new Permission()
+          permission.id = await uuidv4()
+          permission.entity = entity
+          permission.subject = subject
+          permission.subject_grade = subject_grade
+          permission.clearance = clearance
+          permission.table = 'cases'
+          permission.table_id = table_id[c]
+          await permission.save(trx)
+        }else return response.json('Could not find the case id, please review and try again')
+      }
+
+      trx.commit()
+      return response.json('Cases shared successfully!')
+    } catch (e) {
+      trx.rollback()
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+
+  }
+
+  async storeProperty ({params, request, auth, response}) {
+    const trx = await Database.beginTransaction()
+    try {
+      const case_id = request.input('case_id')
+      const property_title = request.input('property_title')
+      const property_value = request.input('property_value')
+
+      const property = await Property.findOrCreate(
+        { title: property_title },
+        { id: await uuidv4(), title: property_title }, trx
+      )
+      // const caseProperty = new CaseProperty()
+      // caseProperty.case_id = case_id
+      // caseProperty.property_id = property.id
+      // caseProperty.value = property_value
+      let caseProperty = await CaseProperty.findOrCreate(
+        { case_id: case_id, property_id: property.id},
+        { case_id: case_id, property_id: property.id, value: property_value}, trx
+      )
+
+      await property.save(trx)
+      await caseProperty.save(trx)
+
+      trx.commit()
+
+      return response.json({property: property, case_property: caseProperty})
+
+    } catch (e) {
+      trx.rollback()
+      console.log('============catch error storeProperty')
+      console.log(e)
+      return response.status(e.status).json({ message: e.message})
+    }
+  }
+
+  async updateProperty ({request, auth, response}) {
+    const trx = await Database.beginTransaction()
+    try {
+      const case_id = request.input('case_id')
+      const property_title = request.input('property_title')
+      const property_value = request.input('property_value')
+
+      const property = await Property.findBy('title', property_title)
+
+      // const caseProperty = await CaseProperty.findOrCreate(
+      //   { case_id: case_id, property_id: property.id },
+      //   { case_id: case_id, property_id: property.id}, trx
+      // )
+
+      let caseProperty = await CaseProperty
+        .query()
+        .where('property_id', property.id)
+        .where('case_id', case_id)
+        .fetch()
+      caseProperty = caseProperty.last()
+
+      await trx
+      .table('case_properties')
+      .where('property_id', property.id)
+      .where('case_id', case_id)
+      .update({ value: property_value,})
+      // console.log('============ db case property')
+      // console.log(caseProperty)
+
+      caseProperty.value = property_value
+
+      // console.log('============ value')
+      // console.log(caseProperty.value)
+      trx.commit()
+
+
+      return response.json(caseProperty)
+    } catch (e) {
+      trx.rollback()
+      console.log('============catch error updateProperty')
+      console.log(e)
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+  async deleteProperty ({params, request, auth, response}) {
+    try {
+
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
     }
   }
 
