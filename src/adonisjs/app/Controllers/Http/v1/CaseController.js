@@ -192,9 +192,18 @@ class CaseController {
     const trx = await Database.beginTransaction()
     try {
       const c = await Case.findBy('id', request.input('caseId'))
-
+      console.log('============ =============================')
       if (c != null) {
         await c.versions().delete()
+        await Permission
+          .query()
+          .where('table', 'cases')
+          .where('table_id', c.id)
+          .delete()
+          await CaseProperty
+            .query()
+            .where('case_id', c.id)
+            .delete()
         // await c.users().detach()
         // await c.quests().detach()
         await c.artifacts().delete()
