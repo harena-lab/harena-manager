@@ -15,10 +15,10 @@ class Case extends Model {
   artifacts () {
     return this.hasMany('App/Models/CaseArtifact')
   }
-
-  permissions () {
-    return this.hasMany('App/Models/v1/Permission')
-  }
+  //
+  // permissions () {
+  //   return this.hasMany('App/Models/v1/Permission')
+  // }
 
   author () {
     return this.belongsTo('App/Models/v1/User')
