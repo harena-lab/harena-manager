@@ -4,8 +4,10 @@
 const Hash = use('Hash')
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
-
 const Database = use('Database')
+
+const Environment = use('App/Models/Environment')
+
 
 class User extends Model {
   static get incrementing () {
@@ -25,6 +27,61 @@ class User extends Model {
       .pivotTable('users_groups')
       .withTimestamps()
   }
+
+  environment () {
+    return this.belongsTo('App/Models/Environment')
+  }
+  //  environment () {
+  //   return this.belongsTo('App/Models/Environment')
+  // }
+  // environment () {
+  //   return this
+  //     .belongsToMany('App/Models/Group')
+  //     .pivotTable('users_groups')
+  //     .withTimestamps()
+  // }
+
+//   async environment (){
+//     let queryResult = await Database
+//       .from('environments')
+//       .leftJoin('users', 'users.environment_id', 'environments.id')
+//       .where('users.id', this.id)
+//       // .where('users_environments.environment_id', caseId)
+//       // .whereIn('users_cases.permission', ['share', 'write', 'delete'])
+//       // .count()
+//       queryResult
+//       const result = JSON.stringify(queryResult)
+//       // console.log(queryResult[0]['id'])
+//       // console.log(queryResult[0]['name'])
+//
+//       // for (var r in result) {
+//       //   console.log(r)
+//       //
+//       // }
+//       // result.forEach((item, i) => {
+//       //   console.log(r)
+//       // });
+// console.log('result '+result)
+//       if (result.length==0){
+//         console.log('aquiiiiiiiiiiiiiii')
+//         // let environment
+//         // environment.name = 'public'
+//         return 'unicamp'
+//       }
+//       console.log(queryResult)
+//         if (queryResult[0]['count(*)'] === 0) {
+//           return response.status(500).json('you dont have permission to ' + properties[0] + ' such case')
+//         } else {
+//           const environment = new Environment()
+//           // environment.
+//           const environmet = Environment
+//           // console.log(result[0])
+//           return queryResult[0]['name']
+//           // await next()
+//         }
+//         return queryResult
+//
+//   }
 
   artifacts () {
     return this.hasMany('App/Models/v1/Artifact')

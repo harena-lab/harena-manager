@@ -129,12 +129,10 @@ class CaseController {
   }
 
   /** * Update case details. PUT or PATCH case/:id */
-  async update ({ request, response }) {
+  async update ({ params, request, response }) {
     const trx = await Database.beginTransaction()
-
     try {
-      const c = await Case.find(request.input('caseId'))
-
+      const c = await Case.find(params.id)
       if (c != null) {
         c.title = request.input('title') || null
         c.description = request.input('description')|| null
@@ -150,33 +148,38 @@ class CaseController {
         cv.source = request.input('source')
         cv.id = await uuidv4()
         await c.versions().save(cv)
-
         const institutionAcronym = request.input('institution')
         if (institutionAcronym != null){
           let institution = await Institution.findBy('acronym', institutionAcronym)
           await c.institution().associate(institution)
         }
 
-        const permission = new Permission()
-        permission.id = await uuidv4()
-        permission.entity = request.input('permissionEntity')
-        permission.subject = request.input('permissionSubjectId')
-        permission.clearance = request.input('permissionClearance')
-        permission.table = 'cases'
-        permission.table_id = c.id
-        permission.save(trx)
+        // const permission = new Permission()
+        // permission.id = await uuidv4()
+        // permission.entity = request.input('permissionEntity')
+        // permission.subject = request.inpuission = new Permission()
+        // permission.id = await uuidv4()
+        // permission.entity = request.input('permissionEntity')
+        // permission.subject = request.input('permissionSubjectId')
+        // permission.clearance = request.input('permissionClearance')
+        // permission.table = 'cases'
+        // permission.table_id = c.id
+        // permission.t('permissionSubjectId')
+        // permission.clearance = request.input('permissionClearance')
+        // permission.table = 'cases'
+        // permission.table_id = c.id
+        // permission.save(trx)
 
         await c.save()
 
         trx.commit()
-
         return response.json(c)
 
       } else return response.status(500).json('case not found')
     } catch (e) {
       trx.rollback()
       console.log(e)
-      return response.status(500).json({ message: e })
+      return response.status(500).json({ message: e.message })
     }
   }
 

@@ -23,6 +23,8 @@ const User = use('App/Models/v1/User')
 const Quest = use('App/Models/v1/Quest')
 const Artifact = use('App/Models/v1/Artifact')
 const Role = use('App/Models/v1/Role')
+const Environment = use('App/Models/Environment')
+const Permission = use('App/Models/v1/Permission')
 
 const fs = require('fs')
 const uuidv4 = require('uuid/v4')
@@ -43,6 +45,8 @@ class UserSeeder {
       if (jacinto == null) {
 
         const user = await this.seed_default_users(trx)
+
+        const environment = await this.seed_environment(user, trx)
 
         const institution = await this.seed_institution(user, trx)
         // console.log(institution)
@@ -87,6 +91,50 @@ class UserSeeder {
       console.log(e)
 
       trx.rollback()
+    }
+  }
+
+  async seed_environment(user, trx) {
+    try {
+        const environment = new Environment()
+        environment.id = await uuidv4()
+        environment.name = 'Harena'
+
+        const environment2 = new Environment()
+        environment2.id = await uuidv4()
+        environment2.name = 'Jacinto'
+
+        const environment3 = new Environment()
+        environment3.id = await uuidv4()
+        environment3.name = 'unicamp'
+
+        const environment4 = new Environment()
+        environment4.id = await uuidv4()
+        environment4.name = 'Residência da Tarde'
+
+        const environment5 = new Environment()
+        environment5.id = await uuidv4()
+        environment5.name = 'Público'
+
+
+        await environment.save(trx)
+        await environment2.save(trx)
+        await environment3.save(trx)
+        await environment4.save(trx)
+        await environment5.save(trx)
+
+
+        await user.environment().associate(environment, trx)
+
+        // const permission = new Permission()
+        // permission.id = await uuidv4()
+        // permission.clearance = 4
+        // permission.subject_grade = 'admin'
+        // permission.resource = 'cases'
+        // permission.resource_id =
+        return environment
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -161,7 +209,7 @@ class UserSeeder {
 console.log('user---------------'+user)
 
 console.log(cv)
-      await c.versions().save([cv.id], trx)
+      await c.versions().save(cv, trx)
       console.log('salvoooooooooooooooooooooooooooooooooooooooooooooooou version')
       await c.institution().associate(institution, trx)
 console.log('c2--------------'+c)

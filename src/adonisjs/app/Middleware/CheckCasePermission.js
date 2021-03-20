@@ -13,6 +13,7 @@ class CheckPermissionForGivenCase {
    */
   async handle ({ params, request, response, auth }, next, properties) {
     try {
+      console.log('kokokok')
 	    const loggedUserId = auth.user.id
       let sqlQuery = ''
       let caseId = ''

@@ -219,7 +219,7 @@ class UserController {
                 THEN 'Feedback complete' ELSE case_properties.value END AS ?`,[propertyFilter])])
           .distinct('cases.id')
           .from('cases')
-          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+          // .leftJoin('permissions', 'cases.id', 'permissions.table_id')
           .join('case_properties', 'case_properties.case_id', 'cases.id')
           .join('properties', 'properties.id', 'case_properties.property_id')
           .join('users', 'users.id', 'cases.author_id')
@@ -234,21 +234,21 @@ class UserController {
               this.where('cases.specialty', 'like', specialtyFilter)
           })
 
-          .where(function(){
-            this
-            .where('cases.author_id', user.id)
-            .orWhere(function () {
-              this
-              .where('permissions.entity', 'institution')
-              .where('permissions.subject', user.institution_id)
-              .where('permissions.clearance', '>=', clearance)
-              .where(function(){
-                this
-                .whereNull('permissions.subject_grade')
-                .orWhere('permissions.subject_grade', user.grade)
-              })
-            })
-          })
+          // .where(function(){
+          //   this
+          //   .where('cases.author_id', user.id)
+          //   .orWhere(function () {
+          //     this
+          //     .where('permissions.resource', 'cases')
+          //     .where('permissions.resource_id', user.institution_id)
+          //     .where('permissions.clearance', '>=', clearance)
+          //     .where(function(){
+          //       this
+          //       .whereNull('permissions.subject_grade')
+          //       .orWhere('permissions.subject_grade', user.grade)
+          //     })
+          //   })
+          // })
           .orderBy('cases.created_at', 'desc')
       }else{
 
@@ -260,7 +260,7 @@ class UserController {
           'institutions.country AS institution_country', 'cases.created_at'])
           .distinct('cases.id')
           .from('cases')
-          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+          // .leftJoin('permissions', 'cases.id', 'permissions.table_id')
           .join('users', 'users.id', 'cases.author_id')
           .join('institutions', 'users.institution_id', 'institutions.id')
           .where('cases.published', '>=', publishedFilter)
@@ -271,21 +271,21 @@ class UserController {
               this.where('cases.specialty', 'like', specialtyFilter)
           })
 
-          .where(function(){
-            this
-            .where('cases.author_id', user.id)
-            .orWhere(function () {
-              this
-              .where('permissions.entity', 'institution')
-              .where('permissions.subject', user.institution_id)
-              .where('permissions.clearance', '>=', clearance)
-              .where(function(){
-                this
-                .whereNull('permissions.subject_grade')
-                .orWhere('permissions.subject_grade', user.grade)
-              })
-            })
-          })
+          // .where(function(){
+          //   this
+          //   .where('cases.author_id', user.id)
+          //   .orWhere(function () {
+          //     this
+          //     .where('permissions.entity', 'institution')
+          //     .where('permissions.subject', user.institution_id)
+          //     .where('permissions.clearance', '>=', clearance)
+          //     .where(function(){
+          //       this
+          //       .whereNull('permissions.subject_grade')
+          //       .orWhere('permissions.subject_grade', user.grade)
+          //     })
+          //   })
+          // })
           .orderBy('cases.created_at', 'desc')
       }
 
