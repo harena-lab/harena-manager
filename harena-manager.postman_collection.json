@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a7148259-5898-4ce9-a853-563722df2d28",
+		"_postman_id": "467ca683-1021-4aba-86b0-03c15c29fed0",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -688,7 +688,7 @@
 							"formdata": [
 								{
 									"key": "caseId",
-									"value": "",
+									"value": "b28b8bc7-90e2-41d7-902c-f707d66f3080",
 									"type": "text"
 								}
 							]
@@ -1101,6 +1101,122 @@
 							"path": [
 								"case",
 								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case?:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"console.log(response.id)",
+									"pm.environment.set(\"case-id\", response.id);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "caso casual2",
+									"type": "text"
+								},
+								{
+									"key": "source",
+									"value": "# Presentation (quiz, end)\n\nWrite here the **stem** of your quiz.\n\n> Write here the **lead-in** of your quiz.\n+ Answer-key <-> Presentation References \"Feedback for Answer-key\" >((right))\n+ Distractor 1 <-> \"Feedback for Distractor 1\"\n+ Distractor 2 <-> \"Feedback for Distractor 2\"\n+ Distractor 3 <-> \"Feedback for Distractor 3\"\n\n* Next Case -> Case.Next ((right))?\n\n# Note (note)\n\n**You answered:** ^Previous.input1^.\n\n\n\n^parameter^\n\n# Presentation References (note)\n\n**You answered:** ^Previous.input1^.\n\n\n\n^parameter^\n\nReferences <-> References\n\n# References (note_references)\n\n* [Enter References](References)\n\n___ Flow ___\n\n* Sequential:\n  * _sequential_\n\n___ Data ___\n\n* theme: simple(red)\n* namespaces:\n  * evidence: http://purl.org/versum/evidence/\n* templates:\n  * categories:\n    * detailed: simple/knot/description",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "test description",
+									"type": "text"
+								},
+								{
+									"key": "language",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "domain",
+									"value": "test domain",
+									"type": "text"
+								},
+								{
+									"key": "specialty",
+									"value": "test specialty ",
+									"type": "text"
+								},
+								{
+									"key": "keywords",
+									"value": "keyword4;kw6",
+									"type": "text"
+								},
+								{
+									"key": "originalDate",
+									"value": "1987-09-13",
+									"type": "text"
+								},
+								{
+									"key": "complexity",
+									"value": "Undergraduate",
+									"type": "text"
+								},
+								{
+									"key": "institution",
+									"value": "minho",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "permissionEntity",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "permissionSubjectId",
+									"value": "e672bd5c-1412-46f2-b674-561d1eb914e5",
+									"description": "can be id of any table, which is defined by permissionEntity param",
+									"type": "text"
+								},
+								{
+									"key": "permissionClearance",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/{{case-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"{{case-id}}"
 							]
 						}
 					},
@@ -2202,6 +2318,72 @@
 							"path": [
 								"admin",
 								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/permission",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "clearance",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "subject_grade",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "cases",
+									"type": "text"
+								},
+								{
+									"key": "resource_id",
+									"value": "ba2bed36-dccd-42d0-bc7e-44d25cbd34fc",
+									"type": "text"
+								},
+								{
+									"key": "environment",
+									"value": "Harena",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/permission",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"permission"
 							]
 						}
 					},
