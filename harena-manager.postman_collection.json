@@ -676,7 +676,7 @@
 			"name": "case",
 			"item": [
 				{
-					"name": "/case/:id",
+					"name": "/case",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -819,6 +819,83 @@
 					"response": []
 				},
 				{
+					"name": "/case",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "source",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "language",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "domain",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "specialty",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "keywords",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "originalDate",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "complexity",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "published",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/case/link/user",
 					"event": [
 						{
@@ -878,74 +955,6 @@
 								"case",
 								"link",
 								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/case/:id",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "test 444",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "new description 33333",
-									"type": "text"
-								},
-								{
-									"key": "language",
-									"value": "en-us",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "domain",
-									"value": "new domain",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "specialty",
-									"value": "new specialty",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "keywords",
-									"value": "kw1;kw2",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "source",
-									"value": "nc1",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "original_date",
-									"value": "",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{api-base-url}}/case/{{case-id}}",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"{{case-id}}"
 							]
 						}
 					},
@@ -1642,22 +1651,22 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "desafio-pocus",
+									"value": "pocus-training",
 									"type": "text"
 								},
 								{
 									"key": "title",
-									"value": "Desafio POCUS",
+									"value": "Treinamento POCUS",
 									"type": "text"
 								},
 								{
 									"key": "template",
-									"value": "desafio-pocus",
+									"value": "pocus-training",
 									"type": "text"
 								},
 								{
 									"key": "artifact_id",
-									"value": "desafio-pocus-image",
+									"value": "pocus-training-image",
 									"type": "text"
 								}
 							]

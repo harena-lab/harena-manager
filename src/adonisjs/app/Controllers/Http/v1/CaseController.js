@@ -136,18 +136,24 @@ class CaseController {
       const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
-        c.title = request.input('title') || null
-        c.description = request.input('description')|| null
-        c.language = request.input('language')|| null
-        c.domain = request.input('domain')|| null
-        c.specialty = request.input('specialty')|| null
-        c.keywords = request.input('keywords')|| null
-        c.original_date = request.input('originalDate')|| null
-        c.complexity = request.input('complexity')|| null
-        c.published = request.input('published')|| 0
+
+        const versions = await CaseVersion.query()
+          .where('case_id', '=', request.input('caseId'))
+          .orderBy('created_at', 'asc')
+          .fetch()
+
+        c.title = request.input('title') || c.title
+        c.description = request.input('description')|| c.description
+        c.language = request.input('language')|| c.language
+        c.domain = request.input('domain')|| c.domain
+        c.specialty = request.input('specialty')|| c.specialty
+        c.keywords = request.input('keywords')|| c.keywords
+        c.original_date = request.input('originalDate')|| c.original_date
+        c.complexity = request.input('complexity')|| c.complexity
+        c.published = request.input('published')|| c.published
 
         const cv = new CaseVersion()
-        cv.source = request.input('source')
+        cv.source = request.input('source')|| versions.last().source
         cv.id = await uuidv4()
         await c.versions().save(cv)
 
