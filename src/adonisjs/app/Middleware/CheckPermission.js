@@ -26,14 +26,14 @@ class CheckPermission {
 
       // c.versions = await c.versions().fetch()
       console.log('clearance: '+clearance  )
+      console.log('clearanceIndex '+ clearanceIndex)
       console.log('resource: '+resource)
       console.log('resourceId: '+resourceId)
       console.log('environment: '+user.environment_id)
 
       let queryResult
-      const clearances = ['read', 'comment', 'share', 'write', 'delete']
-      const clearanceIindex = clearances.indexOf(clearance)
-      // console.log('clearance '+ clearanceIindex)
+      const clearances = ['read', 'comment', 'share', 'annotate', 'write', 'delete']
+      const clearanceIndex = clearances.indexOf(clearance)
 
       queryResult = await Database
         .from('permissions')
@@ -42,7 +42,7 @@ class CheckPermission {
 
         .leftJoin('users', 'users.environment_id', 'environments.id')
         .where('users.environment_id', user.environment_id)
-        .where('permissions.clearance',  '>=', clearanceIindex)
+        .where('permissions.clearance',  '>=', clearanceIndex)
         .where('permissions.resource',  resource)
         .where('permissions.resource_id',  resourceId)
         .count()

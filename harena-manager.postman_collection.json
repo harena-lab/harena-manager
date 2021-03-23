@@ -1069,44 +1069,6 @@
 					"response": []
 				},
 				{
-					"name": "/property",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "case_id",
-									"value": "af19035f-df50-4178-8f9c-bc0eab59e9bd",
-									"type": "text"
-								},
-								{
-									"key": "property_title",
-									"value": "feedback",
-									"type": "text"
-								},
-								{
-									"key": "property_value",
-									"value": "0",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{api-base-url}}/case/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"property"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "/case?:id",
 					"event": [
 						{
@@ -1142,7 +1104,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "caso casual2",
+									"value": "caso casual3",
 									"type": "text"
 								},
 								{
@@ -1215,6 +1177,179 @@
 								"{{api-base-url}}"
 							],
 							"path": [
+								"case",
+								"{{case-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/property",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "case_id",
+									"value": "af19035f-df50-4178-8f9c-bc0eab59e9bd",
+									"type": "text"
+								},
+								{
+									"key": "property_title",
+									"value": "feedback",
+									"type": "text"
+								},
+								{
+									"key": "property_value",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"property"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "annnotate",
+			"item": [
+				{
+					"name": "/annotate/user/?id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"console.log(response.id)",
+									"pm.environment.set(\"case-id\", response.id);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uri",
+									"value": "http://xmlns.com/foaf/0.1/Person",
+									"type": "text"
+								},
+								{
+									"key": "ontology",
+									"value": "FOAF",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "users",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/annotate/user/a7c4821d-9009-41a1-a91f-258259066313",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"annotate",
+								"user",
+								"a7c4821d-9009-41a1-a91f-258259066313"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/annotate/case/?id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"console.log(response.id)",
+									"pm.environment.set(\"case-id\", response.id);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uri",
+									"value": "http://purl.bioontology.org/ontology/MESH/D002309",
+									"type": "text"
+								},
+								{
+									"key": "ontology",
+									"value": "MeSH",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "cases",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/annotate/case/{{case-id}}",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"annotate",
 								"case",
 								"{{case-id}}"
 							]
@@ -2366,7 +2501,7 @@
 								},
 								{
 									"key": "resource_id",
-									"value": "ba2bed36-dccd-42d0-bc7e-44d25cbd34fc",
+									"value": "",
 									"type": "text"
 								},
 								{

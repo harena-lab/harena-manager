@@ -21,10 +21,10 @@ class User extends Model {
   //     .withTimestamps()
   // }
 
-  groups () {
+  environments () {
     return this
-      .belongsToMany('App/Models/Group')
-      .pivotTable('users_groups')
+      .belongsToMany('App/Models/Environment')
+      .pivotTable('users_environments')
       .withTimestamps()
   }
 

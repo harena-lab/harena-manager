@@ -219,6 +219,17 @@ Route.group(() => {
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 
 
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /annotate
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+  Route.post(	 '/cases/:id',		'SemanticsController.store').middleware(['permission:cases,annotate'])
+  Route.post(	 '/user/:id',		  'SemanticsController.store').middleware(['permission:users,annotate'])
+}).prefix('/api/v1/annotate')
+
 /* Test route */
 Route.get('/api/imagetest', 	'TestController.index')
 Route.post('/', 							'TestController.create').as('profile');
