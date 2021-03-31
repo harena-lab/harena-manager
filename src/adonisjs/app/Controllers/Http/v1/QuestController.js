@@ -84,9 +84,8 @@ class QuestController {
 
 
   async destroy ({ params, response }) {
+    const trx = await Database.beginTransaction()
     try {
-      const trx = await Database.beginTransaction()
-
       const q = await Quest.findBy('id', params.id)
 
       if (q != null) {
@@ -134,10 +133,9 @@ class QuestController {
 
 
   async linkUser ({ request, response }) {
+    const trx = await Database.beginTransaction()
 
     try {
-      const trx = await Database.beginTransaction()
-
       const { userId, questId, permission } = request.post()
 
       if (permission != 'read' && permission != 'share' && permission != 'write'){
