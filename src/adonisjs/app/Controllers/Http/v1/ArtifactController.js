@@ -102,9 +102,9 @@ class ArtifactController {
 
 // Missing check permission
   async destroy ({ params, response }) {
-    const trx = await Database.beginTransaction()
-
+    
     try {
+      const trx = await Database.beginTransaction()
       const artifact = await Artifact.findBy('id', params.id)
 
       if (artifact != null) {

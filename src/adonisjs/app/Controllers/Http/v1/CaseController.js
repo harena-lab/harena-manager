@@ -80,9 +80,9 @@ class CaseController {
 
   /**  * Create/save a new case. */
   async store ({ request, auth, response }) {
-    const trx = await Database.beginTransaction()
 
     try {
+      const trx = await Database.beginTransaction()
       const c = new Case()
       c.id = await uuidv4()
       c.title = request.input('title')
@@ -130,9 +130,9 @@ class CaseController {
 
   /** * Update case details. PUT or PATCH case/:id */
   async update ({ request, response }) {
-    const trx = await Database.beginTransaction()
 
     try {
+      const trx = await Database.beginTransaction()
       const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
@@ -195,8 +195,8 @@ class CaseController {
    * @param {Response} ctx.response
    */
   async destroy ({ request, response }) {
-    const trx = await Database.beginTransaction()
     try {
+      const trx = await Database.beginTransaction()
       const c = await Case.findBy('id', request.input('caseId'))
       console.log('============ =============================')
       if (c != null) {
@@ -231,9 +231,9 @@ class CaseController {
   }
 
   async share ({params, request, response}){
-    const trx = await Database.beginTransaction()
-
     try {
+      const trx = await Database.beginTransaction()
+
       const entity = request.input('entity')
       const subject = request.input('subject')
       const subject_grade = request.input('subject_grade')
@@ -273,8 +273,9 @@ class CaseController {
   }
 
   async storeProperty ({params, request, auth, response}) {
-    const trx = await Database.beginTransaction()
     try {
+      const trx = await Database.beginTransaction()
+
       const case_id = request.input('case_id')
       const property_title = request.input('property_title')
       const property_value = request.input('property_value')
@@ -308,8 +309,9 @@ class CaseController {
   }
 
   async updateProperty ({request, auth, response}) {
-    const trx = await Database.beginTransaction()
     try {
+      const trx = await Database.beginTransaction()
+
       const case_id = request.input('case_id')
       const property_title = request.input('property_title')
       const property_value = request.input('property_value')

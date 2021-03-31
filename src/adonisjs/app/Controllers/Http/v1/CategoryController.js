@@ -11,8 +11,8 @@ const Case = use('App/Models/v1/Case')
 
 class CategoryController {
   async store ({ request, response }) {
-    const trx = await Database.beginTransaction()
     try {
+      const trx = await Database.beginTransaction()
 
       const category = new Category()
       category.id = await uuidv4()
