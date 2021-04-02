@@ -13,6 +13,7 @@ const Institution = use('App/Models/v1/Institution')
 const Permission = use('App/Models/v1/Permission')
 const Property = use('App/Models/v1/Property')
 const CaseProperty = use('App/Models/v1/CaseProperty')
+const UsersGroup = use('App/Models/v1/UsersGroup')
 
 const uuidv4 = require('uuid/v4')
 
@@ -56,6 +57,7 @@ class CaseController {
           .where('case_properties.case_id', request.input('caseId'))
 
           var prop = {}
+
         for(let p in properties){
           let title = properties[p].title
           let value = properties[p].value
@@ -83,6 +85,8 @@ class CaseController {
     const trx = await Database.beginTransaction()
 
     try {
+
+
       const c = new Case()
       c.id = await uuidv4()
       c.title = request.input('title')
@@ -129,56 +133,106 @@ class CaseController {
   }
 
   /** * Update case details. PUT or PATCH case/:id */
-  async update ({ request, response }) {
+  async update ({ auth, request, response }) {
     const trx = await Database.beginTransaction()
-
+    var canEdit = false
     try {
+      console.log('============')
+      console.log('attempting to update case...')
       const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
+        console.log('============')
+        console.log('Case found!')
+        console.log('Verifying user permissions...')
+        if(c.author_id == auth.user.id){
+          canEdit = true
+          console.log('============')
+          console.log('User is the author of case')
+          console.log('============')
+        }else{
+          var casePermission = await Permission
+            .query()
+            .where('table', 'cases')
+            .where('table_id', c.id)
+            .where('clearance', '>=', '4')
+            .fetch()
+          casePermission = casePermission.toJSON()
+          console.log('============')
+          console.log(casePermission)
+          console.log('============')
+          for(var _permission in casePermission){
+            if((casePermission[_permission]['entity'] == 'user' && casePermission[_permission]['subject'] == auth.user.id)
+            || (casePermission[_permission]['entity'] == 'institution' && casePermission[_permission]['subject'] == auth.user.institution_id)){
+              console.log('============')
+              console.log('User is part of a institution or user able to edit')
+              console.log('============')
+              canEdit = true
+            }else if(casePermission[_permission]['entity'] == 'group'){
 
-        const versions = await CaseVersion.query()
+              var group = await UsersGroup
+                .query()
+                .where('group_id', casePermission[_permission]['subject'])
+                .where('user_id', auth.user.id)
+                .first()
+              if(group){
+                console.log('============')
+                console.log('User is part of a group able to edit')
+                console.log('============')
+                canEdit = true
+              }
+            }
+          }
+        }
+        if (canEdit) {
+          const versions = await CaseVersion.query()
           .where('case_id', '=', request.input('caseId'))
           .orderBy('created_at', 'asc')
           .fetch()
 
-        c.title = request.input('title') || c.title
-        c.description = request.input('description')|| c.description
-        c.language = request.input('language')|| c.language
-        c.domain = request.input('domain')|| c.domain
-        c.specialty = request.input('specialty')|| c.specialty
-        c.keywords = request.input('keywords')|| c.keywords
-        c.original_date = request.input('originalDate')|| c.original_date
-        c.complexity = request.input('complexity')|| c.complexity
-        c.published = request.input('published')|| c.published
+          c.title = request.input('title') || c.title
+          c.description = request.input('description')|| c.description
+          c.language = request.input('language')|| c.language
+          c.domain = request.input('domain')|| c.domain
+          c.specialty = request.input('specialty')|| c.specialty
+          c.keywords = request.input('keywords')|| c.keywords
+          c.original_date = request.input('originalDate')|| c.original_date
+          c.complexity = request.input('complexity')|| c.complexity
+          c.published = request.input('published')|| c.published
 
-        const cv = new CaseVersion()
-        cv.source = request.input('source')|| versions.last().source
-        cv.id = await uuidv4()
-        await c.versions().save(cv)
+          const cv = new CaseVersion()
+          cv.source = request.input('source')|| versions.last().source
+          cv.id = await uuidv4()
+          await c.versions().save(cv)
 
-        const institutionAcronym = request.input('institution')
-        if (institutionAcronym != null){
-          let institution = await Institution.findBy('acronym', institutionAcronym)
-          await c.institution().associate(institution)
+          const institutionAcronym = request.input('institution')
+          if (institutionAcronym != null){
+            let institution = await Institution.findBy('acronym', institutionAcronym)
+            await c.institution().associate(institution)
+          }
+
+          const permission = new Permission()
+          permission.id = await uuidv4()
+          permission.entity = request.input('permissionEntity')
+          permission.subject = request.input('permissionSubjectId')
+          permission.clearance = request.input('permissionClearance')
+          permission.table = 'cases'
+          permission.table_id = c.id
+          await permission.save(trx)
+
+          await c.save()
+
+          trx.commit()
+
+          c.source = cv.source
+
+          return response.json(c)
+        }else {
+          trx.rollback()
+          return response.json({error:"Error ocurred, you don't have permission to save the changes."})
         }
 
-        const permission = new Permission()
-        permission.id = await uuidv4()
-        permission.entity = request.input('permissionEntity')
-        permission.subject = request.input('permissionSubjectId')
-        permission.clearance = request.input('permissionClearance')
-        permission.table = 'cases'
-        permission.table_id = c.id
-        permission.save(trx)
-
-        await c.save()
-
-        trx.commit()
-
-        return response.json(c)
-
-      } else return response.status(500).json('case not found')
+      } else return response.status(500).json('Case not found.')
     } catch (e) {
       trx.rollback()
       console.log(e)
@@ -198,7 +252,6 @@ class CaseController {
     const trx = await Database.beginTransaction()
     try {
       const c = await Case.findBy('id', request.input('caseId'))
-      console.log('============ =============================')
       if (c != null) {
         await c.versions().delete()
         await Permission
