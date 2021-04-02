@@ -389,6 +389,16 @@
 									"value": "1",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "nItems",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "nPage",
+									"value": "1",
+									"type": "text"
 								}
 							]
 						},
@@ -741,7 +751,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Caso final - minhoooo",
+									"value": "Case dump",
 									"type": "text"
 								},
 								{
@@ -777,7 +787,8 @@
 								{
 									"key": "original_date",
 									"value": "1987-09-13",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "complexity",
@@ -786,7 +797,7 @@
 								},
 								{
 									"key": "institution",
-									"value": "minho",
+									"value": "uni",
 									"type": "text"
 								},
 								{
@@ -796,7 +807,7 @@
 								},
 								{
 									"key": "permissionSubjectId",
-									"value": "8575db0a-e0aa-434c-8ca4-29d7ded3937a",
+									"value": "e31a6421-0f72-4ed9-8383-dcd70910230b",
 									"type": "text"
 								},
 								{
@@ -1020,7 +1031,7 @@
 								},
 								{
 									"key": "table_id",
-									"value": "0008f7a0-6635-439d-af22-d0edd6e22138",
+									"value": "caa57510-6195-4352-91f8-09fffafb7ed1",
 									"description": "Case ids. Separated by comma if you want multiple ids",
 									"type": "text"
 								}
@@ -1575,13 +1586,14 @@
 							"formdata": [
 								{
 									"key": "categoryId",
-									"value": "decisoes-extremas",
+									"value": "pocus-training",
 									"type": "text"
 								},
 								{
 									"key": "clearance",
-									"value": "1",
-									"type": "text"
+									"value": "4",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "published",
@@ -1603,8 +1615,33 @@
 								},
 								{
 									"key": "fSpecialty",
-									"value": "especialidade 1",
-									"type": "text"
+									"value": "0",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fProperty",
+									"value": "feedback",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fPropertyValue",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "nItems",
+									"value": "20",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "nPage",
+									"value": "1",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -2371,7 +2408,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Turma do Minho",
+									"value": "Test Uni",
 									"type": "text"
 								}
 							]
@@ -2399,12 +2436,12 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "37b4159f-b2bf-4014-b5dc-655df6506311",
+									"value": "8a419a89-4692-4b32-b485-82a2df44f31f",
 									"type": "text"
 								},
 								{
 									"key": "userId",
-									"value": "781c4351-16d7-4b24-b214-bb9fdb3e75bf",
+									"value": "ab76f569-5c11-4708-abf4-75be3735f956",
 									"type": "text"
 								}
 							]
