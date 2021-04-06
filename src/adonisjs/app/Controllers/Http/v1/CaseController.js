@@ -137,19 +137,19 @@ class CaseController {
     const trx = await Database.beginTransaction()
     var canEdit = false
     try {
-      console.log('============')
-      console.log('attempting to update case...')
+      // console.log('============')
+      // console.log('attempting to update case...')
       const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
-        console.log('============')
-        console.log('Case found!')
-        console.log('Verifying user permissions...')
+        // console.log('============')
+        // console.log('Case found!')
+        // console.log('Verifying user permissions...')
         if(c.author_id == auth.user.id){
           canEdit = true
-          console.log('============')
-          console.log('User is the author of case')
-          console.log('============')
+          // console.log('============')
+          // console.log('User is the author of case')
+          // console.log('============')
         }else{
           var casePermission = await Permission
             .query()
@@ -158,15 +158,15 @@ class CaseController {
             .where('clearance', '>=', '4')
             .fetch()
           casePermission = casePermission.toJSON()
-          console.log('============')
-          console.log(casePermission)
-          console.log('============')
+          // console.log('============')
+          // console.log(casePermission)
+          // console.log('============')
           for(var _permission in casePermission){
             if((casePermission[_permission]['entity'] == 'user' && casePermission[_permission]['subject'] == auth.user.id)
             || (casePermission[_permission]['entity'] == 'institution' && casePermission[_permission]['subject'] == auth.user.institution_id)){
-              console.log('============')
-              console.log('User is part of a institution or user able to edit')
-              console.log('============')
+              // console.log('============')
+              // console.log('User is part of a institution or user able to edit')
+              // console.log('============')
               canEdit = true
             }else if(casePermission[_permission]['entity'] == 'group'){
 
@@ -176,9 +176,9 @@ class CaseController {
                 .where('user_id', auth.user.id)
                 .first()
               if(group){
-                console.log('============')
-                console.log('User is part of a group able to edit')
-                console.log('============')
+                // console.log('============')
+                // console.log('User is part of a group able to edit')
+                // console.log('============')
                 canEdit = true
               }
             }
