@@ -283,36 +283,83 @@ class CaseController {
     }
   }
 
-  async share ({params, request, response}){
+  async share ({params, request, response, auth}){
     const trx = await Database.beginTransaction()
 
     try {
+      var canShare = false
+      var highestClearance = 0
       const entity = request.input('entity')
       const subject = request.input('subject')
       const subject_grade = request.input('subject_grade')
       const clearance = request.input('clearance')
       const table_id = request.input('table_id').split(',')
-      // console.log(entity)
-      // console.log(subject)
-      // console.log(clearance)
-      // console.log(table_id)
 
       for (let c in table_id){
-        // console.log('============ case for')
         console.log(table_id[c])
-        if(await Case.findBy('id', table_id[c])){
-          // console.log('================================================ case added')
-          // console.log(table_id[c])
-          let permission = new Permission()
-          permission.id = await uuidv4()
-          permission.entity = entity
-          permission.subject = subject
-          permission.subject_grade = subject_grade
-          permission.clearance = clearance
-          permission.table = 'cases'
-          permission.table_id = table_id[c]
-          await permission.save(trx)
-        }else return response.json('Could not find the case id, please review and try again')
+        var _case = await Case.findBy('id', table_id[c])
+        if(_case){
+          /////////////////////////////
+          if(_case.author_id == auth.user.id){
+            canShare = true
+            // console.log('============')
+            // console.log('User is the author of case')
+            // console.log('============')
+          }else{
+            var casePermission = await Permission
+              .query()
+              .where('table', 'cases')
+              .where('table_id', _case.id)
+              .where('clearance', '>=', '3')
+              .fetch()
+            casePermission = casePermission.toJSON()
+            // console.log('============')
+            // console.log(casePermission)
+            // console.log('============')
+            for(var _permission in casePermission){
+              if((casePermission[_permission]['entity'] == 'user' && casePermission[_permission]['subject'] == auth.user.id)
+              || (casePermission[_permission]['entity'] == 'institution' && casePermission[_permission]['subject'] == auth.user.institution_id)){
+                // console.log('============')
+                // console.log('User is part of a institution or user able to edit')
+                // console.log('============')
+                if(casePermission[_permission]['clearance'] > highestClearance)
+                  highestClearance = casePermission[_permission]['clearance']
+                canShare = true
+              }else if(casePermission[_permission]['entity'] == 'group'){
+
+                var group = await UsersGroup
+                  .query()
+                  .where('group_id', casePermission[_permission]['subject'])
+                  .where('user_id', auth.user.id)
+                  .first()
+                if(group){
+                  // console.log('============')
+                  // console.log('User is part of a group able to edit')
+                  // console.log('============')
+                  if(casePermission[_permission]['clearance'] > highestClearance)
+                    highestClearance = casePermission[_permission]['clearance']
+                  canShare = true
+                }
+              }
+            }
+          }
+          ////////////////////////////
+          if(canShare && clearance < highestClearance){
+            let permission = new Permission()
+            permission.id = await uuidv4()
+            permission.entity = entity
+            permission.subject = subject
+            permission.subject_grade = subject_grade
+            permission.clearance = clearance
+            permission.table = 'cases'
+            permission.table_id = table_id[c]
+            await permission.save(trx)
+          }else if (!canShare){
+            return response.status(500).json("Couldn't share the case. Your permission is not high enough, contact the author of the case.")
+          }else{
+            return response.status(500).json("Couldn't share the case. You're trying to share a case with higher permission than what you actually have. Please lower the permission (example: '1' or '2')")
+          }
+        }else return response.status(500).json('Could not find the case id, please review and try again')
       }
 
       trx.commit()
