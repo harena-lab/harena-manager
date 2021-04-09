@@ -1009,12 +1009,12 @@
 							"formdata": [
 								{
 									"key": "entity",
-									"value": "institution",
+									"value": "user",
 									"type": "text"
 								},
 								{
 									"key": "subject",
-									"value": "c5562bfd-9a94-40f0-b08a-3627e3e417e0",
+									"value": "4a689978-57d8-4470-a8db-d7959a42586d",
 									"type": "text"
 								},
 								{
@@ -1026,12 +1026,12 @@
 								},
 								{
 									"key": "clearance",
-									"value": "4",
+									"value": "1",
 									"type": "text"
 								},
 								{
 									"key": "table_id",
-									"value": "caa57510-6195-4352-91f8-09fffafb7ed1",
+									"value": "3e506cb9-3bc3-48f8-ab47-42c639c28e1f",
 									"description": "Case ids. Separated by comma if you want multiple ids",
 									"type": "text"
 								}
@@ -2360,7 +2360,17 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "37b4159f-b2bf-4014-b5dc-655df6506311",
+									"value": "8a419a89-4692-4b32-b485-82a2df44f31f",
+									"type": "text"
+								},
+								{
+									"key": "nItems",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "nPage",
+									"value": "1",
 									"type": "text"
 								}
 							]
@@ -2373,6 +2383,92 @@
 							"path": [
 								"group",
 								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/group/users (wip)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "groupId",
+									"value": "8a419a89-4692-4b32-b485-82a2df44f31f",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/group/users",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"group",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/group/user (wip)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "groupId",
+									"value": "b26b6fe4-1bb6-470f-a0c2-033fb7be54c7",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "4a689978-57d8-4470-a8db-d7959a42586d",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/group/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"group",
+								"user"
 							]
 						}
 					},
@@ -2408,7 +2504,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "Test Uni",
+									"value": "group title",
 									"type": "text"
 								}
 							]
@@ -2441,7 +2537,7 @@
 								},
 								{
 									"key": "userId",
-									"value": "ab76f569-5c11-4708-abf4-75be3735f956",
+									"value": "6e45f06d-dcec-4c86-98a8-01efe1337e5f",
 									"type": "text"
 								}
 							]
