@@ -236,37 +236,23 @@ class UserController {
           .where('cases.author_id', user.id)
           .orWhere(function () {
             this
-            //////
             .where(function(){
               this
-              .where('cases.author_id', user.id)
-              .orWhere(function () {
+              .where(function(){
                 this
-                .where(function(){
-                  this
-                  .where(function(){
-                    this
-                    .where('permissions.entity', 'institution')
-                    .where('permissions.subject', user.institution_id)
-                  })
-                  .orWhere(function(){
-                    this
-                    .where('permissions.entity', 'user')
-                    .where('permissions.subject', user.id)
-                  })
-                  .orWhere(function() {
-                    this
-                    .where('permissions.entity', 'group')
-                    .whereRaw('permissions.subject = users_groups.group_id')
-                    .where('users_groups.user_id', user.id)
-                  })
-                })
-                .where('permissions.clearance', '>=', clearance)
-                .where(function(){
-                  this
-                  .whereNull('permissions.subject_grade')
-                  .orWhere('permissions.subject_grade', user.grade)
-                })
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
               })
             })
             .where('permissions.clearance', '>=', clearance)
@@ -321,37 +307,23 @@ class UserController {
           .where('cases.author_id', user.id)
           .orWhere(function () {
             this
-            //////
             .where(function(){
               this
-              .where('cases.author_id', user.id)
-              .orWhere(function () {
+              .where(function(){
                 this
-                .where(function(){
-                  this
-                  .where(function(){
-                    this
-                    .where('permissions.entity', 'institution')
-                    .where('permissions.subject', user.institution_id)
-                  })
-                  .orWhere(function(){
-                    this
-                    .where('permissions.entity', 'user')
-                    .where('permissions.subject', user.id)
-                  })
-                  .orWhere(function() {
-                    this
-                    .where('permissions.entity', 'group')
-                    .whereRaw('permissions.subject = users_groups.group_id')
-                    .where('users_groups.user_id', user.id)
-                  })
-                })
-                .where('permissions.clearance', '>=', clearance)
-                .where(function(){
-                  this
-                  .whereNull('permissions.subject_grade')
-                  .orWhere('permissions.subject_grade', user.grade)
-                })
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
               })
             })
             .where('permissions.clearance', '>=', clearance)
@@ -387,37 +359,23 @@ class UserController {
           .where('cases.author_id', user.id)
           .orWhere(function () {
             this
-            //////
             .where(function(){
               this
-              .where('cases.author_id', user.id)
-              .orWhere(function () {
+              .where(function(){
                 this
-                .where(function(){
-                  this
-                  .where(function(){
-                    this
-                    .where('permissions.entity', 'institution')
-                    .where('permissions.subject', user.institution_id)
-                  })
-                  .orWhere(function(){
-                    this
-                    .where('permissions.entity', 'user')
-                    .where('permissions.subject', user.id)
-                  })
-                  .orWhere(function() {
-                    this
-                    .where('permissions.entity', 'group')
-                    .whereRaw('permissions.subject = users_groups.group_id')
-                    .where('users_groups.user_id', user.id)
-                  })
-                })
-                .where('permissions.clearance', '>=', clearance)
-                .where(function(){
-                  this
-                  .whereNull('permissions.subject_grade')
-                  .orWhere('permissions.subject_grade', user.grade)
-                })
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
               })
             })
             .where('permissions.clearance', '>=', clearance)
