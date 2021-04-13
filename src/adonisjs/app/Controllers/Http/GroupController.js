@@ -19,10 +19,10 @@ class GroupController {
 
       await group.save(trx)
 
-      const user = await User.find(auth.user.id)
-      await user.groups().attach(groupId)
-
       trx.commit()
+
+      const user = await User.find(auth.user.id)
+      await user.groups().attach(group.id)
 
       return response.json(group)
     } catch (e) {

@@ -302,9 +302,11 @@ class CaseController {
           /////////////////////////////
           if(_case.author_id == auth.user.id){
             canShare = true
+            highestClearance = 10
             // console.log('============')
             // console.log('User is the author of case')
             // console.log('============')
+
           }else{
             var casePermission = await Permission
               .query()
