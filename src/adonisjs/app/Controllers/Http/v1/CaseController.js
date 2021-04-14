@@ -14,6 +14,7 @@ const Permission = use('App/Models/v1/Permission')
 const Property = use('App/Models/v1/Property')
 const CaseProperty = use('App/Models/v1/CaseProperty')
 const UsersGroup = use('App/Models/v1/UsersGroup')
+const Group = use('App/Models/Group')
 
 const uuidv4 = require('uuid/v4')
 
@@ -346,26 +347,70 @@ class CaseController {
             }
           }
           ////////////////////////////
-          if(canShare && clearance < highestClearance){
+
+          /*Transforms subject entry into respective id from table, depending on entity type
+            Also verifies if object exists e.g.(user with email test@test)
+            Default value usually is institution id
+          */
+          var _subject = await Institution.find(subject)
+          if(entity =='user'){
+            if(subject.includes('@'))
+              _subject = await User.findBy('email',subject)
+            else
+              _subject = await User.find(subject)
+          }else if(entity =='group'){
+            _subject = await Group.findBy('title', subject)
+          }
+
+          if(canShare && clearance < highestClearance && _subject){
             let permission = new Permission()
             permission.id = await uuidv4()
             permission.entity = entity
-            permission.subject = subject
+            permission.subject = _subject.id
             permission.subject_grade = subject_grade
             permission.clearance = clearance
             permission.table = 'cases'
             permission.table_id = table_id[c]
             await permission.save(trx)
+
           }else if (!canShare){
-            return response.status(500).json("Couldn't share the case. Your permission is not high enough, contact the author of the case.")
+            trx.rollback()
+            return response.status(500).
+            json({message:"Error. Couldn't share the case. Your permission is not high enough, contact the author of the case."})
+          }else if(!_subject){
+            switch (entity) {
+              case 'institution':
+              trx.rollback()
+                return response.status(500).
+                json({message:"Error. Couldn't find the informed institution, you probably forgot to select one. Please review and try again."})
+                break
+              case 'user':
+              trx.rollback()
+                return response.status(500).
+                json({message:"Error. Couldn't find an user with the informed email. Please review and try again."})
+                break
+              case 'group':
+              trx.rollback()
+                return response.status(500).
+                json({message:"Error. Couldn't find a group with the informed title. Please review and try again."})
+                break
+              default:
+            }
+
           }else{
-            return response.status(500).json("Couldn't share the case. You're trying to share a case with higher permission than what you actually have. Please lower the permission (example: '1' or '2')")
+            trx.rollback()
+            return response.status(500).
+            json({message:"Error. Couldn't share one or more cases. You're trying to share a case with higher permission than what you actually have. Please lower the permission (example: 'Play' or 'Share')"})
           }
-        }else return response.status(500).json('Could not find the case id, please review and try again')
+        }else{
+          trx.rollback()
+          return response.status(500).
+          json({message:'Error. Could not find the case id, please review and try again'})
+        }
       }
 
       trx.commit()
-      return response.json('Cases shared successfully!')
+      return response.json({message:'Cases shared successfully!'})
     } catch (e) {
       trx.rollback()
       console.log(e)
