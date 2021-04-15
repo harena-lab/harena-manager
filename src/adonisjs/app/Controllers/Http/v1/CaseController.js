@@ -69,9 +69,12 @@ class CaseController {
         c.versions = versions
         c.property = prop
 
+        const caseAuthor = await User.find(c.author_id)
         const institution = await Institution.find(c.institution_id)
-        c.institution = institution.acronym
-        c.institutionTitle = institution.title
+        c.institution_acronym = institution.acronym
+        c.institution = institution.title
+        c.institution_country = institution.country
+        c.username = caseAuthor.username
 
         return response.json(c)
       } else return response.status(500).json('case not found')
