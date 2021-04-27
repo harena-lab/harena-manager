@@ -167,9 +167,11 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.post( '',           'GroupController.store')
-	Route.post( 'link/user',	'GroupController.linkUser')
-  Route.get(  'cases', 			'GroupController.listCases')
+	Route.post(   '',           'GroupController.store')
+	Route.post(   'link/user',	'GroupController.linkUser')
+  Route.delete( 'user',	      'GroupController.removeUser')
+  Route.get(    'cases', 			'GroupController.listCases')
+  Route.get(    'users', 			'GroupController.listUsers')
 
   // Route.get(  'list', 			'v1/CategoryController.listCategories')
   // Route.put(  ':id',        'v1/CategoryController.update')

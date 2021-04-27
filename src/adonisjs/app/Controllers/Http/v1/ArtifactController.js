@@ -94,8 +94,16 @@ class ArtifactController {
 
       return response.json(bodyMessage)
     } catch (e) {
+      console.log('============ Artifact catch error')
       console.log(e)
-      return response.status(e.status).json({ message: e.message })
+      switch (e.message) {
+        case 'dest already exists.':
+          return response.status(500).json({ message: 'Could not upload artifact, id already exists.' })
+          break;
+        default:
+          return response.status(e.status).json({ message: e.message })
+      }
+
     }
   }
 

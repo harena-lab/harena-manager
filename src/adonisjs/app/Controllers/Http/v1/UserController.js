@@ -202,96 +202,262 @@ class UserController {
       const specialtyFilter = request.input('fSpecialty') || `%`
       const propertyFilter = request.input('fProperty') || null
       const propertyValueFilter = request.input('fPropertyValue') || '%'
+      var itemOffset = 0
+      const itemLimit = request.input('nItems') || 20
+      if (request.input('page') && request.input('page') < 1)
+        itemOffset = 0
+      else
+        itemOffset = request.input('page') -1 || 0
+
       let result = null
-      // console.log(institutionFilter)
-      // console.log(userTypeFilter)
-
+      var totalPages = null
       if(propertyFilter != null){
-          const selectPropertyTitle = ('case_properties.value AS ' + propertyFilter)
-         result = await Database
-          .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
-          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
-          'cases.author_grade', 'cases.published', 'users.username',
-          'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
-          'institutions.country AS institution_country', 'cases.created_at',
-            Database.raw(`CASE WHEN case_properties.value = 0 AND properties.title = 'feedback'
-              THEN 'Waiting for feedback' WHEN case_properties.value = 1 AND properties.title = 'feedback'
-                THEN 'Feedback complete' ELSE case_properties.value END AS ?`,[propertyFilter])])
-          .distinct('cases.id')
-          .from('cases')
-          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-          .join('case_properties', 'case_properties.case_id', 'cases.id')
-          .join('properties', 'properties.id', 'case_properties.property_id')
-          .join('users', 'users.id', 'cases.author_id')
-          .join('institutions', 'users.institution_id', 'institutions.id')
-          .where('properties.title', propertyFilter)
-          .where('case_properties.value','like', propertyValueFilter)
-          .where('cases.published', '>=', publishedFilter)
-          .where('cases.institution_id', 'like', institutionFilter)
-          .where('cases.author_grade', 'like', userTypeFilter)
-          .where(function(){
-            if (specialtyFilter != '%')
-              this.where('cases.specialty', 'like', specialtyFilter)
-          })
 
-          .where(function(){
+        let countCases = await Database
+        .from('cases')
+        .join('case_properties', 'case_properties.case_id', 'cases.id')
+        .join('properties', 'properties.id', 'case_properties.property_id')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users_groups')
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where('properties.title', propertyFilter)
+        .where('case_properties.value','like', propertyValueFilter)
+        .where('cases.published', '>=', publishedFilter)
+        .where('cases.institution_id', 'like', institutionFilter)
+        .where('cases.author_grade', 'like', userTypeFilter)
+        .where(function(){
+          if (specialtyFilter != '%')
+          this.where('cases.specialty', 'like', specialtyFilter)
+        })
+
+        .where(function(){
+          this
+          .where('cases.author_id', user.id)
+          .orWhere(function () {
             this
-            .where('cases.author_id', user.id)
-            .orWhere(function () {
+            .where(function(){
               this
-              .where('permissions.entity', 'institution')
-              .where('permissions.subject', user.institution_id)
-              .where('permissions.clearance', '>=', clearance)
               .where(function(){
                 this
-                .whereNull('permissions.subject_grade')
-                .orWhere('permissions.subject_grade', user.grade)
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
               })
             })
+            .where('permissions.clearance', '>=', clearance)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', user.grade)
+            })
           })
-          .orderBy('cases.created_at', 'desc')
+        })
+        .countDistinct('cases.id as cases')
+        // console.log('============ count cases')
+        // console.log(countCases[0]['cases'] )
+        // console.log(itemLimit)
+        // console.log(countCases[0]['cases'] / itemLimit)
+        // console.log(Math.ceil(countCases[0]['cases'] / itemLimit))
+        totalPages = Math.ceil(countCases[0]['cases'] / itemLimit)
+
+        if(itemOffset >= totalPages)
+          itemOffset = 0
+
+        const selectPropertyTitle = ('case_properties.value AS ' + propertyFilter)
+        result = await Database
+        .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+        'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+        'cases.author_grade', 'cases.published', 'users.username',
+        'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+        'institutions.country AS institution_country', 'cases.created_at',
+        Database.raw(`CASE WHEN case_properties.value = 0 AND properties.title = 'feedback'
+        THEN 'Waiting for feedback' WHEN case_properties.value = 1 AND properties.title = 'feedback'
+        THEN 'Feedback complete' ELSE case_properties.value END AS ?`,[propertyFilter])])
+        .distinct('cases.id')
+        .from('cases')
+        .join('case_properties', 'case_properties.case_id', 'cases.id')
+        .join('properties', 'properties.id', 'case_properties.property_id')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users_groups')
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where('properties.title', propertyFilter)
+        .where('case_properties.value','like', propertyValueFilter)
+        .where('cases.published', '>=', publishedFilter)
+        .where('cases.institution_id', 'like', institutionFilter)
+        .where('cases.author_grade', 'like', userTypeFilter)
+        .where(function(){
+          if (specialtyFilter != '%')
+          this.where('cases.specialty', 'like', specialtyFilter)
+        })
+
+        .where(function(){
+          this
+          .where('cases.author_id', user.id)
+          .orWhere(function () {
+            this
+            .where(function(){
+              this
+              .where(function(){
+                this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
+              })
+            })
+            .where('permissions.clearance', '>=', clearance)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', user.grade)
+            })
+          })
+        })
+        .orderBy('cases.created_at', 'desc')
+        .offset(itemOffset * itemLimit)
+        .limit(itemLimit)
+
+
       }else{
+        let countCases = await Database
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users_groups')
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where('cases.published', '>=', publishedFilter)
+        .where('cases.institution_id', 'like', institutionFilter)
+        .where('cases.author_grade', 'like', userTypeFilter)
+        .where(function(){
+          if (specialtyFilter != '%')
+          this.where('cases.specialty', 'like', specialtyFilter)
+        })
 
-         result = await Database
-          .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
-          'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
-          'cases.author_grade', 'cases.published', 'users.username',
-          'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
-          'institutions.country AS institution_country', 'cases.created_at'])
-          .distinct('cases.id')
-          .from('cases')
-          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-          .join('users', 'users.id', 'cases.author_id')
-          .join('institutions', 'users.institution_id', 'institutions.id')
-          .where('cases.published', '>=', publishedFilter)
-          .where('cases.institution_id', 'like', institutionFilter)
-          .where('cases.author_grade', 'like', userTypeFilter)
-          .where(function(){
-            if (specialtyFilter != '%')
-              this.where('cases.specialty', 'like', specialtyFilter)
-          })
-
-          .where(function(){
+        .where(function(){
+          this
+          .where('cases.author_id', user.id)
+          .orWhere(function () {
             this
-            .where('cases.author_id', user.id)
-            .orWhere(function () {
+            .where(function(){
               this
-              .where('permissions.entity', 'institution')
-              .where('permissions.subject', user.institution_id)
-              .where('permissions.clearance', '>=', clearance)
               .where(function(){
                 this
-                .whereNull('permissions.subject_grade')
-                .orWhere('permissions.subject_grade', user.grade)
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
               })
             })
+            .where('permissions.clearance', '>=', clearance)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', user.grade)
+            })
           })
-          .orderBy('cases.created_at', 'desc')
+        })
+        .countDistinct('cases.id as cases')
+        // console.log('================================================================ number of pages')
+        // console.log(countCases[0]['cases'])
+        // console.log(itemLimit)
+        // console.log(countCases[0]['cases'] / itemLimit)
+        // console.log(Math.ceil(countCases[0]['cases'] / itemLimit))
+        totalPages = Math.ceil(countCases[0]['cases'] / itemLimit)
+
+        if(itemOffset >= totalPages)
+          itemOffset = 0
+
+        result = await Database
+        .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
+        'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+        'cases.author_grade', 'cases.published', 'users.username',
+        'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+        'institutions.country AS institution_country', 'cases.created_at'])
+        .distinct('cases.id')
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .join('users_groups')
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where('cases.published', '>=', publishedFilter)
+        .where('cases.institution_id', 'like', institutionFilter)
+        .where('cases.author_grade', 'like', userTypeFilter)
+        .where(function(){
+          if (specialtyFilter != '%')
+          this.where('cases.specialty', 'like', specialtyFilter)
+        })
+
+        .where(function(){
+          this
+          .where('cases.author_id', user.id)
+          .orWhere(function () {
+            this
+            .where(function(){
+              this
+              .where(function(){
+                this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .whereRaw('permissions.subject = users_groups.group_id')
+                .where('users_groups.user_id', user.id)
+              })
+            })
+            .where('permissions.clearance', '>=', clearance)
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', user.grade)
+            })
+          })
+        })
+        .orderBy('cases.created_at', 'desc')
+        .offset(itemOffset * itemLimit)
+        .limit(itemLimit)
+
       }
 
 
       console.log(result)
-      return response.json(result)
+      return response.json({cases:result, pages:totalPages})
     } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
