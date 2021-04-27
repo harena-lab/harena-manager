@@ -368,7 +368,7 @@
 								},
 								{
 									"key": "fUserType",
-									"value": "aluno",
+									"value": "student",
 									"type": "text",
 									"disabled": true
 								},
@@ -543,7 +543,8 @@
 								},
 								{
 									"key": "grade",
-									"value": "aluno",
+									"value": "student",
+									"description": "\"professor\" or \"student\"",
 									"type": "text"
 								}
 							]
@@ -812,7 +813,7 @@
 								},
 								{
 									"key": "permissionClearance",
-									"value": "read",
+									"value": "1",
 									"type": "text"
 								}
 							]
@@ -1020,7 +1021,7 @@
 								{
 									"key": "subject_grade",
 									"value": "",
-									"description": "Choose a specific user grade (professor/aluno)",
+									"description": "Choose a specific user grade (professor/student)",
 									"type": "text",
 									"disabled": true
 								},
@@ -1592,8 +1593,7 @@
 								{
 									"key": "clearance",
 									"value": "4",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "published",
@@ -1609,7 +1609,7 @@
 								},
 								{
 									"key": "fUserType",
-									"value": "aluno",
+									"value": "student",
 									"type": "text",
 									"disabled": true
 								},
@@ -2504,7 +2504,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "group title",
+									"value": "group test delete",
 									"type": "text"
 								}
 							]
