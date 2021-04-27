@@ -111,6 +111,7 @@ class CaseController {
       cv.source = request.input('source')
       await c.versions().save(cv, trx)
 
+      /*
       const permission = new Permission()
       permission.id = await uuidv4()
       permission.entity = request.input('permissionEntity') || 'institution'
@@ -120,6 +121,7 @@ class CaseController {
       permission.table_id = c.id
 
       permission.save(trx)
+      */
 
       let institution = await Institution.find(auth.user.institution_id)
       await c.institution().associate(institution, trx)
