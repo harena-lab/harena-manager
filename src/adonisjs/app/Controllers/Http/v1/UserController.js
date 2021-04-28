@@ -407,6 +407,7 @@ class UserController {
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users_groups')
+        .where('users_groups.user_id', user.id)
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('cases.published', '>=', publishedFilter)
