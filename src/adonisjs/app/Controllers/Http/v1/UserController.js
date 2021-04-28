@@ -219,6 +219,7 @@ class UserController {
         .join('properties', 'properties.id', 'case_properties.property_id')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users_groups')
+        .where('users_groups.user_id', user.id)
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('properties.title', propertyFilter)
@@ -252,7 +253,6 @@ class UserController {
                 this
                 .where('permissions.entity', 'group')
                 .whereRaw('permissions.subject = users_groups.group_id')
-                .where('users_groups.user_id', user.id)
               })
             })
             .where('permissions.clearance', '>=', clearance)
@@ -290,6 +290,7 @@ class UserController {
         .join('properties', 'properties.id', 'case_properties.property_id')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users_groups')
+        .where('users_groups.user_id', user.id)
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('properties.title', propertyFilter)
@@ -323,7 +324,6 @@ class UserController {
                 this
                 .where('permissions.entity', 'group')
                 .whereRaw('permissions.subject = users_groups.group_id')
-                .where('users_groups.user_id', user.id)
               })
             })
             .where('permissions.clearance', '>=', clearance)
@@ -344,6 +344,7 @@ class UserController {
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .join('users_groups')
+        .where('users_groups.user_id', user.id)
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('cases.published', '>=', publishedFilter)
@@ -375,7 +376,6 @@ class UserController {
                 this
                 .where('permissions.entity', 'group')
                 .whereRaw('permissions.subject = users_groups.group_id')
-                .where('users_groups.user_id', user.id)
               })
             })
             .where('permissions.clearance', '>=', clearance)
