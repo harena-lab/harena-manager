@@ -1011,6 +1011,7 @@
 								{
 									"key": "entity",
 									"value": "user",
+									"description": "user/group/institution",
 									"type": "text"
 								},
 								{
@@ -1028,6 +1029,7 @@
 								{
 									"key": "clearance",
 									"value": "1",
+									"description": "1: read/ 2: Comment/ 3: Share/ 4: Edit/ 5: Administration",
 									"type": "text"
 								},
 								{
@@ -1885,6 +1887,50 @@
 					"response": []
 				},
 				{
+					"name": "/admin/groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"// pm.environment.set(\"case-id\", response.token);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/groups",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/admin/users",
 					"event": [
 						{
@@ -2389,6 +2435,41 @@
 					"response": []
 				},
 				{
+					"name": "/group (wip)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{api-base-url}}/group",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/group/users (wip)",
 					"event": [
 						{
@@ -2412,7 +2493,7 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "8a419a89-4692-4b32-b485-82a2df44f31f",
+									"value": "09c35267-5f85-4f1f-bb57-7ecdf21877dd",
 									"type": "text"
 								}
 							]
@@ -2504,7 +2585,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "group test delete",
+									"value": "test1",
 									"type": "text"
 								}
 							]

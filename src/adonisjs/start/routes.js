@@ -172,6 +172,7 @@ Route.group(() => {
   Route.delete( 'user',	      'GroupController.removeUser')
   Route.get(    'cases', 			'GroupController.listCases')
   Route.get(    'users', 			'GroupController.listUsers')
+  Route.get(    '',       'GroupController.listGroups')
 
   // Route.get(  'list', 			'v1/CategoryController.listCategories')
   // Route.put(  ':id',        'v1/CategoryController.update')
@@ -205,6 +206,8 @@ Route.group(() => {
 	Route.post(  'revoke_tokens',     			'v1/AdminController.revoke_tokens')
 
   Route.put(  'user/:id',        'v1/AdminController.updateUser')
+
+  Route.get(   'groups',     					'v1/AdminController.listGroups')
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 

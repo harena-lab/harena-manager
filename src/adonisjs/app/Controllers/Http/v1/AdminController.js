@@ -9,6 +9,8 @@ const Database = use('Database')
 const Role = use('Adonis/Acl/Role')
 const Permission = use('Adonis/Acl/Permission')
 const User = use('App/Models/v1/User')
+const Group = use('App/Models/Group')
+
 
 const uuidv4 = require('uuid/v4')
 
@@ -133,6 +135,18 @@ class AdminController {
     } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })
+    }
+  }
+
+  async listGroups ({request, auth, response}){
+
+    try {
+      const result = await Group.all()
+
+      return response.json(result)
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
     }
   }
 }

@@ -364,7 +364,7 @@ class CaseController {
             else
               _subject = await User.find(subject)
           }else if(entity =='group'){
-            _subject = await Group.findBy('title', subject)
+            _subject = await Group.findBy('title', subject) || await Group.find(subject)
           }
 
           if(canShare && clearance < highestClearance && _subject){
