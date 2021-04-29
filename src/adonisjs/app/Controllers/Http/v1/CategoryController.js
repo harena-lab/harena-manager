@@ -109,7 +109,10 @@ class CategoryController {
          .join('case_properties', 'case_properties.case_id', 'cases.id')
          .join('properties', 'properties.id', 'case_properties.property_id')
          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-         .join('users_groups')
+         .leftJoin('users_groups', function() {
+           this.on('permissions.subject', '=', 'users_groups.group_id')
+           .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
+         })
          .join('users', 'cases.author_id','users.id')
          .join('institutions', 'users.institution_id', 'institutions.id')
          .where('cases.category_id', category.id)
@@ -143,7 +146,6 @@ class CategoryController {
                .orWhere(function() {
                  this
                  .where('permissions.entity', 'group')
-                 .whereRaw('permissions.subject = users_groups.group_id')
                  .where('users_groups.user_id', user.id)
                })
              })
@@ -177,7 +179,10 @@ class CategoryController {
         .join('case_properties', 'case_properties.case_id', 'cases.id')
         .join('properties', 'properties.id', 'case_properties.property_id')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .join('users_groups')
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
+        })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('cases.category_id', category.id)
@@ -211,7 +216,6 @@ class CategoryController {
               .orWhere(function() {
                 this
                 .where('permissions.entity', 'group')
-                .whereRaw('permissions.subject = users_groups.group_id')
                 .where('users_groups.user_id', user.id)
               })
             })
@@ -232,7 +236,10 @@ class CategoryController {
         let countCases = await Database
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .join('users_groups')
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
+        })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('cases.category_id', category.id)
@@ -264,7 +271,6 @@ class CategoryController {
               .orWhere(function() {
                 this
                 .where('permissions.entity', 'group')
-                .whereRaw('permissions.subject = users_groups.group_id')
                 .where('users_groups.user_id', user.id)
               })
             })
@@ -292,7 +298,10 @@ class CategoryController {
         .distinct('cases.id')
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .join('users_groups')
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
+        })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
         .where('cases.category_id', category.id)
@@ -324,7 +333,6 @@ class CategoryController {
               .orWhere(function() {
                 this
                 .where('permissions.entity', 'group')
-                .whereRaw('permissions.subject = users_groups.group_id')
                 .where('users_groups.user_id', user.id)
               })
             })

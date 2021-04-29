@@ -33,7 +33,6 @@ class GroupController {
     }
   }
 
-
   async linkUser ({ request, auth, response }) {
     try {
       const { userId, groupId } = request.post()
@@ -58,7 +57,6 @@ class GroupController {
     }
   }
 
-
   async listCases ({ request, response, auth }) {
     try {
       const groupId = request.input('groupId')
@@ -75,7 +73,9 @@ class GroupController {
         let countCases = await Database
           .from('cases')
           .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-          .join('users_groups')
+          .leftJoin('users_groups', function() {
+            this.on('permissions.subject', '=', 'users_groups.group_id')
+          })
           .join('users', 'cases.author_id','users.id')
           .join('institutions', 'users.institution_id', 'institutions.id')
           .where('permissions.entity', 'group')
@@ -97,7 +97,9 @@ class GroupController {
           .distinct('cases.id')
           .from('cases')
           .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-          .join('users_groups')
+          .leftJoin('users_groups', function() {
+            this.on('permissions.subject', '=', 'users_groups.group_id')
+          })
           .join('users', 'cases.author_id','users.id')
           .join('institutions', 'users.institution_id', 'institutions.id')
           .where('permissions.entity', 'group')
@@ -123,9 +125,10 @@ class GroupController {
       const groupId = request.input('groupId')
       if(await Group.find(groupId)){
         const result = await Database
-          .select('user_id','group_id','groups.title as group_title')
+          .select('users.username','user_id','group_id','groups.title as group_title')
           .from('users_groups')
           .join('groups','users_groups.group_id','groups.id')
+          .join('users', 'users_groups.user_id', 'users.id')
           .where ('users_groups.group_id', groupId)
 
         return response.json(result)
@@ -165,6 +168,24 @@ class GroupController {
       }else{
         return response.status(500).json('Error. Could not find the user to be removed from the group.')
       }
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
+    }
+  }
+
+  async listGroups ({request, auth, response}){
+
+    try {
+      const groupId = request.input('groupId')
+
+      const result = await Database
+        .select('group_id','groups.title as group_title')
+        .from('users_groups')
+        .join('groups','users_groups.group_id','groups.id')
+        .where ('users_groups.user_id', auth.user.id)
+
+      return response.json(result)
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.toString() })
