@@ -27,40 +27,90 @@ class CheckPermissionForGivenCase {
 
       if (properties[0] == 'read') {
         queryResult = await Database
-          .from('cases')
-          .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-          .join('users', 'users.id', 'cases.author_id')
-          .where('cases.author_id', auth.user.id)
-          .orWhere(function () {
-            this
-              .where('permissions.entity', 'institution')
-              .where('permissions.subject', auth.user.institution_id)
-              .where('permissions.clearance', '>=', 1)
-              .where(function(){
-                this
-                .whereNull('permissions.subject_grade')
-                .orWhere('permissions.subject_grade', auth.user.grade)
-              })
-          })
-          .count()
-      }
-
-      if (properties[0] == 'share') {
         queryResult = await Database
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .join('users', 'users.id', 'cases.author_id')
-        .where('cases.author_id', auth.user.id)
-        .orWhere(function () {
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [auth.user.id]));
+        })
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where(function(){
           this
-            .where('permissions.entity', 'institution')
-            .where('permissions.subject', auth.user.institution_id)
-            .where('permissions.clearance', '>=', 2)
+          .where('cases.author_id', auth.user.id)
+          .orWhere(function () {
+            this
+            .where(function(){
+              this
+              .where(function(){
+                this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', auth.user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', auth.user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .where('users_groups.user_id', auth.user.id)
+              })
+            })
+            .where('permissions.clearance', '>=', '1')
             .where(function(){
               this
               .whereNull('permissions.subject_grade')
               .orWhere('permissions.subject_grade', auth.user.grade)
             })
+          })
+        })
+        .count()
+      }
+
+      if (properties[0] == 'share') {
+        queryResult = await Database
+        queryResult = await Database
+        .from('cases')
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [auth.user.id]));
+        })
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where(function(){
+          this
+          .where('cases.author_id', auth.user.id)
+          .orWhere(function () {
+            this
+            .where(function(){
+              this
+              .where(function(){
+                this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', auth.user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', auth.user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .where('users_groups.user_id', auth.user.id)
+              })
+            })
+            .where('permissions.clearance', '>=', '3')
+            .where(function(){
+              this
+              .whereNull('permissions.subject_grade')
+              .orWhere('permissions.subject_grade', auth.user.grade)
+            })
+          })
         })
         .count()
       }
@@ -69,18 +119,42 @@ class CheckPermissionForGivenCase {
         queryResult = await Database
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .join('users', 'users.id', 'cases.author_id')
-        .where('cases.author_id', auth.user.id)
-        .orWhere(function () {
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [auth.user.id]));
+        })
+        .join('users', 'cases.author_id','users.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where(function(){
           this
-            .where('permissions.entity', 'institution')
-            .where('permissions.subject', auth.user.institution_id)
-            .where('permissions.clearance', '>=', 4)
+          .where('cases.author_id', auth.user.id)
+          .orWhere(function () {
+            this
+            .where(function(){
+              this
+              .where(function(){
+                this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', auth.user.institution_id)
+              })
+              .orWhere(function(){
+                this
+                .where('permissions.entity', 'user')
+                .where('permissions.subject', auth.user.id)
+              })
+              .orWhere(function() {
+                this
+                .where('permissions.entity', 'group')
+                .where('users_groups.user_id', auth.user.id)
+              })
+            })
+            .where('permissions.clearance', '>=', '4')
             .where(function(){
               this
               .whereNull('permissions.subject_grade')
               .orWhere('permissions.subject_grade', auth.user.grade)
             })
+          })
         })
         .count()
       }
@@ -92,7 +166,8 @@ class CheckPermissionForGivenCase {
           .where('cases.author_id', auth.user.id)
           .count()
       }
-
+      console.log('========================================')
+      console.log(queryResult[0]['count(*)'])
       if (queryResult[0]['count(*)'] === 0) {
         return response.status(500).json('you dont have permission to ' + properties[0] + ' such case')
       } else {
