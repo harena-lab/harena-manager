@@ -13,7 +13,7 @@ Check [Harena Docs Repository](https://github.com/datasci4health/harena-docs/tre
 
 ## Available Services
 
-Check https://documenter.getpostman.com/view/7243662/T1Ds8ag7?version=latest to discover available endpoints provided by `harena manager api`.
+Check https://documenter.getpostman.com/view/12184223/TzK2ZE4d to discover available endpoints provided by `harena manager api`.
 
 ## Getting Started
 
@@ -57,7 +57,7 @@ docker exec -it harena-manager_harena-manager_1 bash
 * `development`:
     * The latest code contaning the most recent updates made by the development team
     * [Changelog file](https://github.com/datasci4health/harena-manager/blob/development/CHANGELOG.md) show unreleased features which will be merged into `master` from `development` branch in the next release
-    * Version running at http://harena.ds4h.org/development . 
+    * Version running at http://harena.ds4h.org/development .
     * Protected. Must use _pull request_ to merge new features.
 <!--* `feature/< github-issue >`:
     * new feature registered on the issue list https://github.com/datasci4health/harena-manager/issues.
