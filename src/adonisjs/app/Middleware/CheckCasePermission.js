@@ -27,7 +27,6 @@ class CheckPermissionForGivenCase {
 
       if (properties[0] == 'read') {
         queryResult = await Database
-        queryResult = await Database
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
         .leftJoin('users_groups', function() {
@@ -71,7 +70,6 @@ class CheckPermissionForGivenCase {
       }
 
       if (properties[0] == 'share') {
-        queryResult = await Database
         queryResult = await Database
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
