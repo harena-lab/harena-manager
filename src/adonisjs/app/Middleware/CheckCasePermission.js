@@ -164,8 +164,8 @@ class CheckPermissionForGivenCase {
           .where('cases.author_id', auth.user.id)
           .count()
       }
-      console.log('========================================')
-      console.log(queryResult[0]['count(*)'])
+      // console.log('========================================')
+      // console.log(queryResult[0]['count(*)'])
       if (queryResult[0]['count(*)'] === 0) {
         return response.status(500).json('you dont have permission to ' + properties[0] + ' such case')
       } else {
