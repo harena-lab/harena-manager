@@ -9,7 +9,7 @@
 			"name": "auth",
 			"item": [
 				{
-					"name": "v2 (JWT)",
+					"name": "v2 (JWT  - DEPRECATED)",
 					"item": [
 						{
 							"name": "/auth/login jwt",
@@ -445,6 +445,49 @@
 					"response": []
 				},
 				{
+					"name": "/user/property",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "propertyTitle",
+									"value": "prognosis-current-lvl",
+									"description": "Optional (To list just a specific property)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/user/cases_by_institution (to trash)",
 					"event": [
 						{
@@ -562,6 +605,50 @@
 					"response": []
 				},
 				{
+					"name": "/user/property",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "propertyTitle",
+									"value": "prognosis-current-lvl",
+									"type": "text"
+								},
+								{
+									"key": "propertyValue",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/user",
 					"request": {
 						"method": "PUT",
@@ -641,6 +728,40 @@
 							"path": [
 								"user",
 								"password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/property",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "propertyTitle",
+									"value": "prognosis-current-lvl",
+									"type": "text"
+								},
+								{
+									"key": "propertyValue",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/property/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"property",
 								""
 							]
 						}
@@ -1010,13 +1131,13 @@
 							"formdata": [
 								{
 									"key": "entity",
-									"value": "user",
+									"value": "group",
 									"description": "user/group/institution",
 									"type": "text"
 								},
 								{
 									"key": "subject",
-									"value": "4a689978-57d8-4470-a8db-d7959a42586d",
+									"value": "09c35267-5f85-4f1f-bb57-7ecdf21877dd",
 									"type": "text"
 								},
 								{
@@ -2406,7 +2527,7 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "8a419a89-4692-4b32-b485-82a2df44f31f",
+									"value": "b26b6fe4-1bb6-470f-a0c2-033fb7be54c7",
 									"type": "text"
 								},
 								{
@@ -2493,7 +2614,7 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "09c35267-5f85-4f1f-bb57-7ecdf21877dd",
+									"value": "ad27c585-1924-46bb-ad92-87182d34a726",
 									"type": "text"
 								}
 							]
@@ -2613,12 +2734,12 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "8a419a89-4692-4b32-b485-82a2df44f31f",
+									"value": "ad27c585-1924-46bb-ad92-87182d34a726",
 									"type": "text"
 								},
 								{
 									"key": "userId",
-									"value": "6e45f06d-dcec-4c86-98a8-01efe1337e5f",
+									"value": "2879c9d9-9dca-40c3-9f25-da5108565b36",
 									"type": "text"
 								}
 							]
