@@ -213,6 +213,10 @@ Route.group(() => {
 
   Route.get(   'groups',     					'v1/AdminController.listGroups')
 
+  Route.get(   'user/property',     					'v1/AdminController.listUserProperties')
+  Route.post(  'user/property',     					'v1/AdminController.storeUserProperty')
+  Route.put(   'user/property',     					'v1/AdminController.updateUserProperty')
+
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 
 
