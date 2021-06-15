@@ -10,6 +10,8 @@ const Role = use('Adonis/Acl/Role')
 const Permission = use('Adonis/Acl/Permission')
 const User = use('App/Models/v1/User')
 const Group = use('App/Models/Group')
+const Property = use('App/Models/v1/Property')
+const UserProperty = use('App/Models/v1/UserProperty')
 
 
 const uuidv4 = require('uuid/v4')
@@ -250,6 +252,7 @@ class AdminController {
       }
     } catch (e) {
       trx.rollback()
+      console.log('============ update admin user property error')
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
