@@ -351,8 +351,7 @@
 								{
 									"key": "clearance",
 									"value": "4",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "published",
@@ -362,7 +361,7 @@
 								},
 								{
 									"key": "fInstitution",
-									"value": "c5562bfd-9a94-40f0-b08a-3627e3e417e0",
+									"value": "b153fa2d-3067-461f-ba5b-c5c592d63aa5",
 									"type": "text",
 									"disabled": true
 								},
@@ -391,14 +390,23 @@
 									"disabled": true
 								},
 								{
+									"key": "fSearchStr",
+									"value": "simple",
+									"description": "Text search for case title, description and keyword",
+									"type": "text",
+									"disabled": true
+								},
+								{
 									"key": "nItems",
-									"value": "20",
-									"type": "text"
+									"value": "10",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "nPage",
 									"value": "1",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -1755,16 +1763,20 @@
 									"disabled": true
 								},
 								{
+									"key": "fSearchStr",
+									"value": "simple",
+									"description": "Text search for case title, description and keyword",
+									"type": "text"
+								},
+								{
 									"key": "nItems",
-									"value": "20",
-									"type": "text",
-									"disabled": true
+									"value": "10",
+									"type": "text"
 								},
 								{
 									"key": "nPage",
 									"value": "1",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								}
 							]
 						},
@@ -2217,7 +2229,7 @@
 							"formdata": [
 								{
 									"key": "userId",
-									"value": "6e45f06d-dcec-4c86-98a8-01efe1337e5f",
+									"value": "22d65a5f-fb24-459a-bf21-017873a9632c",
 									"type": "text"
 								},
 								{
