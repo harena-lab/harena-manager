@@ -203,8 +203,13 @@ class UserController {
       const specialtyFilter = request.input('fSpecialty') || `%`
       const propertyFilter = request.input('fProperty') || null
       const propertyValueFilter = request.input('fPropertyValue') || '%'
+      let searchStringFilter = request.input('fSearchStr') || `%`
       var itemOffset = 0
       const itemLimit = request.input('nItems') || 20
+
+      if(searchStringFilter != '%')
+        searchStringFilter = `%${searchStringFilter}%`
+
       if (request.input('page') && request.input('page') < 1)
         itemOffset = 0
       else
@@ -233,6 +238,12 @@ class UserController {
         .where(function(){
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
         })
 
         .where(function(){
@@ -307,6 +318,12 @@ class UserController {
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
         })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
+        })
 
         .where(function(){
           this
@@ -360,6 +377,12 @@ class UserController {
         .where(function(){
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
         })
 
         .where(function(){
@@ -425,6 +448,12 @@ class UserController {
         .where(function(){
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
         })
 
         .where(function(){
