@@ -19,14 +19,18 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 */
 Route.group(() => {
     Route.post(	 '',		                  'v1/UserController.store')
+    Route.post(	 'property',		          'v1/UserController.storeProperty').middleware(['auth'])
 
     Route.get(	 'cases',                 'v1/UserController.listCases').middleware(['auth'])
     Route.get(   'quests',  	            'v1/UserController.list_quests').middleware(['auth'])
     Route.get(   'cases_by_quest',        'v1/UserController.list_cases_by_quests').middleware(['auth'])
+    Route.get(   'property',              'v1/UserController.listProperties').middleware(['auth'])
+    Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
 
     Route.put(   'password',              'v1/UserController.updatePassword').middleware(['auth'])
-    Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
     Route.put(   '',                   'v1/UserController.update').middleware(['auth'])
+    Route.put(   'property',           'v1/UserController.updateProperty').middleware(['auth'])
+
     Route.delete(':id',                   'v1/UserController.destroy').middleware(['auth'])
 }).prefix('/api/v1/user')
 
@@ -186,6 +190,11 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
+
+  Route.get(   'user/property',     					'v1/AdminController.listUserProperties')
+  Route.post(  'user/property',     					'v1/AdminController.storeUserProperty')
+  Route.put(   'user/property',     					'v1/AdminController.updateUserProperty')
+
 	Route.get(   'users',          				'v1/UserController.index')
 
 	Route.get(   'roles',               		'v1/AdminController.list_roles')

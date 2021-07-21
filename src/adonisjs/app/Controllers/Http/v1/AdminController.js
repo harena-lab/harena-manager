@@ -10,6 +10,8 @@ const Role = use('Adonis/Acl/Role')
 const Permission = use('Adonis/Acl/Permission')
 const User = use('App/Models/v1/User')
 const Group = use('App/Models/Group')
+const Property = use('App/Models/v1/Property')
+const UserProperty = use('App/Models/v1/UserProperty')
 
 
 const uuidv4 = require('uuid/v4')
@@ -149,6 +151,114 @@ class AdminController {
       return response.status(e.status).json({ message: e.toString() })
     }
   }
+
+  async listUserProperties ({request, response}){
+
+    try {
+      const user = await User.find(request.input('userId'))
+      const propertyTitle = request.input('propertyTitle') || '%'
+      if(user){
+        const result = await Database
+        .select(['properties.title','user_properties.value'])
+        .from('user_properties')
+        .join('properties', 'properties.id', 'user_properties.property_id')
+        .where('user_properties.user_id', user.id)
+        .where('properties.title', 'like', propertyTitle)
+
+        return response.json({userProperty: result, userId: user.id})
+      }
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
+    }
+  }
+
+  async storeUserProperty ({request, response}){
+
+    const trx = await Database.beginTransaction()
+    try {
+      const user = await User.find(request.input('userId'))
+      const propertyTitle = request.input('propertyTitle')
+      const propertyValue = request.input('propertyValue')
+      if(user && propertyTitle && propertyValue){
+        const property = await Property.findOrCreate(
+          { title: propertyTitle },
+          { id: await uuidv4(), title: propertyTitle }, trx
+        )
+        const userProperty = await UserProperty.findOrCreate(
+          { user_id: user.id, property_id: property.id},
+          { user_id: user.id, property_id: property.id, value: propertyValue}, trx
+        )
+
+        await property.save(trx)
+        await userProperty.save(trx)
+        trx.commit()
+
+        return response.json({property: property, userProperty: userProperty, userId: user.id})
+      }else if(!user){
+        trx.rollback()
+        return response.status(500).json({ message: ('Error, could not find an user with this id: '+user.id) })
+      }else if(!propertyTitle){
+        trx.rollback()
+        return response.status(500).json({ message: 'Error, property title missing' })
+      }else if(!propertyValue){
+        trx.rollback()
+        return response.status(500).json({ message: 'Error, property value missing' })
+      }
+    } catch (e) {
+      trx.rollback()
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
+    }
+  }
+
+  async updateUserProperty ({request, response}){
+    const trx = await Database.beginTransaction()
+    try {
+      const user = await User.find(request.input('userId'))
+      const propertyTitle = request.input('propertyTitle')
+      const propertyValue = request.input('propertyValue')
+
+      const property = await Property.findBy('title', propertyTitle)
+      if(user && propertyTitle && propertyValue && property){
+        var userProperty = await UserProperty
+        .query()
+        .where('property_id', property.id)
+        .where('user_id', user.id)
+        .fetch()
+        userProperty = userProperty.last()
+
+        await trx
+        .table('user_properties')
+        .where('property_id', property.id)
+        .where('user_id', user.id)
+        .update({ value: propertyValue})
+
+        userProperty.value = propertyValue
+        trx.commit()
+
+        return response.json({userProperty: userProperty})
+      }else if(!user){
+        trx.rollback()
+        return response.status(500).json({ message: ('Error, could not find an user with this id: '+user.id) })
+      }else if(!property){
+        return response.status(500).json({ message: ('Error, could not find an property with this title: '+propertyTitle) })
+      }else if(!propertyTitle){
+        trx.rollback()
+        return response.status(500).json({ message: 'Error, property title missing' })
+      }else if(!propertyValue){
+        trx.rollback()
+        return response.status(500).json({ message: 'Error, property value missing' })
+      }
+    } catch (e) {
+      trx.rollback()
+      console.log('============ update admin user property error')
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
+
 }
 
 module.exports = AdminController

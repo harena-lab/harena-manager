@@ -14,6 +14,7 @@ const Institution = use('App/Models/v1/Institution')
 const Artifact = use('App/Models/v1/Artifact')
 const Quest = use('App/Models/v1/Quest')
 const Property = use('App/Models/v1/Property')
+const UserProperty = use('App/Models/v1/UserProperty')
 
 const uuidv4 = require('uuid/v4')
 const Env = use('Env')
@@ -202,8 +203,13 @@ class UserController {
       const specialtyFilter = request.input('fSpecialty') || `%`
       const propertyFilter = request.input('fProperty') || null
       const propertyValueFilter = request.input('fPropertyValue') || '%'
+      let searchStringFilter = request.input('fSearchStr') || `%`
       var itemOffset = 0
       const itemLimit = request.input('nItems') || 20
+
+      if(searchStringFilter != '%')
+        searchStringFilter = `%${searchStringFilter}%`
+
       if (request.input('page') && request.input('page') < 1)
         itemOffset = 0
       else
@@ -232,6 +238,12 @@ class UserController {
         .where(function(){
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
         })
 
         .where(function(){
@@ -306,6 +318,12 @@ class UserController {
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
         })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
+        })
 
         .where(function(){
           this
@@ -359,6 +377,12 @@ class UserController {
         .where(function(){
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
         })
 
         .where(function(){
@@ -424,6 +448,12 @@ class UserController {
         .where(function(){
           if (specialtyFilter != '%')
           this.where('cases.specialty', 'like', specialtyFilter)
+        })
+        .where(function(){
+          this
+          .where('cases.title', 'like', searchStringFilter)
+          .orWhere('cases.description', 'like', searchStringFilter)
+          .orWhere('cases.keywords', 'like', searchStringFilter)
         })
 
         .where(function(){
@@ -577,6 +607,88 @@ class UserController {
 
       return response.json(quests)
     } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
+  // User properties
+
+  async listProperties ({request, response, auth}){
+    try {
+      const user = await User.find(auth.user.id)
+      const propertyTitle = request.input('propertyTitle') || '%'
+      const result = await Database
+      .select(['properties.title','user_properties.value'])
+      .from('user_properties')
+      .join('properties', 'properties.id', 'user_properties.property_id')
+      .where('user_properties.user_id', user.id)
+      .where('properties.title', 'like', propertyTitle)
+
+      return response.json({userProperty: result})
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+
+  }
+
+  async storeProperty ({request, response, auth}){
+    const trx = await Database.beginTransaction()
+    try {
+      const user = await User.find(auth.user.id)
+      const propertyTitle = request.input('propertyTitle')
+      const propertyValue = request.input('propertyValue')
+      const property = await Property.findOrCreate(
+        { title: propertyTitle },
+        { id: await uuidv4(), title: propertyTitle }, trx
+      )
+      const userProperty = await UserProperty.findOrCreate(
+        { user_id: user.id, property_id: property.id},
+        { user_id: user.id, property_id: property.id, value: propertyValue}, trx
+      )
+
+      await property.save(trx)
+      await userProperty.save(trx)
+      trx.commit()
+
+      return response.json({property: property, userProperty: userProperty})
+    } catch (e) {
+      trx.rollback()
+      console.log(e)
+      return response.status(500).json({ message: e.message })
+    }
+
+  }
+
+  async updateProperty ({request, response, auth}){
+      const trx = await Database.beginTransaction()
+      try {
+        const user = await User.find(auth.user.id)
+        const propertyTitle = request.input('propertyTitle')
+        const propertyValue = request.input('propertyValue')
+
+        const property = await Property.findBy('title', propertyTitle)
+
+        var userProperty = await UserProperty
+          .query()
+          .where('property_id', property.id)
+          .where('user_id', user.id)
+          .fetch()
+        userProperty = userProperty.last()
+
+        await trx
+        .table('user_properties')
+        .where('property_id', property.id)
+        .where('user_id', user.id)
+        .update({ value: propertyValue})
+
+        userProperty.value = propertyValue
+        trx.commit()
+
+        return response.json({userProperty: userProperty})
+    } catch (e) {
+      trx.rollback()
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
