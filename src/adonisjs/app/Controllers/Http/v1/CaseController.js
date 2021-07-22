@@ -5,6 +5,8 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Database = use('Database')
+const Drive = use('Drive')
+const Helpers = use('Helpers')
 
 const User = use('App/Models/v1/User')
 const Case = use('App/Models/v1/Case')
@@ -15,6 +17,8 @@ const Property = use('App/Models/v1/Property')
 const CaseProperty = use('App/Models/v1/CaseProperty')
 const UsersGroup = use('App/Models/v1/UsersGroup')
 const Group = use('App/Models/Group')
+const Artifact = use('App/Models/v1/Artifact')
+const CaseArtifacts = use('App/Models/CaseArtifact')
 
 const uuidv4 = require('uuid/v4')
 
@@ -265,14 +269,31 @@ class CaseController {
           .where('table', 'cases')
           .where('table_id', c.id)
           .delete()
-          await CaseProperty
-            .query()
-            .where('case_id', c.id)
-            .delete()
-        // await c.users().detach()
-        // await c.quests().detach()
+        await CaseProperty
+          .query()
+          .where('case_id', c.id)
+          .delete()
+
+        let _caseArtifacts = Database
+          .from('case_artifacts')
+          .where('case_id', c.id)
+          .select('artifact_id')
         await c.artifacts().delete()
 
+        // await c.users().detach()
+        // await c.quests().detach()
+        let _artifacts = await Database
+        .from('artifacts')
+        .whereIn('id', _caseArtifacts)
+        for (let i = 0; i < _caseArtifacts.length; i++) {
+          let artifact = await Artifact.find(_caseArtifacts[i].id)
+          await artifact.delete()
+        }
+        let relativeP = ''
+        for (let i = 0; i < _artifacts.length; i++) {
+          let path = Helpers.publicPath(_artifacts[i].relative_path)
+          Drive.delete(path)
+        }
         await c.delete(trx)
 
         trx.commit()

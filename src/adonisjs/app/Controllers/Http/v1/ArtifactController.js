@@ -3,6 +3,7 @@
 const Database = use('Database')
 const Helpers = use('Helpers')
 const Env = use('Env')
+const Drive = use('Drive')
 
 const uuid4 = require('uuid/v4')
 
@@ -116,8 +117,14 @@ class ArtifactController {
       const artifact = await Artifact.findBy('id', params.id)
 
       if (artifact != null) {
-        await artifact.delete(trx)
 
+        await CaseArtifacts
+        .query()
+        .where('artifact_id', artifact.id)
+        .delete()
+        
+        await artifact.delete(trx)
+        Drive.delete(Helpers.publicPath(artifact.relative_path))
         trx.commit()
         return response.json('artifact successfully deleted')
       } else {
