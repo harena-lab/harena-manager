@@ -294,6 +294,12 @@ class CaseController {
           let path = Helpers.publicPath(_artifacts[i].relative_path)
           Drive.delete(path)
         }
+
+        console.log('================= deleting the directory')
+        let dir_delete = Helpers.publicPath('/resources/artifacts/cases/') + c.id
+        console.log(dir_delete)
+        Drive.delete(dir_delete)
+
         await c.delete(trx)
 
         trx.commit()
