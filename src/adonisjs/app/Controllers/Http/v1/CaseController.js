@@ -274,25 +274,15 @@ class CaseController {
           .where('case_id', c.id)
           .delete()
 
-        let _caseArtifacts = Database
+        let _caseArtifacts = await Database
           .from('case_artifacts')
           .where('case_id', c.id)
           .select('artifact_id')
         await c.artifacts().delete()
 
-        // await c.users().detach()
-        // await c.quests().detach()
-        let _artifacts = await Database
-        .from('artifacts')
-        .whereIn('id', _caseArtifacts)
-        for (let i = 0; i < _caseArtifacts.length; i++) {
-          let artifact = await Artifact.find(_caseArtifacts[i].id)
+        for (let i in _caseArtifacts) {
+          let artifact = await Artifact.find(_caseArtifacts[i].artifact_id)
           await artifact.delete()
-        }
-        let relativeP = ''
-        for (let i = 0; i < _artifacts.length; i++) {
-          let path = Helpers.publicPath(_artifacts[i].relative_path)
-          Drive.delete(path)
         }
 
         console.log('================= deleting the directory')
