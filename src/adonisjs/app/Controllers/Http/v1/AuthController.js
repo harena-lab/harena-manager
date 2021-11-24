@@ -11,8 +11,13 @@ class AuthController {
       // console.log('====Checking token...')
       if(await auth.check()){
         let userInstitution = await Institution.findBy('id', auth.user.institution_id)
-        response.json({token:'token valid', username: auth.user.username,
-        grade: auth.user.grade, institution: userInstitution.acronym, institutionId: auth.user.institution_id})
+        response.json({
+          token: 'token valid',
+          userId: auth.user.id,
+          username: auth.user.username,
+          grade: auth.user.grade,
+          institution: userInstitution.acronym,
+          institutionId: auth.user.institution_id})
       }
       // console.log('====Token valid')
     } catch (error) {
