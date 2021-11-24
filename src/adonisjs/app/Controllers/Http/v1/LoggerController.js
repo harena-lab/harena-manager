@@ -13,12 +13,12 @@ class LoggerController {
     const trx = await Database.beginTransaction()
     try {
       const logger = new Logger()
-      // const user = await User.find(auth.user.id)
-      // const case = await Case.find(request.input('caseId'))
+      const user = await User.find(auth.user.id)
+      const cs = await Case.find(request.input('caseId'))
 
 		  logger.id = await uuidv4()
-      logger.user_id = auth.user.id
-      logger.case_id = request.input('caseId')
+      logger.user_id = user.id
+      logger.case_id = cs.id
       logger.instance_id = request.input('instanceId')
       logger.log = request.input('log')
 
@@ -35,11 +35,11 @@ class LoggerController {
 
   async listLogger ({ request, response }) {
     try {
-      const case = await Case.find(request.input('caseId'))
+      const cs = await Case.find(request.input('caseId'))
 
       const logger = await Logger
         .query()
-        .where('case_id', case.id)
+        .where('case_id', cs.id)
         .fetch()
 
       return response.json({logs: logger})
