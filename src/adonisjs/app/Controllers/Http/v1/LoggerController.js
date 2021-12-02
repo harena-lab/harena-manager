@@ -18,6 +18,7 @@ class LoggerController {
 
 		  logger.id = await uuidv4()
       logger.user_id = user.id
+      if(cs)
       logger.case_id = cs.id
       logger.instance_id = request.input('instanceId')
       logger.log = request.input('log')
