@@ -38,10 +38,18 @@ class LoggerController {
     try {
       const cs = await Case.find(request.input('caseId'))
 
-      const logger = await Logger
-        .query()
-        .where('case_id', cs.id)
-        .fetch()
+      const logger = await Database
+        .select([
+          'loggers.id',
+          'loggers.user_id', 'users.username',
+          'loggers.case_id', 'cases.title',
+          'loggers.instance_id', 'loggers.log',
+          'loggers.created_at'],
+        )
+        .from('loggers')
+        .join('users', 'loggers.user_id','users.id')
+        .join('cases', 'loggers.case_id', 'cases.id')
+        .where('loggers.case_id', cs.id)
 
       return response.json({logs: logger})
     } catch (e) {
