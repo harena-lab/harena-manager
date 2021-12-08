@@ -306,13 +306,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api-base-url}}/user/{{user-id}}",
+							"raw": "{{api-base-url}}/user/2429c8d1-59b7-4e0b-b56f-aa794b3e9b75",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
 								"user",
-								"{{user-id}}"
+								"2429c8d1-59b7-4e0b-b56f-aa794b3e9b75"
 							]
 						}
 					},
@@ -569,22 +569,22 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "edu",
+									"value": "tbl5",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "edu@email.com",
+									"value": "tbl5@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "edu",
+									"value": "tbl5",
 									"type": "text"
 								},
 								{
 									"key": "login",
-									"value": "edu",
+									"value": "tbl5",
 									"type": "text"
 								},
 								{
@@ -1145,7 +1145,7 @@
 								},
 								{
 									"key": "subject",
-									"value": "09c35267-5f85-4f1f-bb57-7ecdf21877dd",
+									"value": "e109f420-612a-430f-9cbf-eebd41644bd2",
 									"type": "text"
 								},
 								{
@@ -1163,7 +1163,7 @@
 								},
 								{
 									"key": "table_id",
-									"value": "3e506cb9-3bc3-48f8-ab47-42c639c28e1f",
+									"value": "83fbf542-435b-487a-94ad-ee493b7193cb",
 									"description": "Case ids. Separated by comma if you want multiple ids",
 									"type": "text"
 								}
@@ -2885,13 +2885,13 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "groupId",
-									"value": "ad27c585-1924-46bb-ad92-87182d34a726",
+									"key": "userId",
+									"value": "d1b0dfbf-c246-4e8a-aa0a-460fee1fd25a",
 									"type": "text"
 								},
 								{
-									"key": "userId",
-									"value": "2879c9d9-9dca-40c3-9f25-da5108565b36",
+									"key": "groupId",
+									"value": "2d5479b6-b1cc-4d02-a4c1-7ac439cb0dc4",
 									"type": "text"
 								}
 							]
@@ -2905,6 +2905,111 @@
 								"group",
 								"link",
 								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "logger",
+			"item": [
+				{
+					"name": "/logger",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "21337a2b-3148-4c19-abcd-acaa806bfa68",
+									"type": "text"
+								},
+								{
+									"key": "instanceId",
+									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "log",
+									"value": "varioslogimportanteaqui",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/logger/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"logger",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/logger/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "83fbf542-435b-487a-94ad-ee493b7193cb",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/logger/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"logger",
+								"list"
 							]
 						}
 					},
