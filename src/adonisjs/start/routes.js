@@ -19,6 +19,7 @@ Route.get('/', () => { return 'Hello from Harena Manager'} )
 */
 Route.group(() => {
     Route.post(	 '',		                  'v1/UserController.store')
+    Route.post(	 'self',                  'v1/UserController.storeSelf')
     Route.post(	 'property',		          'v1/UserController.storeProperty').middleware(['auth'])
 
     Route.get(	 'cases',                 'v1/UserController.listCases').middleware(['auth'])
@@ -28,8 +29,8 @@ Route.group(() => {
     Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
 
     Route.put(   'password',              'v1/UserController.updatePassword').middleware(['auth'])
-    Route.put(   '',                   'v1/UserController.update').middleware(['auth'])
-    Route.put(   'property',           'v1/UserController.updateProperty').middleware(['auth'])
+    Route.put(   '',                      'v1/UserController.update').middleware(['auth'])
+    Route.put(   'property',              'v1/UserController.updateProperty').middleware(['auth'])
 
     Route.delete(':id',                   'v1/UserController.destroy').middleware(['auth'])
 }).prefix('/api/v1/user')
@@ -193,6 +194,27 @@ Route.group(() => {
   Route.post( '', 			'v1/LoggerController.store')
   Route.get(  'list', 	'v1/LoggerController.listLogger')
 }).prefix('/api/v1/logger').middleware('auth')
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /event
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+  Route.post( '', 			'v1/EventController.store')
+}).prefix('/api/v1/event').middleware('auth')
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /term
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+  Route.post( '', 			   'v1/TermController.store').middleware('auth')
+  Route.post( 'link/user', 'v1/TermController.linkUser')
+}).prefix('/api/v1/term')
 
 /*
 |----------------------------------------------------------------------------------------------

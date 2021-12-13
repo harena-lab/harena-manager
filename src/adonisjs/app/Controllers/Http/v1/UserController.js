@@ -15,6 +15,9 @@ const Artifact = use('App/Models/v1/Artifact')
 const Quest = use('App/Models/v1/Quest')
 const Property = use('App/Models/v1/Property')
 const UserProperty = use('App/Models/v1/UserProperty')
+const Role = use('Adonis/Acl/Role')
+const Group = use('App/Models/Group')
+const Event = use('App/Models/v1/Event')
 
 const uuidv4 = require('uuid/v4')
 const Env = use('Env')
@@ -91,6 +94,95 @@ class UserController {
       console.log(e)
       if (e.code === 'ER_DUP_ENTRY') {
         return response.status(409).json(e.sqlMessage)
+      }
+
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+  /**
+  * Self create/save a new user.
+  * POST users
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  */
+  async storeSelf ({ request, auth, response }) {
+    const trx = await Database.beginTransaction()
+    try {
+      let feedback = ''
+
+      console.log('==== request')
+      console.log(request.input('username'))
+
+      let eventRel = null
+      const event_id = request.input('eventId')
+      if (event_id != null)
+        eventRel = await Event.find(event_id)
+
+      if (eventRel != null) {
+        const user = new User()
+
+        user.id = await uuidv4()
+        user.username = request.input('username')
+        user.email = request.input('email')
+        user.password = request.input('password')
+        user.login = request.input('login')
+        user.grade = request.input('grade')
+
+        const institution_id = request.input('institution')
+        let ins = null
+        if (institution_id != null)
+          ins = await Institution.findBy('acronym', institution_id)
+        if (ins != null)
+          user.institution_id = ins.id
+
+        await user.save(trx)
+        feedback += 'user ' + user.username + ' created'
+
+        /*
+        if (eventRel.role_id != null) {
+          console.log('=== linking role')
+          console.log(eventRel.role_id)
+          const ul = await User.find(user.id)
+          console.log(user.id)
+          const role = await Role.find(eventRel.role_id)
+          const roles = await ul.roles()
+          console.log('--- role found')
+          console.log(roles)
+          roles.attach(eventRel.role_id)
+          feedback += role.slug + ' role has given to the user ' + user.username + ';'
+        }
+
+        if (eventRel.group_id != null) {
+          console.log('=== linking group')
+          console.log(eventRel.group_id)
+          const group = await Group.find(eventRel.group_id)
+          console.log('--- role found')
+          await user.groups().attach(eventRel.group_id)
+          feedback += group.title + ' group has assigned to the user ' + user.username
+        }
+        */
+
+        trx.commit()
+
+        return response.json(user)
+      } else {
+        trx.rollback()
+        console.log('not authorized self signin');
+        return response.status(500).json({
+          type: 'unauthorized',
+          message: 'not authorized self signin'})
+      }
+    } catch (e) {
+      trx.rollback()
+      console.log(e)
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({
+          type: 'duplicated',
+          message: e.sqlMessage
+        })
       }
 
       return response.status(e.status).json({ message: e.message })
