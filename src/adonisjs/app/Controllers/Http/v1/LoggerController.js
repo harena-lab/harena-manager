@@ -50,6 +50,8 @@ class LoggerController {
         .join('users', 'loggers.user_id','users.id')
         .join('cases', 'loggers.case_id', 'cases.id')
         .where('loggers.case_id', cs.id)
+        .orderBy('users.username', 'asc')
+        .orderBy('loggers.created_at', 'asc')
 
       return response.json({logs: logger})
     } catch (e) {
