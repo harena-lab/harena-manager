@@ -90,7 +90,7 @@ Route.get(   '/api/v1/case',         'v1/CaseController.show').middleware(['auth
 Route.group(() => {
 	Route.post(  '',            'v1/ArtifactController.store')
   Route.delete(':id',         'v1/ArtifactController.destroy')
-
+  Route.get('list',          'v1/ArtifactController.list')
 }).prefix('/api/v1/artifact/').middleware(['auth', 'is:author'])
 
 

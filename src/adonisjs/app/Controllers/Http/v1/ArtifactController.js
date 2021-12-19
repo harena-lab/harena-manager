@@ -6,6 +6,8 @@ const Env = use('Env')
 const Drive = use('Drive')
 
 const uuid4 = require('uuid/v4')
+const path = require('path')
+const fs = require('fs')
 
 const Artifact = use('App/Models/v1/Artifact')
 const Case = use('App/Models/v1/Case')
@@ -122,7 +124,7 @@ class ArtifactController {
         .query()
         .where('artifact_id', artifact.id)
         .delete()
-        
+
         await artifact.delete(trx)
         Drive.delete(Helpers.publicPath(artifact.relative_path))
         trx.commit()
@@ -136,6 +138,21 @@ class ArtifactController {
       trx.rollback()
 
       return response.status(500).json({ message: e })
+    }
+  }
+
+  async list ({ request, response }) {
+    try {
+      const cs = await Case.find(request.input('caseId'))
+
+      let dir_ls = Helpers.publicPath('/resources/artifacts/cases/') + cs.id
+
+      const fileList = await fs.promises.readdir(dir_ls)
+
+      return response.json({directory: dir_ls, files: fileList})
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e.message })
     }
   }
 }
