@@ -10,6 +10,8 @@ const Hash = use('Hash')
 
 const Case = use('App/Models/v1/Case')
 const User = use('App/Models/v1/User')
+const RoleUser = use('App/Models/v1/RoleUser')
+const UsersGroup = use('App/Models/v1/UsersGroup')
 const Institution = use('App/Models/v1/Institution')
 const Artifact = use('App/Models/v1/Artifact')
 const Quest = use('App/Models/v1/Quest')
@@ -141,30 +143,48 @@ class UserController {
 
           await user.save(trx)
           feedback += 'user ' + user.username + ' created'
+          console.log('=== user saved')
+          console.log(user)
 
-          /*
           if (eventRel.role_id != null) {
             console.log('=== linking role')
             console.log(eventRel.role_id)
-            const ul = await User.find(user.id)
+            const role = new RoleUser()
+            role.user_id = user.id
+            let rl = null
+            if (eventRel.role_id != null)
+              rl = await Role.find(eventRel.role_id)
+            if (rl != null)
+              role.role_id = rl.id
+            await role.save(trx)
+            console.log('=== role assigned')
+
+            // const ul = await User.find(user.id)
+            /*
             console.log(user.id)
             const role = await Role.find(eventRel.role_id)
-            const roles = await ul.roles()
+            const roles = await user.roles()
             console.log('--- role found')
             console.log(roles)
             roles.attach(eventRel.role_id)
+            */
             feedback += role.slug + ' role has given to the user ' + user.username + ';'
           }
 
           if (eventRel.group_id != null) {
             console.log('=== linking group')
             console.log(eventRel.group_id)
-            const group = await Group.find(eventRel.group_id)
-            console.log('--- role found')
-            await user.groups().attach(eventRel.group_id)
+            const group = new UsersGroup()
+            group.user_id = user.id
+            let gr = null
+            if (eventRel.group_id != null)
+              gr = await Group.find(eventRel.group_id)
+            if (gr != null)
+              group.group_id = gr.id
+            await group.save(trx)
+            console.log('=== group assigned')
             feedback += group.title + ' group has assigned to the user ' + user.username
           }
-          */
 
           trx.commit()
 
@@ -174,7 +194,7 @@ class UserController {
           console.log('expired authorization for self signin');
           return response.status(500).json({
             type: 'unauthorized',
-            message: 'expired authorization for self signin'})          
+            message: 'expired authorization for self signin'})
         }
       } else {
         trx.rollback()
