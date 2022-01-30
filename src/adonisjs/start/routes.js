@@ -214,6 +214,7 @@ Route.group(() => {
 Route.group(() => {
   Route.post( '', 			   'v1/TermController.store').middleware('auth')
   Route.post( 'link/user', 'v1/TermController.linkUser')
+  Route.get(  'user',      'v1/TermController.showTermUser')
 }).prefix('/api/v1/term')
 
 /*
