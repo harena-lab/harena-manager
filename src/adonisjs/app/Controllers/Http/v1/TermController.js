@@ -68,6 +68,57 @@ class TermController {
       return response.status(500).json({ message: e.message })
     }
   }
+
+  /**
+  * Display a link between a term and a user.
+  * GET term/user
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  * @param {View} ctx.view
+  */
+  async showTermUser ({ params, request, response, view }) {
+    try {
+      const uterm = await Database
+        .select('*')
+        .from('users_terms')
+        .where('user_id', request.input('userId'))
+        .where('term_id', request.input('termId'))
+      if (uterm != null)
+        return response.json(uterm)
+      else
+        return response.status(500).json('user not found')
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
+  /**
+  * List all term and users.
+  * GET term/users
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  * @param {View} ctx.view
+  */
+  async listTermUsers ({ params, request, response, view }) {
+    try {
+      const uterm = await Database
+        .select('*')
+        .from('users_terms')
+        .where('term_id', request.input('termId'))
+      if (uterm != null)
+        return response.json(uterm)
+      else
+        return response.status(500).json('user not found')
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
 }
 
 module.exports = TermController

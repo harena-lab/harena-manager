@@ -20,7 +20,7 @@ class ArtifactController {
     this.validationOptions = {
       size: '100mb',
       types: ['image', 'video'],
-      extnames: ['png', 'jpg', 'jpeg', 'gif', 'mp4', 'avi', '.wmv']
+      extnames: ['png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'avi', 'wmv']
     }
 
     this.relativePath = '/resources/artifacts/'
