@@ -29,6 +29,7 @@ Route.group(() => {
     Route.get(   ':id',                   'v1/UserController.show').middleware(['auth'])
 
     Route.put(   'password',              'v1/UserController.updatePassword').middleware(['auth'])
+    Route.put(   'password/reset',        'v1/UserController.resetPassword').middleware(['auth', 'is:admin'])
     Route.put(   '',                      'v1/UserController.update').middleware(['auth'])
     Route.put(   'property',              'v1/UserController.updateProperty').middleware(['auth'])
 
