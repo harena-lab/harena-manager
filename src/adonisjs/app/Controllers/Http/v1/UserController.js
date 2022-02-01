@@ -281,6 +281,28 @@ class UserController {
     }
   }
 
+  async resetPassword ({ params, request, response, auth }) {
+    try {
+      const userId = request.input('userId')
+      const newPassword = request.input('newPassword')
+      const user = await User.find(userId)
+
+      if (user != null) {
+        user.password = newPassword
+        await user.save()
+        console.log('Password changed successfully.')
+        return response.json('Password changed successfully.')
+      } else {
+        console.log('Update password error, try again.')
+        return response.json('Update password error, try again.')
+      }
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
+    } finally{
+      console.log('finally ended password update');
+    }
+  }
+
   /** Delete a user with id.
   * DELETE user/:id */
   async destroy ({ params, response, auth }) {
