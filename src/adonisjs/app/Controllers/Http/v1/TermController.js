@@ -78,12 +78,15 @@ class TermController {
   * @param {Response} ctx.response
   * @param {View} ctx.view
   */
-  async showTermUser ({ params, request, response, view }) {
+  async showTermUser ({ params, request, response, view, auth }) {
     try {
+      let userId = request.input('userId')
+      if (userId == null)
+        userId = auth.user.id
       const uterm = await Database
         .select('*')
         .from('users_terms')
-        .where('user_id', request.input('userId'))
+        .where('user_id', userId)
         .where('term_id', request.input('termId'))
       if (uterm != null)
         return response.json(uterm)
