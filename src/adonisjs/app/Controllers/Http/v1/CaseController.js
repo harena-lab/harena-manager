@@ -441,6 +441,24 @@ class CaseController {
 
   }
 
+  async withdraw ({params, request, response, auth}){
+    try {
+      const status = await Database
+        .from('permissions')
+        .where('entity', request.input('entity'))
+        .where('subject', request.input('subject'))
+        .where('table_id', request.input('table_id'))
+        .del()
+      if (status != null)
+        return response.json(status)
+      else
+        return response.status(500).json('user not found')
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
   async storeProperty ({params, request, auth, response}) {
     const trx = await Database.beginTransaction()
     try {
