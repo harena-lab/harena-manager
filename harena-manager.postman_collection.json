@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a7148259-5898-4ce9-a853-563722df2d28",
+		"_postman_id": "08ac4a21-3c4d-4d90-a981-9567ab291246",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -306,13 +306,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api-base-url}}/user/2429c8d1-59b7-4e0b-b56f-aa794b3e9b75",
+							"raw": "{{api-base-url}}/user/{{user-id}}",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
 								"user",
-								"2429c8d1-59b7-4e0b-b56f-aa794b3e9b75"
+								"{{user-id}}"
 							]
 						}
 					},
@@ -569,27 +569,28 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "tbl5",
+									"value": "Edu Name",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "tbl5@email.com",
+									"value": "edu@email.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "tbl5",
+									"value": "edu",
 									"type": "text"
 								},
 								{
 									"key": "login",
-									"value": "tbl5",
+									"value": "edu",
 									"type": "text"
 								},
 								{
 									"key": "institution",
 									"value": "minho",
+									"description": "acronym of the institution: unicamp, minho, mcunicamp",
 									"type": "text"
 								},
 								{
@@ -607,6 +608,87 @@
 							],
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/self",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"user-id\", response.id);",
+									"// pm.environment.set(\"user\", response);",
+									"",
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    ",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "Edu Name",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "edu@email.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "edu",
+									"type": "text"
+								},
+								{
+									"key": "login",
+									"value": "edu",
+									"type": "text"
+								},
+								{
+									"key": "institution",
+									"value": "minho",
+									"description": "acronym of the institution: unicamp, minho, mcunicamp",
+									"type": "text"
+								},
+								{
+									"key": "grade",
+									"value": "student",
+									"description": "\"professor\" or \"student\"",
+									"type": "text"
+								},
+								{
+									"key": "eventId",
+									"value": "",
+									"description": "id (hash code) of the event",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/self",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"self"
 							]
 						}
 					},
@@ -703,6 +785,41 @@
 							],
 							"path": [
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/user/password/reset",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "",
+									"description": "user id (hash value)",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/user/password/reset",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"user",
+								"password",
+								"reset"
 							]
 						}
 					},
@@ -1145,7 +1262,8 @@
 								},
 								{
 									"key": "subject",
-									"value": "e109f420-612a-430f-9cbf-eebd41644bd2",
+									"value": "",
+									"description": "id of the user/group/institution (hash code)",
 									"type": "text"
 								},
 								{
@@ -1163,8 +1281,8 @@
 								},
 								{
 									"key": "table_id",
-									"value": "83fbf542-435b-487a-94ad-ee493b7193cb",
-									"description": "Case ids. Separated by comma if you want multiple ids",
+									"value": "",
+									"description": "case ids (hash codes), separated by comma if you want multiple ids",
 									"type": "text"
 								}
 							]
@@ -1177,6 +1295,47 @@
 							"path": [
 								"case",
 								"share"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "withdraw",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "entity",
+									"value": "group",
+									"description": "user/group/institution",
+									"type": "text"
+								},
+								{
+									"key": "subject",
+									"value": "",
+									"description": "id of the user/group/institution (hash code)",
+									"type": "text"
+								},
+								{
+									"key": "table_id",
+									"value": "",
+									"description": "case id (hash code) - just one",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/withdraw",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"withdraw"
 							]
 						}
 					},
@@ -1481,6 +1640,49 @@
 							"path": [
 								"artifact",
 								"2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/artifact/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caseId",
+									"value": "",
+									"description": "id (hash code) of the case that contains the artifacts",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/artifact/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"artifact",
+								"list"
 							]
 						}
 					},
@@ -2679,7 +2881,8 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "b26b6fe4-1bb6-470f-a0c2-033fb7be54c7",
+									"value": "",
+									"description": "group id (hash code)",
 									"type": "text"
 								},
 								{
@@ -2766,7 +2969,8 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "ad27c585-1924-46bb-ad92-87182d34a726",
+									"value": "",
+									"description": "group id (hash code)",
 									"type": "text"
 								}
 							]
@@ -2805,12 +3009,14 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "b26b6fe4-1bb6-470f-a0c2-033fb7be54c7",
+									"value": "",
+									"description": "group id (hash code)",
 									"type": "text"
 								},
 								{
 									"key": "userId",
-									"value": "4a689978-57d8-4470-a8db-d7959a42586d",
+									"value": "",
+									"description": "user id (hash code)",
 									"type": "text"
 								}
 							]
@@ -2858,7 +3064,8 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "test1",
+									"value": "",
+									"description": "group title (free title text)",
 									"type": "text"
 								}
 							]
@@ -2885,13 +3092,13 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "userId",
-									"value": "d1b0dfbf-c246-4e8a-aa0a-460fee1fd25a",
+									"key": "groupId",
+									"value": "",
 									"type": "text"
 								},
 								{
-									"key": "groupId",
-									"value": "2d5479b6-b1cc-4d02-a4c1-7ac439cb0dc4",
+									"key": "userId",
+									"value": "",
 									"type": "text"
 								}
 							]
@@ -2945,29 +3152,31 @@
 							"formdata": [
 								{
 									"key": "caseId",
-									"value": "21337a2b-3148-4c19-abcd-acaa806bfa68",
+									"value": "",
+									"description": "id (hash code) of the case related to the log",
 									"type": "text"
 								},
 								{
 									"key": "instanceId",
-									"value": "1231234",
+									"value": "",
+									"description": "id (hash code) of the running instance of the case related to the log ",
 									"type": "text"
 								},
 								{
 									"key": "log",
-									"value": "varioslogimportanteaqui",
+									"value": "",
+									"description": "free format text to be logged -- usually a JSON content",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{api-base-url}}/logger/",
+							"raw": "{{api-base-url}}/logger",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
-								"logger",
-								""
+								"logger"
 							]
 						}
 					},
@@ -2997,7 +3206,8 @@
 							"formdata": [
 								{
 									"key": "caseId",
-									"value": "83fbf542-435b-487a-94ad-ee493b7193cb",
+									"value": "",
+									"description": "id (hash code) of the case related to the log",
 									"type": "text"
 								}
 							]
@@ -3010,6 +3220,420 @@
 							"path": [
 								"logger",
 								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "event",
+			"item": [
+				{
+					"name": "/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "",
+									"description": "free text title of the event",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "free text description of the event",
+									"type": "text"
+								},
+								{
+									"key": "startAt",
+									"value": "",
+									"description": "date when the event starts (optional)",
+									"type": "text"
+								},
+								{
+									"key": "endAt",
+									"value": "",
+									"description": "date when the event ends (optional)",
+									"type": "text"
+								},
+								{
+									"key": "open",
+									"value": "Title of this Event",
+									"description": "boolean indicating if the event allows participation of non registered users",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "1",
+									"description": "boolean indicating if the event is receiving registrations",
+									"type": "text"
+								},
+								{
+									"key": "caseId",
+									"value": "",
+									"description": "id (hash code) of a case related to the event (optional)",
+									"type": "text"
+								},
+								{
+									"key": "questId",
+									"value": "",
+									"description": "id (hash code) of a quest related to the event (optional)",
+									"type": "text"
+								},
+								{
+									"key": "groupId",
+									"value": "",
+									"description": "id (hash code) of the group assigned to self signin users in this event",
+									"type": "text"
+								},
+								{
+									"key": "institutionId",
+									"value": "",
+									"description": "id (hash code) of the institution promoting the event",
+									"type": "text"
+								},
+								{
+									"key": "roleId",
+									"value": "",
+									"description": "id (hash code) of the role received by self signin users in this event",
+									"type": "text"
+								},
+								{
+									"key": "participantsLimit",
+									"value": "50",
+									"description": "limit of participants in the event",
+									"type": "text"
+								},
+								{
+									"key": "youngerAge",
+									"value": "",
+									"description": "lower limit of the age for the event",
+									"type": "text"
+								},
+								{
+									"key": "olderAge",
+									"value": "",
+									"description": "upper limit of the age for the event",
+									"type": "text"
+								},
+								{
+									"key": "conferenceAddress",
+									"value": "",
+									"description": "URL of the event",
+									"type": "text"
+								},
+								{
+									"key": "termId",
+									"value": "",
+									"description": "id of the term to be agreed by users in case of research (foreign key to term table)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/event",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "term",
+			"item": [
+				{
+					"name": "/term",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "unique id of the term",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "",
+									"description": "free text title of the term",
+									"type": "text"
+								},
+								{
+									"key": "adultTerm",
+									"value": "",
+									"description": "address to reach the adult term",
+									"type": "text"
+								},
+								{
+									"key": "childTerm",
+									"value": "",
+									"description": "address to reach the child term",
+									"type": "text"
+								},
+								{
+									"key": "imageCapture",
+									"value": "",
+									"description": "boolean defined if images will be captured during the event",
+									"type": "text"
+								},
+								{
+									"key": "videoCapture",
+									"value": "",
+									"description": "boolean defined if videos will be captured during the event",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/term",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"term"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/term/link/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "",
+									"description": "id (hash code) of the user that agrees (or not) with the term",
+									"type": "text"
+								},
+								{
+									"key": "termId",
+									"value": "",
+									"description": "id of the term (foreign key to the term table)",
+									"type": "text"
+								},
+								{
+									"key": "nameResponsible",
+									"value": "",
+									"description": "full name of the person responsible",
+									"type": "text"
+								},
+								{
+									"key": "emaiResponsible",
+									"value": "",
+									"description": "email of the person responsible",
+									"type": "text"
+								},
+								{
+									"key": "nameParticipant",
+									"value": "",
+									"description": "full name of the participant",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "",
+									"description": "date of agreement",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "",
+									"description": "indication of the role of the one who agree with the term (child, adult or responsible)",
+									"type": "text"
+								},
+								{
+									"key": "agree",
+									"value": "1",
+									"description": "boolean - indicating if the participant or responsible (indicated by the role) agreed with the term",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/term/link/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"term",
+								"link",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/term/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "termId",
+									"value": "",
+									"description": "id of the term",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "",
+									"description": "id (hash code) of the user to be queried",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/term/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"term",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/term/users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "termId",
+									"value": "",
+									"description": "id of the term",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/term/users",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"term",
+								"users"
 							]
 						}
 					},
