@@ -205,6 +205,7 @@ Route.group(() => {
 */
 Route.group(() => {
   Route.post( '', 			'v1/EventController.store')
+  Route.get( 'list', 	'v1/EventController.listEvents').middleware('is:admin')
 }).prefix('/api/v1/event').middleware('auth')
 
 /*
@@ -218,6 +219,7 @@ Route.group(() => {
   Route.post( 'link/user', 'v1/TermController.linkUser')
   Route.get(  'user',      'v1/TermController.showTermUser')
   Route.get(  'users',     'v1/TermController.listTermUsers').middleware(['auth', 'is:admin'])
+  Route.get(  'list',     'v1/TermController.listTerms').middleware(['auth', 'is:admin'])
 }).prefix('/api/v1/term')
 
 /*
