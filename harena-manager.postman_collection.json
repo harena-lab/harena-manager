@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "08ac4a21-3c4d-4d90-a981-9567ab291246",
+		"_postman_id": "e04debeb-8da3-40a1-83bc-e210b48f8648",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2520,12 +2520,12 @@
 							"formdata": [
 								{
 									"key": "acronym",
-									"value": "unicamp",
+									"value": "progn",
 									"type": "text"
 								},
 								{
 									"key": "title",
-									"value": "Universidade Estadual de Campinas",
+									"value": "Prognosis Game",
 									"type": "text"
 								},
 								{
@@ -3284,7 +3284,7 @@
 								},
 								{
 									"key": "open",
-									"value": "Title of this Event",
+									"value": "",
 									"description": "boolean indicating if the event allows participation of non registered users",
 									"type": "text"
 								},
@@ -3363,6 +3363,51 @@
 							],
 							"path": [
 								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/event/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{api-base-url}}/event/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"event",
+								"list"
 							]
 						}
 					},
@@ -3498,7 +3543,7 @@
 									"type": "text"
 								},
 								{
-									"key": "emaiResponsible",
+									"key": "emailResponsible",
 									"value": "",
 									"description": "email of the person responsible",
 									"type": "text"
@@ -3589,6 +3634,44 @@
 							"path": [
 								"term",
 								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/term/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{api-base-url}}/term/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"term",
+								"list"
 							]
 						}
 					},
