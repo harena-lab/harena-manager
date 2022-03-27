@@ -26,6 +26,13 @@ class User extends Model {
       .withTimestamps()
   }
 
+  groupManagers () {
+    return this
+      .belongsToMany('App/Models/Group')
+      .pivotTable('managers_groups')
+      .withTimestamps()
+  }
+
   artifacts () {
     return this.hasMany('App/Models/v1/Artifact')
   }

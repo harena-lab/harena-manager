@@ -3,6 +3,7 @@
 const Group = use('App/Models/Group')
 const User = use('App/Models/v1/User')
 const UsersGroup = use('App/Models/v1/UsersGroup')
+const ManagersGroup = use('App/Models/v1/ManagersGroup')
 
 const Database = use('Database')
 const uuidv4 = require('uuid/v4')
@@ -33,22 +34,63 @@ class GroupController {
     }
   }
 
+  async canManageGroup (user, groupId) {
+    let canManage = await ManagersGroup
+      .query()
+      .where('user_id', user.id)
+      .where('group_id', groupId)
+      .first()
+
+    if (!canManage) {
+      const roles = (await user.roles().fetch()).toJSON()
+      for (const r of roles)
+        if (r.slug == 'admin')
+          canManage = true
+    }
+
+    return canManage
+  }
+
   async linkUser ({ request, auth, response }) {
     try {
       const { userId, groupId } = request.post()
       const user = await User.find(userId)
-      const canLinkUser = await UsersGroup
-        .query()
-        .where('user_id', auth.user.id)
-        .where('group_id', groupId)
-        .first()
-      if(canLinkUser && user){
+
+      const canManage = await this.canManageGroup(auth.user, groupId)
+
+      if (canManage && user) {
         await user.groups().attach(groupId)
         return response.json(user.username + ' successfully added to the group!')
-      }else if(!canLinkUser){
-        return response.status(500).json('Error. You must be part of the group to be able to add another user.')
-      }else{
-        return response.status(500).json('Error. Could not find the user to be added into the group.')
+      } else if (!canManage) {
+        return response.status(500).json(
+          'Error. You must have the right to be able to add another user.')
+      } else {
+        return response.status(500).json(
+          'Error. Could not find the user to be added into the group.')
+      }
+
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
+    }
+  }
+
+  async linkManager ({ request, auth, response }) {
+    try {
+      const { userId, groupId } = request.post()
+      const user = await User.find(userId)
+      const canManage = await this.canManageGroup(auth.user, groupId)
+
+      if (canManage && user) {
+        await user.groupManagers().attach(groupId)
+        return response.json(user.username +
+          ' successfully added as manager to the group!')
+      } else if (!canManage) {
+        return response.status(500).json(
+          'Error. You must have the right to be able to add another manager.')
+      } else {
+        return response.status(500)
+          .json('Error. Could not find the user to be added into the group.')
       }
 
     } catch (e) {
@@ -123,7 +165,10 @@ class GroupController {
   async listUsers ({ request, auth, response }) {
     try {
       const groupId = request.input('groupId')
-      if(await Group.find(groupId)){
+
+      const canManage = await this.canManageGroup(auth.user, groupId)
+
+      if (canManage && await Group.find(groupId)) {
         const result = await Database
           .select('users.username','user_id','group_id','groups.title as group_title')
           .from('users_groups')
@@ -132,16 +177,43 @@ class GroupController {
           .where ('users_groups.group_id', groupId)
 
         return response.json(result)
-      }
-      else {
+      } else if (!canManage) {
+        return response.status(500).json(
+          'Error. You must have the right to be able to list group users.')
+      } else {
         return response.status(500).json('Error. Could not find selected group.')
       }
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.toString() })
     }
+  }
 
+  async listManagers ({ request, auth, response }) {
+    try {
+      const groupId = request.input('groupId')
 
+      const canManage = await this.canManageGroup(auth.user, groupId)
+
+      if (canManage && await Group.find(groupId)) {
+        const result = await Database
+          .select('users.username','user_id','group_id','groups.title as group_title')
+          .from('managers_groups')
+          .join('groups','managers_groups.group_id','groups.id')
+          .join('users', 'managers_groups.user_id', 'users.id')
+          .where ('managers_groups.group_id', groupId)
+
+        return response.json(result)
+      } else if (!canManage) {
+        return response.status(500).json(
+          'Error. You must have the right to be able to list group managers.')
+      } else {
+        return response.status(500).json('Error. Could not find selected group.')
+      }
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json({ message: e.toString() })
+    }
   }
 
   async removeUser ({ request, auth, response }){
