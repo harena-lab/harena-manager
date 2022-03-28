@@ -6,6 +6,15 @@ const User = use('App/Models/v1/User')
 const UsersTerm = use('App/Models/v1/UsersTerm')
 
 class TermController {
+
+  async listTerms ({ request, response}) {
+    try {
+      const cases = await Term.all()
+      return response.json(cases)
+    } catch (e) {
+      return response.status(500).json({ message: e.message })
+    }
+  }
   async store ({ request, response, auth }) {
     const trx = await Database.beginTransaction()
     try {

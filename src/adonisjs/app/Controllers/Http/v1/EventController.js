@@ -77,6 +77,15 @@ class EventController {
     }
   }
 
+  async listEvents ({ request, response}) {
+    try {
+      const event = await Event.all()
+      return response.json(event)
+    } catch (e) {
+      return response.status(500).json({ message: e.message })
+    }
+  }
+
 }
 
 module.exports = EventController
