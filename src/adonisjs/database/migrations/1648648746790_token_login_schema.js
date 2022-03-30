@@ -7,14 +7,14 @@ class TokenLoginSchema extends Schema {
   up () {
     this.table('users', (table) => {
       table.string('token_login')
-      table.timestamp('token_created_at')
+      table.timestamp('token_login_created_at')
     })
   }
 
   down () {
     this.table('users', (table) => {
       table.dropColumn('token_login')
-      table.dropColumn('token_created_at')
+      table.dropColumn('token_login_created_at')
     })
   }
 }

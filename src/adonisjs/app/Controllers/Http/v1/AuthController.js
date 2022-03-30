@@ -131,7 +131,7 @@ class AuthController {
         return response.status(e.status).json({ message: e.message })
       }
     } else {
-      return response.json({ response: 'No token found'})
+      return response.json({ response: 'Token invalid'})
     }
   }
 
