@@ -6,6 +6,7 @@ const User = use('App/Models/v1/User')
 const Institution = use('App/Models/v1/Institution')
 const Event = use('App/Models/v1/Event')
 
+const moment = require('moment')
 class AuthController {
   async checkToken ({ request, auth, response }) {
     try {
@@ -27,7 +28,7 @@ class AuthController {
   }
 
   async login ({ request, auth, response, session }) {
-    Logger.info('login attempt via v1/auth/login (SESSION)')
+    // Logger.info('login attempt via v1/auth/login (SESSION)')
     const { email, password } = request.all()
     try {
       if (await auth.remember(true).attempt(email, password)) {
@@ -56,7 +57,7 @@ class AuthController {
   }
 
   async loginEvent ({ request, auth, response, session }) {
-    Logger.info('login attempt via v1/auth/loginEvent (SESSION)')
+    // Logger.info('login attempt via v1/auth/loginEvent (SESSION)')
     let eventRel = null
     const event_id = request.input('eventId')
     if (event_id != null)
@@ -103,6 +104,34 @@ class AuthController {
       return response.status(500).json({
         type: 'unauthorized',
         message: 'Not authorized login'})
+    }
+  }
+
+  async tempLoginToken ({ request, auth, response, session }) {
+    // Logger.info('login attempt via v1/auth/loginEvent (SESSION)')
+    let user = null
+    const loginToken = request.input('token')
+    if (loginToken != null)
+      user = await User.findBy('token_login', loginToken)
+    if (user != null) {
+      try {
+        const tokenExpired = moment()
+          .subtract(1, 'hours')
+          .isAfter(user.token_created_at)
+        user.token_login = null
+        user.token_created_at = null
+        await user.save()
+        if (tokenExpired) {
+          return response.json({response: 'Token expired'})
+        }
+        if (await auth.remember(true).login(user)){
+          return response.json({user: user, response: 'Login successful'})
+        }
+      } catch (e) {
+        return response.status(e.status).json({ message: e.message })
+      }
+    } else {
+      return response.json({ response: 'No token found'})
     }
   }
 

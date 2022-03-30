@@ -47,6 +47,7 @@ Route.group(() => {
 Route.group(() => {
 	Route.post('login',       'v1/AuthController.login')
   Route.post('login_event', 'v1/AuthController.loginEvent')
+  Route.post('token_login',  'v1/AuthController.tempLoginToken')
 	Route.post('logout',      'v1/AuthController.logout').middleware(['auth'])
 	Route.get('check',        'v1/AuthController.checkToken')
 }).prefix('/api/v1/auth')
@@ -255,8 +256,8 @@ Route.group(() => {
 	Route.post(  'institution',       			'v1/InstitutionController.store')
 
 	Route.post(  'revoke_tokens',     			'v1/AdminController.revoke_tokens')
-
-  Route.put(  'user/:id',        'v1/AdminController.updateUser')
+  Route.put(  'user/temp_login',        'v1/AdminController.generateLoginToken')
+  Route.put(  'user/:id',              'v1/AdminController.updateUser')
 
   Route.get(   'groups',     					'v1/AdminController.listGroups')
 

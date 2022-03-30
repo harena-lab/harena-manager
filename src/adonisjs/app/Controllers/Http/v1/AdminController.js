@@ -15,6 +15,7 @@ const UserProperty = use('App/Models/v1/UserProperty')
 
 
 const uuidv4 = require('uuid/v4')
+const crypto = require('crypto')
 
 class AdminController {
   async create_role ({ request, response }) {
@@ -40,7 +41,6 @@ class AdminController {
 
   async updateUser ({ params, request, response, auth }) {
     try {
-      console.log('============')
       const user = await User.find(params.id)
 
       const newUser = {
@@ -256,6 +256,25 @@ class AdminController {
       console.log(e)
       return response.status(500).json({ message: e.message })
     }
+  }
+
+  async generateLoginToken ({request, response}){
+    try {
+      const userId = request.input('userId')
+      const user = await User.findBy('id', userId)
+
+      if(user != null){
+        const token = await crypto.randomBytes(10).toString('hex')
+        user.token_login = token
+        user.token_created_at = new Date()
+        await user.save()
+        return response.json({token: user.token_login, userId: user.id})
+      }
+    } catch (e) {
+      console.log('Generate temp login token error', e)
+      return response.status(500).json({ message: e.message })
+    }
+
   }
 
 
