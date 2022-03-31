@@ -9,7 +9,7 @@ const Database = use('Database')
 const Role = use('Adonis/Acl/Role')
 const Permission = use('Adonis/Acl/Permission')
 const User = use('App/Models/v1/User')
-const Group = use('App/Models/Group')
+const Group = use('App/Models/v1/Group')
 const Property = use('App/Models/v1/Property')
 const UserProperty = use('App/Models/v1/UserProperty')
 
@@ -18,6 +18,91 @@ const uuidv4 = require('uuid/v4')
 const crypto = require('crypto')
 
 class AdminController {
+  /**
+  * Show a list of all users.
+  * GET users
+  *
+  * @param {object} ctx
+  * @param {Request} ctx.request
+  * @param {Response} ctx.response
+  * @param {View} ctx.view
+  */
+  async listUsers ({ request, response }) {
+    try {
+
+      const institutionFilter = request.input('fInstitution') || `%`
+      const userTypeFilter = request.input('fUserType') || `%`
+      const groupFilter = request.input('fGroup') || `%`
+      // const propertyFilter = request.input('fSearchStr') || null
+      // const propertyValueFilter = request.input('fPropertyValue') || '%'
+      let searchStringFilter = request.input('fSearchStr') || `%`
+      let itemOffset = 0
+      const itemLimit = request.input('nItems') || 20
+
+      if(searchStringFilter != '%')
+        searchStringFilter = `%${searchStringFilter}%`
+
+      if (request.input('page') && request.input('page') < 1)
+        itemOffset = 0
+      else
+        itemOffset = request.input('page') -1 || 0
+      let result = null
+      let totalPages = null
+
+      let countUsers = await Database
+      .from('users')
+      .leftJoin('users_groups','users.id','users_groups.user_id')
+      .join('institutions', 'users.institution_id', 'institutions.id')
+      .where('users.institution_id', 'like', institutionFilter)
+      .where('users.grade', 'like', userTypeFilter)
+      .where(function(){
+        if (groupFilter != '%')
+        this.where('users_groups.group_id', 'like', groupFilter)
+      })
+      .where(function(){
+        this
+        .where('users.login', 'like', searchStringFilter)
+        .orWhere('users.username', 'like', searchStringFilter)
+        .orWhere('users.email', 'like', searchStringFilter)
+      })
+      .countDistinct('users.id as users')
+
+      totalPages = Math.ceil(countUsers[0]['users'] / itemLimit)
+
+      if(itemOffset >= totalPages)
+        itemOffset = 0
+
+      result = await Database
+      .select([ 'users.id', 'users.username','users.email', 'users.login', 'users.institution_id',
+      'users.grade', 'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
+      'institutions.country AS institution_country' ])
+      .distinct('users.id')
+      .from('users')
+      .leftJoin('users_groups','users.id','users_groups.user_id')
+      .join('institutions', 'users.institution_id', 'institutions.id')
+      .where('users.institution_id', 'like', institutionFilter)
+      .where('users.grade', 'like', userTypeFilter)
+      .where(function(){
+        if (groupFilter != '%')
+        this.where('users_groups.group_id', 'like', groupFilter)
+      })
+      .where(function(){
+        this
+        .where('users.login', 'like', searchStringFilter)
+        .orWhere('users.username', 'like', searchStringFilter)
+        .orWhere('users.email', 'like', searchStringFilter)
+      })
+      .orderBy('users.username', 'desc')
+      .offset(itemOffset * itemLimit)
+      .limit(itemLimit)
+
+      console.log(result)
+      return response.json({users:result, pages:totalPages})
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
+
   async create_role ({ request, response }) {
     try {
       const role = new Role()
@@ -143,8 +228,10 @@ class AdminController {
   async listGroups ({request, auth, response}){
 
     try {
+
       const result = await Group.all()
 
+      console.log(result)
       return response.json(result)
     } catch (e) {
       console.log(e)

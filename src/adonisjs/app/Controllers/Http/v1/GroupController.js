@@ -1,6 +1,6 @@
 'use strict'
 
-const Group = use('App/Models/Group')
+const Group = use('App/Models/v1/Group')
 const User = use('App/Models/v1/User')
 const UsersGroup = use('App/Models/v1/UsersGroup')
 const ManagersGroup = use('App/Models/v1/ManagersGroup')

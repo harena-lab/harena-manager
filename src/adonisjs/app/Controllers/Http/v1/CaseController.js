@@ -16,7 +16,7 @@ const Permission = use('App/Models/v1/Permission')
 const Property = use('App/Models/v1/Property')
 const CaseProperty = use('App/Models/v1/CaseProperty')
 const UsersGroup = use('App/Models/v1/UsersGroup')
-const Group = use('App/Models/Group')
+const Group = use('App/Models/v1/Group')
 const Artifact = use('App/Models/v1/Artifact')
 const CaseArtifacts = use('App/Models/CaseArtifact')
 

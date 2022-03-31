@@ -21,14 +21,14 @@ class User extends Model {
 
   groups () {
     return this
-      .belongsToMany('App/Models/Group')
+      .belongsToMany('App/Models/v1/Group')
       .pivotTable('users_groups')
       .withTimestamps()
   }
 
   groupManagers () {
     return this
-      .belongsToMany('App/Models/Group')
+      .belongsToMany('App/Models/v1/Group')
       .pivotTable('managers_groups')
       .withTimestamps()
   }

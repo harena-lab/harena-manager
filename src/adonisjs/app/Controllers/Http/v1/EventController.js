@@ -7,7 +7,7 @@ const Quest = use('App/Models/v1/Quest')
 const Event = use('App/Models/v1/Event')
 const Institution = use('App/Models/v1/Institution')
 const Role = use('Adonis/Acl/Role')
-const Group = use('App/Models/Group')
+const Group = use('App/Models/v1/Group')
 
 const uuidv4 = require('uuid/v4')
 

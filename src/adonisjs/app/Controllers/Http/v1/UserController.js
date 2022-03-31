@@ -18,30 +18,14 @@ const Quest = use('App/Models/v1/Quest')
 const Property = use('App/Models/v1/Property')
 const UserProperty = use('App/Models/v1/UserProperty')
 const Role = use('Adonis/Acl/Role')
-const Group = use('App/Models/Group')
+const Group = use('App/Models/v1/Group')
 const Event = use('App/Models/v1/Event')
 
 const uuidv4 = require('uuid/v4')
 const Env = use('Env')
 
 class UserController {
-  /**
-  * Show a list of all users.
-  * GET users
-  *
-  * @param {object} ctx
-  * @param {Request} ctx.request
-  * @param {Response} ctx.response
-  * @param {View} ctx.view
-  */
-  async index ({ request, response, view, auth }) {
-    try {
-      const users = await User.all()
-      return response.json(users)
-    } catch (e) {
-      return response.status(e.status).json({ message: e.message })
-    }
-  }
+
 
   /**
   * Display a single user.
@@ -636,7 +620,7 @@ class UserController {
       }
 
 
-      console.log(result)
+      // console.log(result)
       return response.json({cases:result, pages:totalPages})
     } catch (e) {
       console.log(e)

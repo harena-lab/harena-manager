@@ -176,14 +176,14 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.post(   '',             'GroupController.store')
-	Route.post(   'link/user',    'GroupController.linkUser')
-  Route.post(   'link/manager', 'GroupController.linkManager')
-  Route.delete( 'user',         'GroupController.removeUser')
-  Route.get(    'cases',        'GroupController.listCases')
-  Route.get(    'users',        'GroupController.listUsers')
-  Route.get(    'managers',     'GroupController.listManagers')
-  Route.get(    '',             'GroupController.listGroups')
+	Route.post(   '',             'v1/GroupController.store')
+	Route.post(   'link/user',    'v1/GroupController.linkUser')
+  Route.post(   'link/manager', 'v1/GroupController.linkManager')
+  Route.delete( 'user',         'v1/GroupController.removeUser')
+  Route.get(    'cases',        'v1/GroupController.listCases')
+  Route.get(    'users',        'v1/GroupController.listUsers')
+  Route.get(    'managers',     'v1/GroupController.listManagers')
+  Route.get(    '',             'v1/GroupController.listGroups')
 
   // Route.get(  'list', 			'v1/CategoryController.listCategories')
   // Route.put(  ':id',        'v1/CategoryController.update')
@@ -238,7 +238,7 @@ Route.group(() => {
   Route.post(  'user/property',     					'v1/AdminController.storeUserProperty')
   Route.put(   'user/property',     					'v1/AdminController.updateUserProperty')
 
-	Route.get(   'users',          				'v1/UserController.index')
+	Route.get(   'users',          				'v1/AdminController.listUsers')
 
 	Route.get(   'roles',               		'v1/AdminController.list_roles')
 	Route.post(  'role',             			'v1/AdminController.create_role')
