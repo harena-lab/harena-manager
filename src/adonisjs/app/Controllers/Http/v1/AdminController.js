@@ -353,9 +353,9 @@ class AdminController {
       if(user != null){
         const token = await crypto.randomBytes(10).toString('hex')
         user.token_login = token
-        user.token_created_at = new Date()
+        user.token_login_created_at = new Date()
         await user.save()
-        return response.json({token: user.token_login, userId: user.id})
+        return response.json({token: user.token_login, userId: user.id, message: 'Generation successful'})
       }
     } catch (e) {
       console.log('Generate temp login token error', e)
