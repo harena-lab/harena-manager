@@ -2,7 +2,7 @@ FROM node:10
 
 RUN apt update
 RUN apt install vim -y
-RUN apt install -qq handbrake-cli
+RUN apt install -qq handbrake-cli -y
 
 WORKDIR /app
 
