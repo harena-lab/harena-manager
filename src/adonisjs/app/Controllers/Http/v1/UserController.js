@@ -22,6 +22,7 @@ const Group = use('App/Models/v1/Group')
 const Event = use('App/Models/v1/Event')
 
 const uuidv4 = require('uuid/v4')
+const moment = require('moment')
 const Env = use('Env')
 
 class UserController {
@@ -40,7 +41,21 @@ class UserController {
     try {
       const user = await User.find(params.id)
 
-      if (user != null) { return response.json(user) } else return response.status(500).json('user not found')
+      if (user != null) {
+
+        const tokenExpired = moment()
+          .subtract(30, 'minutes')
+          .isAfter(user.token_login_created_at)
+        user.token_health = tokenExpired ? 'Expired':'Valid'
+        if(user.token_login == null){
+          user.token_login = 'No active token'
+          user.token_login_created_at = 'Innactive'
+          user.token_health = 'Expired'
+        }
+        return response.json(user)
+      } else {
+        return response.status(500).json('user not found')
+      }
     } catch (e) {
       console.log(e)
       return response.status(e.status).json({ message: e.message })

@@ -4,6 +4,7 @@ const Logger = use('Logger')
 
 const User = use('App/Models/v1/User')
 const Institution = use('App/Models/v1/Institution')
+const Role = use('Adonis/Acl/Role')
 const Event = use('App/Models/v1/Event')
 
 const moment = require('moment')
@@ -13,13 +14,20 @@ class AuthController {
       // console.log('====Checking token...')
       if(await auth.check()){
         let userInstitution = await Institution.findBy('id', auth.user.institution_id)
+        let userRole = await auth.user.roles().fetch()
+        userRole = userRole.toJSON()
+        for (let i = 0; i < userRole.length; i++) {
+          userRole[i] = userRole[i]['slug']
+        }
         response.json({
           token: 'token valid',
           userId: auth.user.id,
           username: auth.user.username,
           grade: auth.user.grade,
           institution: userInstitution.acronym,
-          institutionId: auth.user.institution_id})
+          institutionId: auth.user.institution_id,
+          roles: userRole
+        })
       }
       // console.log('====Token valid')
     } catch (error) {
@@ -116,10 +124,10 @@ class AuthController {
     if (user != null) {
       try {
         const tokenExpired = moment()
-          .subtract(1, 'hours')
-          .isAfter(user.token_created_at)
+          .subtract(30, 'minutes')
+          .isAfter(user.token_login_created_at)
         user.token_login = null
-        user.token_created_at = null
+        user.token_login_created_at = null
         await user.save()
         if (tokenExpired) {
           return response.json({response: 'Token expired'})
