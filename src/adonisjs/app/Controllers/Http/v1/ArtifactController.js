@@ -14,6 +14,8 @@ const Case = use('App/Models/v1/Case')
 const Quest = use('App/Models/v1/Quest')
 const CaseArtifacts = use('App/Models/CaseArtifact')
 
+const hbjs = require('handbrake-js')
+
 class ArtifactController {
   constructor () {
     // See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
@@ -26,6 +28,8 @@ class ArtifactController {
 
     this.validExtensions =
       ['png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'avi', 'wmv', 'mov']
+
+    this.convertExtensions = ['avi', 'wmv', 'mov']
 
     this.relativePath = '/resources/artifacts/'
     this.baseUrl = Env.getOrFail('APP_URL')
@@ -52,8 +56,11 @@ class ArtifactController {
         const caseId = request.input('caseId', null)
 
         const artifactId = request.input('id') || await uuid4()
-        const artifactFileName = artifactId + '.' + extension
+        const artifactOriginalName = artifactId + '.' + extension
+        const artifactFileName = (this.convertExtensions.includes(extension))
+          ? artifactId + '.mp4' : artifactId + '.' + extension
         let fs_path = Helpers.publicPath(this.relativePath)
+        const conv_path = fs_path + 'convert/'
 
         const artifact = new Artifact()
         artifact.id = artifactId
@@ -109,7 +116,37 @@ class ArtifactController {
           bodyMessage.url = this.baseUrl + artifact.relative_path
         }
 
-        await file.move(fs_path, { name: artifactFileName, overwrite: false })
+        if (this.convertExtensions.includes(extension)) {
+          await file.move(conv_path, { name: artifactOriginalName,
+                                       overwrite: false })
+          console.log('=== converting ' + artifactOriginalName + ' to ' +
+                      artifactFileName)
+
+          const options = {
+            input: conv_path + artifactOriginalName,
+            output: conv_path + artifactFileName,
+            preset: 'Normal',
+            encoder: 'x264'
+          }
+          hbjs.spawn(options)
+            .on('error', err => {
+              console.log(err)
+            })
+            .on('progress', progress => {
+              console.log(
+                'Percent complete: %s, ETA: %s',
+                progress.percentComplete,
+                progress.eta
+              )
+            })
+            .on('complete', complete => {
+              Drive.move(conv_path + artifactFileName,
+                         fs_path + artifactFileName)
+              Drive.delete(conv_path + artifactOriginalName)
+            })
+        } else
+          await file.move(fs_path, { name: artifactFileName, overwrite: false })
+
         await auth.user.artifacts().save(artifact)
 
         return response.json(bodyMessage)
@@ -128,8 +165,7 @@ class ArtifactController {
     }
   }
 
-
-// Missing check permission
+  // Missing check permission
   async destroy ({ params, response }) {
     const trx = await Database.beginTransaction()
 

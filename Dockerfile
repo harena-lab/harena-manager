@@ -2,6 +2,7 @@ FROM node:10
 
 RUN apt update
 RUN apt install vim -y
+RUN apt install -qq handbrake-cli
 
 WORKDIR /app
 
@@ -11,6 +12,8 @@ COPY ./src/adonisjs .
 
 RUN npm i npm
 RUN npm i -g @adonisjs/cli
+
+RUN npm i handbrake-js@5.0.2 --save
 
 RUN npm install
 
