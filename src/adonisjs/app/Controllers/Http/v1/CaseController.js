@@ -374,7 +374,7 @@ class CaseController {
             Also verifies if object exists e.g.(user with email test@test)
             Default value usually is institution id
           */
-          var _subject = await Institution.find(subject)
+          var _subject = await Institution.find(subject) || await Institution.findBy('acronym', subject)
           if(entity =='user'){
             if(subject.includes('@'))
               _subject = await User.findBy('email',subject)
@@ -399,7 +399,7 @@ class CaseController {
             trx.rollback()
             return response.status(500).
             json({message:"Error. Couldn't share the case. Your permission is not high enough, contact the author of the case."})
-          }else if(!_subject){
+          }else if(!_subject || _subject == undefined){
             switch (entity) {
               case 'institution':
               trx.rollback()
