@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "handbrake-js": "^5.0.2"
+  }
+}
