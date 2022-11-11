@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "24ac3fa0-7ebb-45e4-be17-7b4a26f40d2d",
+		"_postman_id": "38477954-3b24-4e27-9da0-288b2135c55e",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "12184223"
@@ -3440,7 +3440,13 @@
 								{
 									"key": "caseId",
 									"value": "",
-									"description": "id (hash code) of the case related to the log",
+									"description": "id (hash code) of the case related to the log - optional",
+									"type": "text"
+								},
+								{
+									"key": "institutionId",
+									"value": "",
+									"description": "id of the institution of the user - optional",
 									"type": "text"
 								}
 							]
