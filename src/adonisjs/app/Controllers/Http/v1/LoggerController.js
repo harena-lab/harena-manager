@@ -36,8 +36,8 @@ class LoggerController {
 
   async listLogger ({ request, response }) {
     try {
-      const cs = await Case.find(request.input('caseId'))
-
+      const cs = await Case.find(request.input('caseId')).id || '%'
+      const institution = request.input('institutionId') || '%'
       const logger = await Database
         .select([
           'loggers.id',
@@ -48,8 +48,17 @@ class LoggerController {
         )
         .from('loggers')
         .join('users', 'loggers.user_id','users.id')
-        .join('cases', 'loggers.case_id', 'cases.id')
-        .where('loggers.case_id', cs.id)
+        .leftJoin('cases', 'loggers.case_id', 'cases.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .where('institutions.id','like',institution)
+        .where(function(){
+          if(cs != '%'){
+            this.where('loggers.case_id','like', cs)
+          }else{
+              this.whereNull('loggers.case_id')
+          }
+
+        })
         .orderBy('users.username', 'asc')
         .orderBy('loggers.created_at', 'asc')
 
