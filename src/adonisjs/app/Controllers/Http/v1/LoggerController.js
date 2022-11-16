@@ -5,6 +5,7 @@ const Database = use('Database')
 const User = use('App/Models/v1/User')
 const Case = use('App/Models/v1/Case')
 const Logger = use('App/Models/v1/Logger')
+const Institution = use('App/Models/v1/Institution')
 
 const uuidv4 = require('uuid/v4')
 
@@ -14,7 +15,7 @@ class LoggerController {
     try {
       const logger = new Logger()
       const user = await User.find(auth.user.id)
-      const cs = await Case.find(request.input('caseId'))
+      const cs = await Case.find(request.input('caseId')) || await Case.findBy('title',request.input('caseId'))
 
 		  logger.id = await uuidv4()
       logger.user_id = user.id
@@ -37,7 +38,7 @@ class LoggerController {
   async listLogger ({ request, response }) {
     try {
       const cs = await Case.find(request.input('caseId')).id || '%'
-      const institution = request.input('institutionId') || '%'
+      const institution = await Institution.find(request.input('institutionId')).id || await Institution.findBy('acronym',request.input('institutionId')).id || '%'
       const logger = await Database
         .select([
           'loggers.id',
@@ -56,6 +57,7 @@ class LoggerController {
             this.where('loggers.case_id','like', cs)
           }else{
               this.whereNull('loggers.case_id')
+              this.orWhere('loggers.case_id','like', cs)
           }
 
         })

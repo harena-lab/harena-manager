@@ -3440,13 +3440,13 @@
 								{
 									"key": "caseId",
 									"value": "",
-									"description": "id (hash code) of the case related to the log - optional",
+									"description": "id (hash code) or title of the case related to the log - optional",
 									"type": "text"
 								},
 								{
 									"key": "institutionId",
-									"value": "",
-									"description": "id of the institution of the user - optional",
+									"value": "progn",
+									"description": "id or acronym of the institution of the user - optional",
 									"type": "text"
 								}
 							]
