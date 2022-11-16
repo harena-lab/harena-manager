@@ -37,8 +37,12 @@ class LoggerController {
 
   async listLogger ({ request, response }) {
     try {
-      const cs = await Case.find(request.input('caseId')).id || '%'
-      const institution = await Institution.find(request.input('institutionId')).id || await Institution.findBy('acronym',request.input('institutionId')).id || '%'
+      const cs =  await Case.find(request.input('caseId') || '') || await Case.findBy('title',request.input('caseId') || '') || '%'
+      const institution = await Institution.find(request.input('institutionId')||'') || await Institution.findBy('acronym',request.input('institutionId')||'') || '%'
+
+      // console.log('==============================',institution)
+      // let jabo = await Case.findBy('title',request.input('caseId'))
+      // console.log('==========================', jabo.title,jabo.id);
       const logger = await Database
         .select([
           'loggers.id',
@@ -51,16 +55,21 @@ class LoggerController {
         .join('users', 'loggers.user_id','users.id')
         .leftJoin('cases', 'loggers.case_id', 'cases.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
-        .where('institutions.id','like',institution)
-        .where(function(){
-          if(cs != '%'){
-            this.where('loggers.case_id','like', cs)
-          }else{
-              this.whereNull('loggers.case_id')
-              this.orWhere('loggers.case_id','like', cs)
+        .modify(function(){
+          if (institution != '%'){
+            this.where('institutions.id',institution.id)
           }
-
         })
+        .modify(function(){
+          if(cs != '%'){
+            this.where('loggers.case_id', cs.id)
+          }
+          // else{
+          //     this.whereNull('loggers.case_id')
+          //     this.orWhere('loggers.case_id','like', cs)
+          // }
+        })
+
         .orderBy('users.username', 'asc')
         .orderBy('loggers.created_at', 'asc')
 
