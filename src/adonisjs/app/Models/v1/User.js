@@ -68,6 +68,8 @@ class User extends Model {
   }
 
 
+  // <TODO> Updated to new permission mechanism
+  /*
   async checkCasePermission(caseId, permission) {
     let queryResult
     if (permission == 'share'){
@@ -81,6 +83,7 @@ class User extends Model {
 
     if (queryResult[0]['count(*)'] === 0) { return false } else { return true }
   }
+  */
 
 
   static boot () {

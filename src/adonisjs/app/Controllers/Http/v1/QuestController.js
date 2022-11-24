@@ -37,17 +37,16 @@ class QuestController {
       const q = request.all()
       q.color = q.color ? q.color : '#505050'
       q.artifact_id = q.artifact_id ? q.artifact_id : 'default-quest-image'
-      // if(q.color == null || q.color =='')
-      //   q.color = '#505050'
-      // if(q.artifact_id == null || q.artifact_id =='')
-      //   q.artifact_id = 'default-quest-image-00000-0000-00000'
 
       quest.merge(q)
+      quest.author_id = user.id
 
       await quest.save(trx)
+      /*
       await user.quests().attach([quest.id], (row) => {
         row.role = 0
       }, trx)
+      */
       trx.commit()
 
       return response.json(quest)
@@ -183,7 +182,8 @@ class QuestController {
       const loggedUser = auth.user
       const { questId, caseId, orderPosition } = request.post()
 
-      if (await loggedUser.checkCasePermission(caseId, 'share')){
+      // <TODO> Updated to new permission mechanism
+      // if (await loggedUser.checkCasePermission(caseId, 'share')){
 
         const quest = await Quest.find(questId)
 
@@ -194,15 +194,14 @@ class QuestController {
         quest.cases = await quest.cases().fetch()
 
         return response.json(quest)
-      } else{
-        return response.status(500).json('you dont have permission to add such case for quests')
-      }
+      // } else{
+      //   return response.status(500).json('you dont have permission to add such case for quests')
+      // }
     } catch (e) {
       console.log(e)
       return response.status(500).json(e)
     }
   }
-
 
   async listUsers ({ request, response }) {
     try {

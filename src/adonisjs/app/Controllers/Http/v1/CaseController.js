@@ -52,7 +52,8 @@ class CaseController {
       if (c != null) {
         const versions = await CaseVersion.query()
           .where('case_id', '=', request.input('caseId'))
-          .orderBy('created_at', 'asc')
+          .orderBy('created_at', 'desc')
+          .limit(1)
           .fetch()
 
         const properties = await Database
@@ -70,7 +71,7 @@ class CaseController {
         }
 
         c.source = versions.last().source
-        c.versions = versions
+        // c.versions = versions
         c.property = prop
 
         const caseAuthor = await User.find(c.author_id)
@@ -539,7 +540,7 @@ class CaseController {
     }
   }
 
-  async deleteProperty ({params, request, auth, response}) {
+  async destroyProperty ({params, request, auth, response}) {
     try {
 
     } catch (e) {
@@ -547,6 +548,53 @@ class CaseController {
     }
   }
 
+  async storeAnnotation ({params, request, auth, response}) {
+    const trx = await Database.beginTransaction()
+    try {
+      const case_id = request.input('case_id')
+      const cs = await Case.find(case_id)
+
+      if (cs != null) {
+        const property_id = request.input('property_id')
+        const prp = await Property.find(property_id)
+        if (prp != null) {
+          const location = request.input('location')
+          const size = request.input('size')
+          const value = request.input('value')
+          const source = request.input('source')
+          let caseAnnotation = await CaseAnnotation.findOrCreate(
+            {case_id: case_id, property_id: property.id, location: location,
+             size: size},
+            {case_id: case_id, property_id: property.id, location: location,
+             size: size, value: value, source: source}, trx
+          )
+          await caseAnnotation.save(trx)
+          trx.commit()
+        } else {
+          trx.rollback()
+          return response.status(500).json('property not found')
+        }
+      } else {
+        trx.rollback()
+        return response.status(500).json('case not found')
+      }
+
+      return response.json({property: property, case_property: caseProperty})
+    } catch (e) {
+      trx.rollback()
+      console.log('============ catch error storeAnnotation')
+      console.log(e)
+      return response.status(e.status).json({ message: e.message})
+    }
+  }
+
+  async destroyAnnotation ({params, request, auth, response}) {
+    try {
+
+    } catch (e) {
+      return response.status(e.status).json({ message: e.message })
+    }
+  }
 }
 
 module.exports = CaseController
