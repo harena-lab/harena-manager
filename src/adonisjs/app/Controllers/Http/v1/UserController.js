@@ -323,9 +323,14 @@ class UserController {
   // @BROKEN
   async list_quests ({ request, response, auth }) {
     try {
-      const user = await auth.user
+      const user = auth.user
 
-      return response.json(await user.quests().fetch())
+      const quests = await Database
+        .from('quests')
+        .where('author_id', '=', user.id)
+
+      return response.json(quests)
+      // return response.json(await user.quests().fetch())
     } catch (e) {
       console.log(e)
       return response.status(500).json({ message: e.message })

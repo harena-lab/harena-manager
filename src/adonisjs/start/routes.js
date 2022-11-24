@@ -80,9 +80,10 @@ Route.group(() => {
 
   Route.post('property',      'v1/CaseController.storeProperty').middleware(['auth', 'case_permission:write'])
   Route.put('property',      'v1/CaseController.updateProperty').middleware(['auth', 'case_permission:write'])
+
+  Route.post('annotation', 'v1/CaseController.storeAnnotation').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
 Route.get(   '/api/v1/case',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
-
 
 /*
 |----------------------------------------------------------------------------------------------
@@ -133,7 +134,7 @@ Route.group(() => {
 	Route.post(   '',           'v1/QuestController.store')
 
 	Route.post(  'link/user',		'v1/QuestController.linkUser').middleware('quest_permission:share')
-	Route.post(  'link/case',		'v1/QuestController.linkCase').middleware('quest_permission:write')
+	Route.post(  'link/case',		'v1/QuestController.linkCase')//.middleware('quest_permission:write')
 }).prefix('/api/v1/quest').middleware('auth', 'is:author')
 
 
@@ -224,6 +225,17 @@ Route.group(() => {
   Route.get(  'users',     'v1/TermController.listTermUsers').middleware(['auth', 'is:admin'])
   Route.get(  'list',     'v1/TermController.listTerms').middleware(['auth', 'is:admin'])
 }).prefix('/api/v1/term')
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /knoledge
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+  Route.post( 'property',   'v1/KnowledgeController.storeProperty').middleware(['auth', 'is:admin'])
+  Route.get(  'properties', 'v1/KnowledgeController.listProperties').middleware(['auth', 'is:admin'])
+}).prefix('/api/v1/knowledge')
 
 /*
 |----------------------------------------------------------------------------------------------

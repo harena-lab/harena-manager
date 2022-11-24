@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "e94367f3-5fe8-4628-9973-b1d5951cd65a",
+		"_postman_id": "38477954-3b24-4e27-9da0-288b2135c55e",
 		"name": "harena-manager",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12184223"
 	},
 	"item": [
 		{
@@ -233,6 +234,49 @@
 							"path": [
 								"auth",
 								"login_event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/token_login session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"console.log(response)",
+									"pm.environment.set(\"user-token\", response.token);",
+									"pm.environment.set(\"user-refreshToken\", response.refreshToken);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "ee226ea71eea9cd64d6c",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/auth/token_login",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"auth",
+								"token_login"
 							]
 						}
 					},
@@ -2362,13 +2406,39 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{api-base-url}}/admin/users",
+							"raw": "{{api-base-url}}/admin/users?fGroup=8a419a89-4692-4b32-b485-82a2df44f31f",
 							"host": [
 								"{{api-base-url}}"
 							],
 							"path": [
 								"admin",
 								"users"
+							],
+							"query": [
+								{
+									"key": "fInstitution",
+									"value": "e31a6421-0f72-4ed9-8383-dcd70910230b",
+									"disabled": true
+								},
+								{
+									"key": "fUserType",
+									"value": "student",
+									"disabled": true
+								},
+								{
+									"key": "fGroup",
+									"value": "8a419a89-4692-4b32-b485-82a2df44f31f"
+								},
+								{
+									"key": "nItems",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "nPage",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -2897,6 +2967,36 @@
 					"response": []
 				},
 				{
+					"name": "/user/temp_login",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "54d98eef-0352-4a93-bb45-5bf1ac926ce8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/user/temp_login/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"user",
+								"temp_login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/admin/quest/{{id}}",
 					"request": {
 						"method": "GET",
@@ -3340,7 +3440,13 @@
 								{
 									"key": "caseId",
 									"value": "",
-									"description": "id (hash code) of the case related to the log",
+									"description": "id (hash code) or title of the case related to the log - optional",
+									"type": "text"
+								},
+								{
+									"key": "institutionId",
+									"value": "progn",
+									"description": "id or acronym of the institution of the user - optional",
 									"type": "text"
 								}
 							]

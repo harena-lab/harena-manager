@@ -5,6 +5,7 @@ const Database = use('Database')
 const User = use('App/Models/v1/User')
 const Case = use('App/Models/v1/Case')
 const Logger = use('App/Models/v1/Logger')
+const Institution = use('App/Models/v1/Institution')
 
 const uuidv4 = require('uuid/v4')
 
@@ -14,7 +15,7 @@ class LoggerController {
     try {
       const logger = new Logger()
       const user = await User.find(auth.user.id)
-      const cs = await Case.find(request.input('caseId'))
+      const cs = await Case.find(request.input('caseId')) || await Case.findBy('title',request.input('caseId'))
 
 		  logger.id = await uuidv4()
       logger.user_id = user.id
@@ -36,8 +37,12 @@ class LoggerController {
 
   async listLogger ({ request, response }) {
     try {
-      const cs = await Case.find(request.input('caseId'))
+      const cs =  await Case.find(request.input('caseId') || '') || await Case.findBy('title',request.input('caseId') || '') || '%'
+      const institution = await Institution.find(request.input('institutionId')||'') || await Institution.findBy('acronym',request.input('institutionId')||'') || '%'
 
+      // console.log('==============================',institution)
+      // let jabo = await Case.findBy('title',request.input('caseId'))
+      // console.log('==========================', jabo.title,jabo.id);
       const logger = await Database
         .select([
           'loggers.id',
@@ -48,8 +53,23 @@ class LoggerController {
         )
         .from('loggers')
         .join('users', 'loggers.user_id','users.id')
-        .join('cases', 'loggers.case_id', 'cases.id')
-        .where('loggers.case_id', cs.id)
+        .leftJoin('cases', 'loggers.case_id', 'cases.id')
+        .join('institutions', 'users.institution_id', 'institutions.id')
+        .modify(function(){
+          if (institution != '%'){
+            this.where('institutions.id',institution.id)
+          }
+        })
+        .modify(function(){
+          if(cs != '%'){
+            this.where('loggers.case_id', cs.id)
+          }
+          // else{
+          //     this.whereNull('loggers.case_id')
+          //     this.orWhere('loggers.case_id','like', cs)
+          // }
+        })
+
         .orderBy('users.username', 'asc')
         .orderBy('loggers.created_at', 'asc')
 
