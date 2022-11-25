@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "38477954-3b24-4e27-9da0-288b2135c55e",
+		"_postman_id": "617bf0ac-aae7-4078-bf70-b333d1e1127f",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "12184223"
+		"_exporter_id": "7375845"
 	},
 	"item": [
 		{
@@ -1442,7 +1442,7 @@
 					"response": []
 				},
 				{
-					"name": "/property",
+					"name": "/case/property",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1480,7 +1480,7 @@
 					"response": []
 				},
 				{
-					"name": "/property",
+					"name": "/case/property",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -1895,8 +1895,9 @@
 								},
 								{
 									"key": "artifact_id",
-									"value": "f9679a24-58f3-4741-9752-f40d0b4f4ab0",
-									"type": "text"
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -1962,17 +1963,17 @@
 							"formdata": [
 								{
 									"key": "questId",
-									"value": "775bd2ac-68b5-45a9-82c6-b796894114c7",
+									"value": "",
 									"type": "text"
 								},
 								{
 									"key": "caseId",
-									"value": "00f42405-743c-4a9d-8bb4-52b41f7df9ac",
+									"value": "",
 									"type": "text"
 								},
 								{
 									"key": "orderPosition",
-									"value": "0",
+									"value": "1",
 									"type": "text"
 								}
 							]
@@ -3929,6 +3930,71 @@
 							"path": [
 								"term",
 								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "knowledge",
+			"item": [
+				{
+					"name": "property",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "property unique id (if empty, the system generates an UUID)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "",
+									"description": "property title (free title text)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "property short description (free text)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/knowledge/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"knowledge",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "properties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/knowledge/properties",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"knowledge",
+								"properties"
 							]
 						}
 					},

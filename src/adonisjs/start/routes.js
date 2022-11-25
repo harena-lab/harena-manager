@@ -106,7 +106,7 @@ Route.group(() => {
 */
 Route.group(() => {
 	Route.get('quests',     			'v1/UserController.listContributingQuests').middleware('auth')
-	Route.get('quest/cases', 			'v1/QuestController.listCases').middleware('auth', 'quest_permission:read')
+	Route.get('quest/cases', 			'v1/QuestController.listCases').middleware('auth')
 }).prefix('/api/v1/author').middleware('auth', 'is:author')
 
 
@@ -118,7 +118,7 @@ Route.group(() => {
 */
 Route.group(() => {
 	Route.get('quests',     		'v1/UserController.listPlayingQuests').middleware('auth')
-	Route.get('quest/cases',		'v1/QuestController.listCases').middleware('auth', 'quest_permission:read')
+	Route.get('quest/cases',		'v1/QuestController.listCases').middleware('auth')
 }).prefix('/api/v1/player').middleware('auth', 'is:player')
 
 
