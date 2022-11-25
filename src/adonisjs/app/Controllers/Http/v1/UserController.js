@@ -675,11 +675,18 @@ class UserController {
       const user = await auth.user
 
       const resultQuest = await Database
-      .select('*')
-      .from('quests_users')
-      .where('user_id', user.id)
-      .whereIn('permission', ['write', 'share', 'delete'])
-      .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
+        .select('*')
+        .from('quests')
+        .where('author_id', user.id)
+
+      /*
+      const resultQuest = await Database
+        .select('*')
+        .from('quests_users')
+        .where('user_id', user.id)
+        .whereIn('permission', ['write', 'share', 'delete'])
+        .leftJoin('quests', 'quests_users.quest_id', 'quests.id')
+      */
 
       const base_url = Env.getOrFail('APP_URL')
       const quests = []
@@ -687,7 +694,7 @@ class UserController {
       for (var i = 0; i < resultQuest.length; i++) {
         const questJSON = {}
 
-        questJSON.id = resultQuest[i].quest_id
+        questJSON.id = resultQuest[i].id
         questJSON.title = resultQuest[i].title
         questJSON.color = resultQuest[i].color
 
