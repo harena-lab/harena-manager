@@ -6,14 +6,14 @@ const Schema = use('Schema')
 class CaseAnnotationsSchema extends Schema {
   up () {
     this.create('case_annotations', (table) => {
-      table.uuid('user_id').references('id').inTable('users').index('user_id')
       table.uuid('case_id').references('id').inTable('cases').index('case_id')
       table.uuid('property_id').references('id').inTable('properties').index('property_id')
-      table.integer('location')
-      table.integer('size')
-      table.primary(['user_id', 'case_id', 'property_id', 'location', 'size'])
+      table.uuid('user_id').references('id').inTable('users').index('user_id')
+      table.string('range', 50)
+      table.primary(['case_id', 'property_id', 'user_id', 'range'])
 
-      table.string('value', 255)
+      table.string('fragment', 255)
+      table.text('comment')
       table.tinyint('source')
       table.timestamp('created_at').defaultTo(this.fn.now())
     })
