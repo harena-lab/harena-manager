@@ -72,7 +72,7 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.post(  '',	          'v1/CaseController.store')
+	Route.post(  '',	       'v1/CaseController.store')
 	Route.put(   '',         'v1/CaseController.update').middleware(['case_permission:write'])
 	Route.delete('',         'v1/CaseController.destroy').middleware(['case_permission:delete'])
   Route.post('share',      'v1/CaseController.share').middleware(['case_permission:share'])
@@ -83,7 +83,8 @@ Route.group(() => {
 
   Route.post('annotation', 'v1/CaseController.storeAnnotation').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
-Route.get(   '/api/v1/case',         'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case', 'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotations').middleware(['auth', 'case_permission:read'])
 
 /*
 |----------------------------------------------------------------------------------------------
@@ -129,14 +130,15 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-	Route.get(   'users',      	'v1/QuestController.listUsers').middleware('quest_permission:delete')
+	Route.get( 'users',      	'v1/QuestController.listUsers').middleware('quest_permission:delete')
 
-	Route.post(   '',           'v1/QuestController.store')
+	Route.post('',           'v1/QuestController.store')
 
-	Route.post(  'link/user',		'v1/QuestController.linkUser').middleware('quest_permission:share')
-	Route.post(  'link/case',		'v1/QuestController.linkCase')//.middleware('quest_permission:write')
+	Route.post('link/user',		'v1/QuestController.linkUser').middleware('quest_permission:share')
+	Route.post('link/case',		'v1/QuestController.linkCase')//.middleware('quest_permission:write')
+  Route.post('annotation', 'v1/QuestController.storeAnnotation')//.middleware(['auth', 'quest_permission:write'])
+  Route.get( 'annotations', 'v1/QuestController.listAnnotations')//.middleware('quest_permission:read')
 }).prefix('/api/v1/quest').middleware('auth', 'is:author')
-
 
 /*
 |----------------------------------------------------------------------------------------------

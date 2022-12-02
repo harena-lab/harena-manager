@@ -15,6 +15,7 @@ const Institution = use('App/Models/v1/Institution')
 const Permission = use('App/Models/v1/Permission')
 const Property = use('App/Models/v1/Property')
 const CaseProperty = use('App/Models/v1/CaseProperty')
+const CaseAnnotation = use('App/Models/v1/CaseAnnotation')
 const UsersGroup = use('App/Models/v1/UsersGroup')
 const Group = use('App/Models/Group')
 const Artifact = use('App/Models/v1/Artifact')
@@ -148,19 +149,11 @@ class CaseController {
     const trx = await Database.beginTransaction()
     var canEdit = false
     try {
-      // console.log('============')
-      // console.log('attempting to update case...')
       const c = await Case.find(request.input('caseId'))
 
       if (c != null) {
-        // console.log('============')
-        // console.log('Case found!')
-        // console.log('Verifying user permissions...')
         if(c.author_id == auth.user.id){
           canEdit = true
-          // console.log('============')
-          // console.log('User is the author of case')
-          // console.log('============')
         }else{
           var casePermission = await Permission
             .query()
@@ -169,15 +162,9 @@ class CaseController {
             .where('clearance', '>=', '4')
             .fetch()
           casePermission = casePermission.toJSON()
-          // console.log('============')
-          // console.log(casePermission)
-          // console.log('============')
           for(var _permission in casePermission){
             if((casePermission[_permission]['entity'] == 'user' && casePermission[_permission]['subject'] == auth.user.id)
             || (casePermission[_permission]['entity'] == 'institution' && casePermission[_permission]['subject'] == auth.user.institution_id)){
-              // console.log('============')
-              // console.log('User is part of a institution or user able to edit')
-              // console.log('============')
               canEdit = true
             }else if(casePermission[_permission]['entity'] == 'group'){
 
@@ -187,9 +174,6 @@ class CaseController {
                 .where('user_id', auth.user.id)
                 .first()
               if(group){
-                // console.log('============')
-                // console.log('User is part of a group able to edit')
-                // console.log('============')
                 canEdit = true
               }
             }
@@ -551,25 +535,28 @@ class CaseController {
   async storeAnnotation ({params, request, auth, response}) {
     const trx = await Database.beginTransaction()
     try {
-      const case_id = request.input('case_id')
-      const cs = await Case.find(case_id)
+      const ann = new CaseAnnotation()
+
+      ann.case_id = request.input('case_id')
+      const cs = await Case.find(ann.case_id)
 
       if (cs != null) {
-        const property_id = request.input('property_id')
-        const prp = await Property.find(property_id)
+        ann.property_id = request.input('property_id') || 'dc:description'
+        const prp = await Property.find(ann.property_id)
         if (prp != null) {
-          const location = request.input('location')
-          const size = request.input('size')
-          const value = request.input('value')
-          const source = request.input('source')
-          let caseAnnotation = await CaseAnnotation.findOrCreate(
-            {case_id: case_id, property_id: property.id, location: location,
-             size: size},
-            {case_id: case_id, property_id: property.id, location: location,
-             size: size, value: value, source: source}, trx
-          )
-          await caseAnnotation.save(trx)
-          trx.commit()
+          ann.range = request.input('range')
+          if (ann.range != null) {
+            ann.user_id = auth.user.id
+            ann.fragment = request.input('fragment')
+            ann.comment = request.input('comment')
+            ann.source = request.input('source')
+            await ann.save(trx)
+            trx.commit()
+            return response.json(ann)
+          } else {
+            trx.rollback()
+            return response.status(500).json('range is mandatory')
+          }
         } else {
           trx.rollback()
           return response.status(500).json('property not found')
@@ -578,13 +565,22 @@ class CaseController {
         trx.rollback()
         return response.status(500).json('case not found')
       }
-
-      return response.json({property: property, case_property: caseProperty})
     } catch (e) {
       trx.rollback()
       console.log('============ catch error storeAnnotation')
       console.log(e)
       return response.status(e.status).json({ message: e.message})
+    }
+  }
+
+  async listAnnotations ({ request, response }) {
+    try {
+      const case_id = request.input('case_id')
+      const cs = await Case.find(case_id)
+
+      return response.json(await cs.annotations().fetch())
+    } catch (e) {
+      console.log(e)
     }
   }
 
