@@ -20,7 +20,7 @@ class CaseAnnotationsSchema extends Schema {
   }
 
   down () {
-    this.drop('case_annotations')
+    // no rollback (transient)
   }
 }
 

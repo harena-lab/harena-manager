@@ -17,7 +17,7 @@ class QuestAnnotationsSchema extends Schema {
   }
 
   down () {
-    this.drop('quest_annotations')
+    // no rollback (transient)
   }
 }
 

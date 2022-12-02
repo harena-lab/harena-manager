@@ -10,7 +10,7 @@ class CaseAnnotationsDropSchema extends Schema {
 
   down () {
     this.table('case_annotations', (table) => {
-      // reverse alternations
+      // no rollback (transient)
     })
   }
 }

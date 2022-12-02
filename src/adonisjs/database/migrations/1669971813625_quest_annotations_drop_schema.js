@@ -10,7 +10,7 @@ class QuestAnnotationsDropSchema extends Schema {
 
   down () {
     this.table('quest_annotations', (table) => {
-      // reverse alternations
+      // no rollback (transient)
     })
   }
 }
