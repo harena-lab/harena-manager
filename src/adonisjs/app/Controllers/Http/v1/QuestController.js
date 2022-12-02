@@ -13,6 +13,8 @@ const User = use('App/Models/v1/User')
 const Case = use('App/Models/v1/Case')
 const Role = use('App/Models/v1/Role')
 const Artifact = use('App/Models/v1/Artifact')
+const Property = use('App/Models/v1/Property')
+const QuestAnnotation = use('App/Models/v1/QuestAnnotation')
 
 const uuidv4 = require('uuid/v4')
 
@@ -223,6 +225,76 @@ class QuestController {
       const quest = await Quest.find(questId)
 
       return response.json(await quest.cases().fetch())
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async storeAnnotation ({params, request, auth, response}) {
+    const trx = await Database.beginTransaction()
+    try {
+      const quest_id = request.input('quest_id')
+      const quest = await Quest.find(quest_id)
+
+      if (quest != null) {
+        const property_id = request.input('property_id') || 'dc:description'
+        const prp = await Property.find(property_id)
+        if (prp != null) {
+          const fragment = request.input('fragment')
+          if (fragment != null) {
+            const user_id = auth.user.id
+            let ann = await QuestAnnotation.findBy(
+              {quest_id: quest_id, property_id: property_id,
+               user_id: user_id, fragment: fragment})
+            if (ann == null) {
+              ann = new QuestAnnotation()
+              ann.quest_id = quest_id
+              ann.property_id = property_id,
+              ann.user_id = user_id
+              ann.fragment = fragment
+              ann.count = 1
+              await ann.save(trx)
+            } else {
+              ann.count = ann.count + 1
+              await trx
+                .table('quest_annotations')
+                .where({
+                  'quest_id': quest_id,
+                  'property_id': property_id,
+                  'user_id': user_id,
+                  'fragment': fragment
+                })
+                .update('count', ann.count)
+            }
+
+            trx.commit()
+            return response.json(ann)
+          } else {
+            trx.rollback()
+            return response.status(500).json('fragment is mandatory')
+          }
+        } else {
+          trx.rollback()
+          return response.status(500).json('property not found')
+        }
+      } else {
+        trx.rollback()
+        return response.status(500).json('case not found')
+      }
+    } catch (e) {
+      trx.rollback()
+      console.log('============ catch error storeAnnotation')
+      console.log(e)
+      return response.status(e.status).json({ message: e.message})
+    }
+  }
+
+  async listAnnotations ({ request, response }) {
+    try {
+      const quest_id = request.input('quest_id')
+      const quest = await Quest.find(quest_id)
+
+      return response.json(await quest.annotations().fetch())
     } catch (e) {
       console.log(e)
     }

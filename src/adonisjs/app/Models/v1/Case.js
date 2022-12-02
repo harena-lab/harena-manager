@@ -32,6 +32,11 @@ class Case extends Model {
       .withTimestamps()
   }
 
+  annotations () {
+    return this
+      .hasMany('App/Models/v1/CaseAnnotation', 'id', 'case_id')
+  }
+
   institution () {
     return this.belongsTo('App/Models/v1/Institution')
   }

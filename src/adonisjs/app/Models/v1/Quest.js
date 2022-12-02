@@ -27,6 +27,11 @@ class Quest extends Model {
   artifact () {
     return this.belongsTo('App/Models/v1/Artifact')
   }
+
+  annotations () {
+    return this
+      .hasMany('App/Models/v1/QuestAnnotation', 'id', 'quest_id')
+  }
 }
 
 module.exports = Quest

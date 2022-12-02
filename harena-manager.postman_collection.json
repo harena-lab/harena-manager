@@ -264,7 +264,7 @@
 							"formdata": [
 								{
 									"key": "token",
-									"value": "ee226ea71eea9cd64d6c",
+									"value": "",
 									"type": "text"
 								}
 							]
@@ -1451,17 +1451,20 @@
 							"formdata": [
 								{
 									"key": "case_id",
-									"value": "88ffeb32-df75-43b4-a7bb-937051cff61e",
+									"value": "",
+									"description": "id of the case related to the property",
 									"type": "text"
 								},
 								{
 									"key": "property_title",
 									"value": "casepropertynovo",
+									"description": "title of the property to be linked to the case (it will look for a property with this title or create a new one)",
 									"type": "text"
 								},
 								{
 									"key": "property_value",
 									"value": "novissimo",
+									"description": "free format value to the property (until 255 characters)",
 									"type": "text"
 								}
 							]
@@ -1512,6 +1515,100 @@
 							"path": [
 								"case",
 								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case/annotation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "case_id",
+									"value": "",
+									"description": "id of the annotated case",
+									"type": "text"
+								},
+								{
+									"key": "property_id",
+									"value": "dc:description",
+									"description": "id of the property related to the annotation (if empty default is dc:description)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "0,10",
+									"description": "annotated range in the document (start position and size separated by comma); separate multiple ranges by semicolons",
+									"type": "text"
+								},
+								{
+									"key": "fragment",
+									"value": "a text fragement",
+									"description": "copy of the annotated fragment in the document",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "comment",
+									"value": "some comment",
+									"description": "free text comment related to the annotation",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "source",
+									"value": "1",
+									"description": "source of the annotation (0 - undefined; 1 - manual; 2 - automated)",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/annotation",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"annotation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/case/annotations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "case_id",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/case/annotations",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"case",
+								"annotations"
 							]
 						}
 					},
@@ -1987,6 +2084,85 @@
 								"quest",
 								"link",
 								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "quest/annotation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "quest_id",
+									"value": "",
+									"description": "id of the quest that contains a case with the annotation",
+									"type": "text"
+								},
+								{
+									"key": "property_id",
+									"value": "dc:description",
+									"description": "id of the property related to the annotation (if empty default is dc:description)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fragment",
+									"value": "a text fragment",
+									"description": "copy of the annotated fragment in a case inside this quest",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/annotation",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"annotation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/quest/annotations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "quest_id",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/quest/annotations",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"quest",
+								"annotations"
 							]
 						}
 					},
@@ -3950,20 +4126,19 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "",
+									"value": "dc:description",
 									"description": "property unique id (if empty, the system generates an UUID)",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "title",
-									"value": "",
+									"value": "Dublin Core Description",
 									"description": "property title (free title text)",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "",
+									"value": "An account of the resource (http://purl.org/dc/elements/1.1/description).",
 									"description": "property short description (free text)",
 									"type": "text"
 								}

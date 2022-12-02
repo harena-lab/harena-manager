@@ -7,9 +7,18 @@ class QuestAnnotation extends Model {
   static get incrementing () {
     return false
   }
+
+  static get createdAtColumn () {
+    return null // disables created_at
+  }
+
+  static get updatedAtColumn () {
+    return null // disables updated_at
+  }
+
   static get table () {
     return 'quest_annotations'
   }
 }
 
-module.exports = QuestAnnotations
+module.exports = QuestAnnotation
