@@ -13,7 +13,7 @@ class CaseAnnotationsSchema extends Schema {
       table.primary(['case_id', 'property_id', 'user_id', 'range'])
 
       table.string('fragment', 255)
-      table.text('value')
+      table.text('property_value')
       table.tinyint('source')
       table.timestamp('created_at').defaultTo(this.fn.now())
     })
