@@ -548,7 +548,7 @@ class CaseController {
           if (ann.range != null) {
             ann.user_id = auth.user.id
             ann.fragment = request.input('fragment')
-            ann.value = request.input('value')
+            ann.property_value = request.input('property_value')
             ann.source = request.input('source')
             await ann.save(trx)
             trx.commit()

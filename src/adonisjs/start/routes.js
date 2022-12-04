@@ -235,8 +235,9 @@ Route.group(() => {
 |----------------------------------------------------------------------------------------------
 */
 Route.group(() => {
-  Route.post( 'property',   'v1/KnowledgeController.storeProperty').middleware(['auth', 'is:admin'])
-  Route.get(  'properties', 'v1/KnowledgeController.listProperties').middleware(['auth', 'is:admin'])
+  Route.post('property',   'v1/KnowledgeController.store').middleware(['auth', 'is:admin'])
+  Route.put( 'property',   'v1/KnowledgeController.update').middleware(['auth', 'is:admin'])
+  Route.get( 'properties', 'v1/KnowledgeController.index').middleware(['auth', 'is:admin'])
 }).prefix('/api/v1/knowledge')
 
 /*
