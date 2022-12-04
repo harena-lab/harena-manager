@@ -1555,9 +1555,9 @@
 									"disabled": true
 								},
 								{
-									"key": "comment",
-									"value": "some comment",
-									"description": "free text comment related to the annotation",
+									"key": "property_value",
+									"value": "some value",
+									"description": "free text value related to the annotation - can also be a comment",
 									"type": "text",
 									"disabled": true
 								},
@@ -4120,6 +4120,47 @@
 					"name": "property",
 					"request": {
 						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "dc:description",
+									"description": "property unique id (if empty, the system generates an UUID)",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Dublin Core Description",
+									"description": "property title (free title text)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "An account of the resource (http://purl.org/dc/elements/1.1/description).",
+									"description": "property short description (free text)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/knowledge/property",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"knowledge",
+								"property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "property",
+					"request": {
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "formdata",

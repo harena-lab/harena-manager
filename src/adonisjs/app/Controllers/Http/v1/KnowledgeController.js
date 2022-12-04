@@ -7,7 +7,7 @@ const Property = use('App/Models/v1/Property')
 const uuidv4 = require('uuid/v4')
 
 class KnowledgeController {
-  async storeProperty ({params, request, auth, response}) {
+  async store ({params, request, auth, response}) {
     const trx = await Database.beginTransaction()
     try {
       const id = request.input('id') || await uuid4()
@@ -31,7 +31,26 @@ class KnowledgeController {
     }
   }
 
-  async listProperties ({ request, response }) {
+  async update ({ params, request, response }) {
+    try {
+      const property = await Property.find(request.input('id'))
+
+      if (property != null) {
+        property.title = request.input('title') || property.title
+        property.description =
+          request.input('description') || property.description
+
+        await property.save()
+        return response.json(property)
+      } else
+        return response.status(500).json('property not found, update failed')
+    } catch (e) {
+      console.log(e)
+      return response.status(500).json({ message: e })
+    }
+  }
+
+  async index ({ request, response }) {
     try {
       const properties = await Property.all()
 
