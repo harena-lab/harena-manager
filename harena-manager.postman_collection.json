@@ -1555,9 +1555,9 @@
 									"disabled": true
 								},
 								{
-									"key": "comment",
-									"value": "some comment",
-									"description": "free text comment related to the annotation",
+									"key": "value",
+									"value": "some value",
+									"description": "free text value related to the annotation - can also be a comment",
 									"type": "text",
 									"disabled": true
 								},
