@@ -1549,7 +1549,7 @@
 								},
 								{
 									"key": "fragment",
-									"value": "a text fragement",
+									"value": "a text fragment",
 									"description": "copy of the annotated fragment in the document",
 									"type": "text",
 									"disabled": true
@@ -1565,6 +1565,13 @@
 									"key": "source",
 									"value": "1",
 									"description": "source of the annotation (0 - undefined; 1 - manual; 2 - automated)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "multiple",
+									"value": "",
+									"description": "multiple annotations in JSON; array with of objects: {range, fragment, property_value, source}",
 									"type": "text",
 									"disabled": true
 								}
@@ -2090,7 +2097,7 @@
 					"response": []
 				},
 				{
-					"name": "quest/annotation",
+					"name": "/quest/annotation",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -2583,7 +2590,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{api-base-url}}/admin/users?fGroup=8a419a89-4692-4b32-b485-82a2df44f31f",
+							"raw": "{{api-base-url}}/admin/users",
 							"host": [
 								"{{api-base-url}}"
 							],
@@ -2594,7 +2601,7 @@
 							"query": [
 								{
 									"key": "fInstitution",
-									"value": "e31a6421-0f72-4ed9-8383-dcd70910230b",
+									"value": "",
 									"disabled": true
 								},
 								{
@@ -2604,7 +2611,8 @@
 								},
 								{
 									"key": "fGroup",
-									"value": "8a419a89-4692-4b32-b485-82a2df44f31f"
+									"value": "",
+									"disabled": true
 								},
 								{
 									"key": "nItems",
@@ -4127,7 +4135,7 @@
 								{
 									"key": "id",
 									"value": "dc:description",
-									"description": "property unique id (if empty, the system generates an UUID)",
+									"description": "property unique id (if empty, the system generates a UUID)",
 									"type": "text"
 								},
 								{
@@ -4211,6 +4219,713 @@
 							"path": [
 								"knowledge",
 								"properties"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "room",
+			"item": [
+				{
+					"name": "/admin/rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "",
+									"description": "user to retrieve the role",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room/case/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/case/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"case",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/case/list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/case/list",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"case",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room/case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "case_id",
+									"value": "",
+									"description": "id of a case inside the room",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "case_id",
+									"value": "",
+									"description": "id of a case inside the room",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room/users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/users",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/case/annotations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "case_id",
+									"value": "",
+									"description": "id of a case inside the room",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/case/annotations",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"case",
+								"annotations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/quest/annotations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room with a default quest whose annotations will be listed",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/quest/annotations",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"quest",
+								"annotations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "",
+									"description": "room title (free title text - mandatory)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "room short description (free text)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "artifact_id",
+									"value": "",
+									"description": "image to represent this classroom as an icon",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "quest_id",
+									"value": "",
+									"description": "default quest presented in the room cases",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room/link/user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "",
+									"description": "id of the user added to the room",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "",
+									"description": "role of the user in the room: 1 - viewer; 2 - author; 3 - manager (optional - default is 1)",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/link/user",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"link",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/room/link/case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.environment.set(\"quest-id\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "case_id",
+									"value": "",
+									"description": "id of the case added to the room",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/link/case",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"link",
+								"case"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/case/annotation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								},
+								{
+									"key": "case_id",
+									"value": "",
+									"description": "id of the annotated case inside the room",
+									"type": "text"
+								},
+								{
+									"key": "property_id",
+									"value": "dc:description",
+									"description": "id of the property related to the annotation (if empty default is dc:description)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "range",
+									"value": "0,10",
+									"description": "annotated range in the document (start position and size separated by comma); separate multiple ranges by semicolons",
+									"type": "text"
+								},
+								{
+									"key": "fragment",
+									"value": "a text fragement",
+									"description": "copy of the annotated fragment in the document",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "property_value",
+									"value": "some value",
+									"description": "free text value related to the annotation - can also be a comment",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "source",
+									"value": "1",
+									"description": "source of the annotation (0 - undefined; 1 - manual; 2 - automated)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "multiple",
+									"value": "",
+									"description": "multiple annotations in JSON; array with of objects: {range, fragment, property_value, source}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/case/annotation",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"case",
+								"annotation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/quest/annotation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "id of the room with a default quest that contains a case with the annotation",
+									"type": "text"
+								},
+								{
+									"key": "property_id",
+									"value": "dc:description",
+									"description": "id of the property related to the annotation (if empty default is dc:description)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fragment",
+									"value": "a text fragment",
+									"description": "copy of the annotated fragment in a case inside this quest",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/quest/annotation",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"quest",
+								"annotation"
 							]
 						}
 					},

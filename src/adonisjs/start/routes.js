@@ -81,10 +81,10 @@ Route.group(() => {
   Route.post('property',      'v1/CaseController.storeProperty').middleware(['auth', 'case_permission:write'])
   Route.put('property',      'v1/CaseController.updateProperty').middleware(['auth', 'case_permission:write'])
 
-  Route.post('annotation', 'v1/CaseController.storeAnnotation').middleware(['auth', 'case_permission:write'])
+  Route.post('annotation', 'v1/CaseController.storeAnnotationsRegular').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
 Route.get(   '/api/v1/case', 'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
-Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotations').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotationsRegular').middleware(['auth', 'case_permission:read'])
 
 /*
 |----------------------------------------------------------------------------------------------
@@ -139,6 +139,33 @@ Route.group(() => {
   Route.post('annotation', 'v1/QuestController.storeAnnotation')//.middleware(['auth', 'quest_permission:write'])
   Route.get( 'annotations', 'v1/QuestController.listAnnotations')//.middleware('quest_permission:read')
 }).prefix('/api/v1/quest').middleware('auth', 'is:author')
+
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /room
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+  Route.get ('user',              'v1/RoomController.userRoleRegular')
+  Route.get ('case/list',         'v1/RoomController.listCasesRegular')
+  Route.get ('case',              'v1/CaseController.roomCaseRegular')
+  Route.get ('case/annotations',  'v1/CaseController.listAnnotationsRoom')
+  Route.post('case/annotation',   'v1/CaseController.storeAnnotationsRoom')
+  Route.get( 'quest/annotations', 'v1/QuestController.listAnnotationsRoom')
+  Route.post('quest/annotation',  'v1/QuestController.storeAnnotationsRoom')
+}).prefix('/api/v1/room').middleware('auth')
+
+Route.group(() => {
+  Route.post('',          'v1/RoomController.store')
+  Route.post('link/user', 'v1/RoomController.linkUser')
+  Route.post('link/case', 'v1/RoomController.linkCase')
+	Route.get ('list',      'v1/RoomController.index')
+  Route.get ('user',      'v1/RoomController.userRoleAdmin')
+  Route.get ('users',     'v1/RoomController.listUsers')
+  Route.get ('case/list', 'v1/RoomController.listCasesAdmin')
+  Route.get ('case',      'v1/CaseController.roomCaseAdmin')
+}).prefix('/api/v1/admin/room').middleware('auth', 'is:admin')
 
 /*
 |----------------------------------------------------------------------------------------------

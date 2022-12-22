@@ -20,6 +20,8 @@ const UsersGroup = use('App/Models/v1/UsersGroup')
 const Group = use('App/Models/Group')
 const Artifact = use('App/Models/v1/Artifact')
 const CaseArtifacts = use('App/Models/CaseArtifact')
+const RoomPermissionController =
+  use('App/Controllers/Http/v1/RoomPermissionController')
 
 const uuidv4 = require('uuid/v4')
 
@@ -57,13 +59,14 @@ class CaseController {
           .limit(1)
           .fetch()
 
+        // <TODO> bring properties in another request
         const properties = await Database
           .select(['properties.title', 'case_properties.value'])
           .from('case_properties')
           .leftJoin('properties', 'case_properties.property_id', 'properties.id')
           .where('case_properties.case_id', request.input('caseId'))
 
-          var prop = {}
+        let prop = {}
 
         for(let p in properties){
           let title = properties[p].title
@@ -89,6 +92,47 @@ class CaseController {
     }
   }
 
+  /*
+   * Case access based on room permission
+   * <TODO> merge with the show method
+   */
+  async roomCaseRegular ({request, response, auth}) {
+   return await this.roomCase(request, response, auth.user.id, false)
+  }
+
+  async roomCaseAdmin ({request, response, auth}) {
+   return await this.roomCase(request, response, null, true)
+  }
+
+  async roomCase(request, response, userId, admin) {
+    try {
+      const roomId = request.input('room_id')
+      const caseId = request.input('case_id')
+      let status = await RoomPermissionController.checkPermissions(
+        roomId, userId, admin, 1)
+
+      let cs
+      if (status.error == null) {
+        const rc = await this.retrieveCase(caseId)
+        cs = rc.casei
+        status = rc.status
+        if (status.error == null) {
+          const versions = await CaseVersion.query()
+            .where('case_id', '=', caseId)
+            .orderBy('created_at', 'desc')
+            .limit(1)
+            .fetch()
+          cs.source = versions.last().source
+        }
+      }
+      return (status.error == null)
+        ? response.json(cs)
+        : response.status(status.code).json(status.error)
+    } catch (e) {
+      console.log(e)
+      return response.status(e.status).json(e.message)
+    }
+  }
 
   /**  * Create/save a new case. */
   async store ({ request, auth, response }) {
@@ -532,53 +576,110 @@ class CaseController {
     }
   }
 
-  async storeAnnotation ({params, request, auth, response}) {
+  async storeAnnotationsRegular (params) {
+    return await this.storeAnnotations(params)
+  }
+
+  async storeAnnotationsRoom (params) {
+    let status = await RoomPermissionController.checkPermissions(
+      params.request.input('room_id'), params.auth.user.id, false, 2)
+    if (status.error == null)
+      return await this.storeAnnotations(params)
+    else
+      return params.response.status(status.code).json(status.error)
+  }
+
+  async storeAnnotations ({params, request, auth, response}) {
     const trx = await Database.beginTransaction()
     try {
-      const ann = new CaseAnnotation()
-
-      ann.case_id = request.input('case_id')
-      const cs = await Case.find(ann.case_id)
-
-      if (cs != null) {
-        ann.property_id = request.input('property_id') || 'dc:description'
-        const prp = await Property.find(ann.property_id)
-        if (prp != null) {
-          ann.range = request.input('range')
-          if (ann.range != null) {
-            ann.user_id = auth.user.id
-            ann.fragment = request.input('fragment')
-            ann.property_value = request.input('property_value')
-            ann.source = request.input('source')
-            await ann.save(trx)
-            trx.commit()
-            return response.json(ann)
-          } else {
-            trx.rollback()
-            return response.status(500).json('range is mandatory')
+      const req = request.all()
+      const cs = await this.retrieveCase(req.case_id)
+      let status = cs.status
+      if (status.error == null) {
+        const ann = new CaseAnnotation()
+        ann.case_id = req.case_id
+        if (req.range == null && req.multiple == null)
+          status = {error: 'range or multiple is mandatory', code: 500}
+        else {
+          ann.user_id = auth.user.id
+          if (req.range != null) {
+            ann.range = req.range
+            ann.fragment = req.fragment
+            ann.property_value = req.property_value
+            ann.source = req.source
+            ann.property_id = req.property_id || 'dc:description'
+            const prp = await Property.find(ann.property_id)
+            if (prp == null)
+              status = {error: 'property ' + ann.property_id + ' not found',
+                        code: 500}
+            else
+              await ann.save(trx)
           }
-        } else {
-          trx.rollback()
-          return response.status(500).json('property not found')
+          if (status.error == null && req.multiple != null) {
+            const multi = JSON.parse(req.multiple)
+            for (const m of multi) {
+              ann.range = m.range
+              ann.fragment = m.fragment
+              ann.property_value = m.property_value
+              ann.source = m.source
+              ann.property_id = m.property_id || 'dc:description'
+              const prp = await Property.find(ann.property_id)
+              if (prp == null) {
+                status = {error: 'property ' + ann.property_id + ' not found',
+                          code: 500}
+                break
+              } else
+                await ann.save(trx)
+            }
+          }
         }
+      }
+      if (status.error == null) {
+        trx.commit()
+        return response.json('annotation successfully stored')
       } else {
         trx.rollback()
-        return response.status(500).json('case not found')
+        return response.status(status.code).json(status.message)
       }
     } catch (e) {
       trx.rollback()
-      console.log('============ catch error storeAnnotation')
       console.log(e)
       return response.status(e.status).json({ message: e.message})
     }
   }
 
-  async listAnnotations ({ request, response }) {
-    try {
-      const case_id = request.input('case_id')
-      const cs = await Case.find(case_id)
+  async listAnnotationsRegular (params) {
+    return await this.listAnnotations(params)
+  }
 
-      return response.json(await cs.annotations().fetch())
+  async listAnnotationsRoom (params) {
+    let status = await RoomPermissionController.checkPermissions(
+      params.request.input('room_id'), params.auth.user.id, false, 1)
+    if (status.error == null)
+      return await this.listAnnotations(params)
+    else
+      return params.response.status(status.code).json(status.error)
+  }
+
+  async retrieveCase (caseId) {
+    let status = {error: null, code: 0}
+    let cs = null
+    if (caseId == null)
+      status = {error: 'case id is mandatory', code: 500}
+    else {
+      cs = await Case.find(caseId)
+      if (cs == null)
+        status = {error: 'case not found', code: 500}
+    }
+    return {status: status, casei: cs}
+  }
+
+  async listAnnotations ({request, response}) {
+    try {
+      const cs = await this.retrieveCase(request.input('case_id'))
+      return (cs.status.error == null)
+        ? response.json(await cs.casei.annotations().fetch())
+        : response.status(cs.status.code).json(cs.status.error)
     } catch (e) {
       console.log(e)
     }

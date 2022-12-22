@@ -15,6 +15,9 @@ const Role = use('App/Models/v1/Role')
 const Artifact = use('App/Models/v1/Artifact')
 const Property = use('App/Models/v1/Property')
 const QuestAnnotation = use('App/Models/v1/QuestAnnotation')
+const Room = use('App/Models/v1/Room')
+const RoomPermissionController =
+  use('App/Controllers/Http/v1/RoomPermissionController')
 
 const uuidv4 = require('uuid/v4')
 
@@ -230,73 +233,165 @@ class QuestController {
     }
   }
 
-  async storeAnnotation ({params, request, auth, response}) {
+  async storeAnnotationsRegular ({request, response, auth}) {
+    return await this.storeAnnotations(request.all(), response, auth)
+  }
+
+  async storeAnnotationsRoom ({request, response, auth}) {
+    const input = request.all()
+    let status = await RoomPermissionController.checkPermissions(
+      input.room_id, auth.user.id, false, 2)
+    let quest
+    if (status.error == null) {
+      quest = await this.roomQuest(input.room_id)
+      status = quest.status
+    }
+    if (status.error == null) {
+      input.quest_id = quest.questId
+      return await this.storeAnnotations(input, response, auth)
+    } else
+      return params.response.status(status.code).json(status.error)
+  }
+
+  async insertUpdateAnnotation (annotation, trx) {
+    let status = {error: null, code: 0}
+    const prp = await Property.find(annotation.property_id)
+    if (prp == null)
+      status = {error: 'property ' + annotation.property_id + ' not found',
+                code: 500}
+    else {
+      let ann = await QuestAnnotation.findBy(annotation)
+        // {quest_id: quest_id, property_id: property_id,
+        //  user_id: user_id, fragment: fragment})
+      if (ann == null) {
+        ann = new QuestAnnotation()
+        ann.quest_id = annotation.quest_id
+        ann.property_id = annotation.property_id,
+        ann.user_id = annotation.user_id
+        ann.fragment = annotation.fragment
+        ann.count = 1
+        await ann.save(trx)
+      } else {
+        ann.count = ann.count + 1
+        await trx
+          .table('quest_annotations')
+          .where({
+            'quest_id': annotation.quest_id,
+            'property_id': annotation.property_id,
+            'user_id': annotation.user_id,
+            'fragment': annotation.fragment
+          })
+          .update('count', ann.count)
+      }
+    }
+    return status
+  }
+
+  async storeAnnotations (input, response, auth) {
     const trx = await Database.beginTransaction()
     try {
-      const quest_id = request.input('quest_id')
-      const quest = await Quest.find(quest_id)
-
-      if (quest != null) {
-        const property_id = request.input('property_id') || 'dc:description'
-        const prp = await Property.find(property_id)
-        if (prp != null) {
-          const fragment = request.input('fragment')
-          if (fragment != null) {
-            const user_id = auth.user.id
-            let ann = await QuestAnnotation.findBy(
-              {quest_id: quest_id, property_id: property_id,
-               user_id: user_id, fragment: fragment})
-            if (ann == null) {
-              ann = new QuestAnnotation()
-              ann.quest_id = quest_id
-              ann.property_id = property_id,
-              ann.user_id = user_id
-              ann.fragment = fragment
-              ann.count = 1
-              await ann.save(trx)
-            } else {
-              ann.count = ann.count + 1
-              await trx
-                .table('quest_annotations')
-                .where({
-                  'quest_id': quest_id,
-                  'property_id': property_id,
-                  'user_id': user_id,
-                  'fragment': fragment
-                })
-                .update('count', ann.count)
-            }
-
-            trx.commit()
-            return response.json(ann)
-          } else {
-            trx.rollback()
-            return response.status(500).json('fragment is mandatory')
-          }
-        } else {
-          trx.rollback()
-          return response.status(500).json('property not found')
+      const quest = await this.retrieveQuest(input.quest_id)
+      let status = quest.status
+      if (status.error == null) {
+        const ann = {
+          quest_id: input.quest_id,
+          property_id: input.property_id || 'dc:description'
         }
+        const prp = await Property.find(ann.property_id)
+        if (prp == null)
+          status = {error: 'property not found', code: 500}
+        else if (input.fragment == null && input.multiple == null)
+            status = {error: 'fragment or multiple is mandatory', code: 500}
+        else {
+          ann.user_id = auth.user.id
+          if (input.fragment != null) {
+            ann.fragment = input.fragment
+            status = await this.insertUpdateAnnotation(ann, trx)
+          }
+          if (status.error == null && input.multiple != null) {
+            const multi = JSON.parse(input.multiple)
+            for (const m of multi) {
+              ann.property_id = m.property_id
+              ann.fragment = m.fragment
+              status = await this.insertUpdateAnnotation(ann, trx)
+              if (status.error != null)
+                break
+              else
+                await ann.save(trx)
+            }
+          }
+        }
+      }
+      if (status.error == null) {
+        trx.commit()
+        return response.json('annotation successfully stored')
       } else {
         trx.rollback()
-        return response.status(500).json('case not found')
+        return response.status(status.code).json(status.message)
       }
     } catch (e) {
       trx.rollback()
-      console.log('============ catch error storeAnnotation')
       console.log(e)
-      return response.status(e.status).json({ message: e.message})
+      return response.status(e.status).json(e.message)
     }
   }
 
-  async listAnnotations ({ request, response }) {
-    try {
-      const quest_id = request.input('quest_id')
-      const quest = await Quest.find(quest_id)
+  async roomQuest (roomId, userId) {
+    let status = {error: null, code: 0}
+    let questId = null
+    if (roomId == null)
+      status = {error: 'room id is mandatory', code: 500}
+    else {
+      const room = await Room.find(roomId)
+      if (room == null)
+        status = {error: 'room not found', code: 500}
+      else
+        questId = room.quest_id
+    }
+    return {status: status, questId: questId}
+  }
 
-      return response.json(await quest.annotations().fetch())
+  async listAnnotationsRegular ({request, response}) {
+    return await this.listAnnotations(request.input('quest_id'), response)
+  }
+
+  async listAnnotationsRoom ({request, response, auth}) {
+    const roomId = request.input('room_id')
+    let status = await RoomPermissionController.checkPermissions(
+      roomId, auth.user.id, false, 1)
+    let quest
+    if (status.error == null) {
+      quest = await this.roomQuest(roomId)
+      status = quest.status
+    }
+    if (status.error == null)
+      return await this.listAnnotations(quest.questId, response)
+    else
+      return response.status(status.code).json(status.error)
+  }
+
+  async retrieveQuest (questId) {
+    let status = {error: null, code: 0}
+    let quest = null
+    if (questId == null)
+      status = {error: 'quest id is mandatory', code: 500}
+    else {
+      quest = await Quest.find(questId)
+      if (quest == null)
+        status = {error: 'quest not found', code: 500}
+    }
+    return {status: status, quest: quest}
+  }
+
+  async listAnnotations (questId, response) {
+    try {
+      const quest = await this.retrieveQuest(questId)
+      return (quest.status.error == null)
+        ? response.json(await quest.quest.annotations().fetch())
+        : response.status(quest.status.code).json(quest.status.error)
     } catch (e) {
       console.log(e)
+      return response.status(e.status).json({message: e.message})
     }
   }
 }
