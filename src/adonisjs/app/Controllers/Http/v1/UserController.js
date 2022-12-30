@@ -488,16 +488,10 @@ class UserController {
       }else{
         let countCases = await Database
         .from('cases')
-        .join('users_groups', function() {
-          this.on('users_groups.user_id', '=', Database.raw('?', [user.id]));
-        })
-        // .join('permissions', 'cases.id', 'permissions.table_id')
-        .join('permissions', function() {
-          this.on('permissions.subject', '=', Database.raw('?', [user.id]))
-          this.andOn(function() {
-            this.on('permissions.subject', '=', 'users_groups.group_id')
-            this.orOn('permissions.subject', '=', Database.raw('?', [user.institution_id]))
-          })
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
         })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
@@ -565,15 +559,10 @@ class UserController {
         'institutions.country AS institution_country', 'cases.created_at'])
         .distinct('cases.id')
         .from('cases')
-        .join('users_groups', function() {
-          this.on('users_groups.user_id', '=', Database.raw('?', [user.id]));
-        })
-        .join('permissions', function() {
-          this.on('permissions.subject', '=', Database.raw('?', [user.id]))
-          this.andOn(function() {
-            this.on('permissions.subject', '=', 'users_groups.group_id')
-            this.orOn('permissions.subject', '=', Database.raw('?', [user.institution_id]))
-          })
+        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
+        .leftJoin('users_groups', function() {
+          this.on('permissions.subject', '=', 'users_groups.group_id')
+          .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
         })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
