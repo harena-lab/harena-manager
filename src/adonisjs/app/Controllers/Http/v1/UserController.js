@@ -553,7 +553,7 @@ class UserController {
 
         result = await Database
         .select([ 'cases.id', 'cases.title','cases.description', 'cases.language', 'cases.domain',
-        'cases.specialty', 'cases.keywords', 'cases.complexity', 'cases.original_date',
+        'cases.specialty', 'cases.keywords', 'cases.complexity','cases.category_id', 'cases.original_date',
         'cases.author_grade', 'cases.published', 'cases.author_id', 'users.username',
         'institutions.title AS institution', 'institutions.acronym AS institution_acronym',
         'institutions.country AS institution_country', 'cases.created_at'])

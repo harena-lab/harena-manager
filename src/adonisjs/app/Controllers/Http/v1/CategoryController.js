@@ -109,11 +109,12 @@ class CategoryController {
 
         let countCases = await Database
          .from('cases')
-         .join('permissions', function() {
-           this.on('permissions.table_id', 'cases.id')
-           .andOn('permissions.entity', '=', Database.raw('?', ['institution']))
-           .andOn('permissions.subject', '=', Database.raw('?', [user.institution_id]))
-
+         .modify(function() {
+             if (category.id == 'pocus-training') {
+                 this.join('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+             }else {
+               this.leftJoin('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+             }
          })
          .join('users', 'cases.author_id','users.id')
          .join('institutions', 'users.institution_id', 'institutions.id')
@@ -186,11 +187,12 @@ class CategoryController {
         THEN 'Feedback complete' ELSE case_properties.value END AS ?`,[propertyFilter])])
         .distinct('cases.id')
         .from('cases')
-        .join('permissions', function() {
-          this.on('permissions.table_id', 'cases.id')
-          .andOn('permissions.entity', '=', Database.raw('?', ['institution']))
-          .andOn('permissions.subject', '=', Database.raw('?', [user.institution_id]))
-
+        .modify(function() {
+            if (category.id == 'pocus-training') {
+                this.join('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+            }else {
+              this.leftJoin('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+            }
         })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
@@ -254,11 +256,12 @@ class CategoryController {
         .from('cases')
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
-        .join('permissions', function() {
-          this.on('permissions.table_id', 'cases.id')
-          .andOn('permissions.entity', '=', Database.raw('?', ['institution']))
-          .andOn('permissions.subject', '=', Database.raw('?', [user.institution_id]))
-
+        .modify(function() {
+            if (category.id == 'pocus-training') {
+                this.join('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+            }else {
+              this.leftJoin('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+            }
         })
         .where('cases.category_id', category.id)
         .where('cases.published', '>=', publishedFilter)
@@ -310,11 +313,12 @@ class CategoryController {
         .from('cases')
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
-        .join('permissions', function() {
-          this.on('permissions.table_id', 'cases.id')
-          .andOn('permissions.entity', '=', Database.raw('?', ['institution']))
-          .andOn('permissions.subject', '=', Database.raw('?', [user.institution_id]))
-
+        .modify(function() {
+            if (category.id == 'pocus-training') {
+                this.join('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+            }else {
+              this.leftJoin('permissions', 'permissions.subject', Database.raw('?', [user.institution_id]))
+            }
         })
         .where('cases.category_id', category.id)
         .where('cases.published', '>=', publishedFilter)
