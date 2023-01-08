@@ -3,7 +3,7 @@
 const Database = use('Database')
 
 const Case = use('App/Models/v1/Case')
-const Quest = use('App/Models/v1/Quest')
+const Room = use('App/Models/v1/Room')
 const Event = use('App/Models/v1/Event')
 const Institution = use('App/Models/v1/Institution')
 const Role = use('Adonis/Acl/Role')
@@ -32,12 +32,13 @@ class EventController {
       if (cs != null)
         evt.case_id = cs.id
 
-      const quest_id = request.input('questId')
-      let qt = null
-      if (quest_id != null)
-        qt = await Case.find(quest_id)
-      if (qt != null)
-        evt.quest_id = qt.id
+      const room_id = request.input('roomId')
+      let rm = null
+      if (room_id != null)
+        rm = await Room.find(room_id)
+      if (rm != null)
+        evt.room_id = rm.id
+      evt.room_role = request.input('roomRole') || 1
 
       const institution_id = request.input('institutionId')
       let it = null
