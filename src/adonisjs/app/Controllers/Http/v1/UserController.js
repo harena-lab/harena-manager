@@ -134,6 +134,8 @@ class UserController {
       console.log('==== request')
       console.log(r.username)
 
+      let user
+
       if (error.message == null) {
         let eventRel = null
         const event_id = r.eventId
@@ -154,7 +156,7 @@ class UserController {
               message: 'expired authorization for self signin'
             }
           else {
-            const user = new User()
+            user = new User()
 
             user.id = await uuidv4()
             user.username = r.username
@@ -251,22 +253,34 @@ class UserController {
       }
       if (error.message == null) {
         trx.commit()
-        return response.json(feedback)
+        return response.json(
+          {
+            id: user.id,
+            feedback: feedback
+          }
+        )
       } else {
         trx.rollback()
-        return response.status(error.code).json(error)
+        return response.status(error.code).json({error: error})
       }
     } catch (e) {
-        trx.rollback()
-        console.log(e)
-        if (e.code === 'ER_DUP_ENTRY') {
-          return response.status(409).json({
+      trx.rollback()
+      console.log(e)
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(409).json({
+          error: {
             type: 'duplicated',
             message: e.sqlMessage
-          })
-        }
-        return response.status(e.status).json({message: e.message})
+          }
+        })
       }
+      return response.status(e.status).json({
+        error: {
+          code: 500,
+          type: 'error',
+          message: e.message}
+      })
+    }
   }
 
   /**
