@@ -20,6 +20,8 @@ const UserProperty = use('App/Models/v1/UserProperty')
 const Role = use('Adonis/Acl/Role')
 const Group = use('App/Models/Group')
 const Event = use('App/Models/v1/Event')
+const Room = use('App/Models/v1/Room')
+const RoomUser = use('App/Models/v1/RoomUser')
 
 const uuidv4 = require('uuid/v4')
 const Env = use('Env')
@@ -114,107 +116,157 @@ class UserController {
     const trx = await Database.beginTransaction()
     try {
       let feedback = ''
+      let error = {
+        code: 500,
+        type: 'missing field',
+        message: null
+      }
+
+      const r = request.all()
+
+      if (r.username == null)
+        error.message = 'username is mandatory'
+      else if (r.email == null)
+        error.message = 'email is mandatory'
+      else if (r.password == null)
+        error.message = 'password is mandatory'
 
       console.log('==== request')
-      console.log(request.input('username'))
+      console.log(r.username)
 
-      let eventRel = null
-      const event_id = request.input('eventId')
-      if (event_id != null)
-        eventRel = await Event.find(event_id)
+      if (error.message == null) {
+        let eventRel = null
+        const event_id = r.eventId
+        if (event_id != null)
+          eventRel = await Event.find(event_id)
 
-      if (eventRel != null) {
-        if (eventRel.active > 0) {
-          const user = new User()
-
-          user.id = await uuidv4()
-          user.username = request.input('username')
-          user.email = request.input('email')
-          user.password = request.input('password')
-          user.login = request.input('login')
-          user.grade = request.input('grade')
-
-          const institution_id = request.input('institution')
-          let ins = null
-          if (institution_id != null)
-            ins = await Institution.findBy('acronym', institution_id)
-          if (ins != null)
-            user.institution_id = ins.id
-
-          await user.save(trx)
-          feedback += 'user ' + user.username + ' created'
-          console.log('=== user saved')
-          console.log(user)
-
-          if (eventRel.role_id != null) {
-            console.log('=== linking role')
-            console.log(eventRel.role_id)
-            const role = new RoleUser()
-            role.user_id = user.id
-            let rl = null
-            if (eventRel.role_id != null)
-              rl = await Role.find(eventRel.role_id)
-            if (rl != null)
-              role.role_id = rl.id
-            await role.save(trx)
-            console.log('=== role assigned')
-
-            // const ul = await User.find(user.id)
-            /*
-            console.log(user.id)
-            const role = await Role.find(eventRel.role_id)
-            const roles = await user.roles()
-            console.log('--- role found')
-            console.log(roles)
-            roles.attach(eventRel.role_id)
-            */
-            feedback += role.slug + ' role has given to the user ' + user.username + ';'
-          }
-
-          if (eventRel.group_id != null) {
-            console.log('=== linking group')
-            console.log(eventRel.group_id)
-            const group = new UsersGroup()
-            group.user_id = user.id
-            let gr = null
-            if (eventRel.group_id != null)
-              gr = await Group.find(eventRel.group_id)
-            if (gr != null)
-              group.group_id = gr.id
-            await group.save(trx)
-            console.log('=== group assigned')
-            feedback += group.title + ' group has assigned to the user ' + user.username
-          }
-
-          trx.commit()
-
-          return response.json(user)
-        } else {
-          trx.rollback()
-          console.log('expired authorization for self signin');
-          return response.status(500).json({
+        if (eventRel == null)
+          error = {
+            code: 500,
             type: 'unauthorized',
-            message: 'expired authorization for self signin'})
+            message: 'not authorized self signin'
+          }
+        else {
+          if (eventRel.active <= 0)
+            error = {
+              code: 500,
+              type: 'unauthorized',
+              message: 'expired authorization for self signin'
+            }
+          else {
+            const user = new User()
+
+            user.id = await uuidv4()
+            user.username = r.username
+            user.email = r.email
+            user.password = r.password
+            user.login = r.login
+            user.grade = r.grade
+
+            const institution_id = r.institution
+            if (institution_id != null) {
+              const ins = await Institution.findBy('acronym', institution_id)
+              if (ins != null)
+                user.institution_id = ins.id
+              else
+                error = {
+                  code: 500,
+                  type: 'institution not found',
+                  message: 'institution not found'
+                }
+            }
+
+            if (error.message == null) {
+              await user.save(trx)
+              feedback += 'user ' + user.username + ' created; '
+              console.log('=== user saved')
+              console.log(user)
+            }
+
+            if (error.message == null && eventRel.role_id != null) {
+              console.log('=== linking role')
+              console.log(eventRel.role_id)
+              const role = new RoleUser()
+              role.user_id = user.id
+              let rl = null
+              if (eventRel.role_id != null)
+                rl = await Role.find(eventRel.role_id)
+              if (rl != null) {
+                role.role_id = rl.id
+                await role.save(trx)
+                console.log('=== role assigned')
+                feedback += rl.slug + ' role has given to the user ' +
+                            user.username + '; '
+              } else
+                error = {
+                  code: 500,
+                  type: 'role not found',
+                  message: 'role not found'
+                }
+            }
+
+            if (error.message == null && eventRel.group_id != null) {
+              console.log('=== linking group')
+              console.log(eventRel.group_id)
+              const group = new UsersGroup()
+              group.user_id = user.id
+              const gr = await Group.find(eventRel.group_id)
+              if (gr != null) {
+                group.group_id = gr.id
+                await group.save(trx)
+                console.log('=== group assigned')
+                feedback += gr.title + ' group has assigned to the user ' +
+                            user.username + '; '
+              } else
+                error = {
+                  code: 500,
+                  type: 'group not found',
+                  message: 'group not found'
+                }
+            }
+
+            if (error.message == null && eventRel.room_id != null) {
+              console.log('=== linking room')
+              console.log(eventRel.room_id)
+              const room = new RoomUser()
+              room.user_id = user.id
+              const rm = await Room.find(eventRel.room_id)
+              if (rm != null) {
+                room.room_id = rm.id
+                room.role =
+                  (eventRel.room_role != null) ? eventRel.room_role : 1
+                await room.save(trx)
+                console.log('=== room assigned')
+                feedback += rm.title + ' room has assigned to the user ' +
+                            user.username
+              } else
+                error = {
+                  code: 500,
+                  type: 'room not found',
+                  message: 'room not found'
+                }
+            }
+          }
         }
+      }
+      if (error.message == null) {
+        trx.commit()
+        return response.json(feedback)
       } else {
         trx.rollback()
-        console.log('not authorized self signin');
-        return response.status(500).json({
-          type: 'unauthorized',
-          message: 'not authorized self signin'})
+        return response.status(error.code).json(error)
       }
     } catch (e) {
-      trx.rollback()
-      console.log(e)
-      if (e.code === 'ER_DUP_ENTRY') {
-        return response.status(409).json({
-          type: 'duplicated',
-          message: e.sqlMessage
-        })
+        trx.rollback()
+        console.log(e)
+        if (e.code === 'ER_DUP_ENTRY') {
+          return response.status(409).json({
+            type: 'duplicated',
+            message: e.sqlMessage
+          })
+        }
+        return response.status(e.status).json({message: e.message})
       }
-
-      return response.status(e.status).json({ message: e.message })
-    }
   }
 
   /**
