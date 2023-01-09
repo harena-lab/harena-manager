@@ -3725,9 +3725,9 @@
 									"type": "text"
 								},
 								{
-									"key": "questId",
+									"key": "roomId",
 									"value": "",
-									"description": "id (hash code) of a quest related to the event (optional)",
+									"description": "id (hash code) of a room related to the event (optional)",
 									"type": "text"
 								},
 								{
