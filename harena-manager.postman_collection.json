@@ -670,26 +670,30 @@
 								{
 									"key": "username",
 									"value": "Edu Name",
+									"description": "full user's name",
 									"type": "text"
 								},
 								{
 									"key": "email",
 									"value": "edu@email.com",
+									"description": "user's email",
 									"type": "text"
 								},
 								{
 									"key": "password",
 									"value": "edu",
+									"description": "user's account password",
 									"type": "text"
 								},
 								{
 									"key": "login",
 									"value": "edu",
+									"description": "user's account login",
 									"type": "text"
 								},
 								{
 									"key": "institution",
-									"value": "minho",
+									"value": "unicamp",
 									"description": "acronym of the institution: unicamp, minho, mcunicamp",
 									"type": "text"
 								},
@@ -744,26 +748,30 @@
 								{
 									"key": "username",
 									"value": "Edu Name",
+									"description": "full user's name",
 									"type": "text"
 								},
 								{
 									"key": "email",
 									"value": "edu@email.com",
+									"description": "user's email",
 									"type": "text"
 								},
 								{
 									"key": "password",
 									"value": "edu",
+									"description": "user's account password",
 									"type": "text"
 								},
 								{
 									"key": "login",
 									"value": "edu",
+									"description": "user's account login",
 									"type": "text"
 								},
 								{
 									"key": "institution",
-									"value": "minho",
+									"value": "unicamp",
 									"description": "acronym of the institution: unicamp, minho, mcunicamp",
 									"type": "text"
 								},
@@ -772,6 +780,20 @@
 									"value": "student",
 									"description": "\"professor\" or \"student\"",
 									"type": "text"
+								},
+								{
+									"key": "property_ids",
+									"value": "",
+									"description": "list of additional properties' ids to be related to this user (separated by commas); you can use quotation marks to delimit ids",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "property_values",
+									"value": "",
+									"description": "list of values for the additional properties respectively (separated by commas); you can use quotation marks to delimit values",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "eventId",
@@ -2742,13 +2764,14 @@
 							"formdata": [
 								{
 									"key": "userId",
-									"value": "22d65a5f-fb24-459a-bf21-017873a9632c",
+									"value": "",
+									"description": "user id (hash)",
 									"type": "text"
 								},
 								{
 									"key": "propertyTitle",
-									"value": "prognosis-highest-lvl",
-									"description": "Optional (To list just a specific property)",
+									"value": "",
+									"description": "property to retrieve (optional - default is all properties)",
 									"type": "text",
 									"disabled": true
 								}
@@ -3725,9 +3748,9 @@
 									"type": "text"
 								},
 								{
-									"key": "questId",
+									"key": "roomId",
 									"value": "",
-									"description": "id (hash code) of a quest related to the event (optional)",
+									"description": "id (hash code) of a room related to the event (optional)",
 									"type": "text"
 								},
 								{
