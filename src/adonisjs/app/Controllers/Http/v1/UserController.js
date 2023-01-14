@@ -185,6 +185,39 @@ class UserController {
               console.log(user)
             }
 
+            if (error.message == null &&
+                r.property_ids != null && r.property_values != null) {
+              console.log('=== linking properties')
+              console.log(r.property_ids)
+              console.log(r.property_values)
+              const pids = r.property_ids.trim().split(/"?[ ]*,[ ]*"?/)
+              if (pids[0][0] == '"') pids[0] = pids[0].substring(1)
+              let last = pids.length-1
+              if (pids[last][pids[last].length-1] == '"')
+                pids[last] = pids[last].substring(0, pids[last].length-1)
+              const pvalues = r.property_values.trim().split(/"?[ ]*,[ ]*"?/)
+              if (pvalues[0][0] == '"') pvalues[0] = pvalues[0].substring(1)
+              last = pvalues.length-1
+              if (pvalues[last][pvalues[last].length-1] == '"')
+                pvalues[last] = pvalues[last]
+                  .substring(0, pvalues[last].length-1)
+              console.log(pids)
+              console.log(pvalues)
+              for (const p in pids) {
+                const property = await Property.findOrCreate(
+                  {id: pids[p]},
+                  {id: pids[p], title: pids[p]}, trx)
+                const up = new UserProperty()
+                up.user_id = user.id
+                up.property_id = pids[p]
+                up.value = pvalues[p]
+                await up.save(trx)
+                console.log('=== property assigned')
+                feedback += '(' + up.property_id + ',' + up.value + ') ' +
+                            'property related to the user; '
+              }
+            }
+
             if (error.message == null && eventRel.role_id != null) {
               console.log('=== linking role')
               console.log(eventRel.role_id)
@@ -197,8 +230,7 @@ class UserController {
                 role.role_id = rl.id
                 await role.save(trx)
                 console.log('=== role assigned')
-                feedback += rl.slug + ' role has given to the user ' +
-                            user.username + '; '
+                feedback += rl.slug + ' role given to the user; '
               } else
                 error = {
                   code: 500,
@@ -217,8 +249,7 @@ class UserController {
                 group.group_id = gr.id
                 await group.save(trx)
                 console.log('=== group assigned')
-                feedback += gr.title + ' group has assigned to the user ' +
-                            user.username + '; '
+                feedback += gr.title + ' group assigned to the user; '
               } else
                 error = {
                   code: 500,
@@ -239,8 +270,7 @@ class UserController {
                   (eventRel.room_role != null) ? eventRel.room_role : 1
                 await room.save(trx)
                 console.log('=== room assigned')
-                feedback += rm.title + ' room has assigned to the user ' +
-                            user.username
+                feedback += rm.title + ' room assigned to the user; '
               } else
                 error = {
                   code: 500,
