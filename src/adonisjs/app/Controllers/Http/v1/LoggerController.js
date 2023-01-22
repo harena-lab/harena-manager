@@ -15,7 +15,8 @@ class LoggerController {
     try {
       const logger = new Logger()
       const user = await User.find(auth.user.id)
-      const cs = await Case.find(request.input('caseId')) || await Case.findBy('title',request.input('caseId'))
+      const cs = await Case.find(request.input('caseId')) ||
+                 await Case.findBy('title', request.input('caseId'))
 
 		  logger.id = await uuidv4()
       logger.user_id = user.id
@@ -35,48 +36,82 @@ class LoggerController {
     }
   }
 
-  async listLogger ({ request, response }) {
+  async listLogger ({request, response}) {
     try {
-      const cs =  await Case.find(request.input('caseId') || '') || await Case.findBy('title',request.input('caseId') || '') || '%'
-      const institution = await Institution.find(request.input('institutionId')||'') || await Institution.findBy('acronym',request.input('institutionId')||'') || '%'
+      const fields = [
+        'loggers.id', 'loggers.user_id', 'users.username', 'loggers.case_id',
+        'loggers.instance_id', 'loggers.log', 'loggers.created_at'
+      ]
+      let logger = null
 
-      // console.log('==============================',institution)
-      // let jabo = await Case.findBy('title',request.input('caseId'))
-      // console.log('==========================', jabo.title,jabo.id);
-      const logger = await Database
-        .select([
-          'loggers.id',
-          'loggers.user_id', 'users.username',
-          'loggers.case_id', 'cases.title',
-          'loggers.instance_id', 'loggers.log',
-          'loggers.created_at'],
-        )
-        .from('loggers')
-        .join('users', 'loggers.user_id','users.id')
-        .leftJoin('cases', 'loggers.case_id', 'cases.id')
-        .join('institutions', 'users.institution_id', 'institutions.id')
-        .modify(function(){
-          if (institution != '%'){
-            this.where('institutions.id',institution.id)
-          }
-        })
-        .modify(function(){
-          if(cs != '%'){
-            this.where('loggers.case_id', cs.id)
-          }
-          // else{
-          //     this.whereNull('loggers.case_id')
-          //     this.orWhere('loggers.case_id','like', cs)
-          // }
-        })
+      const req = request.all()
 
-        .orderBy('users.username', 'asc')
-        .orderBy('loggers.created_at', 'asc')
+      let cs = null, institution = null
+      if (req.caseId != null) {
+        cs =  await Case.find(req.caseId) ||
+                    await Case.findBy('title', req.caseId)
+      } else if (req.institutionId != null) {
+        institution =
+          await Institution.find(req.institutionId) ||
+          await Institution.findBy('acronym', req.institutionId)
+        if (institution != null)
+          fields.push('cases.title')
+      }
+
+      if (cs != null || institution != null)
+        logger = await Database
+          .select(fields)
+          .from('loggers')
+          .join('users', 'loggers.user_id', 'users.id')
+          .modify(function() {
+              if (cs != null) this.where('loggers.case_id', cs.id)
+           })
+          .modify(function() {
+              if (institution != null)
+                this.join('cases', 'loggers.case_id', 'cases.id')
+                    .where('users.institution_id', institution.id)
+           })
+          .modify(function(){
+              if (req.startingDateTime != null &&
+                  req.startingDateTime.length > 0)
+                this.where('loggers.created_at', '>=', req.startingDateTime)
+           })
+           .modify(function(){
+               if (req.endingDateTime != null && req.endingDateTime.length > 0)
+                 this.where('loggers.created_at', '<=', req.endingDateTime)
+            })
+          .orderBy('users.username', 'asc')
+          .orderBy('loggers.created_at', 'asc')
+
+        // const logger = await Database
+        //   .select([
+        //     'loggers.id',
+        //     'loggers.user_id', 'users.username',
+        //     'loggers.case_id', 'cases.title',
+        //     'loggers.instance_id', 'loggers.log',
+        //     'loggers.created_at'],
+        //   )
+        //   .from('loggers')
+        //   .join('users', 'loggers.user_id','users.id')
+        //   .leftJoin('cases', 'loggers.case_id', 'cases.id')
+        //   .join('institutions', 'users.institution_id', 'institutions.id')
+        //   .modify(function(){
+        //     if (institution != '%'){
+        //       this.where('institutions.id',institution.id)
+        //     }
+        //   })
+        //   .modify(function(){
+        //     if(cs != '%'){
+        //       this.where('loggers.case_id', cs.id)
+        //     }
+        //   })
+        //   .orderBy('users.username', 'asc')
+        //   .orderBy('loggers.created_at', 'asc')
 
       return response.json({logs: logger})
     } catch (e) {
       console.log(e)
-      return response.status(500).json({ message: e.message })
+      return response.status(500).json({message: e.message})
     }
   }
 

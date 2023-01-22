@@ -70,7 +70,7 @@ class EventController {
 		  await evt.save(trx)
       trx.commit()
 
-		  response.json('event successfully created')
+		  return response.json('event successfully created')
 	  } catch (e) {
       trx.rollback()
     	console.log(e)
