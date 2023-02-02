@@ -38,10 +38,6 @@ class LoggerController {
 
   async listLogger ({request, response}) {
     try {
-      const fields = [
-        'loggers.id', 'loggers.user_id', 'users.username', 'loggers.case_id',
-        'loggers.instance_id', 'loggers.log', 'loggers.created_at'
-      ]
       let logger = null
 
       const req = request.all()
@@ -54,13 +50,14 @@ class LoggerController {
         institution =
           await Institution.find(req.institutionId) ||
           await Institution.findBy('acronym', req.institutionId)
-        if (institution != null)
-          fields.push('cases.title')
       }
 
       if (cs != null || institution != null)
         logger = await Database
-          .select(fields)
+          .select([
+            'loggers.id', 'loggers.user_id', 'users.username', 'loggers.case_id',
+            'loggers.instance_id', 'loggers.log', 'loggers.created_at'
+           ])
           .from('loggers')
           .join('users', 'loggers.user_id', 'users.id')
           .modify(function() {
@@ -68,8 +65,7 @@ class LoggerController {
            })
           .modify(function() {
               if (institution != null)
-                this.join('cases', 'loggers.case_id', 'cases.id')
-                    .where('users.institution_id', institution.id)
+                this.where('users.institution_id', institution.id)
            })
           .modify(function(){
               if (req.startingDateTime != null &&
@@ -82,31 +78,6 @@ class LoggerController {
             })
           .orderBy('users.username', 'asc')
           .orderBy('loggers.created_at', 'asc')
-
-        // const logger = await Database
-        //   .select([
-        //     'loggers.id',
-        //     'loggers.user_id', 'users.username',
-        //     'loggers.case_id', 'cases.title',
-        //     'loggers.instance_id', 'loggers.log',
-        //     'loggers.created_at'],
-        //   )
-        //   .from('loggers')
-        //   .join('users', 'loggers.user_id','users.id')
-        //   .leftJoin('cases', 'loggers.case_id', 'cases.id')
-        //   .join('institutions', 'users.institution_id', 'institutions.id')
-        //   .modify(function(){
-        //     if (institution != '%'){
-        //       this.where('institutions.id',institution.id)
-        //     }
-        //   })
-        //   .modify(function(){
-        //     if(cs != '%'){
-        //       this.where('loggers.case_id', cs.id)
-        //     }
-        //   })
-        //   .orderBy('users.username', 'asc')
-        //   .orderBy('loggers.created_at', 'asc')
 
       return response.json({logs: logger})
     } catch (e) {
