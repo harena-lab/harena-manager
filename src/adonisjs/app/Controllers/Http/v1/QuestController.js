@@ -351,8 +351,8 @@ class QuestController {
     return {status: status, questId: questId}
   }
 
-  async listAnnotationsRegular ({request, response}) {
-    return await this.listAnnotations(request.input('quest_id'), response)
+  async listAnnotationsRegular ({request, response, auth}) {
+    return await this.listAnnotations(request.input('quest_id'), response, auth)
   }
 
   async listAnnotationsRoom ({request, response, auth}) {
@@ -365,7 +365,7 @@ class QuestController {
       status = quest.status
     }
     if (status.error == null)
-      return await this.listAnnotations(quest.questId, response)
+      return await this.listAnnotations(quest.questId, response, auth)
     else
       return response.status(status.code).json(status.error)
   }
@@ -383,11 +383,16 @@ class QuestController {
     return {status: status, quest: quest}
   }
 
-  async listAnnotations (questId, response) {
+  async listAnnotations (questId, response, auth) {
     try {
       const quest = await this.retrieveQuest(questId)
       return (quest.status.error == null)
-        ? response.json(await quest.quest.annotations().fetch())
+        // ? response.json(await quest.quest.annotations().fetch())
+        ? await QuestAnnotation
+          .query()
+          .where('quest_id', questId)
+          .where('user_id', auth.user.id)
+          .fetch()
         : response.status(quest.status.code).json(quest.status.error)
     } catch (e) {
       console.log(e)

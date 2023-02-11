@@ -674,11 +674,17 @@ class CaseController {
     return {status: status, casei: cs}
   }
 
-  async listAnnotations ({request, response}) {
+  async listAnnotations ({request, response, auth}) {
     try {
-      const cs = await this.retrieveCase(request.input('case_id'))
+      const cid = request.input('case_id')
+      const cs = await this.retrieveCase(cid)
       return (cs.status.error == null)
-        ? response.json(await cs.casei.annotations().fetch())
+        // ? response.json(await cs.casei.annotations().fetch())
+        ? await CaseAnnotation
+           .query()
+           .where('case_id', cid)
+           .where('user_id', auth.user.id)
+           .fetch()
         : response.status(cs.status.code).json(cs.status.error)
     } catch (e) {
       console.log(e)
