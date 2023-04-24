@@ -83,8 +83,8 @@ Route.group(() => {
 
   Route.post('annotation', 'v1/CaseController.storeAnnotationsRegular').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
-Route.get(   '/api/v1/case', 'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
-Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotationsRegular').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case', 'v1/CaseController.show').middleware(['auth'])
+Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotationsRegular').middleware(['auth'])
 
 /*
 |----------------------------------------------------------------------------------------------

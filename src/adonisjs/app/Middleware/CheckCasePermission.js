@@ -116,10 +116,10 @@ class CheckPermissionForGivenCase {
       if (properties[0] == 'write') {
         queryResult = await Database
         .from('cases')
-        .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .leftJoin('users_groups', function() {
-          this.on('permissions.subject', '=', 'users_groups.group_id')
-          .andOn('users_groups.user_id', '=', Database.raw('?', [auth.user.id]));
+        .join('permissions', function() {
+          this.on('permissions.table_id', 'cases.id')
+          .andOn('permissions.subject', '=', Database.raw('?', [auth.user.institution_id]))
+
         })
         .join('users', 'cases.author_id','users.id')
         .join('institutions', 'users.institution_id', 'institutions.id')
@@ -130,23 +130,10 @@ class CheckPermissionForGivenCase {
             this
             .where(function(){
               this
-              .where(function(){
-                this
-                .where('permissions.entity', 'institution')
-                .where('permissions.subject', auth.user.institution_id)
-              })
-              .orWhere(function(){
-                this
-                .where('permissions.entity', 'user')
-                .where('permissions.subject', auth.user.id)
-              })
-              .orWhere(function() {
-                this
-                .where('permissions.entity', 'group')
-                .where('users_groups.user_id', auth.user.id)
-              })
+              .where('permissions.entity', 'institution')
+              .where('permissions.subject', auth.user.institution_id)
             })
-            .where('permissions.clearance', '>=', '4')
+            .where('permissions.clearance', '>=', 4)
             .where(function(){
               this
               .whereNull('permissions.subject_grade')
