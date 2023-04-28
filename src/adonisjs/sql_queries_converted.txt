@@ -1,0 +1,21 @@
+SELECT DISTINCT cases.id, cases.title, cases.description, cases.language, cases.domain, cases.specialty, cases.keywords, cases.complexity, cases.category_id,cases.original_date,cases.author_grade, cases.published, cases.author_id, users.username, institutions.title AS institution, institutions.acronym AS institution_acronym,institutions.country AS institution_country,cases.created_at
+FROM cases
+LEFT JOIN permissions on permissions.table_id = cases.id
+LEFT JOIN users_groups on permissions.subject = users_groups.group_id and users_groups.user_id = 'e1d31016-604d-4dcc-9b03-237cb73033ea'
+JOIN users on cases.author_id = users.id
+JOIN institutions on users.institution_id = institutions.id
+WHERE cases.published >= 0
+AND cases.institution_id like '%'
+AND (cases.title like '%' OR cases.description like '%' or cases.keywords like '%')
+AND (cases.author_id = 'e1d31016-604d-4dcc-9b03-237cb73033ea'
+    OR ((permissions.entity = 'institution'
+             AND permissions.subject = '1d9e88e2-e3fe-4567-a4dd-53329e0637e2')
+       OR (permissions.entity = 'user'
+          AND permissions.subject = 'e1d31016-604d-4dcc-9b03-237cb73033ea')
+       OR (permissions.entity = 'group'
+          AND users_groups.user_id = 'e1d31016-604d-4dcc-9b03-237cb73033ea'))
+    AND permissions.clearance >= 3
+    AND (permissions.subject_grade IS NULL 
+         OR permissions.subject_grade = 'professor')
+    )
+ORDER BY cases.created_at DESC;
