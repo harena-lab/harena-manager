@@ -83,8 +83,8 @@ Route.group(() => {
 
   Route.post('annotation', 'v1/CaseController.storeAnnotationsRegular').middleware(['auth', 'case_permission:write'])
 }).prefix('/api/v1/case').middleware(['auth', 'is:author'])
-Route.get(   '/api/v1/case', 'v1/CaseController.show').middleware(['auth', 'case_permission:read'])
-Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotationsRegular').middleware(['auth', 'case_permission:read'])
+Route.get(   '/api/v1/case', 'v1/CaseController.show').middleware(['auth'])
+Route.get(   '/api/v1/case/annotations', 'v1/CaseController.listAnnotationsRegular').middleware(['auth'])
 
 /*
 |----------------------------------------------------------------------------------------------
@@ -149,6 +149,7 @@ Route.group(() => {
 Route.group(() => {
   Route.get ('user',              'v1/RoomController.userRoleRegular')
   Route.get ('case/list',         'v1/RoomController.listCasesRegular')
+  Route.get ('case/listq',        'v1/RoomController.listCasesQuestRegular')
   Route.get ('case',              'v1/CaseController.roomCaseRegular')
   Route.get ('case/annotations',  'v1/CaseController.listAnnotationsRoom')
   Route.post('case/annotation',   'v1/CaseController.storeAnnotationsRoom')
@@ -164,6 +165,7 @@ Route.group(() => {
   Route.get ('user',      'v1/RoomController.userRoleAdmin')
   Route.get ('users',     'v1/RoomController.listUsers')
   Route.get ('case/list', 'v1/RoomController.listCasesAdmin')
+  Route.get ('case/listq','v1/RoomController.listCasesQuestAdmin')
   Route.get ('case',      'v1/CaseController.roomCaseAdmin')
 }).prefix('/api/v1/admin/room').middleware('auth', 'is:admin')
 
