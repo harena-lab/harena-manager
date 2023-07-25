@@ -271,6 +271,7 @@ class RoomController {
           .join('quests_cases', 'cases.id', '=', 'quests_cases.case_id')
           .where('room_cases.room_id', roomId)
           .where('quests_cases.quest_id', room.quest_id)
+          .orderBy('quests_cases.order_position', 'asc')
       }
       return (status.error == null)
         ? response.json(roomCases)
