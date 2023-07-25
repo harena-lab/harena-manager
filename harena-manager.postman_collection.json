@@ -2741,6 +2741,17 @@
 					"response": []
 				},
 				{
+					"name": "/admin/quest/{{id}}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/user/property",
 					"event": [
 						{
@@ -2801,12 +2812,12 @@
 							"formdata": [
 								{
 									"key": "userId",
-									"value": "ec4ab025-879d-4e8b-b4d1-2b5e847c08e0",
+									"value": "",
 									"type": "text"
 								},
 								{
 									"key": "roleId",
-									"value": "74448d95-fd3f-4dc1-a424-cf73c97ced45",
+									"value": "",
 									"type": "text"
 								}
 							]
@@ -3200,17 +3211,6 @@
 								"temp_login",
 								""
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/admin/quest/{{id}}",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
 						}
 					},
 					"response": []
@@ -3653,8 +3653,19 @@
 								},
 								{
 									"key": "institutionId",
-									"value": "progn",
+									"value": "",
 									"description": "id or acronym of the institution of the user - optional",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "startDateTime",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "endDateTime",
+									"value": "",
 									"type": "text"
 								}
 							]
@@ -4378,6 +4389,51 @@
 					"response": []
 				},
 				{
+					"name": "/admin/room/case/listq",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/admin/room/case/listq",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"admin",
+								"room",
+								"case",
+								"listq"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/room/case/list",
 					"event": [
 						{
@@ -4416,6 +4472,50 @@
 								"room",
 								"case",
 								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/room/case/listq",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "room_id",
+									"value": "",
+									"description": "room id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/room/case/listq",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"room",
+								"case",
+								"listq"
 							]
 						}
 					},

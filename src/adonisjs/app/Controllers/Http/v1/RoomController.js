@@ -239,6 +239,47 @@ class RoomController {
     }
   }
 
+  async listCasesQuestRegular ({request, response, auth}) {
+    return await this.listCasesQuest(request, response, auth.user.id, false)
+  }
+
+  async listCasesQuestAdmin ({request, response, auth}) {
+    return await this.listCasesQuest(request, response, null, true)
+  }
+
+  async listCasesQuest (request, response, userId, admin) {
+    try {
+      const roomId = request.input('room_id')
+      let status =
+        await RoomPermissionController.checkPermissions(roomId, userId, admin, 1)
+
+      let room
+      if (status.error == null) {
+        room = await Room.find(roomId)
+        if (room == null)
+          status = {error: 'room not found', code: 500}
+        else if (room.quest_id == null)
+          status = {error: 'room is not linked to a quest', code: 500}
+      }
+
+      let roomCases
+      if (status.error == null) {
+        roomCases = await Database
+          .select(['quests_cases.order_position', 'cases.id', 'cases.title'])
+          .from('room_cases')
+          .join('cases', 'room_cases.case_id', '=', 'cases.id')
+          .join('quests_cases', 'cases.id', '=', 'quests_cases.case_id')
+          .where('room_cases.room_id', roomId)
+          .where('quests_cases.quest_id', room.quest_id)
+      }
+      return (status.error == null)
+        ? response.json(roomCases)
+        : response.status(status.code).json(status.error)
+    } catch (e) {
+      return response.status(e.status).json(e.message)
+    }
+  }
+
   async update ({ params, request, response }) {
 
     try {

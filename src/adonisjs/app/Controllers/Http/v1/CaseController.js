@@ -499,10 +499,6 @@ class CaseController {
         { title: property_title },
         { id: await uuidv4(), title: property_title }, trx
       )
-      // const caseProperty = new CaseProperty()
-      // caseProperty.case_id = case_id
-      // caseProperty.property_id = property.id
-      // caseProperty.value = property_value
       let caseProperty = await CaseProperty.findOrCreate(
         { case_id: case_id, property_id: property.id},
         { case_id: case_id, property_id: property.id, value: property_value}, trx
@@ -532,11 +528,6 @@ class CaseController {
 
       const property = await Property.findBy('title', property_title)
 
-      // const caseProperty = await CaseProperty.findOrCreate(
-      //   { case_id: case_id, property_id: property.id },
-      //   { case_id: case_id, property_id: property.id}, trx
-      // )
-
       let caseProperty = await CaseProperty
         .query()
         .where('property_id', property.id)
@@ -549,15 +540,10 @@ class CaseController {
       .where('property_id', property.id)
       .where('case_id', case_id)
       .update({ value: property_value,})
-      // console.log('============ db case property')
-      // console.log(caseProperty)
 
       caseProperty.value = property_value
 
-      // console.log('============ value')
-      // console.log(caseProperty.value)
       trx.commit()
-
 
       return response.json(caseProperty)
     } catch (e) {
