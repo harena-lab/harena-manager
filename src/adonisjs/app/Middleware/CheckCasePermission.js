@@ -114,34 +114,40 @@ class CheckPermissionForGivenCase {
       }
 
       if (properties[0] == 'write') {
+        // check if user is author
         queryResult = await Database
-        .from('cases')
-        .join('permissions', function() {
-          this.on('permissions.table_id', 'cases.id')
-          .andOn('permissions.subject', '=', Database.raw('?', [auth.user.institution_id]))
-
-        })
-        .join('users', 'cases.author_id','users.id')
-        .join('institutions', 'users.institution_id', 'institutions.id')
-        .where(function(){
-          this
+          .from('cases')
           .where('cases.author_id', auth.user.id)
-          .orWhere(function () {
+          .count()
+        if (queryResult[0]['count(*)'] === 0) {
+          queryResult = await Database
+          .from('cases')
+          .join('permissions', function() {
+            this.on('permissions.table_id', 'cases.id')
+            .andOn('permissions.subject', '=', Database.raw('?', [auth.user.institution_id]))
+          })
+          .join('users', 'cases.author_id','users.id')
+          .join('institutions', 'users.institution_id', 'institutions.id')
+          .where(function(){
             this
-            .where(function(){
+            .where('cases.author_id', auth.user.id)
+            .orWhere(function () {
               this
-              .where('permissions.entity', 'institution')
-              .where('permissions.subject', auth.user.institution_id)
-            })
-            .where('permissions.clearance', '>=', 4)
-            .where(function(){
-              this
-              .whereNull('permissions.subject_grade')
-              .orWhere('permissions.subject_grade', auth.user.grade)
+              .where(function(){
+                this
+                .where('permissions.entity', 'institution')
+                .where('permissions.subject', auth.user.institution_id)
+              })
+              .where('permissions.clearance', '>=', 4)
+              .where(function(){
+                this
+                .whereNull('permissions.subject_grade')
+                .orWhere('permissions.subject_grade', auth.user.grade)
+              })
             })
           })
-        })
-        .count()
+          .count()
+        }
       }
 
       if (properties[0] == 'delete') {
