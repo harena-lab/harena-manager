@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "617bf0ac-aae7-4078-bf70-b333d1e1127f",
+		"_postman_id": "3300251c-4356-42f4-94a6-6dfe7572b970",
 		"name": "harena-manager",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "7375845"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12184223"
 	},
 	"item": [
 		{
@@ -55,17 +55,7 @@
 										}
 									]
 								},
-								"url": {
-									"raw": "{{api-base-url}}/auth/login/",
-									"host": [
-										"{{api-base-url}}"
-									],
-									"path": [
-										"auth",
-										"login",
-										""
-									]
-								}
+								"url": "{{api-base-url}}/auth/login/"
 							},
 							"response": []
 						},
@@ -85,13 +75,9 @@
 							"request": {
 								"auth": {
 									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{user-token}}",
-											"type": "string"
-										}
-									]
+									"bearer": {
+										"token": "{{user-token}}"
+									}
 								},
 								"method": "POST",
 								"header": [],
@@ -99,17 +85,7 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": {
-									"raw": "{{api-base-url}}/auth/logout/",
-									"host": [
-										"{{api-base-url}}"
-									],
-									"path": [
-										"auth",
-										"logout",
-										""
-									]
-								}
+								"url": "{{api-base-url}}/auth/logout/"
 							},
 							"response": []
 						}
@@ -170,16 +146,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/auth/login",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
+						"url": "{{api-base-url}}/auth/login"
 					},
 					"response": []
 				},
@@ -226,16 +193,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/auth/login_event",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"auth",
-								"login_event"
-							]
-						}
+						"url": "{{api-base-url}}/auth/login_event"
 					},
 					"response": []
 				},
@@ -269,16 +227,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/auth/token_login",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"auth",
-								"token_login"
-							]
-						}
+						"url": "{{api-base-url}}/auth/token_login"
 					},
 					"response": []
 				},
@@ -301,16 +250,7 @@
 						},
 						"method": "POST",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/auth/logout",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"auth",
-								"logout"
-							]
-						}
+						"url": "{{api-base-url}}/auth/logout"
 					},
 					"response": []
 				},
@@ -319,16 +259,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/auth/check",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"auth",
-								"check"
-							]
-						}
+						"url": "{{api-base-url}}/auth/check"
 					},
 					"response": []
 				}
@@ -374,16 +305,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/cases_by_quest",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"cases_by_quest"
-							]
-						}
+						"url": "{{api-base-url}}/user/cases_by_quest"
 					},
 					"response": []
 				},
@@ -405,16 +327,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/user/{{user-id}}",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"{{user-id}}"
-							]
-						}
+						"url": "{{api-base-url}}/user/{{user-id}}"
 					},
 					"response": []
 				},
@@ -479,9 +392,8 @@
 								},
 								{
 									"key": "fProperty",
-									"value": "feedback",
-									"type": "text",
-									"disabled": true
+									"value": "complete",
+									"type": "text"
 								},
 								{
 									"key": "fPropertyValue",
@@ -497,6 +409,12 @@
 									"disabled": true
 								},
 								{
+									"key": "fGroup",
+									"value": "41ff4bc3-2bc9-47b3-bb6c-27ee092728c6",
+									"description": "id of the group",
+									"type": "text"
+								},
+								{
 									"key": "nItems",
 									"value": "10",
 									"type": "text",
@@ -510,16 +428,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"cases"
-							]
-						}
+						"url": "{{api-base-url}}/user/cases"
 					},
 					"response": []
 				},
@@ -539,16 +448,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/user/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"quests"
-							]
-						}
+						"url": "{{api-base-url}}/user/quests"
 					},
 					"response": []
 				},
@@ -582,16 +482,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/user/property"
 					},
 					"response": []
 				},
@@ -626,16 +517,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/cases_by_institution",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"cases_by_institution"
-							]
-						}
+						"url": "{{api-base-url}}/user/cases_by_institution"
 					},
 					"response": []
 				},
@@ -669,31 +551,31 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "Edu Name",
+									"value": "Aluno Demo INF331",
 									"description": "full user's name",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "edu@email.com",
+									"value": "aluno-331@email.com",
 									"description": "user's email",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "edu",
+									"value": "aluno-331",
 									"description": "user's account password",
 									"type": "text"
 								},
 								{
 									"key": "login",
-									"value": "edu",
+									"value": "aluno-331",
 									"description": "user's account login",
 									"type": "text"
 								},
 								{
 									"key": "institution",
-									"value": "unicamp",
+									"value": "inf-331-2023",
 									"description": "acronym of the institution: unicamp, minho, mcunicamp",
 									"type": "text"
 								},
@@ -705,15 +587,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/user"
 					},
 					"response": []
 				},
@@ -803,16 +677,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/self",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"self"
-							]
-						}
+						"url": "{{api-base-url}}/user/self"
 					},
 					"response": []
 				},
@@ -847,16 +712,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/user/property"
 					},
 					"response": []
 				},
@@ -900,15 +756,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/user"
 					},
 					"response": []
 				},
@@ -933,17 +781,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/password/reset",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"password",
-								"reset"
-							]
-						}
+						"url": "{{api-base-url}}/user/password/reset"
 					},
 					"response": []
 				},
@@ -967,17 +805,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/password/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"password",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/user/password/"
 					},
 					"response": []
 				},
@@ -1001,17 +829,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/user/property/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"property",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/user/property/"
 					},
 					"response": []
 				},
@@ -1035,16 +853,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/user/{{user-id}}",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"user",
-								"{{user-id}}"
-							]
-						}
+						"url": "{{api-base-url}}/user/{{user-id}}"
 					},
 					"response": []
 				}
@@ -1067,20 +876,12 @@
 							"formdata": [
 								{
 									"key": "caseId",
-									"value": "",
+									"value": "32578c73-8cf6-4ee0-b431-b5c67de24960",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/case"
 					},
 					"response": []
 				},
@@ -1186,15 +987,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/case"
 					},
 					"response": []
 				},
@@ -1263,15 +1056,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/case"
 					},
 					"response": []
 				},
@@ -1326,17 +1111,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"link",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/case/link/user"
 					},
 					"response": []
 				},
@@ -1355,16 +1130,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/case/"
 					},
 					"response": []
 				},
@@ -1409,16 +1175,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/share",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"share"
-							]
-						}
+						"url": "{{api-base-url}}/case/share"
 					},
 					"response": []
 				},
@@ -1450,16 +1207,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/withdraw",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"withdraw"
-							]
-						}
+						"url": "{{api-base-url}}/case/withdraw"
 					},
 					"response": []
 				},
@@ -1491,16 +1239,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/case/property"
 					},
 					"response": []
 				},
@@ -1529,16 +1268,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/case/property"
 					},
 					"response": []
 				},
@@ -1599,16 +1329,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/annotation",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"annotation"
-							]
-						}
+						"url": "{{api-base-url}}/case/annotation"
 					},
 					"response": []
 				},
@@ -1630,16 +1351,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/case/annotations",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"case",
-								"annotations"
-							]
-						}
+						"url": "{{api-base-url}}/case/annotations"
 					},
 					"response": []
 				}
@@ -1664,16 +1376,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/player/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"player",
-								"quests"
-							]
-						}
+						"url": "{{api-base-url}}/player/quests"
 					},
 					"response": []
 				},
@@ -1706,17 +1409,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/player/quest/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"player",
-								"quest",
-								"cases"
-							]
-						}
+						"url": "{{api-base-url}}/player/quest/cases"
 					},
 					"response": []
 				}
@@ -1741,16 +1434,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/author/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"author",
-								"quests"
-							]
-						}
+						"url": "{{api-base-url}}/author/quests"
 					},
 					"response": []
 				},
@@ -1783,17 +1467,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/author/quest/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"author",
-								"quest",
-								"cases"
-							]
-						}
+						"url": "{{api-base-url}}/author/quest/cases"
 					},
 					"response": []
 				}
@@ -1841,15 +1515,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/artifact",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"artifact"
-							]
-						}
+						"url": "{{api-base-url}}/artifact"
 					},
 					"response": []
 				},
@@ -1858,16 +1524,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/artifact/2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"artifact",
-								"2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4"
-							]
-						}
+						"url": "{{api-base-url}}/artifact/2958b5c9-aa7b-4bf1-882d-4bb47b6f40c4"
 					},
 					"response": []
 				},
@@ -1901,16 +1558,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/artifact/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"artifact",
-								"list"
-							]
-						}
+						"url": "{{api-base-url}}/artifact/list"
 					},
 					"response": []
 				}
@@ -1968,16 +1616,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/users",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"users"
-							]
-						}
+						"url": "{{api-base-url}}/quest/users"
 					},
 					"response": []
 				},
@@ -2027,16 +1666,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/quest/"
 					},
 					"response": []
 				},
@@ -2065,17 +1695,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"link",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/quest/link/user"
 					},
 					"response": []
 				},
@@ -2104,17 +1724,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/link/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"link",
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/quest/link/case"
 					},
 					"response": []
 				},
@@ -2153,16 +1763,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/annotation",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"annotation"
-							]
-						}
+						"url": "{{api-base-url}}/quest/annotation"
 					},
 					"response": []
 				},
@@ -2184,16 +1785,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/quest/annotations",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"quest",
-								"annotations"
-							]
-						}
+						"url": "{{api-base-url}}/quest/annotations"
 					},
 					"response": []
 				}
@@ -2288,16 +1880,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/category/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"category",
-								"cases"
-							]
-						}
+						"url": "{{api-base-url}}/category/cases"
 					},
 					"response": []
 				},
@@ -2351,16 +1934,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/category/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"category",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/category/"
 					},
 					"response": []
 				},
@@ -2389,17 +1963,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/category/link/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"category",
-								"link",
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/category/link/case"
 					},
 					"response": []
 				},
@@ -2415,16 +1979,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/category/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"category",
-								"list"
-							]
-						}
+						"url": "{{api-base-url}}/category/list"
 					},
 					"response": []
 				},
@@ -2466,15 +2021,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/institutions",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"institutions"
-							]
-						}
+						"url": "{{api-base-url}}/institutions"
 					},
 					"response": []
 				}
@@ -2514,16 +2061,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"cases"
-							]
-						}
+						"url": "{{api-base-url}}/admin/cases"
 					},
 					"response": []
 				},
@@ -2558,16 +2096,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/groups",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"groups"
-							]
-						}
+						"url": "{{api-base-url}}/admin/groups"
 					},
 					"response": []
 				},
@@ -2667,16 +2196,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/admin/roles",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"roles"
-							]
-						}
+						"url": "{{api-base-url}}/admin/roles"
 					},
 					"response": []
 				},
@@ -2696,18 +2216,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/1d6851cf-f3c7-4a00-8b5c-7fd7b0f36db9/roles",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"1d6851cf-f3c7-4a00-8b5c-7fd7b0f36db9",
-								"roles"
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/1d6851cf-f3c7-4a00-8b5c-7fd7b0f36db9/roles"
 					},
 					"response": []
 				},
@@ -2727,27 +2236,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/admin/quests",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"quests"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/admin/quest/{{id}}",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
+						"url": "{{api-base-url}}/admin/quests"
 					},
 					"response": []
 				},
@@ -2788,17 +2277,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/property"
 					},
 					"response": []
 				},
@@ -2812,28 +2291,17 @@
 							"formdata": [
 								{
 									"key": "userId",
-									"value": "",
+									"value": "ec4ab025-879d-4e8b-b4d1-2b5e847c08e0",
 									"type": "text"
 								},
 								{
 									"key": "roleId",
-									"value": "",
+									"value": "74448d95-fd3f-4dc1-a424-cf73c97ced45",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/link/role",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"link",
-								"role"
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/link/role"
 					},
 					"response": []
 				},
@@ -2880,16 +2348,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/institution",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"institution"
-							]
-						}
+						"url": "{{api-base-url}}/admin/institution"
 					},
 					"response": []
 				},
@@ -2920,16 +2379,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/revoke_tokens",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"revoke_tokens"
-							]
-						}
+						"url": "{{api-base-url}}/admin/revoke_tokens"
 					},
 					"response": []
 				},
@@ -2958,18 +2408,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/quest/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"quest",
-								"link",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/admin/quest/link/user"
 					},
 					"response": []
 				},
@@ -3009,17 +2448,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/property"
 					},
 					"response": []
 				},
@@ -3066,16 +2495,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/role",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"role"
-							]
-						}
+						"url": "{{api-base-url}}/admin/role"
 					},
 					"response": []
 				},
@@ -3131,17 +2551,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/75131920-cd37-441a-a86e-a2c538d33d64",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"75131920-cd37-441a-a86e-a2c538d33d64"
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/75131920-cd37-441a-a86e-a2c538d33d64"
 					},
 					"response": []
 				},
@@ -3170,18 +2580,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/property/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"property",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/property/"
 					},
 					"response": []
 				},
@@ -3200,18 +2599,16 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/user/temp_login/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"user",
-								"temp_login",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/admin/user/temp_login/"
+					},
+					"response": []
+				},
+				{
+					"name": "/admin/quest/{{id}}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
 					},
 					"response": []
 				}
@@ -3261,16 +2658,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/cases",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								"cases"
-							]
-						}
+						"url": "{{api-base-url}}/group/cases"
 					},
 					"response": []
 				},
@@ -3297,15 +2685,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group"
-							]
-						}
+						"url": "{{api-base-url}}/group"
 					},
 					"response": []
 				},
@@ -3339,16 +2719,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/users",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								"users"
-							]
-						}
+						"url": "{{api-base-url}}/group/users"
 					},
 					"response": []
 				},
@@ -3382,16 +2753,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/managers",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								"managers"
-							]
-						}
+						"url": "{{api-base-url}}/group/managers"
 					},
 					"response": []
 				},
@@ -3428,16 +2790,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/group/user"
 					},
 					"response": []
 				},
@@ -3471,22 +2824,13 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "",
+									"value": "INF 331 - 2023",
 									"description": "group title (free title text)",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/group/"
 					},
 					"response": []
 				},
@@ -3500,27 +2844,17 @@
 							"formdata": [
 								{
 									"key": "groupId",
-									"value": "",
+									"value": "41ff4bc3-2bc9-47b3-bb6c-27ee092728c6",
 									"type": "text"
 								},
 								{
 									"key": "userId",
-									"value": "",
+									"value": "486bac6b-d09b-4442-a63a-88eafa963928",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								"link",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/group/link/user"
 					},
 					"response": []
 				},
@@ -3544,17 +2878,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/group/link/manager",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"group",
-								"link",
-								"manager"
-							]
-						}
+						"url": "{{api-base-url}}/group/link/manager"
 					},
 					"response": []
 				}
@@ -3611,15 +2935,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/logger",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"logger"
-							]
-						}
+						"url": "{{api-base-url}}/logger"
 					},
 					"response": []
 				},
@@ -3653,33 +2969,13 @@
 								},
 								{
 									"key": "institutionId",
-									"value": "",
+									"value": "progn",
 									"description": "id or acronym of the institution of the user - optional",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "startDateTime",
-									"value": "",
-									"type": "text"
-								},
-								{
-									"key": "endDateTime",
-									"value": "",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/logger/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"logger",
-								"list"
-							]
-						}
+						"url": "{{api-base-url}}/logger/list"
 					},
 					"response": []
 				}
@@ -3814,15 +3110,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/event",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"event"
-							]
-						}
+						"url": "{{api-base-url}}/event"
 					},
 					"response": []
 				},
@@ -3831,16 +3119,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/event/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"event",
-								"list"
-							]
-						}
+						"url": "{{api-base-url}}/event/list"
 					},
 					"response": []
 				}
@@ -3915,15 +3194,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/term",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"term"
-							]
-						}
+						"url": "{{api-base-url}}/term"
 					},
 					"response": []
 				},
@@ -4005,17 +3276,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/term/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"term",
-								"link",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/term/link/user"
 					},
 					"response": []
 				},
@@ -4057,16 +3318,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/term/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"term",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/term/user"
 					},
 					"response": []
 				},
@@ -4095,16 +3347,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{api-base-url}}/term/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"term",
-								"list"
-							]
-						}
+						"url": "{{api-base-url}}/term/list"
 					},
 					"response": []
 				},
@@ -4140,16 +3383,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/term/users",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"term",
-								"users"
-							]
-						}
+						"url": "{{api-base-url}}/term/users"
 					},
 					"response": []
 				}
@@ -4186,16 +3420,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/knowledge/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"knowledge",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/knowledge/property"
 					},
 					"response": []
 				},
@@ -4227,16 +3452,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/knowledge/property",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"knowledge",
-								"property"
-							]
-						}
+						"url": "{{api-base-url}}/knowledge/property"
 					},
 					"response": []
 				},
@@ -4245,16 +3461,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/knowledge/properties",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"knowledge",
-								"properties"
-							]
-						}
+						"url": "{{api-base-url}}/knowledge/properties"
 					},
 					"response": []
 				}
@@ -4279,17 +3486,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"list"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/list"
 					},
 					"response": []
 				},
@@ -4329,17 +3526,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/user"
 					},
 					"response": []
 				},
@@ -4373,63 +3560,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/case/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"case",
-								"list"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/admin/room/case/listq",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "room_id",
-									"value": "",
-									"description": "room id",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/case/listq",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"case",
-								"listq"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/case/list"
 					},
 					"response": []
 				},
@@ -4463,61 +3594,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/room/case/list",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"case",
-								"list"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/room/case/listq",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "room_id",
-									"value": "",
-									"description": "room id",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{api-base-url}}/room/case/listq",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"case",
-								"listq"
-							]
-						}
+						"url": "{{api-base-url}}/room/case/list"
 					},
 					"response": []
 				},
@@ -4557,17 +3634,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/case"
 					},
 					"response": []
 				},
@@ -4607,16 +3674,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/room/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/room/case"
 					},
 					"response": []
 				},
@@ -4650,17 +3708,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/users",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"users"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/users"
 					},
 					"response": []
 				},
@@ -4689,17 +3737,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/room/case/annotations",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"case",
-								"annotations"
-							]
-						}
+						"url": "{{api-base-url}}/room/case/annotations"
 					},
 					"response": []
 				},
@@ -4722,17 +3760,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/room/quest/annotations",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"quest",
-								"annotations"
-							]
-						}
+						"url": "{{api-base-url}}/room/quest/annotations"
 					},
 					"response": []
 				},
@@ -4793,17 +3821,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								""
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/"
 					},
 					"response": []
 				},
@@ -4856,18 +3874,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/link/user",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"link",
-								"user"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/link/user"
 					},
 					"response": []
 				},
@@ -4913,18 +3920,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/admin/room/link/case",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"admin",
-								"room",
-								"link",
-								"case"
-							]
-						}
+						"url": "{{api-base-url}}/admin/room/link/case"
 					},
 					"response": []
 				},
@@ -4991,17 +3987,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/room/case/annotation",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"case",
-								"annotation"
-							]
-						}
+						"url": "{{api-base-url}}/room/case/annotation"
 					},
 					"response": []
 				},
@@ -5040,17 +4026,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{api-base-url}}/room/quest/annotation",
-							"host": [
-								"{{api-base-url}}"
-							],
-							"path": [
-								"room",
-								"quest",
-								"annotation"
-							]
-						}
+						"url": "{{api-base-url}}/room/quest/annotation"
 					},
 					"response": []
 				}
@@ -5059,13 +4035,9 @@
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{user-token}}",
-				"type": "string"
-			}
-		]
+		"bearer": {
+			"token": "{{user-token}}"
+		}
 	},
 	"event": [
 		{
