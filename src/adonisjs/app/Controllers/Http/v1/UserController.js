@@ -440,13 +440,15 @@ class UserController {
       const clearance = parseInt(request.input('clearance')) || 10
 
       var publishedFilter = parseInt(request.input('published')) || 0
-
+      
       const institutionFilter = request.input('fInstitution') || `%`
       const userTypeFilter = request.input('fUserType') || `%`
       const specialtyFilter = request.input('fSpecialty') || `%`
       const propertyFilter = request.input('fProperty') || null
       const propertyValueFilter = request.input('fPropertyValue') || '%'
       let searchStringFilter = request.input('fSearchStr') || `%`
+      const groupFilter = request.input('fGroup') || null
+
       var itemOffset = 0
       const itemLimit = request.input('nItems') || 20
 
@@ -585,7 +587,7 @@ class UserController {
         let countCases = await Database
         .from('cases')
         .leftJoin('permissions', 'cases.id', 'permissions.table_id')
-        .leftJoin('users_groups', function() {
+        .join('users_groups', function() {
           this.on('permissions.subject', '=', 'users_groups.group_id')
           .andOn('users_groups.user_id', '=', Database.raw('?', [user.id]));
         })
@@ -599,13 +601,20 @@ class UserController {
           this.where('cases.specialty', 'like', specialtyFilter)
         })
         .where(function(){
-          this
-          .where('cases.title', 'like', searchStringFilter)
-          .orWhere('cases.description', 'like', searchStringFilter)
-          .orWhere('cases.keywords', 'like', searchStringFilter)
+          if (searchStringFilter != '%'){
+            this
+            .where('cases.title', 'like', searchStringFilter)
+            .orWhere('cases.description', 'like', searchStringFilter)
+            .orWhere('cases.keywords', 'like', searchStringFilter)
+          }
         })
 
         .where(function(){
+          if (groupFilter != null){
+            this
+            .where('permissions.entity', 'group')
+            .where('permissions.subject', groupFilter)
+          }else{
           this
           .where('cases.author_id', user.id)
           .orWhere(function () {
@@ -634,7 +643,7 @@ class UserController {
               .whereNull('permissions.subject_grade')
               .orWhere('permissions.subject_grade', user.grade)
             })
-          })
+          })}
         })
         .countDistinct('cases.id as cases')
         // console.log('================================================================ number of pages')
@@ -670,13 +679,20 @@ class UserController {
           this.where('cases.specialty', 'like', specialtyFilter)
         })
         .where(function(){
-          this
-          .where('cases.title', 'like', searchStringFilter)
-          .orWhere('cases.description', 'like', searchStringFilter)
-          .orWhere('cases.keywords', 'like', searchStringFilter)
+          if (searchStringFilter != '%'){
+            this
+            .where('cases.title', 'like', searchStringFilter)
+            .orWhere('cases.description', 'like', searchStringFilter)
+            .orWhere('cases.keywords', 'like', searchStringFilter)
+          }
         })
 
         .where(function(){
+          if (groupFilter != null){
+            this
+            .where('permissions.entity', 'group')
+            .where('permissions.subject', groupFilter)
+          }else{
           this
           .where('cases.author_id', user.id)
           .orWhere(function () {
@@ -705,7 +721,7 @@ class UserController {
               .whereNull('permissions.subject_grade')
               .orWhere('permissions.subject_grade', user.grade)
             })
-          })
+          })}
         })
         .orderBy('cases.created_at', 'desc')
         .offset(itemOffset * itemLimit)
