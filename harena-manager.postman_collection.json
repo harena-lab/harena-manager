@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3300251c-4356-42f4-94a6-6dfe7572b970",
+		"_postman_id": "40589020-eb29-416e-9d2b-278a6859d01c",
 		"name": "harena-manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "12184223"
@@ -1494,7 +1494,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/hmatt/Desktop/Jacinto-images/desafio-pocus.png"
+									"src": []
 								},
 								{
 									"key": "caseId",
@@ -1512,10 +1512,55 @@
 									"key": "id",
 									"value": "desafio-pocus-image",
 									"type": "text"
+								},
+								{
+									"key": "classify",
+									"value": "true",
+									"description": "true/false - defines if the artifact is automatically classified (only for POCUS videos)",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": "{{api-base-url}}/artifact"
+					},
+					"response": []
+				},
+				{
+					"name": "/artifact/classify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-base-url}}/artifact/classify",
+							"host": [
+								"{{api-base-url}}"
+							],
+							"path": [
+								"artifact",
+								"classify"
+							]
+						}
 					},
 					"response": []
 				},
