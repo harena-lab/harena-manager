@@ -75,6 +75,7 @@ class CaseController {
         }
 
         c.source = versions.last().source
+        c['updated_at'] = versions.last()['created_at']
         // c.versions = versions
         c.property = prop
 

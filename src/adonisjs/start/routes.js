@@ -96,6 +96,7 @@ Route.group(() => {
 	Route.post(  '',            'v1/ArtifactController.store')
   Route.delete(':id',         'v1/ArtifactController.destroy')
   Route.get('list',          'v1/ArtifactController.list')
+  Route.get('classify',      'v1/ArtifactController.classify')
 }).prefix('/api/v1/artifact/').middleware(['auth', 'is:author'])
 
 
