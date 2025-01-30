@@ -22,13 +22,13 @@ class ArtifactController {
     // See this for more on MIM types: https://docs.openx.com/Content/publishers/adunit_linearvideo_mime_types.html
     this.validationOptions = {
       size: '100mb',
-      types: ['image', 'video']
+      types: ['image', 'audio', 'video']
       // do not afford case insensitive check
       // extnames: ['png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'avi', 'wmv']
     }
 
     this.validExtensions =
-      ['png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'mpeg4', 'avi', 'wmv', 'mov']
+      ['png', 'jpg', 'jpeg', 'gif', 'svg', 'mp4', 'mpeg4', 'avi', 'wmv', 'mov', 'mp3']
 
     this.convertExtensions = ['avi', 'wmv', 'mov', 'mp4', 'mpeg4']
 
