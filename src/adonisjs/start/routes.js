@@ -307,6 +307,15 @@ Route.group(() => {
 
 }).prefix('/api/v1/admin').middleware(['auth', 'is:admin'])
 
+/*
+|----------------------------------------------------------------------------------------------
+|       api: v1
+|  resource: /ticket
+|----------------------------------------------------------------------------------------------
+*/
+Route.group(() => {
+  Route.post( '', 'v1/TicketController.store')
+}).prefix('/api/v1/ticket').middleware('auth')
 
 /* Test route */
 Route.get('/api/imagetest', 	'TestController.index')
