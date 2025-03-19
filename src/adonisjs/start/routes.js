@@ -315,7 +315,7 @@ Route.group(() => {
 */
 Route.group(() => {
   Route.post( '', 'v1/TicketController.store')
-}).prefix('/api/v1/ticket').middleware('auth')
+}).prefix('/api/v1/ticket')
 
 /* Test route */
 Route.get('/api/imagetest', 	'TestController.index')
